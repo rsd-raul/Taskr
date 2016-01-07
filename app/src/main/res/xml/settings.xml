@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:title="@string/appearance" >
+
+        <CheckBoxPreference
+            android:key="adaptColor"
+            android:title="@string/adaptableColors"
+            android:summaryOff="@string/adaptableColorsOff"
+            android:summaryOn="@string/adaptableColorsOn"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/notifications" >
+
+
+
+        <CheckBoxPreference
+            android:key="notificationTone"
+            android:title="@string/notificationSound"
+            android:summaryOff="@string/notificationSoundOff"
+            android:summaryOn="@string/notificationSoundOn"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory-->
+    <!--android:title="@string/customizeRange" >-->
+
+        <!--<ListPreference-->
+            <!--android:key="range"-->
+            <!--android:title="@string/onStartNotification"-->
+            <!--android:summary="@string/onStartDetail"-->
+            <!--android:dialogTitle="@string/group"-->
+            <!--android:entries="@array/dayOrWeek"-->
+            <!--android:entryValues="@array/dayOrWeek"-->
+            <!--android:defaultValue="Weekly" />-->
+
+        <!--<CheckBoxPreference-->
+            <!--android:key="includeToday"-->
+            <!--android:title="@string/includeToday"-->
+            <!--android:summaryOff="@string/includeTodayOff"-->
+            <!--android:summaryOn="@string/includeTodayOn"-->
+            <!--android:defaultValue="true"/>-->
+
+        <!--<CheckBoxPreference-->
+            <!--android:key="includeLast"-->
+            <!--android:title="@string/includeLast"-->
+            <!--android:summaryOff="@string/includeLastOff"-->
+            <!--android:summaryOn="@string/includeLastOn"-->
+            <!--android:defaultValue="false"/>-->
+
+    <!--</PreferenceCategory>-->
+
+    <PreferenceCategory
+        android:title="@string/account" >
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/predictions" >
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/sharing" >
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/customization" >
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/security" >
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/planner" >
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/author" >
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

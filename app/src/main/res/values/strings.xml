@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- ActionBar Title -->
+
+    <string name="app_name">Tasked</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="statistics">Statistics</string>
+
+    <!-- ActionBar Icons -->
+
+    <string name="settings">Settings</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
+
+</resources>

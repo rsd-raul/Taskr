@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.software.achilles.tasked.DashboardActivity" >
+    <item android:id="@+id/action_settings"
+        android:title="@string/settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_filter"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/filter"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
+        app:showAsAction="ifRoom" />
+
+</menu>
