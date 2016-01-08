@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Main components -->
+
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="tealLocationDark">#00796B</color>
@@ -12,8 +15,13 @@
 
     <color name="colorSuccess">#4CAF50</color>
 
+    <!-- Basics -->
+
     <color name="primaryText">#212121</color>
     <color name="secondaryText">#727272</color>
     <color name="dividerColor">#B6B6B6</color>
     <color name="textAndIcons">#FFFFFF</color>
+
+    <color name="background">#C8FEFEFE</color>
+    <color name="transparent">#00FEFEFE</color>
 </resources>

@@ -95,35 +95,11 @@
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
-
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:layout_anchorGravity="bottom|right|end"-->
-        <!--app:layout_anchor="@id/scrollView"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--android:src="@drawable/ic_add"-->
-        <!--app:layout_behavior="com.software.achilles.tasked.extras.ScrollAwareFABBehavior"/>-->
-
-    <!--<com.github.clans.fab.FloatingActionButton-->
-        <!--android:id="@+id/fab2"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:layout_anchorGravity="bottom|right|end"-->
-        <!--app:layout_anchor="@id/scrollView"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--android:src="@drawable/ic_add"-->
-        <!--app:fab_colorNormal="@color/colorAccent"-->
-        <!--app:fab_colorPressed="@color/colorAccent"-->
-        <!--app:fab_colorRipple="@color/colorAccent" />-->
-
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menuFAB"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchor="@id/scrollView"
-        app:layout_anchorGravity="bottom|right|end"
+        android:layout_gravity="bottom|end"
 
         android:padding="@dimen/fab_margin"
         app:menu_showShadow="true"
@@ -159,8 +135,7 @@
         app:menu_labels_ellipsize="none"
         app:menu_labels_maxLines="-1"
         app:menu_labels_position="left"
-        app:menu_openDirection="up"
-        app:menu_backgroundColor="@android:color/transparent" >
+        app:menu_openDirection="up" >
 
 
         <com.github.clans.fab.FloatingActionButton  style="@style/fabMenuChild"
