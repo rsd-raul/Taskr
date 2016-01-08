@@ -12,4 +12,10 @@
     <string name="search">Search</string>
     <string name="filter">Filter</string>
 
+    <!-- Generic -->
+
+    <string name="select">Select</string>
+
+
+
 </resources>

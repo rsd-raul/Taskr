@@ -44,6 +44,12 @@ public class DashboardActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
 
+            case R.id.action_filter:
+                break;
+
+            case R.id.action_search:
+                break;
+
             case R.id.action_settings:
                 Intent intent = new Intent(this, Preferences.class);
                 startActivity(intent);

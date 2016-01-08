@@ -1,7 +1,10 @@
 package com.software.achilles.tasked.controllers;
 
 
+import android.support.annotation.NonNull;
+
 import com.software.achilles.tasked.domain.Task;
+import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,42 +15,37 @@ public class TaskController {
 
     // --------------------------- Values ----------------------------
 
-    private static final long DAY_IN_MILLISECOND = 86400000L;
-    private static final long WEEK_IN_MILLISECOND = 604800000L;
-    private static final long MINUTE_IN_MILLISECOND = 60000L;
-
     // ------------------------- Attributes --------------------------
 
     private static TaskController instance;
     public static ArrayList<Task> tasks;
     private Task actualTask, lastDeleted;
-    public static Date taskDate;
+//    public static Date taskDate;
 
-    public static Boolean firstTime = true;
+    public static Boolean addTaskOpen = false;
 
     // ------------------------- Constructor -------------------------
 
     public static TaskController getInstance() {
-        if(instance==null)
+        if(instance == null)
             instance = new TaskController();
         return instance;
     }
 
-    public TaskController() {
-
-    }
+    public TaskController() {    }
 
     // ------------------------ Crud Methods -------------------------
 
-    public void addTask(String name, String description, Date date){
-        Task newTask = new Task(name, description, date, false);
+    public void addTask(@NonNull Task newTask){
 
         // Add on top
         getTasks().add(0, newTask);
     }
 
-    public void editTask(int position, Task task){
-        if(!task.getName().matches(""))
+    public void editTask(int position, @NonNull Task task){
+
+        // Validation of the task title
+        if(!task.getTitle().matches(""))
             getTasks().set(position, task);
     }
 
@@ -55,18 +53,11 @@ public class TaskController {
         getTasks().remove(position);
     }
 
-    // -------------------------- Use Cases --------------------------
-
     public void undoDelete(){
+
+        // Adds the last deleted to the top
         if(lastDeleted != null)
             getTasks().add(0, lastDeleted);
-    }
-
-    public void undoFinished(int position){
-        actualTask = getTasks().get(position);
-
-        actualTask.setFinished(false);
-        getTasks().set(position, actualTask);
     }
 
     public void finishTask(int position){
@@ -76,6 +67,15 @@ public class TaskController {
         getTasks().set(position, actualTask);
     }
 
+    public void undoFinished(int position){
+        actualTask = getTasks().get(position);
+
+        actualTask.setFinished(false);
+        getTasks().set(position, actualTask);
+    }
+
+    // -------------------------- Use Cases --------------------------
+
     public static List<Task> getTasksOnRange(String range, boolean today, boolean last){
 
         Date min = Calendar.getInstance().getTime();
@@ -84,13 +84,13 @@ public class TaskController {
 
         switch (range){
             case "Daily":
-                max.setTime(min.getTime() + DAY_IN_MILLISECOND);
+                max.setTime(min.getTime() + Constants.DAY_IN_MILLISECOND);
                 break;
             case "Weekly":
-                max.setTime(min.getTime() + WEEK_IN_MILLISECOND);
+                max.setTime(min.getTime() + Constants.WEEK_IN_MILLISECOND);
                 break;
             case "Minute":
-                max.setTime(min.getTime() + MINUTE_IN_MILLISECOND);
+                max.setTime(min.getTime() + Constants.MINUTE_IN_MILLISECOND);
                 break;
         }
 

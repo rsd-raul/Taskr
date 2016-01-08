@@ -1,5 +1,7 @@
 package com.software.achilles.tasked.domain;
 
+import android.location.Location;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,42 +14,29 @@ public class Task implements Serializable {
     // ------------------------- Attributes --------------------------
 
     private int id;
-    private String name, description;
-    private Date dueDate;
     private Boolean finished;
+    private String title;
+    private String description;
+    private Date dueDate;
+    private Location location;
 
     // ------------------------- Constructor -------------------------
 
-    public Task(String name, String description, Date dueDate, Boolean finished) {
-        this.name = name;
+    public Task(Boolean finished, String title, String description, Date dueDate, Location location) {
+        this.finished = finished;
+        this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.finished = finished;
+        this.location = location;
     }
 
     // ---------------------- Getters & Setters ----------------------
-
 
     public int getId() {
         return id;
     }
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
     }
 
     public Boolean getFinished() {
@@ -57,11 +46,39 @@ public class Task implements Serializable {
         this.finished = finished;
     }
 
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     // -------------------------- To String --------------------------
 
     @Override
     public String toString() {
-        return (finished ? "DONE - " : "") + name +
+        return (finished ? "DONE - " : "") + title +
                 (dueDate == null ? "" : " - " + dateToText(dueDate));
     }
 

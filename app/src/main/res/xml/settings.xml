@@ -16,8 +16,6 @@
     <PreferenceCategory
         android:title="@string/notifications" >
 
-
-
         <CheckBoxPreference
             android:key="notificationTone"
             android:title="@string/notificationSound"
@@ -25,69 +23,63 @@
             android:summaryOn="@string/notificationSoundOn"
             android:defaultValue="true"/>
 
+        <CheckBoxPreference
+            android:key="notificationVibration"
+            android:title="@string/notificationVibration"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="notificationLed"
+            android:title="@string/notificationLed"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
-
-    <!--<PreferenceCategory-->
-    <!--android:title="@string/customizeRange" >-->
-
-        <!--<ListPreference-->
-            <!--android:key="range"-->
-            <!--android:title="@string/onStartNotification"-->
-            <!--android:summary="@string/onStartDetail"-->
-            <!--android:dialogTitle="@string/group"-->
-            <!--android:entries="@array/dayOrWeek"-->
-            <!--android:entryValues="@array/dayOrWeek"-->
-            <!--android:defaultValue="Weekly" />-->
-
-        <!--<CheckBoxPreference-->
-            <!--android:key="includeToday"-->
-            <!--android:title="@string/includeToday"-->
-            <!--android:summaryOff="@string/includeTodayOff"-->
-            <!--android:summaryOn="@string/includeTodayOn"-->
-            <!--android:defaultValue="true"/>-->
-
-        <!--<CheckBoxPreference-->
-            <!--android:key="includeLast"-->
-            <!--android:title="@string/includeLast"-->
-            <!--android:summaryOff="@string/includeLastOff"-->
-            <!--android:summaryOn="@string/includeLastOn"-->
-            <!--android:defaultValue="false"/>-->
-
-    <!--</PreferenceCategory>-->
 
     <PreferenceCategory
         android:title="@string/account" >
+
+        <ListPreference
+            android:key="syncMode"
+            android:title="@string/syncMode"
+            android:summary="@string/syncModeSummary"
+            android:dialogTitle="@string/select"
+            android:entries="@array/syncValues"
+            android:entryValues="@array/syncValues"
+            android:defaultValue="At app start" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/predictions" >
-
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/sharing" >
-
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/customization" >
 
+        <ListPreference
+            android:key="firstDay"
+            android:title="@string/firstDay"
+            android:dialogTitle="@string/select"
+            android:entries="@array/mondayOrSunday"
+            android:entryValues="@array/mondayOrSunday"
+            android:defaultValue="Monday" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/security" >
-
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/planner" >
-
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/author" >
-
     </PreferenceCategory>
 
 </PreferenceScreen>

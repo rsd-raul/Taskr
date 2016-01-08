@@ -1,0 +1,52 @@
+<resources>
+
+    <!-- Preferences -->
+
+    <string name="appearance">Appearance</string>
+
+        <string name="adaptableColors">Adapt colors after functions</string>
+        <string name="adaptableColorsOff">Date and Location have its own color</string>
+        <string name="adaptableColorsOn">All activities use the main palette</string>
+
+    <string name="notifications">Notifications</string>
+
+        <string name="notificationSound">Sound</string>
+        <string name="notificationSoundOff">Notifications are silent</string>
+        <string name="notificationSoundOn">Notifications have sound</string>
+
+        <string name="notificationVibration">Vibration</string>
+
+        <string name="notificationLed">Notification led</string>
+
+    <string name="account">Account</string>
+
+        <string name="syncMode">Sync Mode</string>
+        <string name="syncModeSummary">Frecuencies to update the task list</string>
+        <string-array name="syncValues">
+            <item>At app start</item>
+            <item>Every hour</item>
+            <item>Every three hours</item>
+            <item>Every six hours</item>
+            <item>Every twelve hours</item>
+            <item>Once a day</item>
+        </string-array>
+
+    <string name="predictions">Predictions</string>
+
+    <string name="sharing">Sharing</string>
+
+    <string name="customization">Customization</string>
+
+    <string name="firstDay">Select the first day of the week</string>
+    <string-array name="mondayOrSunday">
+        <item>Monday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <string name="security">Security</string>
+
+    <string name="planner">Planner</string>
+
+    <string name="author">Author</string>
+
+</resources>
