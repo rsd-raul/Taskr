@@ -2,12 +2,14 @@
 <resources>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="tealPrimaryDark">#00796B</color>
-    <color name="tealPrimary">#009688</color>
-    <color name="amberPrimaryDark">#FFA000</color>
-    <color name="amberPrimary">#FFC107</color>
+    <color name="tealLocationDark">#00796B</color>
+    <color name="tealLocation">#009688</color>
+    <color name="amberDateDark">#FFA000</color>
+    <color name="amberDate">#FFC107</color>
+    <color name="colorAccentDark">#D32F2F</color>
+    <color name="colorAccent">#E53935</color>
+    <!--<color name="colorAccent">#FF5252</color>-->
 
-    <color name="colorAccent">#FF5252</color>
     <color name="colorSuccess">#4CAF50</color>
 
     <color name="primaryText">#212121</color>

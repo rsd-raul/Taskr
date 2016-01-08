@@ -28,4 +28,27 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <!-- FAB Buttons -->
+
+    <!--<attr name="fab_shadowRadius" format="dimension" />-->
+    <!--<attr name="fab_shadowYOffset" format="dimension" />-->
+    <!--<attr name="fab_shadowXOffset" format="dimension" />-->
+    <!--<attr name="fab_size" format="string" />-->
+
+    <!--<declare-styleable name="CustomStyleFab">-->
+        <!--<attr name="fab_shadowRadius" />-->
+        <!--<attr name="fab_shadowYOffset" />-->
+        <!--<attr name="fab_shadowXOffset" />-->
+        <!--<attr name="fab_size" />-->
+    <!--</declare-styleable>-->
+
+    <style name="fabMenuChild">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fab_shadowRadius">4dp</item>
+        <item name="fab_shadowYOffset">3dp</item>
+        <item name="fab_shadowXOffset">0dp</item>
+        <item name="fab_size">mini</item>
+    </style>
+
 </resources>
