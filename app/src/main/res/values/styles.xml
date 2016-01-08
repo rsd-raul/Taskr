@@ -30,6 +30,47 @@
 
     <!-- FAB Buttons -->
 
+    <style name="menuFAB">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:padding">@dimen/fab_margin</item>
+
+        <item name="menu_showShadow">true</item>
+        <item name="menu_shadowColor">@color/shadow</item>
+        <item name="menu_shadowRadius">2dp</item>
+        <item name="menu_shadowYOffset">1dp</item>
+
+        <item name="menu_animationDelayPerItem">50</item>
+        <item name="menu_icon">@drawable/fab_add</item>
+        <item name="menu_buttonSpacing">0dp</item>
+
+        <item name="menu_colorNormal">@color/colorAccent</item>
+        <item name="menu_colorPressed">@color/colorAccentDark</item>
+        <item name="menu_colorRipple">#99FFFFFF</item>
+
+        <item name="menu_labels_colorNormal">@color/textAndIcons</item>
+        <item name="menu_labels_colorPressed">@color/textAndIconsDark</item>
+        <item name="menu_labels_colorRipple">#66FFFFFF</item>
+        <item name="menu_labels_showShadow">true</item>
+
+        <item name="menu_labels_margin">10dp</item>
+        <item name="menu_labels_cornerRadius">3dp</item>
+        <item name="menu_labels_paddingTop">4dp</item>
+        <item name="menu_labels_paddingBottom">4dp</item>
+        <item name="menu_labels_paddingLeft">8dp</item>
+        <item name="menu_labels_paddingRight">8dp</item>
+
+        <item name="menu_labels_position">left</item>
+        <item name="menu_openDirection">up</item>
+
+        <item name="menu_labels_textColor">@color/primaryText</item>
+        <item name="menu_labels_textSize">16sp</item>
+        <item name="menu_labels_singleLine">true</item>
+        <item name="menu_labels_ellipsize">end</item>
+        <item name="menu_labels_maxLines">-1</item>
+    </style>
+
     <style name="fabMenuChild">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -38,5 +79,27 @@
         <item name="fab_shadowXOffset">0dp</item>
         <item name="fab_size">mini</item>
     </style>
+
+    <style name="fabShareList" parent="fabMenuChild">
+        <item name="fab_label">@string/shareList</item>
+        <item name="android:src">@drawable/ic_share</item>
+        <item name="fab_colorNormal">@color/colorPrimary</item>
+        <item name="fab_colorPressed">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="fabAddMultiTasks" parent="fabMenuChild">
+        <item name="fab_label">@string/addMultiTasks</item>
+        <item name="android:src">@drawable/ic_done_all</item>
+        <item name="fab_colorNormal">@color/amberDate</item>
+        <item name="fab_colorPressed">@color/amberDateDark</item>
+    </style>
+
+    <style name="fabAddTask" parent="fabMenuChild">
+        <item name="fab_label">@string/addTask</item>
+        <item name="android:src">@drawable/ic_done</item>
+        <item name="fab_colorNormal">@color/tealLocation</item>
+        <item name="fab_colorPressed">@color/tealLocationDark</item>
+    </style>
+
 
 </resources>
