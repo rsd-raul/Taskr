@@ -9,17 +9,10 @@
     android:fitsSystemWindows="true"
     tools:context="com.software.achilles.tasked.DashboardActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:theme="@style/AppTheme.AppBarOverlay">
+    <android.support.design.widget.AppBarLayout style="@style/appBarLayout" >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <android.support.v7.widget.Toolbar style="@style/toolbar"
+            android:id="@+id/toolbar" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -32,7 +25,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="1900dp">
-
 
             <TextView
                 android:layout_width="wrap_content"
