@@ -1,17 +1,25 @@
 package com.software.achilles.tasked;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 //import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+//import android.support.design.widget.Snackbar;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.software.achilles.tasked.extras.BlurBuilder;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -30,6 +38,36 @@ public class DashboardActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+
+        scrollFabListener();
+    }
+
+    private void scrollFabListener(){
+        NestedScrollView nestedScrollView = (NestedScrollView) findViewById(R.id.scrollView);
+        final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.menuFAB);
+
+        Animation fab_slide_down = AnimationUtils.loadAnimation(this, R.anim.fab_slide_down);
+        fab_slide_down.setInterpolator(new AccelerateInterpolator());
+
+        Animation fab_slide_up = AnimationUtils.loadAnimation(this, R.anim.fab_slide_up);
+        fab_slide_up.setInterpolator(new AccelerateInterpolator());
+
+        fam.setMenuButtonHideAnimation(fab_slide_down);
+        fam.setMenuButtonShowAnimation(fab_slide_up);
+
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                int direction = scrollY-oldScrollY;
+
+                if (direction > 0)
+                    fam.hideMenu(true);
+                else
+                    fam.showMenu(true);
+
+            }
+        });
     }
 
     @Override
