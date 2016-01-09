@@ -16,6 +16,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v4.widget.NestedScrollView
         android:layout_marginTop="?attr/actionBarSize"
         android:id="@+id/scrollView"
@@ -86,6 +87,7 @@
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
+
 
     <com.github.clans.fab.FloatingActionMenu style="@style/menuFAB"
         android:id="@+id/menuFAB" >

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.R;
@@ -38,7 +37,7 @@ public class FloatingActionMenuConfigurator {
             int fromColor = ContextCompat.getColor(context, R.color.transparent);
             int toColor = ContextCompat.getColor(context, R.color.background);
 
-            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject( fam,
+            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(fam,
                     "backgroundColor", new ArgbEvaluator(), fromColor, toColor).setDuration(100);
 
             @Override
@@ -52,6 +51,18 @@ public class FloatingActionMenuConfigurator {
 
         // On click outside
         fam.setClosedOnTouchOutside(true);
+
+        // TODO onLongClick => Desplegar añadir tarea
+//        fam.setOnLongClickListener(new FloatingActionMenu.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                NestedScrollView scrollView = (NestedScrollView) activity.findViewById(R.id.scrollView);
+//                Snackbar.make(scrollView, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//
+//                return true;
+//            }
+//        });
     }
 
     private void setOnScrollReaction(){
@@ -82,6 +93,7 @@ public class FloatingActionMenuConfigurator {
     }
 
     private void configureChildren(){
+
         FloatingActionButton share = (FloatingActionButton) activity.findViewById(R.id.shareListFAB);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,16 +102,16 @@ public class FloatingActionMenuConfigurator {
             }
         });
 
-        FloatingActionButton add = (FloatingActionButton) activity.findViewById(R.id.addFAB);
-        add.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addMultiple = (FloatingActionButton) activity.findViewById(R.id.addMultipleFAB);
+        addMultiple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
 
-        FloatingActionButton addMultiple = (FloatingActionButton) activity.findViewById(R.id.addMultipleFAB);
-        addMultiple.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton add = (FloatingActionButton) activity.findViewById(R.id.addFAB);
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
