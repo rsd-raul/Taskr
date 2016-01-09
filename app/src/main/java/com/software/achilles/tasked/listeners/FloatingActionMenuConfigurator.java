@@ -2,8 +2,9 @@ package com.software.achilles.tasked.listeners;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.view.View;
@@ -12,22 +13,37 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.software.achilles.tasked.DashboardActivity;
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.extras.FloatingActionMenuBehavior;
 
 public class FloatingActionMenuConfigurator {
 
-    private Activity activity;
+    // --------------------------- Values ----------------------------
+
+    // ------------------------- Attributes --------------------------
+
+    private DashboardActivity activity;
     private final FloatingActionMenu fam;
 
-    public FloatingActionMenuConfigurator(Activity activity) {
+    // ------------------------- Constructor -------------------------
+
+    public FloatingActionMenuConfigurator(DashboardActivity activity) {
         this.activity = activity;
         fam = (FloatingActionMenu) activity.findViewById(R.id.menuFAB);
 
         configureMenu();
-        setOnScrollReaction();
+        setMenuOnScrollReaction();
+        menuCustomizeBehaviour();
 
         configureChildren();
+
+
     }
+
+    // -------------------------- Use Cases --------------------------
+
+    // -------------------------- FAB menu ---------------------------
 
     private void configureMenu(){
 
@@ -49,8 +65,10 @@ public class FloatingActionMenuConfigurator {
             }
         });
 
-        // On click outside
+        // On click outside close the menu
         fam.setClosedOnTouchOutside(true);
+
+
 
         // TODO onLongClick => Desplegar añadir tarea
 //        fam.setOnLongClickListener(new FloatingActionMenu.OnLongClickListener() {
@@ -65,7 +83,11 @@ public class FloatingActionMenuConfigurator {
 //        });
     }
 
-    private void setOnScrollReaction(){
+    public void closeFabMenu(){
+        fam.close(true);
+    }
+
+    private void setMenuOnScrollReaction(){
 
         // prepare animations
         Animation fab_slide_down = AnimationUtils.loadAnimation(activity, R.anim.fab_slide_down);
@@ -83,14 +105,23 @@ public class FloatingActionMenuConfigurator {
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY,
-                                                           int oldScrollX, int oldScrollY) {
-                if (scrollY-oldScrollY > 0)
+                                       int oldScrollX, int oldScrollY) {
+                if (scrollY - oldScrollY > 0)
                     fam.hideMenu(true);
                 else
                     fam.showMenu(true);
             }
         });
     }
+
+    // Make the menu react to external stimuli such as a Snackbar
+    private void menuCustomizeBehaviour(){
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fam.getLayoutParams();
+        params.setBehavior(new FloatingActionMenuBehavior());
+        fam.requestLayout();
+    }
+
+    // -------------------------- FAB child --------------------------
 
     private void configureChildren(){
 
@@ -102,20 +133,26 @@ public class FloatingActionMenuConfigurator {
             }
         });
 
-        FloatingActionButton addMultiple = (FloatingActionButton) activity.findViewById(R.id.addMultipleFAB);
-        addMultiple.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addList = (FloatingActionButton) activity.findViewById(R.id.addListFAB);
+        addList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
-        FloatingActionButton add = (FloatingActionButton) activity.findViewById(R.id.addFAB);
-        add.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addTask = (FloatingActionButton) activity.findViewById(R.id.addTaskFAB);
+        addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                closeFabMenu();
             }
         });
     }
+
+    // -------------------------- Use Cases --------------------------
+
+
 }

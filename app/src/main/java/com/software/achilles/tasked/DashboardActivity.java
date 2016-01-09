@@ -12,6 +12,14 @@ import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    // --------------------------- Values ----------------------------
+
+    // ------------------------- Attributes --------------------------
+
+    FloatingActionMenuConfigurator famConfigurator;
+
+    // ------------------------- Constructor -------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,18 +28,12 @@ public class DashboardActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Configure the fab menu and its children.
-        new FloatingActionMenuConfigurator(this);
+        famConfigurator = new FloatingActionMenuConfigurator(this);
     }
 
-    @Override
-    public void onBackPressed() {
-        FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.menuFAB);
+    // -------------------------- Landscape --------------------------
 
-        if(fam.isOpened())
-            fam.close(true);
-        else
-            super.onBackPressed();
-    }
+    // ----------------------------- Menu ----------------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -63,4 +65,25 @@ public class DashboardActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // -------------------------- Use Cases --------------------------
+
+    // --------------------- Add Task Interface ----------------------
+
+    // --------------------------- Details ---------------------------
+
+    @Override
+    public void onBackPressed() {
+        FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.menuFAB);
+
+        if(fam.isOpened())
+            fam.close(true);
+        else
+            super.onBackPressed();
+    }
+
+    // ------------------------ Notifications ------------------------
+
+    // ------------------------- Preferences -------------------------
+
 }

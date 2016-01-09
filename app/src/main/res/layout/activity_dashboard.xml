@@ -95,11 +95,11 @@
         <com.github.clans.fab.FloatingActionButton style="@style/fabShareList"
             android:id="@+id/shareListFAB"/>
 
-        <com.github.clans.fab.FloatingActionButton style="@style/fabAddMultiTasks"
-            android:id="@+id/addMultipleFAB"/>
+        <com.github.clans.fab.FloatingActionButton style="@style/fabAddList"
+            android:id="@+id/addListFAB"/>
 
         <com.github.clans.fab.FloatingActionButton style="@style/fabAddTask"
-            android:id="@+id/addFAB"/>
+            android:id="@+id/addTaskFAB"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 

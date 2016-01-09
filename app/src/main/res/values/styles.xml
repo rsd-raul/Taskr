@@ -98,15 +98,15 @@
     <style name="fabShareList" parent="fabMenuChild">
         <item name="fab_label">@string/shareList</item>
         <item name="android:src">@drawable/ic_share</item>
-        <item name="fab_colorNormal">@color/colorPrimary</item>
-        <item name="fab_colorPressed">@color/colorPrimaryDark</item>
-    </style>
-
-    <style name="fabAddMultiTasks" parent="fabMenuChild">
-        <item name="fab_label">@string/addMultiTasks</item>
-        <item name="android:src">@drawable/ic_done_all</item>
         <item name="fab_colorNormal">@color/amberDate</item>
         <item name="fab_colorPressed">@color/amberDateDark</item>
+    </style>
+
+    <style name="fabAddList" parent="fabMenuChild">
+        <item name="fab_label">@string/addList</item>
+        <item name="android:src">@drawable/ic_list_bullet</item>
+        <item name="fab_colorNormal">@color/colorPrimary</item>
+        <item name="fab_colorPressed">@color/colorPrimaryDark</item>
     </style>
 
     <style name="fabAddTask" parent="fabMenuChild">
