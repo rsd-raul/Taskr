@@ -148,6 +148,8 @@ public class FloatingActionMenuConfigurator {
             public void onClick(View view) {
 
                 closeFabMenu();
+
+                deployAddTaskLayout();
             }
         });
     }
@@ -155,4 +157,11 @@ public class FloatingActionMenuConfigurator {
     // -------------------------- Use Cases --------------------------
 
 
+    private void deployAddTaskLayout(){
+
+    }
+
+    private void retractAddTaskLayout(){
+
+    }
 }

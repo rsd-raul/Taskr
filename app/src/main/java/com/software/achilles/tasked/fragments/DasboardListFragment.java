@@ -1,10 +1,14 @@
 package com.software.achilles.tasked.fragments;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.software.achilles.tasked.controllers.TaskController;
+import com.software.achilles.tasked.domain.Task;
 
 import java.util.ArrayList;
 
@@ -14,11 +18,8 @@ public class DasboardListFragment extends ListFragment {
 
     // ------------------------- Attributes --------------------------
 
-//    private ArrayAdapter<Task> adapter;
-//    private ArrayList<Task> tasks;
-
-    private ArrayAdapter<String> adapter;
-    private ArrayList<String> tasks;
+    private ArrayAdapter<Task> adapter;
+    private ArrayList<Task> tasks;
 
     // ------------------------- Constructor -------------------------
 
@@ -26,7 +27,7 @@ public class DasboardListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
-//        tasks = TaskController.getInstance().getTasks();
+        tasks = TaskController.getInstance().getTasks();
 
         this.adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tasks);
         setListAdapter(this.adapter);
@@ -41,7 +42,7 @@ public class DasboardListFragment extends ListFragment {
 //            return;
 //
 //        //  Intent creation
-//        Intent intent = new Intent(getActivity(), TaskActivity.class);
+//        Intent intent = new Intent(getActivity(), TaskEdit.class);
 //
 //        //  Retrieve and save data in the bundle
 //        Task selectedTask = tasks.get(position);
