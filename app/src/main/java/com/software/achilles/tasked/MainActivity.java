@@ -19,17 +19,19 @@ import android.view.MenuItem;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.adapters.Adapter;
+import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.fragments.DashboardListFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 
-public class DashboardActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
 
-    FloatingActionMenuConfigurator mFamConfigurator;
+    private FloatingActionMenuConfigurator mFamConfigurator;
     private DrawerLayout mDrawerLayout;
+    private TaskController mTaskController;
 
     // ------------------------- Constructor -------------------------
 
@@ -37,6 +39,9 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize TaskController
+        mTaskController = TaskController.getInstance();
 
         // Set ActionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -58,15 +63,14 @@ public class DashboardActivity extends AppCompatActivity {
         // Configure the fab menu and its children.
         mFamConfigurator = new FloatingActionMenuConfigurator(this);
 
-
-
+        // Setup the fragment composing the ViewPager
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        // Setup tabs for Dashboard
+        // Setup tabs for Dashboard and make Scrollable
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
     // ---------------------- Navigation Drawer ----------------------
@@ -90,6 +94,12 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
+
+//        adapter.addFragment(new DashboardSearchFragment(), "Search");
+
+        adapter.addFragment(new DashboardListFragment(), "Category 1");
+        adapter.addFragment(new DashboardListFragment(), "Category 2");
+        adapter.addFragment(new DashboardListFragment(), "Category 3");
         adapter.addFragment(new DashboardListFragment(), "Category 1");
         adapter.addFragment(new DashboardListFragment(), "Category 2");
         adapter.addFragment(new DashboardListFragment(), "Category 3");

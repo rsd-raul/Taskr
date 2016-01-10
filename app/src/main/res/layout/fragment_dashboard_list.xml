@@ -9,7 +9,7 @@
     <!--android:id="@+id/scrollView"-->
 
     <!--android:padding="@dimen/activity_horizontal_margin"-->
-    <!--tools:context=".DashboardActivity"-->
+    <!--tools:context=".MainActivity"-->
     <!--tools:showIn="@layout/activity_dashboard"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent" >-->

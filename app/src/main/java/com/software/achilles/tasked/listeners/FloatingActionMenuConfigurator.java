@@ -13,7 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.software.achilles.tasked.DashboardActivity;
+import com.software.achilles.tasked.MainActivity;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.extras.FloatingActionMenuBehavior;
 
@@ -23,12 +23,12 @@ public class FloatingActionMenuConfigurator {
 
     // ------------------------- Attributes --------------------------
 
-    private static DashboardActivity activity;
+    private static MainActivity activity;
     private static FloatingActionMenu fam;
 
     // ------------------------- Constructor -------------------------
 
-    public FloatingActionMenuConfigurator(DashboardActivity activity) {
+    public FloatingActionMenuConfigurator(MainActivity activity) {
         this.activity = activity;
         fam = (FloatingActionMenu) activity.findViewById(R.id.menuFAB);
 
