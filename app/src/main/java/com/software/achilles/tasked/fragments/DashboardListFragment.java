@@ -49,22 +49,18 @@ public class DashboardListFragment extends Fragment {
 
         // Recupero las listas
         List<Task> tasks = taskList.getTasks();
-        // Recupero sus nombres
-        List<String> tasksTitle = new ArrayList<>();
-        for (int i = 0; i < tasks.size(); i++)
-            tasksTitle.add(tasks.get(i).getTitle());
 
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.fragment_dashboard_list, container, false);
-        setupRecyclerView(recyclerView, tasksTitle);
+        setupRecyclerView(recyclerView, tasks);
         return recyclerView;
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView, List<String> titles) {
+    private void setupRecyclerView(RecyclerView recyclerView, List<Task> tasks) {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
 
         recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(
-                getActivity(), titles));
+                getActivity(), tasks));
     }
 
     public static class SimpleStringRecyclerViewAdapter
@@ -72,7 +68,7 @@ public class DashboardListFragment extends Fragment {
 
         private final TypedValue mTypedValue = new TypedValue();
         private int mBackground;
-        private List<String> mValues;
+        private List<Task> mValues;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public String mBoundString;
@@ -93,10 +89,10 @@ public class DashboardListFragment extends Fragment {
         }
 
         public String getValueAt(int position) {
-            return mValues.get(position);
+            return mValues.get(position).getTitle();
         }
 
-        public SimpleStringRecyclerViewAdapter(Context context, List<String> items) {
+        public SimpleStringRecyclerViewAdapter(Context context, List<Task> items) {
             context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.resourceId;
             mValues = items;
@@ -112,8 +108,8 @@ public class DashboardListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mBoundString = mValues.get(position);
-            holder.mTextView.setText(mValues.get(position));
+            holder.mBoundString = mValues.get(position).getTitle();
+            holder.mTextView.setText(mValues.get(position).getTitle());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
