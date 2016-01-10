@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.software.achilles.tasked.adapters.Adapter;
+import com.software.achilles.tasked.fragments.DashboardListFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -57,13 +59,13 @@ public class DashboardActivity extends AppCompatActivity {
         mFamConfigurator = new FloatingActionMenuConfigurator(this);
 
 
-//
-//        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-//        setupViewPager(viewPager);
-//
-//        // Setup tabs for Dashboard
-//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-//        tabLayout.setupWithViewPager();
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        // Setup tabs for Dashboard
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
     }
 
@@ -82,6 +84,16 @@ public class DashboardActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    // -------------------------- View Pager -------------------------
+
+    private void setupViewPager(ViewPager viewPager) {
+        Adapter adapter = new Adapter(getSupportFragmentManager());
+        adapter.addFragment(new DashboardListFragment(), "Category 1");
+        adapter.addFragment(new DashboardListFragment(), "Category 2");
+        adapter.addFragment(new DashboardListFragment(), "Category 3");
+        viewPager.setAdapter(adapter);
     }
 
     // -------------------------- Landscape --------------------------
