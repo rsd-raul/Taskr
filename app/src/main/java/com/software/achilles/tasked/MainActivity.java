@@ -98,14 +98,20 @@ public class MainActivity extends AppCompatActivity {
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
 //        adapter.addFragment(new DashboardSearchFragment(), "Search");
+        // TODO quick jump to the desired list
 
+
+        // Populate each of the pages of the ViewPager
         for (TaskList taskList : TaskController.sTaskLists) {
+            // Pick the fragment the page is going to show
             DashboardListFragment dashboardListFragment = new DashboardListFragment();
 
+            // Introduce the TaskList corresponding to that fragment
             Bundle bundle = new Bundle();
-            bundle.putSerializable(Constants.TASK_LIST+"", taskList);
-
+            bundle.putSerializable(Constants.TASK_LIST + "", taskList);
             dashboardListFragment.setArguments(bundle);
+
+            // Add the fragment and it's bundle to the adapter
             adapter.addFragment(dashboardListFragment, taskList.getTitle());
         }
 

@@ -1,33 +1,21 @@
 package com.software.achilles.tasked.fragments;
 
-import android.app.ListFragment;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.domain.Task;
 import com.software.achilles.tasked.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class DashboardListFragment extends Fragment {
 
