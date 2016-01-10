@@ -3,31 +3,50 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_list_bullet"
-            android:title="Home" />
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="@string/dashboard" />
         <item
-            android:id="@+id/nav_messages"
-            android:icon="@drawable/ic_delete"
-            android:title="Messages" />
+            android:id="@+id/nav_snoozed"
+            android:icon="@drawable/ic_time_clean"
+            android:title="@string/snoozed" />
         <item
-            android:id="@+id/nav_friends"
-            android:icon="@drawable/ic_filter"
-            android:title="Friends" />
-        <item
-            android:id="@+id/nav_discussion"
-            android:icon="@drawable/ic_share"
-            android:title="Discussion" />
+            android:id="@+id/nav_completed"
+            android:icon="@drawable/ic_done"
+            android:title="@string/completed" />
     </group>
 
-    <item android:title="Sub items">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_glance"
+            android:icon="@drawable/ic_calendar_list"
+            android:title="@string/glance" />
+        <item
+            android:id="@+id/nav_planner"
+            android:icon="@drawable/ic_view_carousel"
+            android:title="@string/planner" />
+    </group>
+
+    <item android:title="@string/taskList">
         <menu>
             <item
                 android:icon="@drawable/ic_done"
-                android:title="Sub item 1" />
+                android:title="List one" />
             <item
                 android:icon="@drawable/ic_done_all"
-                android:title="Sub item 2" />
+                android:title="Super extra long list" />
+            <item
+                android:icon="@drawable/ic_done"
+                android:title="List one" />
+            <item
+                android:icon="@drawable/ic_done_all"
+                android:title="Super extra long list" />
+            <item
+                android:icon="@drawable/ic_done"
+                android:title="List one" />
+            <item
+                android:icon="@drawable/ic_done_all"
+                android:title="Super extra long list" />
         </menu>
     </item>
 

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
@@ -24,8 +26,8 @@ public class DashboardActivity extends AppCompatActivity {
 
     // ------------------------- Attributes --------------------------
 
-    FloatingActionMenuConfigurator famConfigurator;
-    private DrawerLayout drawerLayout;
+    FloatingActionMenuConfigurator mFamConfigurator;
+    private DrawerLayout mDrawerLayout;
 
     // ------------------------- Constructor -------------------------
 
@@ -38,32 +40,45 @@ public class DashboardActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Set Navigation Drawer
+        // Set Navigation Drawer button
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+        // Initialize Navigation Drawer variables
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null)
-            setupDrawerContent(navigationView);
 
-
+        // Set Navigation Drawer behavior and first item to checked
+        navigationView.getMenu().getItem(0).setChecked(true);
+        setupDrawerListener(navigationView);
 
         // Configure the fab menu and its children.
-        famConfigurator = new FloatingActionMenuConfigurator(this);
+        mFamConfigurator = new FloatingActionMenuConfigurator(this);
+
+
+//
+//        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+//        setupViewPager(viewPager);
+//
+//        // Setup tabs for Dashboard
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        tabLayout.setupWithViewPager();
+
     }
 
     // ---------------------- Navigation Drawer ----------------------
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    private void setupDrawerListener(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
-                        drawerLayout.closeDrawers();
+                        mDrawerLayout.closeDrawers();
+
+                        // Intent?
+
                         return true;
                     }
                 });
@@ -87,7 +102,7 @@ public class DashboardActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
+                mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
 
             case R.id.action_filter:

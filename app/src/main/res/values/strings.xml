@@ -3,8 +3,13 @@
     <!-- ActionBar Title -->
 
     <string name="app_name">Tasked</string>
-    <string name="dashboard">Dashboard</string>
     <string name="statistics">Statistics</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="snoozed">Snoozed</string>
+    <string name="completed">Completed</string>
+    <string name="glance">Glance</string>
+    <string name="planner">Planner</string>
+    <string name="taskList">Task Lists</string>
 
     <!-- ActionBar Icons -->
 
