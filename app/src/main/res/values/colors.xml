@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Main components -->
+    <!-- Functions Palette -->
 
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorPrimary">#3F51B5</color>
     <color name="tealLocationDark">#00796B</color>
     <color name="tealLocation">#009688</color>
     <color name="amberDateDark">#FFA000</color>
     <color name="amberDate">#FFC107</color>
-    <color name="colorAccentDark">#D32F2F</color>
-    <color name="colorAccent">#E53935</color>
-    <!--<color name="colorAccent">#FF5252</color>-->
+
+    <!-- Custom Palette -->
+
+    <color name="colorPrimaryDark">#303F9F</color>   <!--Pending-->
+    <color name="colorPrimary">#3B2F93</color>
+    <color name="colorAccentDark">#D32F2F</color>    <!--Pending-->
+    <color name="colorAccent">#FF4A6B</color>
+
+    <!-- Material Default -->
+
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorAccentDark">#D32F2F</color>-->
+    <!--<color name="colorAccent">#E53935</color> INBOX-->
+    <!--<color name="colorAccent">#FF5252</color> DEFAULT-->
+
+    <!-- Status -->
 
     <color name="colorSuccess">#4CAF50</color>
 
@@ -22,6 +34,8 @@
     <color name="dividerColor">#B6B6B6</color>
     <color name="textAndIconsDark">#E7E7E7</color>
     <color name="textAndIcons">#FFFFFF</color>
+
+    <!-- FAM and FAB -->
 
     <color name="background">#C8FEFEFE</color>
     <color name="transparent">#00FEFEFE</color>

@@ -1,18 +1,18 @@
 package com.software.achilles.tasked.fragments;
 
 import android.app.ListFragment;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.domain.Task;
 
 import java.util.ArrayList;
 
-public class DasboardListFragment extends ListFragment {
+public class DashboardListFragment extends ListFragment {
 
     // --------------------------- Values ----------------------------
 
@@ -23,12 +23,22 @@ public class DasboardListFragment extends ListFragment {
 
     // ------------------------- Constructor -------------------------
 
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
         tasks = TaskController.getInstance().getTasks();
-
         this.adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tasks);
         setListAdapter(this.adapter);
     }

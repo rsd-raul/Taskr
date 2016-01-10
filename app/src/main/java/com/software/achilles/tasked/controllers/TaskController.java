@@ -1,6 +1,7 @@
 package com.software.achilles.tasked.controllers;
 
 
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.software.achilles.tasked.domain.Task;
@@ -29,6 +30,14 @@ public class TaskController {
     public static TaskController getInstance() {
         if(instance == null)
             instance = new TaskController();
+
+        if(tasks == null)
+            tasks = new ArrayList<>();
+
+        // TODO QUITAR
+        for (int i = 0; i < 20; i++)
+            tasks.add(new Task(false, ""+i, null, null, null));
+
         return instance;
     }
 

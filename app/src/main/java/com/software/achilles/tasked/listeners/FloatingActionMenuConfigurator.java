@@ -23,8 +23,8 @@ public class FloatingActionMenuConfigurator {
 
     // ------------------------- Attributes --------------------------
 
-    private DashboardActivity activity;
-    private final FloatingActionMenu fam;
+    private static DashboardActivity activity;
+    private static FloatingActionMenu fam;
 
     // ------------------------- Constructor -------------------------
 
@@ -33,7 +33,7 @@ public class FloatingActionMenuConfigurator {
         fam = (FloatingActionMenu) activity.findViewById(R.id.menuFAB);
 
         configureMenu();
-        setMenuOnScrollReaction();
+//        setMenuOnScrollReaction();
         menuCustomizeBehaviour();
 
         configureChildren();
@@ -87,7 +87,7 @@ public class FloatingActionMenuConfigurator {
         fam.close(true);
     }
 
-    private void setMenuOnScrollReaction(){
+    public static void setMenuOnScrollReaction(){
 
         // prepare animations
         Animation fab_slide_down = AnimationUtils.loadAnimation(activity, R.anim.fab_slide_down);
