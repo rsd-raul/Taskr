@@ -20,8 +20,10 @@ import android.view.MenuItem;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.adapters.Adapter;
 import com.software.achilles.tasked.controllers.TaskController;
+import com.software.achilles.tasked.domain.TaskList;
 import com.software.achilles.tasked.fragments.DashboardListFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
+import com.software.achilles.tasked.util.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,12 +99,16 @@ public class MainActivity extends AppCompatActivity {
 
 //        adapter.addFragment(new DashboardSearchFragment(), "Search");
 
-        adapter.addFragment(new DashboardListFragment(), "Category 1");
-        adapter.addFragment(new DashboardListFragment(), "Category 2");
-        adapter.addFragment(new DashboardListFragment(), "Category 3");
-        adapter.addFragment(new DashboardListFragment(), "Category 1");
-        adapter.addFragment(new DashboardListFragment(), "Category 2");
-        adapter.addFragment(new DashboardListFragment(), "Category 3");
+        for (TaskList taskList : TaskController.sTaskLists) {
+            DashboardListFragment dashboardListFragment = new DashboardListFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constants.TASK_LIST+"", taskList);
+
+            dashboardListFragment.setArguments(bundle);
+            adapter.addFragment(dashboardListFragment, taskList.getTitle());
+        }
+
         viewPager.setAdapter(adapter);
     }
 

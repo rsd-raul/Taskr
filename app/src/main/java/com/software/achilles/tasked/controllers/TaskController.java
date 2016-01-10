@@ -1,16 +1,18 @@
 package com.software.achilles.tasked.controllers;
 
 
-import android.location.Location;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.software.achilles.tasked.domain.Task;
+import com.software.achilles.tasked.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class TaskController {
 
@@ -19,7 +21,8 @@ public class TaskController {
     // ------------------------- Attributes --------------------------
 
     private static TaskController instance;
-    public static ArrayList<Task> tasks;
+    public static ArrayList<Task> sTasks;
+    public static ArrayList<TaskList> sTaskLists;
     private Task actualTask, lastDeleted;
 //    public static Date taskDate;
 
@@ -30,18 +33,44 @@ public class TaskController {
     public static TaskController getInstance() {
         if(instance == null)
             instance = new TaskController();
-
-        if(tasks == null)
-            tasks = new ArrayList<>();
-
-        // TODO QUITAR
-        for (int i = 0; i < 20; i++)
-            tasks.add(new Task(false, ""+i, null, null, null));
-
         return instance;
     }
 
-    public TaskController() {    }
+    public TaskController() {
+        if(sTasks == null)      //TODO ESTO HAY QUE QUITARLO
+            sTasks = new ArrayList<>();
+
+        randomPopulation(5, 15);    // TODO SOLO PARA TEST
+    }
+
+    private void randomPopulation(int amountList, int amountTasks) {
+        sTaskLists = new ArrayList<>();
+
+        String[] listTitles = new String[]{"Lista muy larga", "Lista corta"};
+        String[] titles = new String[]{"Tarea increiblemente larga", "Tarea corta"};
+        String[] descriptions = new String[]{"Descripcion increiblemente larga", "Descripcion corta", null};
+        Date[] dueDates = new Date[]{Calendar.getInstance().getTime(), null};
+
+        Random random = new Random();
+        while (amountList > 0) {
+            List<Task> aux = new ArrayList<>();
+            int amountTaskWhile = amountTasks;
+            while (amountTaskWhile > 0) {
+                Boolean finished = (random.nextBoolean());
+                String title = titles[random.nextInt(2)];
+                String description = descriptions[random.nextInt(3)];
+                Date dueDate = dueDates[random.nextInt(2)];
+
+                aux.add(new Task(finished, title, description, dueDate, null));
+                amountTaskWhile--;
+            }
+            String listTitle = listTitles[random.nextInt(2)];
+            TaskList taskList = new TaskList(listTitle, aux);
+            sTaskLists.add(taskList);
+            amountList--;
+        }
+        Log.d("myApp", "CONTROLLER POPULATED");
+    }
 
     // ------------------------ Crud Methods -------------------------
 
@@ -118,7 +147,7 @@ public class TaskController {
 
         // Filter the tasks depending on the range
         List<Task> counter = new ArrayList<>();
-        for (Task task : tasks) {
+        for (Task task : sTasks) {
             Date dueDate = task.getDueDate();
             if(dueDate!=null)
                 if (!task.getFinished() && (dueDate.after(min) && dueDate.before(max) || dueDate.equals(max)))
@@ -131,11 +160,11 @@ public class TaskController {
     // ---------------------- Getters & Setters ----------------------
 
     public ArrayList<Task> getTasks(){
-        return tasks;
+        return sTasks;
     }
 
     public void setTasks(ArrayList<Task> tasks) {
-        TaskController.tasks = tasks;
+        TaskController.sTasks = tasks;
     }
 
     public void setLastDeleted(Task lastDeleted) {

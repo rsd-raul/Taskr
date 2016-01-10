@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.domain.Task;
+import com.software.achilles.tasked.domain.TaskList;
+import com.software.achilles.tasked.util.Constants;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -32,37 +35,36 @@ public class DashboardListFragment extends Fragment {
 
     // ------------------------- Attributes --------------------------
 
-    private ArrayAdapter<Task> adapter;
-    private ArrayList<Task> tasks;
+//    private ArrayAdapter<Task> adapter;
+    private TaskList taskList;
 
     // ------------------------- Constructor -------------------------
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Retrieve the TaskList from the Activity
+        taskList = (TaskList) getArguments().getSerializable(Constants.TASK_LIST + "");
+
+        // Recupero las listas
+        List<Task> tasks = taskList.getTasks();
+        // Recupero sus nombres
+        List<String> tasksTitle = new ArrayList<>();
+        for (int i = 0; i < tasks.size(); i++)
+            tasksTitle.add(tasks.get(i).getTitle());
+
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.fragment_dashboard_list, container, false);
-        setupRecyclerView(recyclerView);
+        setupRecyclerView(recyclerView, tasksTitle);
         return recyclerView;
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView) {
+    private void setupRecyclerView(RecyclerView recyclerView, List<String> titles) {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
 
-        //TODO generar random BORRAR
-        String[] prueba = new String[]{"lala", "lele", "lili", "lolo", "lulu"};
-
         recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(
-                getActivity(), getRandomSublist( prueba, 15)));
-    }
-
-    //TODO generar random BORRAR
-    private List<String> getRandomSublist(String[] array, int amount) {
-        ArrayList<String> list = new ArrayList<>(amount);
-        Random random = new Random();
-        while (list.size() < amount)
-            list.add(array[random.nextInt(array.length)]);
-        return list;
+                getActivity(), titles));
     }
 
     public static class SimpleStringRecyclerViewAdapter
@@ -140,8 +142,8 @@ public class DashboardListFragment extends Fragment {
 //    public void onActivityCreated(Bundle savedInstanceState){
 //        super.onActivityCreated(savedInstanceState);
 //
-//        tasks = TaskController.getInstance().getTasks();
-//        this.adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tasks);
+//        sTasks = TaskController.getInstance().getTasks();
+//        this.adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, sTasks);
 //        setListAdapter(this.adapter);
 //    }
 
@@ -157,7 +159,7 @@ public class DashboardListFragment extends Fragment {
 //        Intent intent = new Intent(getActivity(), TaskEdit.class);
 //
 //        //  Retrieve and save data in the bundle
-//        Task selectedTask = tasks.get(position);
+//        Task selectedTask = sTasks.get(position);
 //        intent.putExtra("selectedTask", selectedTask);
 //        intent.putExtra("selectedPosition", position);
 //
