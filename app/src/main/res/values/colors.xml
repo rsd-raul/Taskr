@@ -10,9 +10,9 @@
 
     <!-- Custom Palette -->
 
-    <color name="colorPrimaryDark">#303F9F</color>   <!--Pending-->
+    <color name="colorPrimaryDark">#31277C</color>
     <color name="colorPrimary">#3B2F93</color>
-    <color name="colorAccentDark">#D32F2F</color>    <!--Pending-->
+    <color name="colorAccentDark">#FF1F48</color>
     <color name="colorAccent">#FF4A6B</color>
 
     <!-- Material Default -->
@@ -26,6 +26,14 @@
     <!-- Status -->
 
     <color name="colorSuccess">#4CAF50</color>
+
+    <!-- Primary Text Colors -->
+
+    <color name="app_body_text_1">#de000000</color>
+    <color name="app_body_text_2">#8a000000</color>
+    <color name="app_body_text_disabled">#44000000</color>
+    <color name="app_body_text_1_inverse">#deffffff</color>
+    <color name="app_body_text_2_inverse">#8affffff</color>
 
     <!-- Basics -->
 

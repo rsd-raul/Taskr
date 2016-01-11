@@ -3,6 +3,21 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="navigationDrawerWidth">290dp</dimen>
+
+    <!-- Navigation Drawer -->
+
+    <dimen name="navigation_drawer_header_height">168.75dp</dimen>
+    <dimen name="navigationDrawerWidth">300dp</dimen>
+    <dimen name="navigation_drawer_chosen_account_height">140dp</dimen>
+    <dimen name="navigation_drawer_padding">16dp</dimen>
+    <dimen name="navigation_drawer_between_text_and_account_selector">16dp</dimen>
+    <dimen name="navigation_drawer_profile_image_size">64dp</dimen>
+
+    <!-- Primary Text Sizes -->
+    <dimen name="app_text_size_xsmall">11sp</dimen>
+    <dimen name="app_text_size_small">12sp</dimen>
+    <dimen name="app_text_size_medium">14sp</dimen>
+    <dimen name="app_text_size_large">18sp</dimen>
+    <dimen name="app_text_size_xlarge">20sp</dimen>
 
 </resources>

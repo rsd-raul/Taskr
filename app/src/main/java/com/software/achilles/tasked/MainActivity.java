@@ -1,17 +1,25 @@
 package com.software.achilles.tasked;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowInsets;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.adapters.Adapter;
@@ -30,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionMenuConfigurator mFamConfigurator;
     private DrawerLayout mDrawerLayout;
     private TaskController mTaskController;
+    private NavigationView mNavigationView;
 
     // ------------------------- Constructor -------------------------
 
@@ -52,11 +61,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize Navigation Drawer variables
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        // Set Navigation Drawer behavior and first item to checked
-        navigationView.getMenu().getItem(0).setChecked(true);
-        setupDrawerListener(navigationView);
+        // Setup Navigation , behavior and first item to checked
+
+        setupDrawer();
+        mNavigationView.getMenu().getItem(0).setChecked(true);
+        setupDrawerListener();
 
         // Configure the fab menu and its children.
         mFamConfigurator = new FloatingActionMenuConfigurator(this);
@@ -73,8 +84,32 @@ public class MainActivity extends AppCompatActivity {
 
     // ---------------------- Navigation Drawer ----------------------
 
-    private void setupDrawerListener(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    private void setupDrawer(){
+
+        // Setup StatusBar color so the Drawer can draw there instead
+        mDrawerLayout.setStatusBarBackgroundColor(
+                ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+
+        //
+        View header = mNavigationView.getHeaderView(0);
+
+        final View chosenAccountContentView = header.findViewById(R.id.chosen_account_content_view);
+        final View chosenAccountView = header.findViewById(R.id.chosen_account_view);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+
+//        mNavigationView.
+        Log.d("myApp", chosenAccountContentView+"");
+        Log.d("myApp", chosenAccountView+"");
+    }
+
+    private void setupDrawerListener() {
+        mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {

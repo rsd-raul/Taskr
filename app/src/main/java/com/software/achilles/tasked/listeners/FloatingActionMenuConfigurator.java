@@ -53,6 +53,7 @@ public class FloatingActionMenuConfigurator {
             int fromColor = ContextCompat.getColor(context, R.color.transparent);
             int toColor = ContextCompat.getColor(context, R.color.background);
 
+            // Creation of animator to transition between the transparent color and other
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(fam,
                     "backgroundColor", new ArgbEvaluator(), fromColor, toColor).setDuration(100);
 
