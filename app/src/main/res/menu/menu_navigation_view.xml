@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/principalMenu"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_dashboard"
-            android:title="@string/dashboard" />
+            android:title="@string/dashboard"/>
         <item
             android:id="@+id/nav_snoozed"
             android:icon="@drawable/ic_time_clean"
@@ -16,7 +18,9 @@
             android:title="@string/completed" />
     </group>
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/secondaryMenu"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_glance"
             android:icon="@drawable/ic_calendar_list"
