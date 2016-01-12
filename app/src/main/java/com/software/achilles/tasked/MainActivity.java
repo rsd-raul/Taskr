@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionMenuConfigurator mFamConfigurator;
     private TaskController mTaskController;
     private Toolbar mToolbar;
-    private ViewPager mViewPager;
+    public ViewPager mViewPager;
     private AccountHeader mAccountHeader;
     private Drawer mDrawer;
 
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-
+                        //TODO onProfileChanged
                         return true;
                     }
                 })

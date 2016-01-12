@@ -3,6 +3,7 @@ package com.software.achilles.tasked.listeners;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +16,10 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.MainActivity;
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.extras.FloatingActionMenuBehavior;
+
+import java.util.Date;
 
 public class FloatingActionMenuConfigurator {
 
@@ -23,7 +27,8 @@ public class FloatingActionMenuConfigurator {
 
     // ------------------------- Attributes --------------------------
 
-    private static MainActivity activity;
+    //TODO cambiado a public para poder usar traductores en el domain
+    public static MainActivity activity;
     private static FloatingActionMenu fam;
 
     // ------------------------- Constructor -------------------------
@@ -126,11 +131,24 @@ public class FloatingActionMenuConfigurator {
 
     private void configureChildren(){
 
-        FloatingActionButton share = (FloatingActionButton) activity.findViewById(R.id.shareListFAB);
+        final FloatingActionButton share = (FloatingActionButton) activity.findViewById(R.id.shareListFAB);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Retrieving the current Task and extract data for intent
+                int positionOnViewPager = activity.mViewPager.getCurrentItem();
+                String taskListString = TaskController.sTaskLists.get(positionOnViewPager).toString();
 
+                // Create the Intent and put the info to share
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, taskListString);
+
+                // Set the MIME type and start activity
+                shareIntent.setType("text/plain");
+
+                // Build a custom dialog
+                String chooserTitle = activity.getResources().getString(R.string.shareList);
+                activity.startActivity(Intent.createChooser(shareIntent, chooserTitle));
             }
         });
 

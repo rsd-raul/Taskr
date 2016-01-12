@@ -45,4 +45,7 @@
         really_long_email_address_string_to_ensure_proper_overflow_formatting@gmail.com
     </string>
 
+    <string name="listName">List name:</string>
+    <string name="tasks">Tasks:</string>
+
 </resources>
