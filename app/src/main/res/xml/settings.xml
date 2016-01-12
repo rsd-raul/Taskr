@@ -82,4 +82,8 @@
         android:title="@string/author" >
     </PreferenceCategory>
 
+    <CheckBoxPreference
+        android:key="10"
+        android:defaultValue="true"
+        android:height="0dp"/>
 </PreferenceScreen>

@@ -2,11 +2,8 @@ package com.software.achilles.tasked.domain;
 
 import android.content.res.Resources;
 
-import com.software.achilles.tasked.MainActivity;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

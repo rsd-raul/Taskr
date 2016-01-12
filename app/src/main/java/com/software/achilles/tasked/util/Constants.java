@@ -10,6 +10,7 @@ public class Constants {
 
     public static final int TASK_LIST = 1;
 
+    // Navigation Drawer
 
     public static final int DASHBOARD = 2;
     public static final int SNOOZED = 3;
@@ -18,5 +19,7 @@ public class Constants {
     public static final int PLANNER = 6;
     public static final int SETTINGS = 7;
     public static final int CONTACT = 8;
+    public static final int COLLAPSABLE_TASK_LIST = 9;
+    public static final int COLLAPSABLE_TASK_LIST_STATUS = 10;
 
 }

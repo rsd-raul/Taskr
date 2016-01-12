@@ -1,8 +1,11 @@
 package com.software.achilles.tasked;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -32,6 +35,9 @@ import com.software.achilles.tasked.fragments.DashboardListFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.util.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     // --------------------------- Values ----------------------------
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public ViewPager mViewPager;
     private AccountHeader mAccountHeader;
     private Drawer mDrawer;
-
+    private List<Integer> taskListIds;
 
     // ------------------------- Constructor -------------------------
 
@@ -95,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
     // ---------------------- Navigation Drawer ----------------------
 
-
     private void setupHeader() {
         // Create the AccountHeader
         mAccountHeader = new AccountHeaderBuilder()
@@ -103,12 +108,12 @@ public class MainActivity extends AppCompatActivity {
                 .withHeaderBackground(R.drawable.default_image_navigation)
                 .addProfiles(
                         new ProfileDrawerItem()
-                                .withName("Mike Penz")
-                                .withEmail("mikepenz@gmail.com")
+                                .withName("John Doe")
+                                .withEmail("jonnydoe@gmail.com")
                                 .withIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.person_image_empty)),
                         new ProfileDrawerItem()
-                                .withName("Mike Penz Work")
-                                .withEmail("mikepenzwork@gmail.com")
+                                .withName("John Doe Work")
+                                .withEmail("jonnydoework@gmail.com")
                                 .withIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.person_image_empty))
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
@@ -123,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupDrawer(){
 
-        // Settup the main components of the Navigation Drawer
+        // Setup the main components of the Navigation Drawer
         PrimaryDrawerItem dashboard = new PrimaryDrawerItem().withIdentifier(Constants.DASHBOARD)
                 .withName(R.string.dashboard)
                 .withIcon(R.drawable.ic_dashboard)
@@ -159,8 +164,16 @@ public class MainActivity extends AppCompatActivity {
                 .withIcon(R.drawable.ic_email)
                 .withIconTintingEnabled(true)
                 .withSelectable(false);
-        SectionDrawerItem taskListDivider = new SectionDrawerItem()
-                .withName(R.string.taskList);
+        PrimaryDrawerItem taskListCollapsable = new PrimaryDrawerItem()
+                .withName(R.string.taskList)
+                .withIcon(R.drawable.ic_list_bullet)
+                .withIconTintingEnabled(true)
+                .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
+                .withSelectable(false);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"",
+                prefs.getBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", true)).apply();
 
         mDrawer = new DrawerBuilder()
                 .withActivity(this)
@@ -170,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         dashboard, snoozed, completed,
                         new DividerDrawerItem(),
                         glance, planner,
-                        taskListDivider
+                        taskListCollapsable
                 )
                 .withActionBarDrawerToggle(true)
                 .addStickyDrawerItems(
@@ -178,13 +191,8 @@ public class MainActivity extends AppCompatActivity {
                 )
                 .build();
 
-        // TODO SOLO PARA TEST... O NO.
-        for(TaskList taskList : TaskController.sTaskLists)
-            mDrawer.addItem(new SecondaryDrawerItem().withIdentifier(taskList.getId())
-                    .withName(taskList.getTitle())
-                    .withIcon(R.drawable.ic_list_bullet)
-                    .withIconTintingEnabled(true)
-                    .withSelectable(false));
+        // TODO SIEMPRE LA DEJA ABIERTA
+        addTaskListToDrawer();
 
         mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -226,6 +234,10 @@ public class MainActivity extends AppCompatActivity {
                                     getResources().getString(R.string.send_email)));
                         break;
 
+                    case Constants.COLLAPSABLE_TASK_LIST:
+                        switchCollapsableContentAndPreference();
+                        break;
+
                     default:
                         int index = TaskController.getPositionById(identifier);
                         if(index != -1)
@@ -233,13 +245,42 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                mDrawer.closeDrawer();
+                if(identifier != Constants.COLLAPSABLE_TASK_LIST)
+                    mDrawer.closeDrawer();
                 return true;
             }
         });
     }
 
+    private void switchCollapsableContentAndPreference(){
+        Context context = getApplicationContext();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Boolean status = preferences.getBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", true);
+        if(status)
+            for (int i = 0; i < taskListIds.size(); i++)
+                mDrawer.removeItem(taskListIds.get(i));
+        else
+            addTaskListToDrawer();
 
+        preferences.edit().putBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", !status).apply();
+    }
+
+    private void addTaskListToDrawer(){
+        List<Integer>addedIds = new ArrayList<>();
+
+        for(TaskList taskList : TaskController.sTaskLists) {
+            mDrawer.addItem(
+                    new SecondaryDrawerItem().withIdentifier(taskList.getId())
+                            .withLevel(2)
+                            .withName(taskList.getTitle())
+                            .withIcon(R.drawable.ic_done_all)
+                            .withIconTintingEnabled(true)
+                            .withSelectable(false));
+            addedIds.add(taskList.getId());
+        }
+
+        taskListIds = addedIds;
+    }
 
     // -------------------------- View Pager -------------------------
 
@@ -283,20 +324,11 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
 
-//            case android.R.id.home:
-//                mDrawerLayout.openDrawer(GravityCompat.START);
-//                break;
-
             case R.id.action_filter:
                 break;
 
             case R.id.action_search:
                 break;
-
-//            case R.id.action_settings:
-//                Intent intent = new Intent(this, Preferences.class);
-//                startActivity(intent);
-//                break;
 
         }
         return super.onOptionsItemSelected(item);
