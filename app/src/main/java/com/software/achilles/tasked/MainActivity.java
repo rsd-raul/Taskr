@@ -191,8 +191,12 @@ public class MainActivity extends AppCompatActivity {
                 )
                 .build();
 
-        // TODO SIEMPRE LA DEJA ABIERTA
-        addTaskListToDrawer();
+        // if Task List is
+        Context context = getApplicationContext();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Boolean status = preferences.getBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", true);
+        if(status)
+            addTaskListToDrawer();
 
         mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -256,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         Boolean status = preferences.getBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", true);
+
         if(status)
             for (int i = 0; i < taskListIds.size(); i++)
                 mDrawer.removeItem(taskListIds.get(i));
