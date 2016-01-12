@@ -1,28 +1,17 @@
 package com.software.achilles.tasked;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -33,6 +22,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.software.achilles.tasked.adapters.Adapter;
@@ -49,19 +39,11 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------- Attributes --------------------------
 
     private FloatingActionMenuConfigurator mFamConfigurator;
-    private DrawerLayout mDrawerLayout;
     private TaskController mTaskController;
-    private NavigationView mNavigationView;
-    private Toolbar toolbar;
-    private boolean mAccountBoxExpanded = false;
-
-    // TODO es necesario esto??
-    // A Runnable that we should execute when the navigation drawer finishes its closing animation
-    private Runnable mDeferredOnDrawerClosedRunnable;
+    private Toolbar mToolbar;
+    private ViewPager mViewPager;
     private AccountHeader mAccountHeader;
     private Drawer mDrawer;
-
-
 
 
     // ------------------------- Constructor -------------------------
@@ -75,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         mTaskController = TaskController.getInstance();
 
         // Set ActionBar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         // Set Navigation Drawer button
         final ActionBar actionBar = getSupportActionBar();
@@ -97,12 +79,12 @@ public class MainActivity extends AppCompatActivity {
         mFamConfigurator = new FloatingActionMenuConfigurator(this);
 
         // Setup the fragment composing the ViewPager
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(mViewPager);
 
         // Setup tabs for Dashboard and make Scrollable
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(mViewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
@@ -167,33 +149,49 @@ public class MainActivity extends AppCompatActivity {
                 .withName(R.string.planner)
                 .withIcon(R.drawable.ic_view_carousel)
                 .withIconTintingEnabled(true);
-        SecondaryDrawerItem settings = new SecondaryDrawerItem().withIdentifier(Constants.SETTIGS)
+        SecondaryDrawerItem settings = new SecondaryDrawerItem().withIdentifier(Constants.SETTINGS)
                 .withName(R.string.settings)
                 .withIcon(R.drawable.ic_settings)
-                .withIconTintingEnabled(true);
-
+                .withIconTintingEnabled(true)
+                .withSelectable(false);
+        SecondaryDrawerItem contact = new SecondaryDrawerItem().withIdentifier(Constants.CONTACT)
+                .withName(R.string.contact)
+                .withIcon(R.drawable.ic_email)
+                .withIconTintingEnabled(true)
+                .withSelectable(false);
+        SectionDrawerItem taskListDivider = new SectionDrawerItem()
+                .withName(R.string.taskList);
 
         mDrawer = new DrawerBuilder()
                 .withActivity(this)
-                .withToolbar(toolbar)
+                .withToolbar(mToolbar)
                 .withAccountHeader(mAccountHeader)
                 .addDrawerItems(
                         dashboard, snoozed, completed,
                         new DividerDrawerItem(),
                         glance, planner,
-                        new DividerDrawerItem()
+                        taskListDivider
                 )
                 .withActionBarDrawerToggle(true)
                 .addStickyDrawerItems(
-                        settings
+                        settings, contact
                 )
                 .build();
+
+        // TODO SOLO PARA TEST... O NO.
+        for(TaskList taskList : TaskController.sTaskLists)
+            mDrawer.addItem(new SecondaryDrawerItem().withIdentifier(taskList.getId())
+                    .withName(taskList.getTitle())
+                    .withIcon(R.drawable.ic_list_bullet)
+                    .withIconTintingEnabled(true)
+                    .withSelectable(false));
 
         mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
-                switch (drawerItem.getIdentifier()) {
+                int identifier = drawerItem.getIdentifier();
+                switch (identifier) {
 
                     case Constants.DASHBOARD:
                         break;
@@ -205,9 +203,33 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case Constants.PLANNER:
                         break;
-                    case Constants.SETTIGS:
-                        Intent intent = new Intent(getApplicationContext(), Preferences.class);
-                        startActivity(intent);
+
+                    case Constants.SETTINGS:
+                        // Launch the Preferences Fragment
+                        Intent intentSettings = new Intent(getApplicationContext(), Preferences.class);
+                        startActivity(intentSettings);
+                        break;
+
+                    case Constants.CONTACT:
+                        // Create a custom intent for Emails
+                        Intent intentEmail = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                getResources().getString(R.string.mailto),
+                                getResources().getString(R.string.developer_email), null));
+
+                        //Populate the fields by default
+                        intentEmail.putExtra(Intent.EXTRA_SUBJECT,
+                                getResources().getString(R.string.subject_email));
+
+                        // Create a dialog only for Email clients
+                        if(intentEmail.resolveActivity(getPackageManager()) != null)
+                            startActivity(Intent.createChooser(intentEmail,
+                                    getResources().getString(R.string.send_email)));
+                        break;
+
+                    default:
+                        int index = TaskController.getPositionById(identifier);
+                        if(index != -1)
+                            mViewPager.setCurrentItem(index, true);
                         break;
                 }
 
@@ -241,7 +263,6 @@ public class MainActivity extends AppCompatActivity {
             // Add the fragment and it's bundle to the adapter
             adapter.addFragment(dashboardListFragment, taskList.getTitle());
         }
-
         viewPager.setAdapter(adapter);
     }
 
@@ -301,12 +322,6 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Preferences -------------------------
 
-    // ----------------------------- Util ----------------------------
-
-    private int getStatusBarHeight() {
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        return (resourceId > 0) ? getResources().getDimensionPixelSize(resourceId) : 0 ;
-    }
 
 
 
@@ -324,87 +339,100 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Deprecated --------------------------
 
-    private void setupDrawerDEP(){
-        // Adapt to Lollipop and above as the Navigation Drawer is under the Status Bar
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            adaptNavigationDrawerIfStatusBarTransparent();
-
-        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // TODO es necesario esto??
-                // Run deferred action, if we have one
-                if (mDeferredOnDrawerClosedRunnable != null) {
-                    mDeferredOnDrawerClosedRunnable.run();
-                    mDeferredOnDrawerClosedRunnable = null;
-                }
-//                // Once closed, if the AccountBox is opened, close it
-//                if (mAccountBoxExpanded) {
-//                    mAccountBoxExpanded = false;
-//                    setupAccountBoxToggle();
+//    //TODO es necesario?
+//    // A Runnable that we should execute when the navigation drawer finishes its closing animation
+//    private Runnable mDeferredOnDrawerClosedRunnable;
+//    private NavigationView mNavigationView;
+//    private boolean mAccountBoxExpanded = false;
+//    private DrawerLayout mDrawerLayout;
+//    private void setupDrawerDEP(){
+//        // Adapt to Lollipop and above as the Navigation Drawer is under the Status Bar
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+//            adaptNavigationDrawerIfStatusBarTransparent();
+//
+//        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+//            @Override
+//            public void onDrawerClosed(View drawerView) {
+//                // TODO es necesario esto??
+//                // Run deferred action, if we have one
+//                if (mDeferredOnDrawerClosedRunnable != null) {
+//                    mDeferredOnDrawerClosedRunnable.run();
+//                    mDeferredOnDrawerClosedRunnable = null;
 //                }
-//                onNavDrawerStateChanged(false, false);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-//                onNavDrawerStateChanged(true, false);
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-//                onNavDrawerStateChanged(isNavDrawerOpen(), newState != DrawerLayout.STATE_IDLE);
-            }
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-//                onNavDrawerSlide(slideOffset);
-            }
-        });
-
-    }
-
-    private void setupDrawerListenerDEP() {
-        mNavigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-
-                        // Intent?
-
-                        return true;
-                    }
-                });
-    }
-
-    // --------------------- Lollipop and above ----------------------
-
-    private void adaptNavigationDrawerIfStatusBarTransparent(){
-        // Setup StatusBar color so the Drawer can draw there instead
-        mDrawerLayout.setStatusBarBackgroundColor(
-                ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-
-        // Retrieve the header in order to obtain the Views we need
-        View header = mNavigationView.getHeaderView(0);
-        View chosenAccountContentView = header.findViewById(R.id.chosen_account_content_view);
-        View chosenAccountView = header.findViewById(R.id.chosen_account_view);
-
-        // Retrieve current Navigation Drawer height and the StatusBar
-        int navDrawerHeight = getResources().getDimensionPixelSize(
-                R.dimen.navigation_drawer_chosen_account_height);
-        int statusBarHeight = getStatusBarHeight();
-
-        // Add top margin to the profile picture and more Height to the container
-        ViewGroup.MarginLayoutParams lp1= (ViewGroup.MarginLayoutParams)
-                chosenAccountContentView.getLayoutParams();
-        lp1.topMargin = statusBarHeight;
-        chosenAccountContentView.setLayoutParams(lp1);
-
-        ViewGroup.LayoutParams lp2 =
-                chosenAccountView.getLayoutParams();
-        lp2.height = navDrawerHeight + statusBarHeight;
-        chosenAccountView.setLayoutParams(lp2);
-    }
+////                // Once closed, if the AccountBox is opened, close it
+////                if (mAccountBoxExpanded) {
+////                    mAccountBoxExpanded = false;
+////                    setupAccountBoxToggle();
+////                }
+////                onNavDrawerStateChanged(false, false);
+//            }
+//
+//            @Override
+//            public void onDrawerOpened(View drawerView) {
+////                onNavDrawerStateChanged(true, false);
+//            }
+//
+//            @Override
+//            public void onDrawerStateChanged(int newState) {
+////                onNavDrawerStateChanged(isNavDrawerOpen(), newState != DrawerLayout.STATE_IDLE);
+//            }
+//
+//            @Override
+//            public void onDrawerSlide(View drawerView, float slideOffset) {
+////                onNavDrawerSlide(slideOffset);
+//            }
+//        });
+//
+//    }
+//
+//    private void setupDrawerListenerDEP() {
+//        mNavigationView.setNavigationItemSelectedListener(
+//                new NavigationView.OnNavigationItemSelectedListener() {
+//                    @Override
+//                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                        menuItem.setChecked(true);
+//                        mDrawerLayout.closeDrawers();
+//
+//                        // Intent?
+//
+//                        return true;
+//                    }
+//                });
+//    }
+//
+//    // --------------------- Lollipop and above ----------------------
+//
+//    private void adaptNavigationDrawerIfStatusBarTransparent(){
+//        // Setup StatusBar color so the Drawer can draw there instead
+//        mDrawerLayout.setStatusBarBackgroundColor(
+//                ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+//
+//        // Retrieve the header in order to obtain the Views we need
+//        View header = mNavigationView.getHeaderView(0);
+//        View chosenAccountContentView = header.findViewById(R.id.chosen_account_content_view);
+//        View chosenAccountView = header.findViewById(R.id.chosen_account_view);
+//
+//        // Retrieve current Navigation Drawer height and the StatusBar
+//        int navDrawerHeight = getResources().getDimensionPixelSize(
+//                R.dimen.navigation_drawer_chosen_account_height);
+//        int statusBarHeight = getStatusBarHeight();
+//
+//        // Add top margin to the profile picture and more Height to the container
+//        ViewGroup.MarginLayoutParams lp1= (ViewGroup.MarginLayoutParams)
+//                chosenAccountContentView.getLayoutParams();
+//        lp1.topMargin = statusBarHeight;
+//        chosenAccountContentView.setLayoutParams(lp1);
+//
+//        ViewGroup.LayoutParams lp2 =
+//                chosenAccountView.getLayoutParams();
+//        lp2.height = navDrawerHeight + statusBarHeight;
+//        chosenAccountView.setLayoutParams(lp2);
+//    }
+//
+//    // ----------------------------- Util ----------------------------
+//
+//    private int getStatusBarHeight() {
+//        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+//        return (resourceId > 0) ? getResources().getDimensionPixelSize(resourceId) : 0 ;
+//    }
 }

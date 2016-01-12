@@ -16,6 +16,7 @@ public class Constants {
     public static final int COMPLETED = 4;
     public static final int GLANCE = 5;
     public static final int PLANNER = 6;
-    public static final int SETTIGS = 7;
+    public static final int SETTINGS = 7;
+    public static final int CONTACT = 8;
 
 }

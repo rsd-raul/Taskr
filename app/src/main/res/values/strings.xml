@@ -9,11 +9,19 @@
     <string name="completed">Completed</string>
     <string name="glance">Glance</string>
     <string name="planner">Planner</string>
+    <string name="settings">Settings</string>
+    <string name="contact">Help &amp; feedback</string>
     <string name="taskList">Task Lists</string>
 
     <!-- ActionBar Icons -->
 
-    <string name="settings">Settings</string>
+    <string name="mailto">mailto</string>
+    <string name="developer_email">achillessoftware@gmail.com</string>
+    <string name="subject_email">Tasked - Bug/Feature/Request</string>
+    <string name="send_email">Contact the developer</string>
+
+    <!-- ActionBar Icons -->
+
     <string name="search">Search</string>
     <string name="filter">Filter</string>
 

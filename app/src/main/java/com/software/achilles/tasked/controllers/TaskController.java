@@ -43,6 +43,7 @@ public class TaskController {
         randomPopulation(5, 15);    // TODO SOLO PARA TEST
     }
 
+    // TODO SOLO PARA TEST
     private void randomPopulation(int amountList, int amountTasks) {
         sTaskLists = new ArrayList<>();
 
@@ -65,11 +66,18 @@ public class TaskController {
                 amountTaskWhile--;
             }
             String listTitle = listTitles[random.nextInt(2)];
-            TaskList taskList = new TaskList(listTitle, aux);
+            TaskList taskList = new TaskList(amountList+300, listTitle, aux);
             sTaskLists.add(taskList);
             amountList--;
         }
         Log.d("myApp", "CONTROLLER POPULATED");
+    }
+    // TODO SOLO PARA TEST... O NO.
+    public static int getPositionById(int id){
+        for (int positionOnList = 0; positionOnList < sTaskLists.size(); positionOnList++)
+            if(sTaskLists.get(positionOnList).getId() == id)
+                return positionOnList;
+        return -1;
     }
 
     // ------------------------ Crud Methods -------------------------

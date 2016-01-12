@@ -16,6 +16,12 @@ public class TaskList implements Serializable {
 
     // ------------------------- Constructor -------------------------
 
+    public TaskList(int id, String title, List<Task> tasks) {
+        this.id = id;
+        this.title = title;
+        this.tasks = tasks;
+    }
+
     public TaskList(String title, List<Task> tasks) {
         this.title = title;
         this.tasks = tasks;
