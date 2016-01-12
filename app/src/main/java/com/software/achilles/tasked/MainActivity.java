@@ -1,5 +1,9 @@
 package com.software.achilles.tasked;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,13 +17,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.adapters.Adapter;
@@ -39,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private TaskController mTaskController;
     private NavigationView mNavigationView;
+    private boolean mAccountBoxExpanded = false;
+
+    // TODO es necesario esto??
+    // A Runnable that we should execute when the navigation drawer finishes its closing animation
+    private Runnable mDeferredOnDrawerClosedRunnable;
+
+
+
 
     // ------------------------- Constructor -------------------------
 
@@ -90,22 +99,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawer(){
-
-        // Setup StatusBar color so the Drawer can draw there instead
-        mDrawerLayout.setStatusBarBackgroundColor(
-                ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-
-        //
-        View header = mNavigationView.getHeaderView(0);
-
-        final View chosenAccountContentView = header.findViewById(R.id.chosen_account_content_view);
-        final View chosenAccountView = header.findViewById(R.id.chosen_account_view);
-
+        // Adapt to Lollipop and above as the Navigation Drawer is under the Status Bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            adaptNavigationDrawerIfStatusBarTransparent();
 
-//        mNavigationView.
-        Log.d("myApp", chosenAccountContentView+"");
-        Log.d("myApp", chosenAccountView+"");
+        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // TODO es necesario esto??
+                // Run deferred action, if we have one
+                if (mDeferredOnDrawerClosedRunnable != null) {
+                    mDeferredOnDrawerClosedRunnable.run();
+                    mDeferredOnDrawerClosedRunnable = null;
+                }
+//                // Once closed, if the AccountBox is opened, close it
+//                if (mAccountBoxExpanded) {
+//                    mAccountBoxExpanded = false;
+//                    setupAccountBoxToggle();
+//                }
+//                onNavDrawerStateChanged(false, false);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+//                onNavDrawerStateChanged(true, false);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+//                onNavDrawerStateChanged(isNavDrawerOpen(), newState != DrawerLayout.STATE_IDLE);
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+//                onNavDrawerSlide(slideOffset);
+            }
+        });
+
     }
 
     private void setupDrawerListener() {
@@ -205,4 +235,39 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Preferences -------------------------
 
+    // ----------------------------- Util ----------------------------
+
+    private int getStatusBarHeight() {
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        return (resourceId > 0) ? getResources().getDimensionPixelSize(resourceId) : 0 ;
+    }
+
+    // --------------------- Lollipop and above ----------------------
+
+    private void adaptNavigationDrawerIfStatusBarTransparent(){
+        // Setup StatusBar color so the Drawer can draw there instead
+        mDrawerLayout.setStatusBarBackgroundColor(
+                ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+
+        // Retrieve the header in order to obtain the Views we need
+        View header = mNavigationView.getHeaderView(0);
+        View chosenAccountContentView = header.findViewById(R.id.chosen_account_content_view);
+        View chosenAccountView = header.findViewById(R.id.chosen_account_view);
+
+        // Retrieve current Navigation Drawer height and the StatusBar
+        int navDrawerHeight = getResources().getDimensionPixelSize(
+                R.dimen.navigation_drawer_chosen_account_height);
+        int statusBarHeight = getStatusBarHeight();
+
+        // Add top margin to the profile picture and more Height to the container
+        ViewGroup.MarginLayoutParams lp1= (ViewGroup.MarginLayoutParams)
+                chosenAccountContentView.getLayoutParams();
+        lp1.topMargin = statusBarHeight;
+        chosenAccountContentView.setLayoutParams(lp1);
+
+        ViewGroup.LayoutParams lp2 =
+                chosenAccountView.getLayoutParams();
+        lp2.height = navDrawerHeight + statusBarHeight;
+        chosenAccountView.setLayoutParams(lp2);
+    }
 }
