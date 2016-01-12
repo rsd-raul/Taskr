@@ -21,5 +21,6 @@ public class Constants {
     public static final int CONTACT = 8;
     public static final int COLLAPSABLE_TASK_LIST = 9;
     public static final int COLLAPSABLE_TASK_LIST_STATUS = 10;
+    public static final int ADD_TASK_LIST = 11;
 
 }

@@ -3,6 +3,8 @@ package com.software.achilles.tasked;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,11 +23,11 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.software.achilles.tasked.adapters.Adapter;
@@ -50,7 +52,10 @@ public class MainActivity extends AppCompatActivity {
     public ViewPager mViewPager;
     private AccountHeader mAccountHeader;
     private Drawer mDrawer;
-    private List<Integer> taskListIds;
+    private List<Integer> mTaskListIds;
+    private PrimaryDrawerItem mTaskListCollapsable;
+    private BadgeStyle mBadgeStyleExpand;
+    private BadgeStyle mBadgeStyleCollapse;
 
     // ------------------------- Constructor -------------------------
 
@@ -76,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 //        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 //
         // Setup Navigation , behavior and first item to checked
+        initializeBadges();
         setupHeader();
         setupDrawer();
 //        mNavigationView.getMenu().getItem(0).setChecked(true);
@@ -100,6 +106,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ---------------------- Navigation Drawer ----------------------
+
+    private void initializeBadges(){
+        int color = ContextCompat.getColor(this, R.color.secondaryText);
+
+        Drawable expand = ContextCompat.getDrawable(this, R.drawable.ic_expand_filled);
+        expand.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        mBadgeStyleExpand = new BadgeStyle().withBadgeBackground(expand);
+
+        Drawable collapse = ContextCompat.getDrawable(this, R.drawable.ic_collapse_filled);
+        collapse.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        mBadgeStyleCollapse = new BadgeStyle().withBadgeBackground(collapse);
+    }
 
     private void setupHeader() {
         // Create the AccountHeader
@@ -164,12 +182,14 @@ public class MainActivity extends AppCompatActivity {
                 .withIcon(R.drawable.ic_email)
                 .withIconTintingEnabled(true)
                 .withSelectable(false);
-        PrimaryDrawerItem taskListCollapsable = new PrimaryDrawerItem()
+
+        mTaskListCollapsable = new PrimaryDrawerItem()
                 .withName(R.string.taskList)
                 .withIcon(R.drawable.ic_list_bullet)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
-                .withSelectable(false);
+                .withSelectable(false)
+                .withBadge("");
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.edit().putBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"",
@@ -178,25 +198,26 @@ public class MainActivity extends AppCompatActivity {
         mDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(mToolbar)
+                .withActionBarDrawerToggle(true)
                 .withAccountHeader(mAccountHeader)
                 .addDrawerItems(
                         dashboard, snoozed, completed,
                         new DividerDrawerItem(),
                         glance, planner,
-                        taskListCollapsable
+                        new DividerDrawerItem(),
+                        mTaskListCollapsable
                 )
-                .withActionBarDrawerToggle(true)
                 .addStickyDrawerItems(
                         settings, contact
                 )
                 .build();
 
-        // if Task List is
-        Context context = getApplicationContext();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean status = preferences.getBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", true);
-        if(status)
+        // if Task List is expanded populate the Navigation Drawer
+        if(getAndOrSwitch(false)) {
             addTaskListToDrawer();
+            adaptTaskListCollapsable(false);
+        }else
+            adaptTaskListCollapsable(true);
 
         mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -242,6 +263,9 @@ public class MainActivity extends AppCompatActivity {
                         switchCollapsableContentAndPreference();
                         break;
 
+                    case Constants.ADD_TASK_LIST:
+                        break;
+
                     default:
                         int index = TaskController.getPositionById(identifier);
                         if(index != -1)
@@ -256,23 +280,48 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void switchCollapsableContentAndPreference(){
+    private boolean getAndOrSwitch(boolean switchValue){
+        // Get the preference that indicates if the user wants the Task List collapsed or not
         Context context = getApplicationContext();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean status = preferences.getBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", true);
+        Boolean status = preferences.getBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS + "", true);
 
-        if(status)
-            for (int i = 0; i < taskListIds.size(); i++)
-                mDrawer.removeItem(taskListIds.get(i));
-        else
+        // If switch (click on Task List case), switch the values to reflect the change
+        if(switchValue)
+            preferences.edit().putBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", !status).apply();
+
+        return status;
+    }
+
+    private void switchCollapsableContentAndPreference(){
+        // Get current status for the Task List and in this case switch it in the preferences
+        Boolean status = getAndOrSwitch(true);
+
+        // If it opened, remove all items, if closed, populate the drawer
+        if(status) {
+            adaptTaskListCollapsable(true);
+            for (int i = 0; i < mTaskListIds.size(); i++)
+                mDrawer.removeItem(mTaskListIds.get(i));
+        } else{
+            adaptTaskListCollapsable(false);
             addTaskListToDrawer();
+        }
+    }
 
-        preferences.edit().putBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", !status).apply();
+    private void adaptTaskListCollapsable(boolean expand){
+        // Switch the badge between expand and collapse icons
+        if(expand)
+            mTaskListCollapsable.withBadgeStyle(mBadgeStyleExpand);
+        else
+            mTaskListCollapsable.withBadgeStyle(mBadgeStyleCollapse);
+
+        mDrawer.updateItem(mTaskListCollapsable);
     }
 
     private void addTaskListToDrawer(){
         List<Integer>addedIds = new ArrayList<>();
 
+        // Add the Task Lists to the drawer by order and at the end
         for(TaskList taskList : TaskController.sTaskLists) {
             mDrawer.addItem(
                     new SecondaryDrawerItem().withIdentifier(taskList.getId())
@@ -284,7 +333,17 @@ public class MainActivity extends AppCompatActivity {
             addedIds.add(taskList.getId());
         }
 
-        taskListIds = addedIds;
+        // Add a new add Task List item for convenience, also add its ID to control it.
+        mDrawer.addItem(new SecondaryDrawerItem().withIdentifier(Constants.ADD_TASK_LIST)
+                .withLevel(2)
+                .withName(R.string.addList)
+                .withIcon(R.drawable.ic_add)
+                .withIconTintingEnabled(true)
+                .withSelectable(false));
+        addedIds.add(Constants.ADD_TASK_LIST);
+
+        // Save the id to control the Navigation Drawer more properly
+        mTaskListIds = addedIds;
     }
 
     // -------------------------- View Pager -------------------------
@@ -359,117 +418,4 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Preferences -------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // ------------------------- Deprecated --------------------------
-
-//    //TODO es necesario?
-//    // A Runnable that we should execute when the navigation drawer finishes its closing animation
-//    private Runnable mDeferredOnDrawerClosedRunnable;
-//    private NavigationView mNavigationView;
-//    private boolean mAccountBoxExpanded = false;
-//    private DrawerLayout mDrawerLayout;
-//    private void setupDrawerDEP(){
-//        // Adapt to Lollipop and above as the Navigation Drawer is under the Status Bar
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-//            adaptNavigationDrawerIfStatusBarTransparent();
-//
-//        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
-//            @Override
-//            public void onDrawerClosed(View drawerView) {
-//                // TODO es necesario esto??
-//                // Run deferred action, if we have one
-//                if (mDeferredOnDrawerClosedRunnable != null) {
-//                    mDeferredOnDrawerClosedRunnable.run();
-//                    mDeferredOnDrawerClosedRunnable = null;
-//                }
-////                // Once closed, if the AccountBox is opened, close it
-////                if (mAccountBoxExpanded) {
-////                    mAccountBoxExpanded = false;
-////                    setupAccountBoxToggle();
-////                }
-////                onNavDrawerStateChanged(false, false);
-//            }
-//
-//            @Override
-//            public void onDrawerOpened(View drawerView) {
-////                onNavDrawerStateChanged(true, false);
-//            }
-//
-//            @Override
-//            public void onDrawerStateChanged(int newState) {
-////                onNavDrawerStateChanged(isNavDrawerOpen(), newState != DrawerLayout.STATE_IDLE);
-//            }
-//
-//            @Override
-//            public void onDrawerSlide(View drawerView, float slideOffset) {
-////                onNavDrawerSlide(slideOffset);
-//            }
-//        });
-//
-//    }
-//
-//    private void setupDrawerListenerDEP() {
-//        mNavigationView.setNavigationItemSelectedListener(
-//                new NavigationView.OnNavigationItemSelectedListener() {
-//                    @Override
-//                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-//                        menuItem.setChecked(true);
-//                        mDrawerLayout.closeDrawers();
-//
-//                        // Intent?
-//
-//                        return true;
-//                    }
-//                });
-//    }
-//
-//    // --------------------- Lollipop and above ----------------------
-//
-//    private void adaptNavigationDrawerIfStatusBarTransparent(){
-//        // Setup StatusBar color so the Drawer can draw there instead
-//        mDrawerLayout.setStatusBarBackgroundColor(
-//                ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-//
-//        // Retrieve the header in order to obtain the Views we need
-//        View header = mNavigationView.getHeaderView(0);
-//        View chosenAccountContentView = header.findViewById(R.id.chosen_account_content_view);
-//        View chosenAccountView = header.findViewById(R.id.chosen_account_view);
-//
-//        // Retrieve current Navigation Drawer height and the StatusBar
-//        int navDrawerHeight = getResources().getDimensionPixelSize(
-//                R.dimen.navigation_drawer_chosen_account_height);
-//        int statusBarHeight = getStatusBarHeight();
-//
-//        // Add top margin to the profile picture and more Height to the container
-//        ViewGroup.MarginLayoutParams lp1= (ViewGroup.MarginLayoutParams)
-//                chosenAccountContentView.getLayoutParams();
-//        lp1.topMargin = statusBarHeight;
-//        chosenAccountContentView.setLayoutParams(lp1);
-//
-//        ViewGroup.LayoutParams lp2 =
-//                chosenAccountView.getLayoutParams();
-//        lp2.height = navDrawerHeight + statusBarHeight;
-//        chosenAccountView.setLayoutParams(lp2);
-//    }
-//
-//    // ----------------------------- Util ----------------------------
-//
-//    private int getStatusBarHeight() {
-//        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-//        return (resourceId > 0) ? getResources().getDimensionPixelSize(resourceId) : 0 ;
-//    }
 }
