@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.domain.FavoriteLocation;
 import com.software.achilles.tasked.domain.Label;
 import com.software.achilles.tasked.domain.Task;
 import com.software.achilles.tasked.domain.TaskList;
@@ -29,6 +30,7 @@ public class TaskController {
     public static ArrayList<Task> sTasks;
     public static ArrayList<TaskList> sTaskLists;
     public static ArrayList<Label> sLabels;
+    public static ArrayList<FavoriteLocation> sFavouriteLocations;
     private Task actualTask, lastDeleted;
 //    public static Date taskDate;
 
@@ -53,6 +55,7 @@ public class TaskController {
     private void randomPopulation(int amountList, int amountTasks) {
         sTaskLists = new ArrayList<>();
         sLabels = new ArrayList<>();
+        sFavouriteLocations = new ArrayList<>();
 
         // Fields to switch and use
 
@@ -62,15 +65,16 @@ public class TaskController {
 
         String[] listTitles = new String[]{"Lista muy larga", "Lista corta"};
 
+        String[] locationTitles = new String[]{"Casa", "Trabajo", "Gimnasio", "Random"};
+
         String[] labelTitles = new String[]{"Compras", "Trabajo", "Coche", "Perro", "Random", "Raaaaaandom"};
         Integer[] labelColors = new Integer[]{R.color.amberDate, R.color.colorPrimary, R.color.tealLocation, null};
         Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
 
-        for (int i = 0; i < 6; i++) {
-            Integer labelColor = (i < 3) ? labelColors[i] : null;
 
-            sLabels.add(new Label(i+600, labelTitles[i], labelColor));
-        }
+
+        for (int i = 0; i < 6; i++)
+            sLabels.add(new Label(i+600, labelTitles[i], (i < 3) ? labelColors[i] : null));
 
         Random random = new Random();
         while (amountList > 0) {

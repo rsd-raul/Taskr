@@ -5,18 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,7 +36,6 @@ import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.domain.BasicType;
 import com.software.achilles.tasked.domain.FavoriteLocation;
 import com.software.achilles.tasked.domain.Label;
-import com.software.achilles.tasked.domain.Task;
 import com.software.achilles.tasked.domain.TaskList;
 import com.software.achilles.tasked.fragments.DashboardListFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
@@ -63,12 +58,14 @@ public class MainActivity extends AppCompatActivity {
     private Drawer mDrawer;
     private Drawer mFilterDrawer;
     private List<Integer> mTaskListIds;
+    private List<Integer> mLabelListIds;
+    private List<Integer> mLocationListIds;
     private PrimaryDrawerItem mTaskListCollapsable;
     private BadgeStyle mBadgeStyleExpand;
     private BadgeStyle mBadgeStyleCollapse;
-    private boolean mExpandedTaskListFilter;
-    private boolean mEpandedLabelListFilter;
-    private boolean mEpandedLocationListFilter;
+    private boolean mExpandedTaskListFilter = false;
+    private boolean mExpandedLabelListFilter = false;
+    private boolean mExpandedLocationListFilter = false;
 
     // ------------------------- Constructor -------------------------
 
@@ -87,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
         // Setup Navigation , behavior and first item to checked
         initializeBadges();
         setupDrawer();
-//        setupFilterDrawer();         // TODO a peticion de filter actualmente
+        setupFilterDrawer();
+        // TODO a peticion de filter mejor? recuerda problemas de drawer
         // TODO si ejecuto aqui me cargo la sombra transparente para profile en la otra
         // SI LO PONGO ARRIBA SE CORRIJE, PERO QUEDA FEO TELA
 
@@ -334,10 +332,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupFilterDrawer(){
 
-        mExpandedTaskListFilter = true;
-        mEpandedLabelListFilter = true;
-        mEpandedLocationListFilter = true;
-
         SectionDrawerItem mainSection = new SectionDrawerItem()
                 .withName(R.string.main_filters);
         SectionDrawerItem listSection = new SectionDrawerItem()
@@ -408,18 +402,79 @@ public class MainActivity extends AppCompatActivity {
                         taskListCollapsable, labelListCollapsable, labelLocationCollapsable
                 )
                 .withDrawerGravity(Gravity.END)
-                .build();
+//                .build();
+                .append(mDrawer);
+                // TODO esto hace que los drawer se dibujen en un mismo plano, pero no vale para
+                // activar usando SOLO el boton, así que tendrias que descomentar lo de abajo
+
 
         // TODO esto a lo mejor es lo suyo que sea una opcion
-        mFilterDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//        mFilterDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         //  TODO comprobar si las alertas por memoria es por esto
 
-
-        addTaskListToFilterDrawer(TaskController.sTaskLists);
-        addLabelsToFilterDrawer(TaskController.sLabels);
-//        addLocationsFilterToDrawer(TaskController.sFavouriteLocations);
+        setupFilterDrawerListener();
     }
 
+    private void setupFilterDrawerListener(){
+        mFilterDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+
+                int identifier = drawerItem.getIdentifier();
+                switch (identifier) {
+
+                    case Constants.STARRED:
+                        break;
+                    case Constants.DUE_TODAY:
+                        break;
+                    case Constants.DUE_THIS_WEEK:
+                        break;
+
+                    case Constants.COLLAPSABLE_TASK_LIST:
+                        if(mExpandedTaskListFilter) {
+                            for (int i = 0; i < mTaskListIds.size(); i++)
+                                mDrawer.removeItem(mTaskListIds.get(i));
+                            mExpandedTaskListFilter = false;
+                        } else {
+                            addTaskListToFilterDrawer(TaskController.sTaskLists);
+                            mExpandedTaskListFilter = true;
+                        }
+                        break;
+
+                    case Constants.COLLAPSABLE_LABEL_LIST:
+                        if(mExpandedLabelListFilter) {
+                            for (int i = 0; i < mLabelListIds.size(); i++)
+                                mDrawer.removeItem(mLabelListIds.get(i));
+                            mExpandedLabelListFilter = false;
+                        } else {
+                            addLabelsToFilterDrawer(TaskController.sLabels);
+                            mExpandedLabelListFilter = true;
+                        }
+                        break;
+                    case Constants.COLLAPSABLE_LOCATION_LIST:
+                        if(mExpandedLocationListFilter) {
+                            for (int i = 0; i < mLocationListIds.size(); i++)
+                                mDrawer.removeItem(mLocationListIds.get(i));
+                            mExpandedLocationListFilter = false;
+                        } else {
+                            addLocationsFilterToDrawer(TaskController.sFavouriteLocations);
+                            mExpandedLocationListFilter = true;
+                        }
+                        break;
+
+                    default:
+                        int index = TaskController.getPositionById(identifier);
+                        if (index != -1)
+                            mViewPager.setCurrentItem(index, true);
+                        break;
+                }
+
+                return true;
+            }
+        });
+
+        setupExpandableTaskList();
+    }
 
     private void addTaskListToFilterDrawer(ArrayList<TaskList> listTaskList){
         addItemListToDrawer(new ArrayList<BasicType>(listTaskList), mFilterDrawer,
@@ -471,7 +526,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Save the id to control the Navigation Drawer more properly
-        mTaskListIds = addedIds;
+        switch (identifier){
+            case Constants.COLLAPSABLE_TASK_LIST:
+                mTaskListIds = addedIds;
+                break;
+            case Constants.COLLAPSABLE_LABEL_LIST:
+                mLabelListIds = addedIds;
+                break;
+            case Constants.COLLAPSABLE_LOCATION_LIST:
+                mLocationListIds = addedIds;
+                break;
+
+        }
+
     }
 
     // -------------------------- View Pager -------------------------
