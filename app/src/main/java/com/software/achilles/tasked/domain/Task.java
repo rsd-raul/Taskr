@@ -9,15 +9,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class Task implements Serializable {
+public class Task extends BasicType implements Serializable {
 
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
 
-    private int id;
     private Boolean finished;
-    private String title;
     private String description;
     private Date dueDate;
     private Location location;
@@ -27,7 +25,7 @@ public class Task implements Serializable {
 
     public Task(Boolean finished, @NonNull String title, String description, Date dueDate, Location location, ArrayList<Label> labels) {
         this.finished = finished;
-        this.title = title;
+        setTitle(title);
         this.description = description;
         this.dueDate = dueDate;
         this.location = location;
@@ -36,25 +34,11 @@ public class Task implements Serializable {
 
     // ---------------------- Getters & Setters ----------------------
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Boolean getFinished() {
         return finished;
     }
     public void setFinished(Boolean finished) {
         this.finished = finished;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(@NonNull String title) {
-        this.title = title;
     }
 
     public String getDescription() {
@@ -89,7 +73,7 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return (finished ? "DONE - " : "") + title +
+        return (finished ? "DONE - " : "") + getTitle() +
                 (dueDate == null ? "" : " - " + dateToText(dueDate));
     }
 

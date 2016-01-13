@@ -23,6 +23,9 @@ public class Constants {
     public static final int COLLAPSABLE_TASK_LIST_STATUS = 10;
     public static final int ADD_TASK_LIST = 11;
     public static final int COLLAPSABLE_LABEL_LIST = 12;
-    public static final int FAVORITES = 13;
+    public static final int STARRED = 13;
+    public static final int DUE_TODAY = 14;
+    public static final int DUE_THIS_WEEK = 15;
+    public static final int COLLAPSABLE_LOCATION_LIST = 16;
 
 }

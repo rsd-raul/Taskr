@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +37,10 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.software.achilles.tasked.adapters.Adapter;
 import com.software.achilles.tasked.controllers.TaskController;
+import com.software.achilles.tasked.domain.BasicType;
+import com.software.achilles.tasked.domain.FavoriteLocation;
+import com.software.achilles.tasked.domain.Label;
+import com.software.achilles.tasked.domain.Task;
 import com.software.achilles.tasked.domain.TaskList;
 import com.software.achilles.tasked.fragments.DashboardListFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
@@ -68,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dashboard);
 
         // Initialize TaskController
         mTaskController = TaskController.getInstance();
@@ -77,26 +84,19 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        // Set Navigation Drawer button
-        final ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
         // Setup Navigation , behavior and first item to checked
         initializeBadges();
-        setupHeader();
         setupDrawer();
-        setupDrawerListener();
-        setupExpandableTaskList();
-//        setupFilterDrawer();         // TODO a peticion de filter no??
+//        setupFilterDrawer();         // TODO a peticion de filter actualmente
         // TODO si ejecuto aqui me cargo la sombra transparente para profile en la otra
+        // SI LO PONGO ARRIBA SE CORRIJE, PERO QUEDA FEO TELA
 
         // Configure the fab menu and its children.
         mFamConfigurator = new FloatingActionMenuConfigurator(this);
 
         // Setup the fragment composing the ViewPager
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(mViewPager);
+        setupViewPager(mViewPager, TaskController.sTaskLists);
 
         // Setup tabs for Dashboard and make Scrollable
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -149,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawer(){
+
+        setupHeader();
 
         // Setup the main components of the Navigation Drawer
         PrimaryDrawerItem dashboard = new PrimaryDrawerItem().withIdentifier(Constants.DASHBOARD)
@@ -215,6 +217,8 @@ public class MainActivity extends AppCompatActivity {
                         settings, contact
                 )
                 .build();
+
+        setupDrawerListener();
     }
 
     private void setupDrawerListener(){
@@ -253,13 +257,13 @@ public class MainActivity extends AppCompatActivity {
                                 getResources().getString(R.string.subject_email));
 
                         // Create a dialog only for Email clients
-                        if(intentEmail.resolveActivity(getPackageManager()) != null)
+                        if (intentEmail.resolveActivity(getPackageManager()) != null)
                             startActivity(Intent.createChooser(intentEmail,
                                     getResources().getString(R.string.send_email)));
                         break;
 
                     case Constants.COLLAPSABLE_TASK_LIST:
-                        switchCollapsableContentAndPreference();
+                        switchExpandableTaskListContentAndPreference();
                         break;
 
                     case Constants.ADD_TASK_LIST:
@@ -267,25 +271,27 @@ public class MainActivity extends AppCompatActivity {
 
                     default:
                         int index = TaskController.getPositionById(identifier);
-                        if(index != -1)
+                        if (index != -1)
                             mViewPager.setCurrentItem(index, true);
                         break;
                 }
 
-                if(identifier != Constants.COLLAPSABLE_TASK_LIST)
+                if (identifier != Constants.COLLAPSABLE_TASK_LIST)
                     mDrawer.closeDrawer();
                 return true;
             }
         });
+
+        setupExpandableTaskList();
     }
 
     private void setupExpandableTaskList(){
         // if Task List is expanded populate the Navigation Drawer
         if(getAndOrSwitch(false)) {
-            addTaskListToDrawer();
-            adaptTaskListCollapsable(false);
+            addTaskListToMainDrawer(TaskController.sTaskLists);
+            adaptTaskListExpandable(false);
         }else
-            adaptTaskListCollapsable(true);
+            adaptTaskListExpandable(true);
     }
 
     private boolean getAndOrSwitch(boolean switchValue){
@@ -296,27 +302,27 @@ public class MainActivity extends AppCompatActivity {
 
         // If switch (click on Task List case), switch the values to reflect the change
         if(switchValue)
-            preferences.edit().putBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", !status).apply();
+            preferences.edit().putBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS + "", !status).apply();
 
         return status;
     }
 
-    private void switchCollapsableContentAndPreference(){
+    private void switchExpandableTaskListContentAndPreference(){
         // Get current status for the Task List and in this case switch it in the preferences
         Boolean status = getAndOrSwitch(true);
 
         // If it opened, remove all items, if closed, populate the drawer
         if(status) {
-            adaptTaskListCollapsable(true);
+            adaptTaskListExpandable(true);
             for (int i = 0; i < mTaskListIds.size(); i++)
                 mDrawer.removeItem(mTaskListIds.get(i));
         } else{
-            adaptTaskListCollapsable(false);
-            addTaskListToDrawer();
+            adaptTaskListExpandable(false);
+            addTaskListToMainDrawer(TaskController.sTaskLists);
         }
     }
 
-    private void adaptTaskListCollapsable(boolean expand){
+    private void adaptTaskListExpandable(boolean expand){
         // Switch the badge between expand and collapse icons
         if(expand)
             mTaskListCollapsable.withBadgeStyle(mBadgeStyleExpand);
@@ -326,37 +332,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.updateItem(mTaskListCollapsable);
     }
 
-    private void addTaskListToDrawer(){
-        List<Integer>addedIds = new ArrayList<>();
-
-        // Add the Task Lists to the drawer by order and at the end
-        for(TaskList taskList : TaskController.sTaskLists) {
-            mDrawer.addItem(
-                    new SecondaryDrawerItem().withIdentifier(taskList.getId())
-                            .withLevel(2)
-                            .withName(taskList.getTitle())
-                            .withIcon(R.drawable.ic_done_all)
-                            .withIconTintingEnabled(true)
-                            .withSelectable(false));
-            addedIds.add(taskList.getId());
-        }
-
-        // Add a new add Task List item for convenience, also add its ID to control it.
-        mDrawer.addItem(new SecondaryDrawerItem().withIdentifier(Constants.ADD_TASK_LIST)
-                .withLevel(2)
-                .withName(R.string.addList)
-                .withIcon(R.drawable.ic_add)
-                .withIconTintingEnabled(true)
-                .withSelectable(false));
-        addedIds.add(Constants.ADD_TASK_LIST);
-
-        // Save the id to control the Navigation Drawer more properly
-        mTaskListIds = addedIds;
-    }
-
     private void setupFilterDrawer(){
-
-        // Setup the main components of the Navigation Drawer
 
         mExpandedTaskListFilter = true;
         mEpandedLabelListFilter = true;
@@ -371,23 +347,29 @@ public class MainActivity extends AppCompatActivity {
                 .withName(R.string.starred)
                 .withIcon(R.drawable.ic_flag)
                 .withIconTintingEnabled(true)
-                .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
+                .withIconColorRes(R.color.colorAccent)
+                .withSelectedTextColorRes(R.color.colorAccent)
+                .withIdentifier(Constants.STARRED)
                 .withSelectable(true)
                 .withBadge("");
 
         PrimaryDrawerItem today = new PrimaryDrawerItem()
                 .withName(R.string.dueToday)
                 .withIcon(R.drawable.ic_calendar_today)
+                .withIconColorRes(R.color.amberDate)
+                .withSelectedTextColorRes(R.color.amberDate)
                 .withIconTintingEnabled(true)
-                .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
+                .withIdentifier(Constants.DUE_TODAY)
                 .withSelectable(true)
                 .withBadge("");
 
         PrimaryDrawerItem thisWeek = new PrimaryDrawerItem()
                 .withName(R.string.dueThisWeek)
                 .withIcon(R.drawable.ic_calendar_list)
+                .withIconColorRes(R.color.colorPrimary)
+                .withSelectedTextColorRes(R.color.colorPrimary)
                 .withIconTintingEnabled(true)
-                .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
+                .withIdentifier(Constants.DUE_THIS_WEEK)
                 .withSelectable(true)
                 .withBadge("");
 
@@ -411,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
                 .withName(R.string.locationList)
                 .withIcon(R.drawable.ic_place)
                 .withIconTintingEnabled(true)
-                .withIdentifier(Constants.COLLAPSABLE_LABEL_LIST)
+                .withIdentifier(Constants.COLLAPSABLE_LOCATION_LIST)
                 .withSelectable(false)
                 .withBadge("");
 
@@ -427,11 +409,74 @@ public class MainActivity extends AppCompatActivity {
                 )
                 .withDrawerGravity(Gravity.END)
                 .build();
+
+        // TODO esto a lo mejor es lo suyo que sea una opcion
+        mFilterDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //  TODO comprobar si las alertas por memoria es por esto
+
+
+        addTaskListToFilterDrawer(TaskController.sTaskLists);
+        addLabelsToFilterDrawer(TaskController.sLabels);
+//        addLocationsFilterToDrawer(TaskController.sFavouriteLocations);
+    }
+
+
+    private void addTaskListToFilterDrawer(ArrayList<TaskList> listTaskList){
+        addItemListToDrawer(new ArrayList<BasicType>(listTaskList), mFilterDrawer,
+                false, R.drawable.ic_done_all, Constants.COLLAPSABLE_TASK_LIST);
+    }
+    private void addTaskListToMainDrawer(ArrayList<TaskList> listTaskList){
+        addItemListToDrawer(new ArrayList<BasicType>(listTaskList), mDrawer,
+                true, R.drawable.ic_done_all, Constants.COLLAPSABLE_TASK_LIST);
+    }
+    private void addLabelsToFilterDrawer(ArrayList<Label> listLabels){
+        addItemListToDrawer(new ArrayList<BasicType>(listLabels), mFilterDrawer,
+                false, R.drawable.ic_done_all, Constants.COLLAPSABLE_LABEL_LIST);
+    }
+    private void addLocationsFilterToDrawer(ArrayList<FavoriteLocation> favLocations){
+        addItemListToDrawer(new ArrayList<BasicType>(favLocations), mFilterDrawer,
+                false, R.drawable.ic_done_all, Constants.COLLAPSABLE_LOCATION_LIST);
+    }
+
+    private void addItemListToDrawer(ArrayList<BasicType> taskLists, Drawer drawer,
+                                     boolean main, int iconRes, int identifier){
+        List<Integer>addedIds = new ArrayList<>();
+
+        // Get the position for the item in the drawer in order to add its children
+        Integer position = drawer.getPosition(identifier)+1;
+
+        // Add the Task Lists to the drawer by order at the right position
+        for (int i = 0; i < taskLists.size(); i++) {
+            drawer.addItemAtPosition(
+                    new SecondaryDrawerItem().withIdentifier(taskLists.get(i).getId())
+                            .withLevel(2)
+                            .withName(taskLists.get(i).getTitle())
+                            .withIcon(iconRes)
+                            .withIconTintingEnabled(true)
+                            .withSelectable(false),
+                    position);
+            position++;
+            addedIds.add(taskLists.get(i).getId());
+        }
+
+        // If on the main drawer, add a new "add Task List" item for convenience and its ID
+        if(main) {
+            mDrawer.addItem(new SecondaryDrawerItem().withIdentifier(Constants.ADD_TASK_LIST)
+                    .withLevel(2)
+                    .withName(R.string.addList)
+                    .withIcon(R.drawable.ic_add)
+                    .withIconTintingEnabled(true)
+                    .withSelectable(false));
+            addedIds.add(Constants.ADD_TASK_LIST);
+        }
+
+        // Save the id to control the Navigation Drawer more properly
+        mTaskListIds = addedIds;
     }
 
     // -------------------------- View Pager -------------------------
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager, ArrayList<TaskList> taskLists) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
 //        adapter.addFragment(new DashboardSearchFragment(), "Search");
@@ -439,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Populate each of the pages of the ViewPager
-        for (TaskList taskList : TaskController.sTaskLists) {
+        for (TaskList taskList : taskLists) {
             // Pick the fragment the page is going to show
             DashboardListFragment dashboardListFragment = new DashboardListFragment();
 
@@ -498,7 +543,9 @@ public class MainActivity extends AppCompatActivity {
         if(fam.isOpened() || mDrawer.isDrawerOpen()) {
             fam.close(true);
             mDrawer.closeDrawer();
-        }else
+        }else if(mFilterDrawer != null && mFilterDrawer.isDrawerOpen())
+            mFilterDrawer.closeDrawer();
+        else
             super.onBackPressed();
     }
 
@@ -506,4 +553,42 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Preferences -------------------------
 
+
+
+
+
+
+
+
+
+
+    // ------------------------- Deprecated --------------------------
+
+//    private void addTaskListToDrawer(ArrayList<TaskList> taskLists){
+//        List<Integer>addedIds = new ArrayList<>();
+//
+//        // Add the Task Lists to the drawer by order and at the end
+//        for(TaskList taskList : taskLists) {
+//            mDrawer.addItem(
+//                    new SecondaryDrawerItem().withIdentifier(taskList.getId())
+//                            .withLevel(2)
+//                            .withName(taskList.getTitle())
+//                            .withIcon(R.drawable.ic_done_all)
+//                            .withIconTintingEnabled(true)
+//                            .withSelectable(false));
+//            addedIds.add(taskList.getId());
+//        }
+//
+//        // Add a new add Task List item for convenience, also add its ID to control it.
+//        mDrawer.addItem(new SecondaryDrawerItem().withIdentifier(Constants.ADD_TASK_LIST)
+//                .withLevel(2)
+//                .withName(R.string.addList)
+//                .withIcon(R.drawable.ic_add)
+//                .withIconTintingEnabled(true)
+//                .withSelectable(false));
+//        addedIds.add(Constants.ADD_TASK_LIST);
+//
+//        // Save the id to control the Navigation Drawer more properly
+//        mTaskListIds = addedIds;
+//    }
 }

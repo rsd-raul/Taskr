@@ -5,52 +5,28 @@ import android.content.res.Resources;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-public class TaskList implements Serializable {
+public class TaskList extends BasicType implements Serializable {
 
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
 
-    private int id;
-    private String title;
     private List<Task> tasks;
 
     // ------------------------- Constructor -------------------------
 
     public TaskList(int id, String title, List<Task> tasks) {
-        this.id = id;
-        this.title = title;
+        setId(id);
+        setTitle(title);
         this.tasks = tasks;
     }
 
-    public TaskList(String title, List<Task> tasks) {
-        this.title = title;
-        this.tasks = tasks;
-    }
 
-    public TaskList(String title) {
-        this.title = title;
-        this.tasks = new ArrayList<>();
-    }
 
     // ---------------------- Getters & Setters ----------------------
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public List<Task> getTasks() {
         return tasks;

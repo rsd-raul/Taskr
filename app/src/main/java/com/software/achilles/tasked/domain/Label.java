@@ -5,41 +5,25 @@ import android.support.annotation.NonNull;
 import com.software.achilles.tasked.R;
 import java.io.Serializable;
 
-public class Label implements Serializable {
+public class Label extends BasicType implements Serializable {
 
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
 
-    private int id;
-    private String title;
     private Integer colorRes;
 
     // ------------------------- Constructor -------------------------
 
     public Label(int id, @NonNull String title, Integer colorRes) {
-        this.id = id;
-        this.title = title;
+        setId(id);
+        setTitle(title);
 
         if(colorRes == null)
             this.colorRes = R.color.accent;
     }
 
     // ---------------------- Getters & Setters ----------------------
-
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(@NonNull String title) {
-        this.title = title;
-    }
 
     public int getColorRes() {
         return colorRes;
@@ -52,18 +36,18 @@ public class Label implements Serializable {
 
     @Override
     public String toString() {
-        return title;
+        return getTitle();
     }
 
     // ------------------------ Other methods ------------------------
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Label && ((Label) o).getTitle() == this.title;
+        return o instanceof Label && ((Label) o).getTitle() == getTitle();
     }
 
     @Override
     public int hashCode() {
-        return title.hashCode();
+        return getTitle().hashCode();
     }
 }
