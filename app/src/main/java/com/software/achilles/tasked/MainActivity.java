@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,10 +53,14 @@ public class MainActivity extends AppCompatActivity {
     public ViewPager mViewPager;
     private AccountHeader mAccountHeader;
     private Drawer mDrawer;
+    private Drawer mFilterDrawer;
     private List<Integer> mTaskListIds;
     private PrimaryDrawerItem mTaskListCollapsable;
     private BadgeStyle mBadgeStyleExpand;
     private BadgeStyle mBadgeStyleCollapse;
+    private boolean mExpandedTaskListFilter;
+    private boolean mEpandedLabelListFilter;
+    private boolean mEpandedLocationListFilter;
 
     // ------------------------- Constructor -------------------------
 
@@ -76,16 +81,13 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-//        // Initialize Navigation Drawer variables
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-//
         // Setup Navigation , behavior and first item to checked
         initializeBadges();
         setupHeader();
         setupDrawer();
-//        mNavigationView.getMenu().getItem(0).setChecked(true);
-//        setupDrawerListener();
+        setupDrawerListener();
+        setupExpandableTaskList();
+//        setupFilterDrawer();          TODO a peticion de filter no??
 
         // Configure the fab menu and its children.
         mFamConfigurator = new FloatingActionMenuConfigurator(this);
@@ -211,14 +213,9 @@ public class MainActivity extends AppCompatActivity {
                         settings, contact
                 )
                 .build();
+    }
 
-        // if Task List is expanded populate the Navigation Drawer
-        if(getAndOrSwitch(false)) {
-            addTaskListToDrawer();
-            adaptTaskListCollapsable(false);
-        }else
-            adaptTaskListCollapsable(true);
-
+    private void setupDrawerListener(){
         mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -278,6 +275,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void setupExpandableTaskList(){
+        // if Task List is expanded populate the Navigation Drawer
+        if(getAndOrSwitch(false)) {
+            addTaskListToDrawer();
+            adaptTaskListCollapsable(false);
+        }else
+            adaptTaskListCollapsable(true);
     }
 
     private boolean getAndOrSwitch(boolean switchValue){
@@ -346,6 +352,115 @@ public class MainActivity extends AppCompatActivity {
         mTaskListIds = addedIds;
     }
 
+    private void setupFilterDrawer(){
+
+        // Setup the main components of the Navigation Drawer
+//        PrimaryDrawerItem dashboard = new PrimaryDrawerItem().withIdentifier(Constants.DASHBOARD)
+//                .withName(R.string.dashboard)
+//                .withIcon(R.drawable.ic_dashboard)
+//                .withIconColorRes(R.color.colorPrimary)
+//                .withIconTintingEnabled(true);
+//        PrimaryDrawerItem snoozed = new PrimaryDrawerItem().withIdentifier(Constants.SNOOZED)
+//                .withName(R.string.snoozed)
+//                .withIcon(R.drawable.ic_time_clean)
+//                .withIconColorRes(R.color.amberDate)
+//                .withSelectedTextColorRes(R.color.amberDate)
+//                .withIconTintingEnabled(true);
+//        PrimaryDrawerItem completed = new PrimaryDrawerItem().withIdentifier(Constants.COMPLETED)
+//                .withName(R.string.completed)
+//                .withIcon(R.drawable.ic_done)
+//                .withIconColorRes(R.color.colorSuccess)
+//                .withSelectedTextColorRes(R.color.colorSuccess)
+//                .withIconTintingEnabled(true);
+//        PrimaryDrawerItem glance = new PrimaryDrawerItem().withIdentifier(Constants.GLANCE)
+//                .withName(R.string.glance)
+//                .withIcon(R.drawable.ic_calendar_list)
+//                .withIconTintingEnabled(true);
+//        PrimaryDrawerItem planner = new PrimaryDrawerItem().withIdentifier(Constants.PLANNER)
+//                .withName(R.string.planner)
+//                .withIcon(R.drawable.ic_view_carousel)
+//                .withIconTintingEnabled(true);
+//        SecondaryDrawerItem settings = new SecondaryDrawerItem().withIdentifier(Constants.SETTINGS)
+//                .withName(R.string.settings)
+//                .withIcon(R.drawable.ic_settings)
+//                .withIconTintingEnabled(true)
+//                .withSelectable(false);
+//        SecondaryDrawerItem contact = new SecondaryDrawerItem().withIdentifier(Constants.CONTACT)
+//                .withName(R.string.contact)
+//                .withIcon(R.drawable.ic_email)
+//                .withIconTintingEnabled(true)
+//                .withSelectable(false);
+
+        mExpandedTaskListFilter = true;
+        mEpandedLabelListFilter = true;
+        mEpandedLocationListFilter = true;
+
+        PrimaryDrawerItem starred = new PrimaryDrawerItem()
+                .withName(R.string.starred)
+                .withIcon(R.drawable.ic_flag)
+                .withIconTintingEnabled(true)
+                .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
+                .withSelectable(true)
+                .withBadge("");
+
+        PrimaryDrawerItem today = new PrimaryDrawerItem()
+                .withName(R.string.dueToday)
+                .withIcon(R.drawable.ic_calendar_today)
+                .withIconTintingEnabled(true)
+                .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
+                .withSelectable(true)
+                .withBadge("");
+
+        PrimaryDrawerItem thisWeek = new PrimaryDrawerItem()
+                .withName(R.string.dueThisWeek)
+                .withIcon(R.drawable.ic_calendar_list)
+                .withIconTintingEnabled(true)
+                .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
+                .withSelectable(true)
+                .withBadge("");
+
+        PrimaryDrawerItem taskListCollapsable = new PrimaryDrawerItem()
+                .withName(R.string.taskList)
+                .withIcon(R.drawable.ic_list_bullet)
+                .withIconTintingEnabled(true)
+                .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
+                .withSelectable(false)
+                .withBadge("");
+
+        PrimaryDrawerItem labelListCollapsable = new PrimaryDrawerItem()
+                .withName(R.string.labelList)
+                .withIcon(R.drawable.ic_label_outline)
+                .withIconTintingEnabled(true)
+                .withIdentifier(Constants.COLLAPSABLE_LABEL_LIST)
+                .withSelectable(false)
+                .withBadge("");
+
+        PrimaryDrawerItem labelLocationCollapsable = new PrimaryDrawerItem()
+                .withName(R.string.locationList)
+                .withIcon(R.drawable.ic_place)
+                .withIconTintingEnabled(true)
+                .withIdentifier(Constants.COLLAPSABLE_LABEL_LIST)
+                .withSelectable(false)
+                .withBadge("");
+
+        mFilterDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .withActionBarDrawerToggle(true)
+                .withAccountHeader(mAccountHeader)
+                .addDrawerItems(
+                        starred, today, thisWeek,
+                        new DividerDrawerItem(),
+                        taskListCollapsable,
+                        new DividerDrawerItem(),
+                        labelListCollapsable,
+                        new DividerDrawerItem(),
+                        labelLocationCollapsable
+                )
+                .withDrawerGravity(Gravity.END)
+                .build();
+    }
+
     // -------------------------- View Pager -------------------------
 
     private void setupViewPager(ViewPager viewPager) {
@@ -408,9 +523,10 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.menuFAB);
 
-        if(fam.isOpened())
+        if(fam.isOpened() || mDrawer.isDrawerOpen()) {
             fam.close(true);
-        else
+            mDrawer.closeDrawer();
+        }else
             super.onBackPressed();
     }
 

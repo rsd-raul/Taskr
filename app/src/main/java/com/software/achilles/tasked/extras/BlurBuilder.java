@@ -41,6 +41,7 @@ import android.view.View;
 //    }
 //}
 
+// TODO Implement?
 public class BlurBuilder {
     private static final float BITMAP_SCALE = 0.4f;
     private static final float BLUR_RADIUS = 7.5f;

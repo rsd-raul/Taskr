@@ -1,9 +1,11 @@
 package com.software.achilles.tasked.domain;
 
 import android.location.Location;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -19,15 +21,17 @@ public class Task implements Serializable {
     private String description;
     private Date dueDate;
     private Location location;
+    ArrayList<Label> labels;
 
     // ------------------------- Constructor -------------------------
 
-    public Task(Boolean finished, String title, String description, Date dueDate, Location location) {
+    public Task(Boolean finished, @NonNull String title, String description, Date dueDate, Location location, ArrayList<Label> labels) {
         this.finished = finished;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.location = location;
+        this.labels = labels;
     }
 
     // ---------------------- Getters & Setters ----------------------
@@ -49,7 +53,7 @@ public class Task implements Serializable {
     public String getTitle() {
         return title;
     }
-    public void setTitle(String title) {
+    public void setTitle(@NonNull String title) {
         this.title = title;
     }
 
@@ -72,6 +76,13 @@ public class Task implements Serializable {
     }
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public ArrayList<Label> getLabels() {
+        return labels;
+    }
+    public void setLabels(ArrayList<Label> labels) {
+        this.labels = labels;
     }
 
     // -------------------------- To String --------------------------

@@ -4,15 +4,20 @@ package com.software.achilles.tasked.controllers;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.domain.Label;
 import com.software.achilles.tasked.domain.Task;
 import com.software.achilles.tasked.domain.TaskList;
+import com.software.achilles.tasked.extras.DistributedRandomNumberGenerator;
 import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class TaskController {
 
@@ -23,6 +28,7 @@ public class TaskController {
     private static TaskController instance;
     public static ArrayList<Task> sTasks;
     public static ArrayList<TaskList> sTaskLists;
+    public static ArrayList<Label> sLabels;
     private Task actualTask, lastDeleted;
 //    public static Date taskDate;
 
@@ -46,37 +52,65 @@ public class TaskController {
     // TODO SOLO PARA TEST
     private void randomPopulation(int amountList, int amountTasks) {
         sTaskLists = new ArrayList<>();
+        sLabels = new ArrayList<>();
 
-        String[] listTitles = new String[]{"Lista muy larga", "Lista corta"};
+        // Fields to switch and use
+
         String[] titles = new String[]{"Tarea increiblemente larga", "Tarea corta"};
         String[] descriptions = new String[]{"Descripcion increiblemente larga", "Descripcion corta", null};
         Date[] dueDates = new Date[]{Calendar.getInstance().getTime(), null};
+
+        String[] listTitles = new String[]{"Lista muy larga", "Lista corta"};
+
+        String[] labelTitles = new String[]{"Compras", "Trabajo", "Coche", "Perro", "Random", "Raaaaaandom"};
+        Integer[] labelColors = new Integer[]{R.color.amberDate, R.color.colorPrimary, R.color.tealLocation, null};
+        Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
+
+        for (int i = 0; i < 6; i++) {
+            Integer labelColor = (i < 3) ? labelColors[i] : null;
+
+            sLabels.add(new Label(i+600, labelTitles[i], labelColor));
+        }
 
         Random random = new Random();
         while (amountList > 0) {
             List<Task> aux = new ArrayList<>();
             int amountTaskWhile = amountTasks;
+
             while (amountTaskWhile > 0) {
                 Boolean finished = (random.nextBoolean());
                 String title = titles[random.nextInt(2)];
                 String description = descriptions[random.nextInt(3)];
                 Date dueDate = dueDates[random.nextInt(2)];
+                Set<Label> labels = new HashSet<>();
+                Integer labelQuantity = labelQuantities[random.nextInt(4)];
 
-                aux.add(new Task(finished, title, description, dueDate, null));
+                for (int i = 0; i < labelQuantity; i++)
+                    labels.add(sLabels.get(random.nextInt(6)));
+
+                aux.add(new Task(finished, title, description, dueDate, null, new ArrayList<>(labels)));
                 amountTaskWhile--;
             }
+
             String listTitle = listTitles[random.nextInt(2)];
             TaskList taskList = new TaskList(amountList+300, listTitle, aux);
             sTaskLists.add(taskList);
             amountList--;
         }
-        Log.d("myApp", "CONTROLLER POPULATED");
+
+        Log.d("myApp", "CONTROLLER POPULATED" + " " +
+                sTaskLists.size() + " " +
+                sTaskLists.get(0).getTasks().size() + " " +
+                sLabels.size());
     }
+
     // TODO SOLO PARA TEST... O NO.
     public static int getPositionById(int id){
+        // Gives you the position of a TaskList based on its id
         for (int positionOnList = 0; positionOnList < sTaskLists.size(); positionOnList++)
             if(sTaskLists.get(positionOnList).getId() == id)
                 return positionOnList;
+
         return -1;
     }
 
