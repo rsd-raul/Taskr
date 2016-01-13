@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mExpandedTaskListFilter = false;
     private boolean mExpandedLabelListFilter = false;
     private boolean mExpandedLocationListFilter = false;
+    private Context mAppContext;
 
     // ------------------------- Constructor -------------------------
 
@@ -79,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize TaskController
         mTaskController = TaskController.getInstance();
+
+        // Initialize context
+        mAppContext = getApplicationContext();
 
         // Set ActionBar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -133,11 +137,11 @@ public class MainActivity extends AppCompatActivity {
                         new ProfileDrawerItem()
                                 .withName("John Doe")
                                 .withEmail("jonnydoe@gmail.com")
-                                .withIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.person_image_empty)),
+                                .withIcon(ContextCompat.getDrawable(mAppContext, R.drawable.person_image_empty)),
                         new ProfileDrawerItem()
                                 .withName("John Doe Work")
                                 .withEmail("jonnydoework@gmail.com")
-                                .withIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.person_image_empty))
+                                .withIcon(ContextCompat.getDrawable(mAppContext, R.drawable.person_image_empty))
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -163,12 +167,14 @@ public class MainActivity extends AppCompatActivity {
                 .withName(R.string.snoozed)
                 .withIcon(R.drawable.ic_time_clean)
                 .withIconColorRes(R.color.amberDate)
+                .withSelectedIconColor(ContextCompat.getColor(mAppContext, R.color.amberDate))
                 .withSelectedTextColorRes(R.color.amberDate)
                 .withIconTintingEnabled(true);
         PrimaryDrawerItem completed = new PrimaryDrawerItem().withIdentifier(Constants.COMPLETED)
                 .withName(R.string.completed)
                 .withIcon(R.drawable.ic_done)
                 .withIconColorRes(R.color.colorSuccess)
+                .withSelectedIconColor(ContextCompat.getColor(mAppContext, R.color.colorSuccess))
                 .withSelectedTextColorRes(R.color.colorSuccess)
                 .withIconTintingEnabled(true);
         PrimaryDrawerItem glance = new PrimaryDrawerItem().withIdentifier(Constants.GLANCE)
@@ -346,6 +352,7 @@ public class MainActivity extends AppCompatActivity {
                 .withIcon(R.drawable.ic_flag)
                 .withIconTintingEnabled(true)
                 .withIconColorRes(R.color.colorAccent)
+                .withSelectedIconColor(ContextCompat.getColor(mAppContext, R.color.colorAccent))
                 .withSelectedTextColorRes(R.color.colorAccent)
                 .withIdentifier(Constants.STARRED)
                 .withSelectable(true)
@@ -355,6 +362,7 @@ public class MainActivity extends AppCompatActivity {
                 .withName(R.string.dueToday)
                 .withIcon(R.drawable.ic_calendar_today)
                 .withIconColorRes(R.color.amberDate)
+                .withSelectedIconColor(ContextCompat.getColor(mAppContext ,R.color.amberDate))
                 .withSelectedTextColorRes(R.color.amberDate)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_TODAY)
@@ -365,6 +373,7 @@ public class MainActivity extends AppCompatActivity {
                 .withName(R.string.dueThisWeek)
                 .withIcon(R.drawable.ic_calendar_list)
                 .withIconColorRes(R.color.colorPrimary)
+                .withSelectedIconColor(ContextCompat.getColor(mAppContext, R.color.colorPrimary))
                 .withSelectedTextColorRes(R.color.colorPrimary)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_THIS_WEEK)
@@ -507,18 +516,25 @@ public class MainActivity extends AppCompatActivity {
         // Get the position for the item in the drawer in order to add its children
         Integer position = drawer.getPosition(identifier)+1;
 
+
+
         // Add the Task Lists to the drawer by order at the right position
         for (int i = 0; i < taskLists.size(); i++) {
+
+            // In case of the Label we customize the color, else, we use the default
+            int color = R.color.secondaryText;
+            if(identifier == Constants.COLLAPSABLE_LABEL_LIST)
+                color = ((Label) taskLists.get(i)).getColorRes();
+
             IDrawerItem itemToAdd = new SecondaryDrawerItem().withIdentifier(taskLists.get(i).getId())
                     .withLevel(2)
                     .withName(taskLists.get(i).getTitle())
                     .withIcon(iconRes)
+                    .withIconColorRes(color)
                     .withIconTintingEnabled(true)
                     .withSelectable(false);
 
-//            if(identifier == Constants.COLLAPSABLE_LABEL_LIST)
-//                itemToAdd.w;
-
+//
             drawer.addItemAtPosition(itemToAdd, position);
 
 

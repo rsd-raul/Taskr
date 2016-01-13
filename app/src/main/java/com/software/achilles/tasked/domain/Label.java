@@ -1,6 +1,7 @@
 package com.software.achilles.tasked.domain;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.software.achilles.tasked.R;
 import java.io.Serializable;
@@ -21,6 +22,8 @@ public class Label extends BasicType implements Serializable {
 
         if(colorRes == null)
             this.colorRes = R.color.accent;
+        else
+            this.colorRes = colorRes;
     }
 
     // ---------------------- Getters & Setters ----------------------
