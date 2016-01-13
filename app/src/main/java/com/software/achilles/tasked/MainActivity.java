@@ -207,6 +207,24 @@ public class MainActivity extends AppCompatActivity {
                         new DividerDrawerItem(),
                         mTaskListCollapsableMain
                 )
+//      TODO 1 de 2 - Descomentando esto tienes drawer solo en el click y puedes cerrarlo a mano :D
+//                .withOnDrawerListener(new Drawer.OnDrawerListener() {
+//                    @Override
+//                    public void onDrawerOpened(View drawerView) {
+//                        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
+//                                DrawerLayout.LOCK_MODE_UNLOCKED);
+//                    }
+//
+//                    @Override
+//                    public void onDrawerClosed(View drawerView) {
+//                        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
+//                                DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
+//                    }
+//
+//                    @Override
+//                    public void onDrawerSlide(View drawerView, float slideOffset) {
+//                    }
+//                })
                 .addStickyDrawerItems(
                         settings, contact
                 )
@@ -403,10 +421,9 @@ public class MainActivity extends AppCompatActivity {
                 .withDrawerGravity(Gravity.END)
                 .append(mDrawer);
 
-        // TODO esto bloquea el gesto para el derecho... Por si te da por ahí
+//      TODO 2 de 2 - descomentando esto tienes drawer solo en el click y puedes cerrarlo a mano :D
 //        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
 //                DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
-
 
         // TODO tal vez reducir un poco el ancho del Drawer :S
 //        mFilterDrawer.getContent().getLayoutParams().width = DrawerLayout.LayoutParams.WRAP_CONTENT;
