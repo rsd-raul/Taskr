@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:fitsSystemWindows="true" >
 
+    <!--DEPRECATED BY DRAWER LIBRARY DEPRECATED BY DRAWER LIBRARY DEPRECATED BY DRAWER LIBRARY-->
+
     <!-- The main content view -->
     <FrameLayout
         android:id="@+id/content_frame"

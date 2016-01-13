@@ -14,12 +14,15 @@
 
     <!-- Filter -->
 
-    <string name="taskList">Task lists</string>
-    <string name="labelList">Label lists</string>
-    <string name="locationList">Location lists</string>
-    <string name="dueToday">Due today</string>
-    <string name="dueThisWeek">Due this week</string>
-    <string name="starred">Starred</string>
+    <string name="main_filters">Main filters</string>
+        <string name="starred">Starred</string>
+        <string name="dueToday">Due today</string>
+        <string name="dueThisWeek">Due this week</string>
+
+    <string name="list_filters">List filters</string>
+        <string name="taskList">Task lists</string>
+        <string name="labelList">Label lists</string>
+        <string name="locationList">Location lists</string>
 
     <!-- ActionBar Icons -->
 

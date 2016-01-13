@@ -6,9 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context=".MainActivity" >
+    <!--tools:showIn="@layout/activity_main"-->
+    <!--android:fitsSystemWindows="true"-->
 
     <android.support.design.widget.AppBarLayout style="@style/appBarLayout" >
 
@@ -27,25 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-
-    <!--<android.support.v4.widget.NestedScrollView-->
-        <!--android:layout_marginTop="?attr/actionBarSize"-->
-        <!--android:id="@+id/scrollView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" >-->
-
-
-        <!--<fragment class="com.software.achilles.tasked.fragments.DashboardListFragment"-->
-            <!--android:id="@+id/dashboardListFragment"-->
-
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--tools:layout="@layout/fragment_dashboard_list" />-->
-
-
-    <!--</android.support.v4.widget.NestedScrollView>-->
-
 
     <com.github.clans.fab.FloatingActionMenu style="@style/menuFAB"
         android:id="@+id/menuFAB" >

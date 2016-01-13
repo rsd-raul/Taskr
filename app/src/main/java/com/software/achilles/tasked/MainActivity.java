@@ -29,6 +29,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.software.achilles.tasked.adapters.Adapter;
@@ -87,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
         setupDrawer();
         setupDrawerListener();
         setupExpandableTaskList();
-//        setupFilterDrawer();          TODO a peticion de filter no??
+//        setupFilterDrawer();         // TODO a peticion de filter no??
+        // TODO si ejecuto aqui me cargo la sombra transparente para profile en la otra
 
         // Configure the fab menu and its children.
         mFamConfigurator = new FloatingActionMenuConfigurator(this);
@@ -355,45 +357,15 @@ public class MainActivity extends AppCompatActivity {
     private void setupFilterDrawer(){
 
         // Setup the main components of the Navigation Drawer
-//        PrimaryDrawerItem dashboard = new PrimaryDrawerItem().withIdentifier(Constants.DASHBOARD)
-//                .withName(R.string.dashboard)
-//                .withIcon(R.drawable.ic_dashboard)
-//                .withIconColorRes(R.color.colorPrimary)
-//                .withIconTintingEnabled(true);
-//        PrimaryDrawerItem snoozed = new PrimaryDrawerItem().withIdentifier(Constants.SNOOZED)
-//                .withName(R.string.snoozed)
-//                .withIcon(R.drawable.ic_time_clean)
-//                .withIconColorRes(R.color.amberDate)
-//                .withSelectedTextColorRes(R.color.amberDate)
-//                .withIconTintingEnabled(true);
-//        PrimaryDrawerItem completed = new PrimaryDrawerItem().withIdentifier(Constants.COMPLETED)
-//                .withName(R.string.completed)
-//                .withIcon(R.drawable.ic_done)
-//                .withIconColorRes(R.color.colorSuccess)
-//                .withSelectedTextColorRes(R.color.colorSuccess)
-//                .withIconTintingEnabled(true);
-//        PrimaryDrawerItem glance = new PrimaryDrawerItem().withIdentifier(Constants.GLANCE)
-//                .withName(R.string.glance)
-//                .withIcon(R.drawable.ic_calendar_list)
-//                .withIconTintingEnabled(true);
-//        PrimaryDrawerItem planner = new PrimaryDrawerItem().withIdentifier(Constants.PLANNER)
-//                .withName(R.string.planner)
-//                .withIcon(R.drawable.ic_view_carousel)
-//                .withIconTintingEnabled(true);
-//        SecondaryDrawerItem settings = new SecondaryDrawerItem().withIdentifier(Constants.SETTINGS)
-//                .withName(R.string.settings)
-//                .withIcon(R.drawable.ic_settings)
-//                .withIconTintingEnabled(true)
-//                .withSelectable(false);
-//        SecondaryDrawerItem contact = new SecondaryDrawerItem().withIdentifier(Constants.CONTACT)
-//                .withName(R.string.contact)
-//                .withIcon(R.drawable.ic_email)
-//                .withIconTintingEnabled(true)
-//                .withSelectable(false);
 
         mExpandedTaskListFilter = true;
         mEpandedLabelListFilter = true;
         mEpandedLocationListFilter = true;
+
+        SectionDrawerItem mainSection = new SectionDrawerItem()
+                .withName(R.string.main_filters);
+        SectionDrawerItem listSection = new SectionDrawerItem()
+                .withName(R.string.list_filters);
 
         PrimaryDrawerItem starred = new PrimaryDrawerItem()
                 .withName(R.string.starred)
@@ -445,17 +417,13 @@ public class MainActivity extends AppCompatActivity {
 
         mFilterDrawer = new DrawerBuilder()
                 .withActivity(this)
-                .withToolbar(mToolbar)
-                .withActionBarDrawerToggle(true)
-                .withAccountHeader(mAccountHeader)
+                .withDisplayBelowStatusBar(true)
+                .withCloseOnClick(false)
                 .addDrawerItems(
+                        mainSection,
                         starred, today, thisWeek,
-                        new DividerDrawerItem(),
-                        taskListCollapsable,
-                        new DividerDrawerItem(),
-                        labelListCollapsable,
-                        new DividerDrawerItem(),
-                        labelLocationCollapsable
+                        listSection,
+                        taskListCollapsable, labelListCollapsable, labelLocationCollapsable
                 )
                 .withDrawerGravity(Gravity.END)
                 .build();
@@ -504,6 +472,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.action_filter:
+                if(mFilterDrawer == null)
+                    setupFilterDrawer();
+
+                mFilterDrawer.openDrawer();
                 break;
 
             case R.id.action_search:
