@@ -418,6 +418,8 @@ public class MainActivity extends AppCompatActivity {
                         listSection,
                         mLabelListCollapsable, mLocationListCollapsable, mTaskListCollapsable
                 )
+                // TODO Seguro que quieres cambiarlo?
+                .withDrawerWidthRes(R.dimen.filter_drawer_width)
                 .withDrawerGravity(Gravity.END)
                 .append(mDrawer);
 
