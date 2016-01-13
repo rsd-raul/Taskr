@@ -67,14 +67,15 @@ public class TaskController {
 
         String[] locationTitles = new String[]{"Casa", "Trabajo", "Gimnasio", "Random"};
 
-        String[] labelTitles = new String[]{"Compras", "Trabajo", "Coche", "Perro", "Random", "Raaaaaandom"};
-        Integer[] labelColors = new Integer[]{R.color.amberDate, R.color.colorPrimary, R.color.tealLocation, null};
+        String[] labelTitles = new String[]{"Compras", "Trabajo", "Coche", "Perro", "Random"};
+        Integer[] labelColors = new Integer[]{R.color.amberDate, null, R.color.colorPrimary,
+                                            R.color.tealLocation, R.color.app_body_text_1};
         Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
 
 
 
-        for (int i = 0; i < 6; i++)
-            sLabels.add(new Label(i+600, labelTitles[i], (i < 3) ? labelColors[i] : null));
+        for (int i = 0; i < 5; i++)
+            sLabels.add(new Label(i+600, labelTitles[i], labelColors[i]));
 
         Random random = new Random();
         while (amountList > 0) {
@@ -90,7 +91,7 @@ public class TaskController {
                 Integer labelQuantity = labelQuantities[random.nextInt(4)];
 
                 for (int i = 0; i < labelQuantity; i++)
-                    labels.add(sLabels.get(random.nextInt(6)));
+                    labels.add(sLabels.get(random.nextInt(5)));
 
                 aux.add(new Task(finished, title, description, dueDate, null, new ArrayList<>(labels)));
                 amountTaskWhile--;
