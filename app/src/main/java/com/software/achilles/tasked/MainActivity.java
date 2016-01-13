@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -215,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
                 .addStickyDrawerItems(
                         settings, contact
                 )
+                .withActionBarDrawerToggleAnimated(true)
                 .build();
 
         setupDrawerListener();
@@ -386,11 +389,15 @@ public class MainActivity extends AppCompatActivity {
 
         PrimaryDrawerItem labelLocationCollapsable = new PrimaryDrawerItem()
                 .withName(R.string.locationList)
-                .withIcon(R.drawable.ic_place)
+                .withIcon(R.drawable.ic_map)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.COLLAPSABLE_LOCATION_LIST)
                 .withSelectable(false)
                 .withBadge("");
+
+        Context context = getApplicationContext();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final Boolean filterOnlyByButton = preferences.getBoolean("filterOnlyByButton", false);
 
         mFilterDrawer = new DrawerBuilder()
                 .withActivity(this)
@@ -400,23 +407,20 @@ public class MainActivity extends AppCompatActivity {
                         mainSection,
                         starred, today, thisWeek,
                         listSection,
-                        taskListCollapsable, labelListCollapsable, labelLocationCollapsable
+                        labelListCollapsable, labelLocationCollapsable, taskListCollapsable
                 )
                 .withDrawerGravity(Gravity.END)
-//                .build();
                 .append(mDrawer);
-                // TODO esto hace que los drawer se dibujen en un mismo plano, pero no vale para
-                // activar usando SOLO el boton, así que tendrias que descomentar lo de abajo
 
-
-        // TODO esto a lo mejor es lo suyo que sea una opcion
-//        mFilterDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        //  TODO comprobar si las alertas por memoria es por esto
+        // TODO esto bloquea el gesto para el derecho... Por si te da por ahí
+//        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
+//                DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
 
         setupFilterDrawerListener();
     }
 
     private void setupFilterDrawerListener(){
+
         mFilterDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -489,11 +493,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void addLabelsToFilterDrawer(ArrayList<Label> listLabels){
         addItemListToDrawer(new ArrayList<BasicType>(listLabels), mFilterDrawer,
-                false, R.drawable.ic_done_all, Constants.COLLAPSABLE_LABEL_LIST);
+                false, R.drawable.ic_label_filled, Constants.COLLAPSABLE_LABEL_LIST);
     }
     private void addLocationsFilterToDrawer(ArrayList<FavoriteLocation> favLocations){
         addItemListToDrawer(new ArrayList<BasicType>(favLocations), mFilterDrawer,
-                false, R.drawable.ic_done_all, Constants.COLLAPSABLE_LOCATION_LIST);
+                false, R.drawable.ic_place, Constants.COLLAPSABLE_LOCATION_LIST);
     }
 
     private void addItemListToDrawer(ArrayList<BasicType> taskLists, Drawer drawer,
@@ -505,14 +509,21 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the Task Lists to the drawer by order at the right position
         for (int i = 0; i < taskLists.size(); i++) {
-            drawer.addItemAtPosition(
-                    new SecondaryDrawerItem().withIdentifier(taskLists.get(i).getId())
-                            .withLevel(2)
-                            .withName(taskLists.get(i).getTitle())
-                            .withIcon(iconRes)
-                            .withIconTintingEnabled(true)
-                            .withSelectable(false),
-                    position);
+            IDrawerItem itemToAdd = new SecondaryDrawerItem().withIdentifier(taskLists.get(i).getId())
+                    .withLevel(2)
+                    .withName(taskLists.get(i).getTitle())
+                    .withIcon(iconRes)
+                    .withIconTintingEnabled(true)
+                    .withSelectable(false);
+
+//            if(identifier == Constants.COLLAPSABLE_LABEL_LIST)
+//                itemToAdd.w;
+
+            drawer.addItemAtPosition(itemToAdd, position);
+
+
+
+
             position++;
             addedIds.add(taskLists.get(i).getId());
         }
@@ -608,7 +619,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.menuFAB);
 
-        if(fam.isOpened() || mDrawer.isDrawerOpen()) {
+        if(fam.isOpened() || mFilterDrawer != null && mDrawer.isDrawerOpen()) {
             fam.close(true);
             mDrawer.closeDrawer();
         }else if(mFilterDrawer != null && mFilterDrawer.isDrawerOpen())

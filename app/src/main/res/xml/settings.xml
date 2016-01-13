@@ -86,4 +86,12 @@
         android:key="10"
         android:defaultValue="true"
         android:height="0dp"/>
+
+    <CheckBoxPreference
+        android:key="filterOnlyByButton"
+        android:title="@string/notificationSound"
+        android:summaryOff="@string/notificationSoundOff"
+        android:summaryOn="@string/notificationSoundOn"
+        android:defaultValue="false"/>
+
 </PreferenceScreen>
