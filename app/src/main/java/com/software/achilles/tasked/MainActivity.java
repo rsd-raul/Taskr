@@ -1,35 +1,24 @@
 package com.software.achilles.tasked;
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.adapter.DrawerAdapter;
 import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -38,17 +27,12 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.software.achilles.tasked.adapters.Adapter;
 import com.software.achilles.tasked.controllers.TaskController;
-import com.software.achilles.tasked.domain.BasicType;
-import com.software.achilles.tasked.domain.FavoriteLocation;
-import com.software.achilles.tasked.domain.Label;
-import com.software.achilles.tasked.domain.TaskList;
+import com.software.achilles.tasked.domain.*;
 import com.software.achilles.tasked.fragments.DashboardListFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.util.Constants;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private PrimaryDrawerItem mTaskListCollapsableMain;
     private BadgeStyle mBadgeStyleExpand;
     private BadgeStyle mBadgeStyleCollapse;
-    private Context mAppContext;
+    private boolean mExpandedTaskList = false;
     private boolean mExpandedTaskListFilter = false;
     private boolean mExpandedLabelListFilter = false;
     private boolean mExpandedLocationListFilter = false;
@@ -90,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         mTaskController = TaskController.getInstance();
 
         // Initialize context
-        mAppContext = getApplicationContext();
 
         // Set ActionBar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -100,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
         initializeBadges();
         setupDrawer();
         setupFilterDrawer();
-        // TODO a peticion de filter mejor? recuerda problemas de drawer
-        // TODO si ejecuto aqui me cargo la sombra transparente para profile en la otra
-        // SI LO PONGO ARRIBA SE CORRIJE, PERO QUEDA FEO TELA
 
         // Configure the fab menu and its children.
         mFamConfigurator = new FloatingActionMenuConfigurator(this);
@@ -145,16 +125,16 @@ public class MainActivity extends AppCompatActivity {
                         new ProfileDrawerItem()
                                 .withName("John Doe")
                                 .withEmail("jonnydoe@gmail.com")
-                                .withIcon(ContextCompat.getDrawable(mAppContext, R.drawable.person_image_empty)),
+                                .withIcon(R.drawable.person_image_empty),
                         new ProfileDrawerItem()
                                 .withName("John Doe Work")
                                 .withEmail("jonnydoework@gmail.com")
-                                .withIcon(ContextCompat.getDrawable(mAppContext, R.drawable.person_image_empty))
+                                .withIcon(R.drawable.person_image_empty)
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        //TODO onProfileChanged
+
                         return true;
                     }
                 })
@@ -166,24 +146,27 @@ public class MainActivity extends AppCompatActivity {
         setupHeader();
 
         // Setup the main components of the Navigation Drawer
+        int color = R.color.colorPrimary;
         PrimaryDrawerItem dashboard = new PrimaryDrawerItem().withIdentifier(Constants.DASHBOARD)
-                .withName(R.string.dashboard)
                 .withIcon(R.drawable.ic_dashboard)
-                .withIconColorRes(R.color.colorPrimary)
+                .withName(R.string.dashboard)
+                .withIconColorRes(color)
                 .withIconTintingEnabled(true);
+        color = R.color.amberDate;
         PrimaryDrawerItem snoozed = new PrimaryDrawerItem().withIdentifier(Constants.SNOOZED)
-                .withName(R.string.snoozed)
                 .withIcon(R.drawable.ic_time_clean)
-                .withIconColorRes(R.color.amberDate)
-                .withSelectedIconColor(ContextCompat.getColor(mAppContext, R.color.amberDate))
-                .withSelectedTextColorRes(R.color.amberDate)
+                .withName(R.string.snoozed)
+                .withIconColorRes(color)
+                .withSelectedIconColorRes(color)
+                .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true);
+        color = R.color.colorSuccess;
         PrimaryDrawerItem completed = new PrimaryDrawerItem().withIdentifier(Constants.COMPLETED)
-                .withName(R.string.completed)
                 .withIcon(R.drawable.ic_done)
-                .withIconColorRes(R.color.colorSuccess)
-                .withSelectedIconColor(ContextCompat.getColor(mAppContext, R.color.colorSuccess))
-                .withSelectedTextColorRes(R.color.colorSuccess)
+                .withName(R.string.completed)
+                .withIconColorRes(color)
+                .withSelectedIconColorRes(color)
+                .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true);
         PrimaryDrawerItem glance = new PrimaryDrawerItem().withIdentifier(Constants.GLANCE)
                 .withName(R.string.glance)
@@ -203,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
                 .withIcon(R.drawable.ic_email)
                 .withIconTintingEnabled(true)
                 .withSelectable(false);
-
         mTaskListCollapsableMain = new PrimaryDrawerItem()
                 .withName(R.string.taskList)
                 .withIcon(R.drawable.ic_list_bullet)
@@ -212,15 +194,12 @@ public class MainActivity extends AppCompatActivity {
                 .withSelectable(false)
                 .withBadge("");
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"",
-                prefs.getBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS+"", true)).apply();
-
         mDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(mToolbar)
                 .withActionBarDrawerToggle(true)
                 .withAccountHeader(mAccountHeader)
+                .withActionBarDrawerToggleAnimated(true)
                 .addDrawerItems(
                         dashboard, snoozed, completed,
                         new DividerDrawerItem(),
@@ -231,7 +210,6 @@ public class MainActivity extends AppCompatActivity {
                 .addStickyDrawerItems(
                         settings, contact
                 )
-                .withActionBarDrawerToggleAnimated(true)
                 .build();
 
         setupDrawerListener();
@@ -258,35 +236,27 @@ public class MainActivity extends AppCompatActivity {
 
                     case Constants.SETTINGS:
                         // Launch the Preferences Fragment
-                        Intent intentSettings = new Intent(getApplicationContext(), Preferences.class);
-                        startActivity(intentSettings);
+                        Intent intSettings = new Intent(getApplicationContext(), Preferences.class);
+                        startActivity(intSettings);
                         break;
 
                     case Constants.CONTACT:
-                        // Create a custom intent for Emails
-                        Intent intentEmail = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                getResources().getString(R.string.mailto),
-                                getResources().getString(R.string.developer_email), null));
-
-                        //Populate the fields by default
-                        intentEmail.putExtra(Intent.EXTRA_SUBJECT,
-                                getResources().getString(R.string.subject_email));
-
-                        // Create a dialog only for Email clients
-                        if (intentEmail.resolveActivity(getPackageManager()) != null)
-                            startActivity(Intent.createChooser(intentEmail,
-                                    getResources().getString(R.string.send_email)));
+                        contactByEmail();
                         break;
 
                     case Constants.COLLAPSABLE_TASK_LIST:
-                        switchExpandableTaskListContentAndPreference();
+                        // Populate or remove the Task lists
+                        switchExpandableTaskListContent();
                         break;
 
                     case Constants.ADD_TASK_LIST:
                         break;
 
                     default:
-                        int index = TaskController.getPositionById(identifier);
+                        // Calculate the position according to the Task List identifier.
+                        int index = TaskController.getTaskListPositionById(identifier);
+
+                        // Set the view pager on the correct list
                         if (index != -1)
                             mViewPager.setCurrentItem(index, true);
                         break;
@@ -301,31 +271,35 @@ public class MainActivity extends AppCompatActivity {
         setupExpandableTaskList();
     }
 
+    private void contactByEmail(){
+        // Create a custom intent for Emails
+        Intent intentEmail = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                getResources().getString(R.string.mailto),
+                getResources().getString(R.string.developer_email), null));
+
+        //Populate the fields by default
+        intentEmail.putExtra(Intent.EXTRA_SUBJECT,
+                getResources().getString(R.string.subject_email));
+
+        // Create a dialog only for Email clients
+        if (intentEmail.resolveActivity(getPackageManager()) != null)
+            startActivity(Intent.createChooser(intentEmail,
+                    getResources().getString(R.string.send_email)));
+    }
+
     private void setupExpandableTaskList(){
         // if Task List is expanded populate the Navigation Drawer
-        if(getAndOrSwitch(false)) {
+        if(mExpandedTaskList) {
             addTaskListToMainDrawer(TaskController.sTaskLists);
             adaptTaskListExpandable(false);
         }else
             adaptTaskListExpandable(true);
     }
 
-    private boolean getAndOrSwitch(boolean switchValue){
-        // Get the preference that indicates if the user wants the Task List collapsed or not
-        Context context = getApplicationContext();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean status = preferences.getBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS + "", true);
-
-        // If switch (click on Task List case), switch the values to reflect the change
-        if(switchValue)
-            preferences.edit().putBoolean(Constants.COLLAPSABLE_TASK_LIST_STATUS + "", !status).apply();
-
-        return status;
-    }
-
-    private void switchExpandableTaskListContentAndPreference(){
-        // Get current status for the Task List and in this case switch it in the preferences
-        Boolean status = getAndOrSwitch(true);
+    private void switchExpandableTaskListContent(){
+        // Get current status for the Task List and in this case switch it.
+        Boolean status = mExpandedTaskList;
+        mExpandedTaskList = !mExpandedTaskList;
 
         // If it opened, remove all items, if closed, populate the drawer
         if(status) {
@@ -355,34 +329,35 @@ public class MainActivity extends AppCompatActivity {
         SectionDrawerItem listSection = new SectionDrawerItem()
                 .withName(R.string.list_filters);
 
+        int color = R.color.colorAccent;
         PrimaryDrawerItem starred = new PrimaryDrawerItem()
                 .withName(R.string.starred)
                 .withIcon(R.drawable.ic_flag)
                 .withIconTintingEnabled(true)
-                .withIconColorRes(R.color.colorAccent)
-                .withSelectedIconColor(ContextCompat.getColor(mAppContext, R.color.colorAccent))
-                .withSelectedTextColorRes(R.color.colorAccent)
+                .withIconColorRes(color)
+                .withSelectedIconColorRes(color)
+                .withSelectedTextColorRes(color)
                 .withIdentifier(Constants.STARRED)
                 .withSelectable(true)
                 .withBadge("");
-
+        color = R.color.amberDate;
         PrimaryDrawerItem today = new PrimaryDrawerItem()
                 .withName(R.string.dueToday)
                 .withIcon(R.drawable.ic_calendar_today)
-                .withIconColorRes(R.color.amberDate)
-                .withSelectedIconColor(ContextCompat.getColor(mAppContext, R.color.amberDate))
-                .withSelectedTextColorRes(R.color.amberDate)
+                .withIconColorRes(color)
+                .withSelectedIconColorRes(color)
+                .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_TODAY)
                 .withSelectable(true)
                 .withBadge("");
-
+        color = R.color.colorPrimary;
         PrimaryDrawerItem thisWeek = new PrimaryDrawerItem()
                 .withName(R.string.dueThisWeek)
                 .withIcon(R.drawable.ic_calendar_list)
-                .withIconColorRes(R.color.colorPrimary)
-                .withSelectedIconColor(ContextCompat.getColor(mAppContext, R.color.colorPrimary))
-                .withSelectedTextColorRes(R.color.colorPrimary)
+                .withIconColorRes(color)
+                .withSelectedIconColorRes(color)
+                .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_THIS_WEEK)
                 .withSelectable(true)
@@ -438,12 +413,12 @@ public class MainActivity extends AppCompatActivity {
 //        mFilterDrawer.getRecyclerView().getLayoutParams().width = 20;
 //        mFilterDrawer.getRecyclerView().getLayoutParams().width = RecyclerView.LayoutParams.WRAP_CONTENT;
 
-        // Setup the listeners for the drawer
-        setupFilterDrawerListener();
-
         // We want the labels opened by default
         addLabelsToFilterDrawer(TaskController.sLabels);
         mExpandedLabelListFilter = true;
+
+        // Setup the listeners for the drawer
+        setupFilterDrawerListener();
     }
 
     private void setupFilterDrawerListener(){
@@ -508,7 +483,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     default:
-                        int index = TaskController.getPositionById(identifier);
+                        int index = TaskController.getTaskListPositionById(identifier);
                         if (index != -1)
                             mViewPager.setCurrentItem(index, true);
                         break;
@@ -672,42 +647,6 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Preferences -------------------------
 
-
-
-
-
-
-
-
-
-
     // ------------------------- Deprecated --------------------------
 
-//    private void addTaskListToDrawer(ArrayList<TaskList> taskLists){
-//        List<Integer>addedIds = new ArrayList<>();
-//
-//        // Add the Task Lists to the drawer by order and at the end
-//        for(TaskList taskList : taskLists) {
-//            mDrawer.addItem(
-//                    new SecondaryDrawerItem().withIdentifier(taskList.getId())
-//                            .withLevel(2)
-//                            .withName(taskList.getTitle())
-//                            .withIcon(R.drawable.ic_done_all)
-//                            .withIconTintingEnabled(true)
-//                            .withSelectable(false));
-//            addedIds.add(taskList.getId());
-//        }
-//
-//        // Add a new add Task List item for convenience, also add its ID to control it.
-//        mDrawer.addItem(new SecondaryDrawerItem().withIdentifier(Constants.ADD_TASK_LIST)
-//                .withLevel(2)
-//                .withName(R.string.addList)
-//                .withIcon(R.drawable.ic_add)
-//                .withIconTintingEnabled(true)
-//                .withSelectable(false));
-//        addedIds.add(Constants.ADD_TASK_LIST);
-//
-//        // Save the id to control the Navigation Drawer more properly
-//        mTaskListIds = addedIds;
-//    }
 }

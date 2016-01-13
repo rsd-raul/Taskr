@@ -110,7 +110,7 @@ public class TaskController {
     }
 
     // TODO SOLO PARA TEST... O NO.
-    public static int getPositionById(int id){
+    public static int getTaskListPositionById(int id){
         // Gives you the position of a TaskList based on its id
         for (int positionOnList = 0; positionOnList < sTaskLists.size(); positionOnList++)
             if(sTaskLists.get(positionOnList).getId() == id)
