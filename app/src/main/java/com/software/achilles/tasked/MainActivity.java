@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -433,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
                     case Constants.COLLAPSABLE_TASK_LIST:
                         if(mExpandedTaskListFilter) {
                             for (int i = 0; i < mTaskListIds.size(); i++)
-                                mDrawer.removeItem(mTaskListIds.get(i));
+                                mFilterDrawer.removeItem(mTaskListIds.get(i));
                             mExpandedTaskListFilter = false;
                         } else {
                             addTaskListToFilterDrawer(TaskController.sTaskLists);
@@ -443,18 +444,20 @@ public class MainActivity extends AppCompatActivity {
 
                     case Constants.COLLAPSABLE_LABEL_LIST:
                         if(mExpandedLabelListFilter) {
+                            Log.d("myApp", mLabelListIds + "Aaaaaaaaaaaaaa");
                             for (int i = 0; i < mLabelListIds.size(); i++)
-                                mDrawer.removeItem(mLabelListIds.get(i));
+                                mFilterDrawer.removeItem(mLabelListIds.get(i));
                             mExpandedLabelListFilter = false;
                         } else {
                             addLabelsToFilterDrawer(TaskController.sLabels);
                             mExpandedLabelListFilter = true;
                         }
                         break;
+
                     case Constants.COLLAPSABLE_LOCATION_LIST:
                         if(mExpandedLocationListFilter) {
                             for (int i = 0; i < mLocationListIds.size(); i++)
-                                mDrawer.removeItem(mLocationListIds.get(i));
+                                mFilterDrawer.removeItem(mLocationListIds.get(i));
                             mExpandedLocationListFilter = false;
                         } else {
                             addLocationsFilterToDrawer(TaskController.sFavouriteLocations);
@@ -536,9 +539,7 @@ public class MainActivity extends AppCompatActivity {
             case Constants.COLLAPSABLE_LOCATION_LIST:
                 mLocationListIds = addedIds;
                 break;
-
         }
-
     }
 
     // -------------------------- View Pager -------------------------
