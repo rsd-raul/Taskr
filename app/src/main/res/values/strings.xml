@@ -20,7 +20,7 @@
         <string name="dueToday">Due today</string>
         <string name="dueThisWeek">Due this week</string>
 
-    <string name="list_filters">List filters</string>
+    <string name="list_filters">Grouped filters</string>
         <string name="by_task_list">By task list</string>
         <string name="by_label">By label</string>
         <string name="by_location">By location</string>
