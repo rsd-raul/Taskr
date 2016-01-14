@@ -19,8 +19,6 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.extras.FloatingActionMenuBehavior;
 
-import java.util.Date;
-
 public class FloatingActionMenuConfigurator {
 
     // --------------------------- Values ----------------------------
@@ -34,7 +32,7 @@ public class FloatingActionMenuConfigurator {
     // ------------------------- Constructor -------------------------
 
     public FloatingActionMenuConfigurator(MainActivity activity) {
-        this.activity = activity;
+        FloatingActionMenuConfigurator.activity = activity;
         fam = (FloatingActionMenu) activity.findViewById(R.id.menuFAB);
 
         configureMenu();

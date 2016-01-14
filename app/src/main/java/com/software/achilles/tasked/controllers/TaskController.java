@@ -1,6 +1,6 @@
 package com.software.achilles.tasked.controllers;
 
-
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -9,7 +9,6 @@ import com.software.achilles.tasked.domain.FavoriteLocation;
 import com.software.achilles.tasked.domain.Label;
 import com.software.achilles.tasked.domain.Task;
 import com.software.achilles.tasked.domain.TaskList;
-import com.software.achilles.tasked.extras.DistributedRandomNumberGenerator;
 import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
@@ -59,20 +58,22 @@ public class TaskController {
 
         // Fields to switch and use
 
-        String[] titles = new String[]{"Tarea increiblemente larga", "Tarea corta"};
-        String[] descriptions = new String[]{"Descripcion increiblemente larga", "Descripcion corta", null};
+        String[] titles = new String[]{"Unbelievable long task", "Short task"};
+        String[] descriptions = new String[]{"Un", "Descripcion corta", null};
         Date[] dueDates = new Date[]{Calendar.getInstance().getTime(), null};
 
-        String[] listTitles = new String[]{"Lista muy larga", "Lista corta"};
+        String[] listTitles = new String[]{"Really long list", "Short list"};
 
-        String[] locationTitles = new String[]{"Casa", "Trabajo", "Gimnasio", "Random"};
+        String[] locationTitles = new String[]{"Home", "Work", "Gym", "Random"};
 
-        String[] labelTitles = new String[]{"Compras", "Trabajo", "Coche", "Perro", "Random"};
+        String[] labelTitles = new String[]{"Groceries", "Inspiration", "Personal", "Work", "Random"};
         Integer[] labelColors = new Integer[]{R.color.amberDate, null, R.color.colorPrimary,
                                             R.color.tealLocation, R.color.app_body_text_1};
         Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
 
-
+        for (int i = 0; i < locationTitles.length; i++) {
+            sFavouriteLocations.add(new FavoriteLocation(i+900, locationTitles[i], new Location("")));
+        }
 
         for (int i = 0; i < 5; i++)
             sLabels.add(new Label(i+600, labelTitles[i], labelColors[i]));

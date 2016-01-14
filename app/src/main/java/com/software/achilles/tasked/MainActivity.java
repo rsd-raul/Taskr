@@ -9,7 +9,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +34,7 @@ import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.domain.*;
 import com.software.achilles.tasked.fragments.DashboardListFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
+import com.software.achilles.tasked.listeners.MainAndFilterDrawerConfiguration;
 import com.software.achilles.tasked.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +46,12 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------- Attributes --------------------------
 
     private FloatingActionMenuConfigurator mFamConfigurator;
+    private MainAndFilterDrawerConfiguration mDrawersConfigurator;
+
     private TaskController mTaskController;
     private Toolbar mToolbar;
     public ViewPager mViewPager;
+
     private AccountHeader mAccountHeader;
     private Drawer mDrawer;
     private Drawer mFilterDrawer;
@@ -86,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Configure the fab menu and its children.
         mFamConfigurator = new FloatingActionMenuConfigurator(this);
+
+        // Configure the drawers, both main and filter
+        mDrawersConfigurator = new MainAndFilterDrawerConfiguration(this);
 
         // Setup the fragment composing the ViewPager
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -418,7 +427,6 @@ public class MainActivity extends AppCompatActivity {
                         listSection,
                         mLabelListCollapsable, mLocationListCollapsable, mTaskListCollapsable
                 )
-                // TODO Seguro que quieres cambiarlo?
                 .withDrawerWidthRes(R.dimen.filter_drawer_width)
                 .withDrawerGravity(Gravity.END)
                 .append(mDrawer);
@@ -426,11 +434,6 @@ public class MainActivity extends AppCompatActivity {
 //      TODO 2 de 2 - descomentando esto tienes drawer solo en el click y puedes cerrarlo a mano :D
 //        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
 //                DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
-
-        // TODO tal vez reducir un poco el ancho del Drawer :S
-//        mFilterDrawer.getContent().getLayoutParams().width = DrawerLayout.LayoutParams.WRAP_CONTENT;
-//        mFilterDrawer.getRecyclerView().getLayoutParams().width = 20;
-//        mFilterDrawer.getRecyclerView().getLayoutParams().width = RecyclerView.LayoutParams.WRAP_CONTENT;
 
         // We want the labels opened by default
         addLabelsToFilterDrawer(TaskController.sLabels);
@@ -502,9 +505,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     default:
-                        int index = TaskController.getTaskListPositionById(identifier);
-                        if (index != -1)
-                            mViewPager.setCurrentItem(index, true);
+//                        int index = TaskController.getTaskListPositionById(identifier);
+//                        if (index != -1)
+//                            mViewPager.setCurrentItem(index, true);
                         break;
                 }
 
@@ -532,7 +535,7 @@ public class MainActivity extends AppCompatActivity {
                 false, R.drawable.ic_place, Constants.COLLAPSABLE_LOCATION_LIST);
     }
 
-    private void addItemListToDrawer(ArrayList<BasicType> taskLists, Drawer drawer,
+    private void addItemListToDrawer(ArrayList<BasicType> taskLists, final Drawer drawer,
                                      boolean main, int iconRes, int identifier){
         List<Integer>addedIds = new ArrayList<>();
 
@@ -544,8 +547,17 @@ public class MainActivity extends AppCompatActivity {
 
             // In case of the Label we customize the color, else, we use the default
             int color = R.color.secondaryText;
-            if(identifier == Constants.COLLAPSABLE_LABEL_LIST)
-                color = ((Label) taskLists.get(i)).getColorRes();
+            switch (identifier){
+                case Constants.COLLAPSABLE_LABEL_LIST:
+                    color = ((Label) taskLists.get(i)).getColorRes();
+                    break;
+                case Constants.COLLAPSABLE_LOCATION_LIST:
+                    color = R.color.tealLocation;
+                    break;
+                case Constants.COLLAPSABLE_TASK_LIST:
+                    color = R.color.colorPrimary;
+                    break;
+            }
 
             // Construct the Item to add on the Drawer
             IDrawerItem itemToAdd = new SecondaryDrawerItem().withIdentifier(taskLists.get(i).getId())
@@ -573,6 +585,7 @@ public class MainActivity extends AppCompatActivity {
             addedIds.add(Constants.ADD_TASK_LIST);
         }
 
+
         // Save the id to control the Navigation Drawer more properly
         switch (identifier){
             case Constants.COLLAPSABLE_TASK_LIST:
@@ -585,6 +598,13 @@ public class MainActivity extends AppCompatActivity {
                 mLocationListIds = addedIds;
                 break;
         }
+
+        // Scroll to the header of the list
+//        drawer.getRecyclerView().scrollToPosition(6);
+//        drawer.getRecyclerView().getLayoutManager().scrollToPosition(identifier);    //   ESTO DA EL APAÑO, pero no funciona para By task list
+//        drawer.getRecyclerView().getChildAdapterPosition(mLabelListCollapsable.generateView(getApplication()));
+//        drawer.getRecyclerView().
+//        drawer.getRecyclerView().getLayoutManager().sc
     }
 
     // -------------------------- View Pager -------------------------
