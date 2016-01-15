@@ -17,19 +17,27 @@ public class Constants {
     public static final int COMPLETED = 4;
     public static final int GLANCE = 5;
     public static final int PLANNER = 6;
+
     public static final int SETTINGS = 7;
     public static final int CONTACT = 8;
-    public static final int COLLAPSABLE_TASK_LIST = 9;
+
 //    public static final int COLLAPSABLE_TASK_LIST_STATUS = 10;    DEPRECATED
     public static final int ADD_TASK_LIST = 11;
-    public static final int COLLAPSABLE_LABEL_LIST = 12;
+
     public static final int STARRED = 13;
     public static final int DUE_TODAY = 14;
     public static final int DUE_THIS_WEEK = 15;
+
+    public static final int COLLAPSABLE_TASK_LIST = 9;
+    public static final int COLLAPSABLE_LABEL_LIST = 12;
     public static final int COLLAPSABLE_LOCATION_LIST = 16;
+
     public static final int COLLAPSABLE_ORDER_LIST = 17;
     public static final int ALPHABETICAL = 18;
     public static final int DUE_DATE = 19;
     public static final int CUSTOM_ORDER = 20;
+
+    public static final int SETTINGS_ACCOUNTS = 21;
+    public static final int ADD_ACCOUNT = 22;
 
 }

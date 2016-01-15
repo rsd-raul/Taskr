@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -107,7 +106,7 @@ public class MainAndFilterDrawerConfiguration {
         // Create the AccountHeader
         mAccountHeader = new AccountHeaderBuilder()
                 .withActivity(mActivity)
-                .withHeaderBackground(R.drawable.default_image_navigation)
+                .withHeaderBackground(R.drawable.header_background_default)
                 .addProfiles(
                         new ProfileDrawerItem()
                                 .withName("John Doe")
@@ -117,6 +116,16 @@ public class MainAndFilterDrawerConfiguration {
                                 .withName("John Doe Work")
                                 .withEmail("jonnydoework@gmail.com")
                                 .withIcon(R.drawable.person_image_empty)
+//                        new ProfileSettingDrawerItem()    //TODO Add y Manage profiles - Añade lag?
+//                                .withIdentifier(Constants.ADD_ACCOUNT)
+//                                .withName("Add Account")
+//                                .withIcon(R.drawable.ic_add)
+//                                .withIconTinted(true),
+//                        new ProfileSettingDrawerItem()
+//                                .withIdentifier(Constants.SETTINGS_ACCOUNTS)
+//                                .withName("Manage Account")
+//                                .withIcon(R.drawable.ic_settings_nut)
+//                                .withIconTinted(true)
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -651,7 +660,7 @@ public class MainAndFilterDrawerConfiguration {
 //        drawer.getRecyclerView().getLayoutManager().sc
     }
 
-    private void addOrderFilterToDrawer(){
+    private void addOrderFilterToDrawer() {
         List<Integer>addedIds = new ArrayList<>();
 
         int idAlphabetical = Constants.ALPHABETICAL;
