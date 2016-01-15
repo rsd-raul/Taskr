@@ -106,7 +106,10 @@ public class FloatingActionMenuConfigurator {
         fam.setMenuButtonShowAnimation(fab_slide_up);
 
         // Control the behaviour when scrolling
-        // TODO Controlar el fab cuando se detecta scroll
+        // TODO Controlar el FAM y la barra cuando se detecta scroll
+        // TODO si no escondes FAM tienes que dar extra padding/margin a el viewpager (o el boton tapa las acciones)
+//        activity.getSupportActionBar().hide();
+//        activity.getSupportActionBar().show();
 
 //        NestedScrollView scrollView = (NestedScrollView) activity.findViewById(R.id.scrollView);
 //        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {

@@ -320,8 +320,7 @@ public class MainAndFilterDrawerConfiguration {
         // If it opened, remove all items, if closed, populate the drawer
         if(status) {
             toggleTaskListExpandable(true);
-            for (int i = 0; i < mTaskListIds.size(); i++)
-                mMainDrawer.removeItem(mTaskListIds.get(i));
+            removeItemListFromDrawer(mTaskListIds);
         } else{
             toggleTaskListExpandable(false);
             addTaskListToMainDrawer(TaskController.sTaskLists);
@@ -450,8 +449,7 @@ public class MainAndFilterDrawerConfiguration {
 
                     case Constants.COLLAPSABLE_TASK_LIST:
                         if (mExpandedTaskListFilter) {
-                            for (int i = 0; i < mTaskListIds.size(); i++)
-                                mFilterDrawer.removeItem(mTaskListIds.get(i));
+                            removeItemListFromDrawer(mTaskListIds);
                             mExpandedTaskListFilter = false;
                             mTaskListCollapsable.withBadgeStyle(mBadgeStyleExpand);
                             mFilterDrawer.updateItem(mTaskListCollapsable);
@@ -465,8 +463,7 @@ public class MainAndFilterDrawerConfiguration {
 
                     case Constants.COLLAPSABLE_LABEL_LIST:
                         if (mExpandedLabelListFilter) {
-                            for (int i = 0; i < mLabelListIds.size(); i++)
-                                mFilterDrawer.removeItem(mLabelListIds.get(i));
+                            removeItemListFromDrawer(mLabelListIds);
                             mExpandedLabelListFilter = false;
                             mLabelListCollapsable.withBadgeStyle(mBadgeStyleExpand);
                             mFilterDrawer.updateItem(mLabelListCollapsable);
@@ -480,8 +477,7 @@ public class MainAndFilterDrawerConfiguration {
 
                     case Constants.COLLAPSABLE_LOCATION_LIST:
                         if (mExpandedLocationListFilter) {
-                            for (int i = 0; i < mLocationListIds.size(); i++)
-                                mFilterDrawer.removeItem(mLocationListIds.get(i));
+                            removeItemListFromDrawer(mLocationListIds);
                             mExpandedLocationListFilter = false;
                             mLocationListCollapsable.withBadgeStyle(mBadgeStyleExpand);
                             mFilterDrawer.updateItem(mLocationListCollapsable);
@@ -504,7 +500,14 @@ public class MainAndFilterDrawerConfiguration {
         });
     }
 
-    // --------------------- Add List To Drawer ----------------------
+    // ------------------ Remove Items From Drawer -------------------
+
+    private void removeItemListFromDrawer(List<Integer> mItemListIds){
+        for (int i = 0; i < mItemListIds.size(); i++)
+            mFilterDrawer.removeItem(mItemListIds.get(i));
+    }
+
+    // --------------------- Add Items To Drawer ---------------------
 
     private void addTaskListToFilterDrawer(ArrayList<TaskList> listTaskList){
         addItemListToDrawer(new ArrayList<BasicType>(listTaskList), mFilterDrawer,
@@ -587,9 +590,9 @@ public class MainAndFilterDrawerConfiguration {
                 break;
         }
 
-        // Scroll to the header of the list
+        // TODO OnClick Scroll to the header of the list
 //        drawer.getRecyclerView().scrollToPosition(6);
-//        drawer.getRecyclerView().getLayoutManager().scrollToPosition(identifier);    //   ESTO DA EL APAÑO, pero no funciona para By task list
+        drawer.getRecyclerView().getLayoutManager().scrollToPosition(identifier);    //   ESTO DA EL APAÑO, pero no funciona para By task list
 //        drawer.getRecyclerView().getChildAdapterPosition(mLabelListCollapsable.generateView(getApplication()));
 //        drawer.getRecyclerView().
 //        drawer.getRecyclerView().getLayoutManager().sc

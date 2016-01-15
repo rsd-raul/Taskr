@@ -67,7 +67,7 @@ public class DashboardListFragment extends Fragment {
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mTextView = (TextView) view.findViewById(android.R.id.text1);
+                mTextView = (TextView) view.findViewById(R.id.task_title);
             }
 
             @Override

@@ -3,17 +3,18 @@
 
     <!-- Functions Palette -->
 
-    <color name="tealLocationDark">#00796B</color>
-    <color name="tealLocation">#009688</color>
-    <color name="amberDateDark">#FFA000</color>
-    <color name="amberDate">#FFC107</color>
+    <color name="tealLocationDark">#FF00796B</color>
+    <color name="tealLocation">#FF009688</color>
+    <color name="amberDateDark">#FFFFA000</color>
+    <color name="amberDate">#FFFFC107</color>
 
     <!-- Custom Palette -->
 
-    <color name="colorPrimaryDark">#31277C</color>
-    <color name="colorPrimary">#3B2F93</color>
-    <color name="colorAccentDark">#FF1F48</color>
-    <color name="colorAccent">#FF4A6B</color>
+    <!--<color name="colorPrimaryDark">#FF31277C</color>   EN colors.xml v21-->
+    <color name="colorPrimaryDark">#FF3B2F93</color>
+    <color name="colorPrimary">#FF3B2F93</color>
+    <color name="colorAccentDark">#FFFF1F48</color>
+    <color name="colorAccent">#FFFF4A6B</color>
 
     <!-- Material Default -->
 
