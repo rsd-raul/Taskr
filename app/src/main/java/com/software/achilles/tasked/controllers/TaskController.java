@@ -66,8 +66,8 @@ public class TaskController {
 
         String[] locationTitles = new String[]{"Home", "Work", "Gym", "Random"};
 
-        String[] labelTitles = new String[]{"Groceries", "Inspiration", "Personal", "Work", "Random"};
-        Integer[] labelColors = new Integer[]{R.color.amberDate, null, R.color.colorPrimary,
+        String[] labelTitles = new String[]{"Groceries", "Inspiration", "Personal", "Work"};
+        Integer[] labelColors = new Integer[]{R.color.amberDate, R.color.colorPrimary,
                                             R.color.tealLocation, R.color.app_body_text_1};
         Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
 
@@ -75,7 +75,7 @@ public class TaskController {
             sFavouriteLocations.add(new FavoriteLocation(i+900, locationTitles[i], new Location("")));
         }
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
             sLabels.add(new Label(i+600, labelTitles[i], labelColors[i]));
 
         Random random = new Random();
@@ -92,7 +92,7 @@ public class TaskController {
                 Integer labelQuantity = labelQuantities[random.nextInt(4)];
 
                 for (int i = 0; i < labelQuantity; i++)
-                    labels.add(sLabels.get(random.nextInt(5)));
+                    labels.add(sLabels.get(random.nextInt(4)));
 
                 aux.add(new Task(finished, title, description, dueDate, null, new ArrayList<>(labels)));
                 amountTaskWhile--;

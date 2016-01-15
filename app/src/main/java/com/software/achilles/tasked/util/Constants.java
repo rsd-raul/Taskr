@@ -27,5 +27,9 @@ public class Constants {
     public static final int DUE_TODAY = 14;
     public static final int DUE_THIS_WEEK = 15;
     public static final int COLLAPSABLE_LOCATION_LIST = 16;
+    public static final int COLLAPSABLE_ORDER_LIST = 17;
+    public static final int ALPHABETICAL = 18;
+    public static final int DUE_DATE = 19;
+    public static final int CUSTOM_ORDER = 20;
 
 }
