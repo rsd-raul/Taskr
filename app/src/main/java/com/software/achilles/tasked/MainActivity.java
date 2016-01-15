@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup the fragment composing the ViewPager
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(mViewPager, TaskController.sTaskLists);
+        setupViewPager(TaskController.sTaskLists);
 
         // Setup tabs for Dashboard and make Scrollable
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -67,12 +67,11 @@ public class MainActivity extends AppCompatActivity {
 
     // -------------------------- View Pager -------------------------
 
-    private void setupViewPager(ViewPager viewPager, ArrayList<TaskList> taskLists) {
+    private void setupViewPager(ArrayList<TaskList> taskLists) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
 //        adapter.addFragment(new DashboardSearchFragment(), "Search");
         // TODO quick jump to the desired list
-
 
         // Populate each of the pages of the ViewPager
         for (TaskList taskList : taskLists) {
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             // Add the fragment and it's bundle to the adapter
             adapter.addFragment(dashboardListFragment, taskList.getTitle());
         }
-        viewPager.setAdapter(adapter);
+        mViewPager.setAdapter(adapter);
     }
 
     // -------------------------- Landscape --------------------------

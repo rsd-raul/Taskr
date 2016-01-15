@@ -4,10 +4,11 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -41,7 +42,7 @@ public class FloatingActionMenuConfigurator {
 
         configureChildren();
 
-
+        setMenuOnScrollReaction();
     }
 
     // -------------------------- Use Cases --------------------------
@@ -105,10 +106,20 @@ public class FloatingActionMenuConfigurator {
         fam.setMenuButtonShowAnimation(fab_slide_up);
 
         // Control the behaviour when scrolling
-        NestedScrollView scrollView = (NestedScrollView) activity.findViewById(R.id.scrollView);
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+        // TODO Controlar el fab cuando se detecta scroll
+
+//        NestedScrollView scrollView = (NestedScrollView) activity.findViewById(R.id.scrollView);
+//        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
+        // ---------------------- Marshmallow Only -----------------------
+
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            return;
+
+        ViewPager viewPager = (ViewPager) activity.findViewById(R.id.viewpager);
+        viewPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY,
+            public void onScrollChange(View v, int scrollX, int scrollY,
                                        int oldScrollX, int oldScrollY) {
                 if (scrollY - oldScrollY > 0)
                     fam.hideMenu(true);
@@ -178,7 +189,7 @@ public class FloatingActionMenuConfigurator {
 
     }
 
-    private void retractAddTaskLayout(){
-
-    }
+//    private void retractAddTaskLayout(){
+//
+//    }
 }

@@ -523,7 +523,7 @@ public class MainAndFilterDrawerConfiguration {
                 false, R.drawable.ic_place, Constants.COLLAPSABLE_LOCATION_LIST);
     }
 
-    private void addItemListToDrawer(ArrayList<BasicType> taskLists, final Drawer drawer,
+    private void addItemListToDrawer(ArrayList<BasicType> itemLists, final Drawer drawer,
                                      boolean main, int iconRes, int identifier){
         List<Integer>addedIds = new ArrayList<>();
 
@@ -531,13 +531,13 @@ public class MainAndFilterDrawerConfiguration {
         Integer position = drawer.getPosition(identifier) +1;
 
         // Add the Task Lists to the drawer by order at the right position
-        for (int i = 0; i < taskLists.size(); i++) {
+        for (int i = 0; i < itemLists.size(); i++) {
 
             // In case of the Label we customize the color, else, we use the default
-            int color = R.color.secondaryText;
+            int color = R.color.secondaryText;  // TODO estas haciendo el calculo CADA ITERACION
             switch (identifier){
                 case Constants.COLLAPSABLE_LABEL_LIST:
-                    color = ((Label) taskLists.get(i)).getColorRes();
+                    color = ((Label) itemLists.get(i)).getColorRes();
                     break;
                 case Constants.COLLAPSABLE_LOCATION_LIST:
                     color = R.color.tealLocation;
@@ -548,9 +548,9 @@ public class MainAndFilterDrawerConfiguration {
             }
 
             // Construct the Item to add on the Drawer
-            IDrawerItem itemToAdd = new SecondaryDrawerItem().withIdentifier(taskLists.get(i).getId())
+            IDrawerItem itemToAdd = new SecondaryDrawerItem().withIdentifier(itemLists.get(i).getId())
                     .withLevel(2)
-                    .withName(taskLists.get(i).getTitle())
+                    .withName(itemLists.get(i).getTitle())
                     .withIcon(iconRes)
                     .withIconColorRes(color)
                     .withIconTintingEnabled(true)
@@ -559,7 +559,7 @@ public class MainAndFilterDrawerConfiguration {
 
             // Move the pointer for an ordered insertion and save the id for posterior deletion
             position++;
-            addedIds.add(taskLists.get(i).getId());
+            addedIds.add(itemLists.get(i).getId());
         }
 
         // If on the main drawer, add a new "add Task List" item for convenience and its ID

@@ -43,6 +43,9 @@
     <color name="textAndIconsDark">#E7E7E7</color>
     <color name="textAndIcons">#FFFFFF</color>
 
+    <color name="list_background">#ECECEC</color>
+    <color name="task_background">#FFFFFF</color>
+
     <!-- FAM and FAB -->
 
     <color name="background">#C8FEFEFE</color>
