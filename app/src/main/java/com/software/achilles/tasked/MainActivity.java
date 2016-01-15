@@ -131,10 +131,12 @@ public class MainActivity extends AppCompatActivity {
         if(fam.isOpened() || mDrawersConfigurator.mMainDrawer.isDrawerOpen()) {
             fam.close(true);
             mDrawersConfigurator.mMainDrawer.closeDrawer();
-        }else if(mDrawersConfigurator.mFilterDrawer != null &&
-                mDrawersConfigurator.mFilterDrawer.isDrawerOpen())
+
+        // Add mDrawersConfigurator.mFilterDrawer != null && if not only on dashboard
+        } else if(mDrawersConfigurator.mFilterDrawer.isDrawerOpen()) {
             mDrawersConfigurator.mFilterDrawer.closeDrawer();
-        else
+
+        } else
             super.onBackPressed();
     }
 

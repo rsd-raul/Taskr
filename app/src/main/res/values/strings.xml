@@ -25,7 +25,7 @@
         <string name="by_label">By label</string>
         <string name="by_location">By location</string>
 
-    <string name="reorder_items">Pick list order</string>
+    <string name="reorder_items">Order list</string>
         <string name="alphabetically">Alphabetical</string>
         <string name="due_date">Due date</string>
         <string name="custom_order">Custom order</string>

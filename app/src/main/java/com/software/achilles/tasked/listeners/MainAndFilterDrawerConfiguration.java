@@ -47,24 +47,18 @@ public class MainAndFilterDrawerConfiguration {
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private AccountHeader mAccountHeader;
-    public Drawer mMainDrawer;
-    public Drawer mFilterDrawer;
-    private List<Integer> mTaskListIds;
-    private List<Integer> mLabelListIds;
-    private List<Integer> mLocationListIds;
-    private List<Integer> mOrderListIds;
+    public Drawer mMainDrawer, mFilterDrawer;
+    private List<Integer> mTaskListIds, mLabelListIds, mLocationListIds, mOrderListIds;
     private PrimaryDrawerItem mTaskListCollapsableMain;
-    private BadgeStyle mBadgeStyleExpand;
-    private BadgeStyle mBadgeStyleCollapse;
+    private BadgeStyle mBadgeStyleExpand, mBadgeStyleCollapse;
+    private boolean firstTime = true;
     private boolean mExpandedTaskList = false;
     private boolean mExpandedTaskListFilter = false;
-    private boolean mExpandedLabelListFilter = false;
+    private boolean mExpandedLabelListFilter = true;
     private boolean mExpandedLocationListFilter = false;
     private boolean mExpandedOrderListFilter = false;
-    private PrimaryDrawerItem mTaskListCollapsable;
-    private PrimaryDrawerItem mLabelListCollapsable;
-    private PrimaryDrawerItem mLocationListCollapsable;
-    private PrimaryDrawerItem mOrderListCollapsable;
+    private PrimaryDrawerItem mTaskCollapsable, mLabelCollapsable,
+            mLocationCollapsable, mOrderCollapsable;
 
     // ------------------------- Constructor -------------------------
 
@@ -74,10 +68,8 @@ public class MainAndFilterDrawerConfiguration {
         // Set ActionBar
         mToolbar = (Toolbar) mActivity.findViewById(R.id.toolbar);
 
-        // Setup Navigation , behavior and first item to checked
-
+        // Setup Main Drawer and its behaviour
         initializeBadges();
-
         setupProfileHeader();
         setupMainDrawer();
         setupMainDrawerListener();
@@ -90,11 +82,9 @@ public class MainAndFilterDrawerConfiguration {
 
         mViewPager = (ViewPager) mActivity.findViewById(R.id.viewpager);
 
+        // Setup Filter Drawer and its behaviour
         setupFilterDrawer();
         setupFilterDrawerListener();
-//        setupExpandableTaskList();  NO SE QUE HACIA AHI
-
-
     }
 
     // ----------------------- Badges Creation -----------------------
@@ -230,6 +220,29 @@ public class MainAndFilterDrawerConfiguration {
 //                    public void onDrawerSlide(View drawerView, float slideOffset) {
 //                    }
 //                })
+                .withOnDrawerListener(new Drawer.OnDrawerListener() {
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+
+                        // MainDrawer = 912
+                        // FilterDrawer = 750
+                        //  drawerView.getWidth() < 800
+
+                        // We want the labels opened by default ONLY
+                        if (drawerView.getWidth() < 800 && mFilterDrawer != null && firstTime){
+                            addLabelsToFilterDrawer(TaskController.sLabels);
+                            firstTime = false;
+                            mLabelCollapsable.withBadgeStyle(mBadgeStyleCollapse);
+                            mFilterDrawer.updateItem(mLabelCollapsable);
+                        }
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) { }
+
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) { }
+                })
                 .build();
     }
 
@@ -255,7 +268,8 @@ public class MainAndFilterDrawerConfiguration {
 
                     case Constants.SETTINGS:
                         // Launch the Preferences Fragment
-                        Intent intSettings = new Intent(mActivity.getApplicationContext(), Preferences.class);
+                        Intent intSettings = new Intent(mActivity.getApplicationContext(),
+                                Preferences.class);
                         mActivity.startActivity(intSettings);
                         break;
 
@@ -384,7 +398,7 @@ public class MainAndFilterDrawerConfiguration {
                 .withSelectable(true);
 
         // Create expandable and collapsable items
-        mTaskListCollapsable = new PrimaryDrawerItem()
+        mTaskCollapsable = new PrimaryDrawerItem()
                 .withName(R.string.by_task_list)
                 .withIcon(R.drawable.ic_list_bullet)
                 .withIconTintingEnabled(true)
@@ -392,15 +406,15 @@ public class MainAndFilterDrawerConfiguration {
                 .withSelectable(false)
                 .withBadge("")
                 .withBadgeStyle(mBadgeStyleExpand);
-        mLabelListCollapsable = new PrimaryDrawerItem()
+        mLabelCollapsable = new PrimaryDrawerItem()
                 .withName(R.string.by_label)
                 .withIcon(R.drawable.ic_label_outline)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.COLLAPSABLE_LABEL_LIST)
                 .withSelectable(false)
                 .withBadge("")
-                .withBadgeStyle(mBadgeStyleCollapse);
-        mLocationListCollapsable = new PrimaryDrawerItem()
+                .withBadgeStyle(mBadgeStyleExpand);
+        mLocationCollapsable = new PrimaryDrawerItem()
                 .withName(R.string.by_location)
                 .withIcon(R.drawable.ic_map)
                 .withIconTintingEnabled(true)
@@ -410,7 +424,7 @@ public class MainAndFilterDrawerConfiguration {
                 .withBadgeStyle(mBadgeStyleExpand);
 
         // Create expandable and collapsable item to order list
-        mOrderListCollapsable = new PrimaryDrawerItem()
+        mOrderCollapsable = new PrimaryDrawerItem()
                 .withName(R.string.reorder_items)
                 .withIcon(R.drawable.ic_order_list)
                 .withIconTintingEnabled(true)
@@ -428,11 +442,11 @@ public class MainAndFilterDrawerConfiguration {
                         mainSection,
                         starred, today, thisWeek,
                         listSection,
-                        mLabelListCollapsable, mLocationListCollapsable
-                        , mTaskListCollapsable    // TODO si filtras sobre la lista es redundante
+                        mLabelCollapsable, mLocationCollapsable
+                        , mTaskCollapsable    // TODO si filtras sobre la lista es redundante
                 )
                 .addStickyDrawerItems(
-                        mOrderListCollapsable
+                        mOrderCollapsable
                 )
                 .withDrawerWidthRes(R.dimen.filter_drawer_width)
                 .withDrawerGravity(Gravity.END)
@@ -442,9 +456,9 @@ public class MainAndFilterDrawerConfiguration {
 //        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
 //                DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
 
-        // We want the labels opened by default
-        addLabelsToFilterDrawer(TaskController.sLabels);
-        mExpandedLabelListFilter = true;
+//        // We want the labels opened by default
+//        addLabelsToFilterDrawer(TaskController.sLabels);
+//        mExpandedLabelListFilter = true;
     }
 
     private void setupFilterDrawerListener(){
@@ -466,13 +480,13 @@ public class MainAndFilterDrawerConfiguration {
                         if (mExpandedTaskListFilter) {
                             removeItemListFromFilterDrawer(mTaskListIds, false);
                             mExpandedTaskListFilter = false;
-                            mTaskListCollapsable.withBadgeStyle(mBadgeStyleExpand);
-                            mFilterDrawer.updateItem(mTaskListCollapsable);
+                            mTaskCollapsable.withBadgeStyle(mBadgeStyleExpand);
+                            mFilterDrawer.updateItem(mTaskCollapsable);
                         } else {
                             addTaskListToFilterDrawer(TaskController.sTaskLists);
                             mExpandedTaskListFilter = true;
-                            mTaskListCollapsable.withBadgeStyle(mBadgeStyleCollapse);
-                            mFilterDrawer.updateItem(mTaskListCollapsable);
+                            mTaskCollapsable.withBadgeStyle(mBadgeStyleCollapse);
+                            mFilterDrawer.updateItem(mTaskCollapsable);
                         }
                         break;
 
@@ -480,13 +494,13 @@ public class MainAndFilterDrawerConfiguration {
                         if (mExpandedLabelListFilter) {
                             removeItemListFromFilterDrawer(mLabelListIds, false);
                             mExpandedLabelListFilter = false;
-                            mLabelListCollapsable.withBadgeStyle(mBadgeStyleExpand);
-                            mFilterDrawer.updateItem(mLabelListCollapsable);
+                            mLabelCollapsable.withBadgeStyle(mBadgeStyleExpand);
+                            mFilterDrawer.updateItem(mLabelCollapsable);
                         } else {
                             addLabelsToFilterDrawer(TaskController.sLabels);
                             mExpandedLabelListFilter = true;
-                            mLabelListCollapsable.withBadgeStyle(mBadgeStyleCollapse);
-                            mFilterDrawer.updateItem(mLabelListCollapsable);
+                            mLabelCollapsable.withBadgeStyle(mBadgeStyleCollapse);
+                            mFilterDrawer.updateItem(mLabelCollapsable);
                         }
                         break;
 
@@ -494,13 +508,13 @@ public class MainAndFilterDrawerConfiguration {
                         if (mExpandedLocationListFilter) {
                             removeItemListFromFilterDrawer(mLocationListIds, false);
                             mExpandedLocationListFilter = false;
-                            mLocationListCollapsable.withBadgeStyle(mBadgeStyleExpand);
-                            mFilterDrawer.updateItem(mLocationListCollapsable);
+                            mLocationCollapsable.withBadgeStyle(mBadgeStyleExpand);
+                            mFilterDrawer.updateItem(mLocationCollapsable);
                         } else {
                             addLocationsFilterToDrawer(TaskController.sFavouriteLocations);
                             mExpandedLocationListFilter = true;
-                            mLocationListCollapsable.withBadgeStyle(mBadgeStyleCollapse);
-                            mFilterDrawer.updateItem(mLocationListCollapsable);
+                            mLocationCollapsable.withBadgeStyle(mBadgeStyleCollapse);
+                            mFilterDrawer.updateItem(mLocationCollapsable);
                         }
                         break;
 
@@ -508,13 +522,13 @@ public class MainAndFilterDrawerConfiguration {
                         if (mExpandedOrderListFilter) {
                             removeItemListFromFilterDrawer(mOrderListIds, true);
                             mExpandedOrderListFilter = false;
-                            mOrderListCollapsable.withBadgeStyle(mBadgeStyleCollapse);
-                            mFilterDrawer.updateStickyFooterItem(mOrderListCollapsable);
+                            mOrderCollapsable.withBadgeStyle(mBadgeStyleCollapse);
+                            mFilterDrawer.updateStickyFooterItem(mOrderCollapsable);
                         } else {
                             addOrderFilterToDrawer();
                             mExpandedOrderListFilter = true;
-                            mOrderListCollapsable.withBadgeStyle(mBadgeStyleExpand);
-                            mFilterDrawer.updateStickyFooterItem(mOrderListCollapsable);
+                            mOrderCollapsable.withBadgeStyle(mBadgeStyleExpand);
+                            mFilterDrawer.updateStickyFooterItem(mOrderCollapsable);
                         }
                         break;
 
@@ -575,9 +589,9 @@ public class MainAndFilterDrawerConfiguration {
         for (int i = 0; i < itemLists.size(); i++) {
 
             // In case of the Label we customize the color, else, we use the default
-            int color = R.color.secondaryText;  // TODO estas haciendo el calculo CADA ITERACION
+            int color = R.color.secondaryText;
             switch (identifier){
-                case Constants.COLLAPSABLE_LABEL_LIST:
+                case Constants.COLLAPSABLE_LABEL_LIST: // TODO haciendo calculo CADA ITERACION
                     color = ((Label) itemLists.get(i)).getColorRes();
                     break;
                 case Constants.COLLAPSABLE_LOCATION_LIST:
@@ -589,7 +603,8 @@ public class MainAndFilterDrawerConfiguration {
             }
 
             // Construct the Item to add on the Drawer
-            IDrawerItem itemToAdd = new SecondaryDrawerItem().withIdentifier(itemLists.get(i).getId())
+            IDrawerItem itemToAdd = new SecondaryDrawerItem()
+                    .withIdentifier(itemLists.get(i).getId())
                     .withLevel(2)
                     .withName(itemLists.get(i).getTitle())
                     .withIcon(iconRes)
@@ -628,10 +643,10 @@ public class MainAndFilterDrawerConfiguration {
                 break;
         }
 
-        // TODO OnClick Scroll to the header of the list
+        // TODO OnClick in "expandable" scroll to the header of the list
 //        drawer.getRecyclerView().scrollToPosition(6);
-        drawer.getRecyclerView().getLayoutManager().scrollToPosition(identifier);    //   ESTO DA EL APAÑO, pero no funciona para By task list
-//        drawer.getRecyclerView().getChildAdapterPosition(mLabelListCollapsable.generateView(getApplication()));
+//        drawer.getRecyclerView().getLayoutManager().scrollToPosition(identifier);    //   ESTO DABA EL APAÑO, pero no funciona para By task list
+//        drawer.getRecyclerView().getChildAdapterPosition(mLabelCollapsable.generateView(getApplication()));
 //        drawer.getRecyclerView().
 //        drawer.getRecyclerView().getLayoutManager().sc
     }
@@ -649,19 +664,19 @@ public class MainAndFilterDrawerConfiguration {
                 .withIcon(R.drawable.ic_order_alphabetical)
                 .withIconTintingEnabled(true)
                 .withIdentifier(idAlphabetical)
-                .withSelectable(true);
+                .withSelectable(false);
         PrimaryDrawerItem dueDate = new PrimaryDrawerItem()
                 .withName(R.string.due_date)
                 .withIcon(R.drawable.ic_time_alarm)
                 .withIconTintingEnabled(true)
                 .withIdentifier(idDueDate)
-                .withSelectable(true);
+                .withSelectable(false);
         PrimaryDrawerItem customOrder = new PrimaryDrawerItem()
                 .withName(R.string.custom_order)
                 .withIcon(R.drawable.ic_menu)
                 .withIconTintingEnabled(true)
                 .withIdentifier(idCustomOrder)
-                .withSelectable(true);
+                .withSelectable(false);
 
         // Get the position for the item in the drawer, in order to add its children (+1)
         Integer position = mFilterDrawer.getPosition(Constants.COLLAPSABLE_ORDER_LIST)+1;
