@@ -70,8 +70,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ArrayList<TaskList> taskLists) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
-//        adapter.addFragment(new DashboardSearchFragment(), "Search");
-        // TODO quick jump to the desired list
+        // TODO quick jump to the desired list if too many lists present
+//        if(taskLists.size() > 5)
+//            adapter.addFragment(new DashboardSearchFragment(), "Search");
 
         // Populate each of the pages of the ViewPager
         for (TaskList taskList : taskLists) {

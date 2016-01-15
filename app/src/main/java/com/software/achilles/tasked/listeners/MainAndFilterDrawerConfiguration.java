@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
@@ -324,7 +323,7 @@ public class MainAndFilterDrawerConfiguration {
         // If it opened, remove all items, if closed, populate the drawer
         if(status) {
             toggleTaskListExpandable(true);
-            removeItemListFromDrawer(mTaskListIds, false);
+            removeTaskListFromMainDrawer(mTaskListIds);
         } else{
             toggleTaskListExpandable(false);
             addTaskListToMainDrawer(TaskController.sTaskLists);
@@ -465,7 +464,7 @@ public class MainAndFilterDrawerConfiguration {
 
                     case Constants.COLLAPSABLE_TASK_LIST:
                         if (mExpandedTaskListFilter) {
-                            removeItemListFromDrawer(mTaskListIds, false);
+                            removeItemListFromFilterDrawer(mTaskListIds, false);
                             mExpandedTaskListFilter = false;
                             mTaskListCollapsable.withBadgeStyle(mBadgeStyleExpand);
                             mFilterDrawer.updateItem(mTaskListCollapsable);
@@ -479,7 +478,7 @@ public class MainAndFilterDrawerConfiguration {
 
                     case Constants.COLLAPSABLE_LABEL_LIST:
                         if (mExpandedLabelListFilter) {
-                            removeItemListFromDrawer(mLabelListIds, false);
+                            removeItemListFromFilterDrawer(mLabelListIds, false);
                             mExpandedLabelListFilter = false;
                             mLabelListCollapsable.withBadgeStyle(mBadgeStyleExpand);
                             mFilterDrawer.updateItem(mLabelListCollapsable);
@@ -493,7 +492,7 @@ public class MainAndFilterDrawerConfiguration {
 
                     case Constants.COLLAPSABLE_LOCATION_LIST:
                         if (mExpandedLocationListFilter) {
-                            removeItemListFromDrawer(mLocationListIds, false);
+                            removeItemListFromFilterDrawer(mLocationListIds, false);
                             mExpandedLocationListFilter = false;
                             mLocationListCollapsable.withBadgeStyle(mBadgeStyleExpand);
                             mFilterDrawer.updateItem(mLocationListCollapsable);
@@ -507,7 +506,7 @@ public class MainAndFilterDrawerConfiguration {
 
                     case Constants.COLLAPSABLE_ORDER_LIST:
                         if (mExpandedOrderListFilter) {
-                            removeItemListFromDrawer(mOrderListIds, true);
+                            removeItemListFromFilterDrawer(mOrderListIds, true);
                             mExpandedOrderListFilter = false;
                             mOrderListCollapsable.withBadgeStyle(mBadgeStyleCollapse);
                             mFilterDrawer.updateStickyFooterItem(mOrderListCollapsable);
@@ -530,57 +529,20 @@ public class MainAndFilterDrawerConfiguration {
         });
     }
 
-    private void addOrderFilterToDrawer(){
-        List<Integer>addedIds = new ArrayList<>();
-
-        int idAlphabetical = Constants.ALPHABETICAL;
-        int idDueDate = Constants.DUE_DATE;
-        int idCustomOrder = Constants.CUSTOM_ORDER;
-
-        // Create order items
-        PrimaryDrawerItem alphabetical = new PrimaryDrawerItem()
-                .withName(R.string.alphabetically)
-                .withIcon(R.drawable.ic_order_alphabetical)
-                .withIconTintingEnabled(true)
-                .withIdentifier(idAlphabetical)
-                .withSelectable(true);
-        PrimaryDrawerItem dueDate = new PrimaryDrawerItem()
-                .withName(R.string.due_date)
-                .withIcon(R.drawable.ic_time_alarm)
-                .withIconTintingEnabled(true)
-                .withIdentifier(idDueDate)
-                .withSelectable(true);
-        PrimaryDrawerItem customOrder = new PrimaryDrawerItem()
-                .withName(R.string.custom_order)
-                .withIcon(R.drawable.ic_menu)
-                .withIconTintingEnabled(true)
-                .withIdentifier(idCustomOrder)
-                .withSelectable(true);
-
-        // Get the position for the item in the drawer, in order to add its children (+1)
-        Integer position = mFilterDrawer.getPosition(Constants.COLLAPSABLE_ORDER_LIST)+1;
-
-        // Add the Task Lists to the drawer by order
-        mFilterDrawer.addStickyFooterItemAtPosition(customOrder, position);
-        mFilterDrawer.addStickyFooterItemAtPosition(dueDate, position);
-        mFilterDrawer.addStickyFooterItemAtPosition(alphabetical, position);
-
-        // Add the identifiers in order to safely delete
-        addedIds.add(idAlphabetical);
-        addedIds.add(idDueDate);
-        addedIds.add(idCustomOrder);
-        mOrderListIds = addedIds;
-    }
-
     // ------------------ Remove Items From Drawer -------------------
 
-    private void removeItemListFromDrawer(List<Integer> mItemListIds, boolean sticky){
+    private void removeItemListFromFilterDrawer(List<Integer> mItemListIds, boolean sticky){
         for (int i = 0; i < mItemListIds.size(); i++) {
             if (sticky)
                 mFilterDrawer.removeStickyFooterItemAtPosition(0);
             else
                 mFilterDrawer.removeItem(mItemListIds.get(i));
         }
+    }
+
+    private void removeTaskListFromMainDrawer(List<Integer> mItemListIds){
+        for (int i = 0; i < mItemListIds.size(); i++)
+            mMainDrawer.removeItem(mItemListIds.get(i));
     }
 
     // --------------------- Add Items To Drawer ---------------------
@@ -672,5 +634,47 @@ public class MainAndFilterDrawerConfiguration {
 //        drawer.getRecyclerView().getChildAdapterPosition(mLabelListCollapsable.generateView(getApplication()));
 //        drawer.getRecyclerView().
 //        drawer.getRecyclerView().getLayoutManager().sc
+    }
+
+    private void addOrderFilterToDrawer(){
+        List<Integer>addedIds = new ArrayList<>();
+
+        int idAlphabetical = Constants.ALPHABETICAL;
+        int idDueDate = Constants.DUE_DATE;
+        int idCustomOrder = Constants.CUSTOM_ORDER;
+
+        // Create order items
+        PrimaryDrawerItem alphabetical = new PrimaryDrawerItem()
+                .withName(R.string.alphabetically)
+                .withIcon(R.drawable.ic_order_alphabetical)
+                .withIconTintingEnabled(true)
+                .withIdentifier(idAlphabetical)
+                .withSelectable(true);
+        PrimaryDrawerItem dueDate = new PrimaryDrawerItem()
+                .withName(R.string.due_date)
+                .withIcon(R.drawable.ic_time_alarm)
+                .withIconTintingEnabled(true)
+                .withIdentifier(idDueDate)
+                .withSelectable(true);
+        PrimaryDrawerItem customOrder = new PrimaryDrawerItem()
+                .withName(R.string.custom_order)
+                .withIcon(R.drawable.ic_menu)
+                .withIconTintingEnabled(true)
+                .withIdentifier(idCustomOrder)
+                .withSelectable(true);
+
+        // Get the position for the item in the drawer, in order to add its children (+1)
+        Integer position = mFilterDrawer.getPosition(Constants.COLLAPSABLE_ORDER_LIST)+1;
+
+        // Add the Task Lists to the drawer by order
+        mFilterDrawer.addStickyFooterItemAtPosition(customOrder, position);
+        mFilterDrawer.addStickyFooterItemAtPosition(dueDate, position);
+        mFilterDrawer.addStickyFooterItemAtPosition(alphabetical, position);
+
+        // Add the identifiers in a list to safely delete them
+        addedIds.add(idAlphabetical);
+        addedIds.add(idDueDate);
+        addedIds.add(idCustomOrder);
+        mOrderListIds = addedIds;
     }
 }
