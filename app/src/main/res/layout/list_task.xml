@@ -39,17 +39,17 @@
             android:layout_marginStart="-2dp"
             android:textColor="@color/primaryText"/>
 
-        <ImageButton
-            android:id="@+id/button_location"
-            android:src="@drawable/ic_place_pin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            />
+        <!--<ImageButton-->
+            <!--android:id="@+id/button_location"-->
+            <!--android:src="@drawable/ic_place_pin"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@null"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingRight="5dp"-->
+            <!--/>-->
 
         <ImageButton
             android:id="@+id/button_time"

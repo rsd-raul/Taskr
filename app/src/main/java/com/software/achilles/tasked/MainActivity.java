@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Introduce the TaskList corresponding to that fragment
             Bundle bundle = new Bundle();
-            bundle.putSerializable(Constants.TASK_LIST + "", taskList);
+            bundle.putParcelable(Constants.TASK_LIST+"", taskList);
             dashboardListFragment.setArguments(bundle);
 
             // Add the fragment and it's bundle to the adapter

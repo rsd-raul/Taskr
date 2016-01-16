@@ -65,6 +65,7 @@ public class TaskController {
         String[] listTitles = new String[]{"Really long list", "Short list"};
 
         String[] locationTitles = new String[]{"Home", "Work", "Gym", "Random"};
+        Location[] locations = new Location[]{new Location("test"), null, null};
 
         String[] labelTitles = new String[]{"Groceries", "Inspiration", "Personal", "Work"};
         Integer[] labelColors = new Integer[]{R.color.amberDate, R.color.colorPrimary,
@@ -84,17 +85,21 @@ public class TaskController {
             int amountTaskWhile = amountTasks;
 
             while (amountTaskWhile > 0) {
-                Boolean finished = (random.nextBoolean());
+                Boolean finished = random.nextBoolean();
+                Boolean starred = random.nextBoolean();
                 String title = titles[random.nextInt(2)];
                 String description = descriptions[random.nextInt(3)];
                 Date dueDate = dueDates[random.nextInt(2)];
                 Set<Label> labels = new HashSet<>();
                 Integer labelQuantity = labelQuantities[random.nextInt(4)];
+                Location location = locations[random.nextInt(3)];
 
                 for (int i = 0; i < labelQuantity; i++)
                     labels.add(sLabels.get(random.nextInt(4)));
 
-                aux.add(new Task(finished, title, description, dueDate, null, new ArrayList<>(labels)));
+                // TODO Location es parcelable no serializable... Cambiado a Parcelable.
+                aux.add(new Task(finished, starred, title, description, dueDate, location, new ArrayList<>(labels)));
+//                aux.add(new Task(finished, starred, title, description, dueDate, null, new ArrayList<>(labels)));
                 amountTaskWhile--;
             }
 

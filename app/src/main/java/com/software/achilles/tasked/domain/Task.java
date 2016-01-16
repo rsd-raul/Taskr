@@ -15,7 +15,7 @@ public class Task extends BasicType implements Serializable {
 
     // ------------------------- Attributes --------------------------
 
-    private Boolean finished;
+    private Boolean finished, starred;
     private String description;
     private Date dueDate;
     private Location location;
@@ -23,8 +23,9 @@ public class Task extends BasicType implements Serializable {
 
     // ------------------------- Constructor -------------------------
 
-    public Task(Boolean finished, @NonNull String title, String description, Date dueDate, Location location, ArrayList<Label> labels) {
+    public Task(Boolean finished, Boolean starred, @NonNull String title, String description, Date dueDate, Location location, ArrayList<Label> labels) {
         this.finished = finished;
+        this.starred = starred;
         setTitle(title);
         this.description = description;
         this.dueDate = dueDate;
@@ -67,6 +68,13 @@ public class Task extends BasicType implements Serializable {
     }
     public void setLabels(ArrayList<Label> labels) {
         this.labels = labels;
+    }
+
+    public Boolean getStarred() {
+        return starred;
+    }
+    public void setStarred(Boolean starred) {
+        this.starred = starred;
     }
 
     // -------------------------- To String --------------------------

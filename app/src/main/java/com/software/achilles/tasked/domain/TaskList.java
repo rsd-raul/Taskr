@@ -1,15 +1,27 @@
 package com.software.achilles.tasked.domain;
 
 import android.content.res.Resources;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 import java.io.Serializable;
 import java.util.List;
 
-public class TaskList extends BasicType implements Serializable {
+public class TaskList extends BasicType implements Parcelable {
 
     // --------------------------- Values ----------------------------
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 
     // ------------------------- Attributes --------------------------
 
