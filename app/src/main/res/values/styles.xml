@@ -52,14 +52,15 @@
         <item name="android:layout_gravity">bottom|end</item>
         <item name="android:padding">@dimen/fab_margin</item>
 
-        <item name="menu_showShadow">true</item>
+        <!--<item name="menu_showShadow">true</item>-->
         <item name="menu_shadowColor">@color/shadow</item>
         <item name="menu_shadowRadius">2dp</item>
         <item name="menu_shadowYOffset">1dp</item>
+        <item name="menu_shadowXOffset">0dp</item>
 
-        <item name="menu_animationDelayPerItem">50</item>
-        <item name="menu_icon">@drawable/fab_add</item>
-        <item name="menu_buttonSpacing">0dp</item>
+        <!--<item name="menu_animationDelayPerItem">50</item>-->
+        <!--<item name="menu_icon">@drawable/fab_add</item>-->
+        <!--<item name="menu_buttonSpacing">0dp</item>-->
 
         <item name="menu_colorNormal">@color/colorAccent</item>
         <item name="menu_colorPressed">@color/colorAccentDark</item>
@@ -68,30 +69,30 @@
         <item name="menu_labels_colorNormal">@color/textAndIcons</item>
         <item name="menu_labels_colorPressed">@color/textAndIconsDark</item>
         <item name="menu_labels_colorRipple">#66FFFFFF</item>
-        <item name="menu_labels_showShadow">true</item>
+        <!--<item name="menu_labels_showShadow">true</item>-->
 
-        <item name="menu_labels_margin">10dp</item>
-        <item name="menu_labels_cornerRadius">3dp</item>
-        <item name="menu_labels_paddingTop">4dp</item>
-        <item name="menu_labels_paddingBottom">4dp</item>
-        <item name="menu_labels_paddingLeft">8dp</item>
-        <item name="menu_labels_paddingRight">8dp</item>
+        <item name="menu_labels_margin">16dp</item>
+        <!--<item name="menu_labels_cornerRadius">3dp</item>-->
+        <!--<item name="menu_labels_paddingTop">4dp</item>-->
+        <!--<item name="menu_labels_paddingBottom">4dp</item>-->
+        <!--<item name="menu_labels_paddingLeft">8dp</item>-->
+        <!--<item name="menu_labels_paddingRight">8dp</item>-->
 
-        <item name="menu_labels_position">left</item>
-        <item name="menu_openDirection">up</item>
+        <!--<item name="menu_labels_position">left</item>-->
+        <!--<item name="menu_openDirection">up</item>-->
 
-        <item name="menu_labels_textColor">@color/primaryText</item>
-        <item name="menu_labels_textSize">16sp</item>
-        <item name="menu_labels_singleLine">true</item>
-        <item name="menu_labels_ellipsize">end</item>
-        <item name="menu_labels_maxLines">-1</item>
+        <item name="menu_labels_textColor">@color/fabText</item>
+        <!--<item name="menu_labels_textSize">16sp</item>-->
+        <!--<item name="menu_labels_singleLine">true</item>-->
+        <!--<item name="menu_labels_ellipsize">end</item>-->
+        <!--<item name="menu_labels_maxLines">-1</item>-->
     </style>
 
     <style name="fabMenuChild">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="fab_shadowRadius">4dp</item>
-        <item name="fab_shadowYOffset">3dp</item>
+        <!--<item name="fab_shadowRadius">4dp</item>-->
+        <!--<item name="fab_shadowYOffset">3dp</item>-->
         <item name="fab_shadowXOffset">0dp</item>
         <item name="fab_size">mini</item>
     </style>

@@ -43,6 +43,7 @@
     <color name="dividerColor">#B6B6B6</color>
     <color name="textAndIconsDark">#E7E7E7</color>
     <color name="textAndIcons">#FFFFFF</color>
+    <color name="fabText">#757575</color>
 
     <color name="list_background">#ECECEC</color>
     <color name="task_background">#FFFFFF</color>

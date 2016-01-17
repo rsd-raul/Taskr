@@ -12,7 +12,7 @@
     <dimen name="navigation_drawer_padding">16dp</dimen>
     <dimen name="navigation_drawer_between_text_and_account_selector">16dp</dimen>
     <dimen name="navigation_drawer_profile_image_size">64dp</dimen>
-    <dimen name="filter_drawer_width">250dp</dimen>
+    <dimen name="filter_drawer_width">248dp</dimen>
 
     <!-- Primary Text Sizes -->
     <dimen name="app_text_size_xsmall">11sp</dimen>

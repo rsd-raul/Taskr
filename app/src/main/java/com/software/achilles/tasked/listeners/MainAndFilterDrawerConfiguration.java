@@ -384,7 +384,7 @@ public class MainAndFilterDrawerConfiguration {
                 .withSelectedIconColorRes(color)
                 .withSelectedTextColorRes(color)
                 .withIdentifier(Constants.STARRED)
-                .withSelectable(true);
+                .withSelectable(false);
         color = R.color.amberDate;
         PrimaryDrawerItem today = new PrimaryDrawerItem()
                 .withName(R.string.dueToday)
@@ -394,7 +394,7 @@ public class MainAndFilterDrawerConfiguration {
                 .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_TODAY)
-                .withSelectable(true);
+                .withSelectable(false);
         color = R.color.colorPrimary;
         PrimaryDrawerItem thisWeek = new PrimaryDrawerItem()
                 .withName(R.string.dueThisWeek)
@@ -404,7 +404,7 @@ public class MainAndFilterDrawerConfiguration {
                 .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_THIS_WEEK)
-                .withSelectable(true);
+                .withSelectable(false);
 
         // Create expandable and collapsable items
         mTaskCollapsable = new PrimaryDrawerItem()

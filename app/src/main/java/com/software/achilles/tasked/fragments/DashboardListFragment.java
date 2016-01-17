@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.domain.Task;
@@ -32,8 +33,6 @@ public class DashboardListFragment extends Fragment {
 
     // ------------------------- Attributes --------------------------
 
-//    private ArrayAdapter<Task> adapter;
-
     // ------------------------- Constructor -------------------------
 
     @Nullable
@@ -42,7 +41,7 @@ public class DashboardListFragment extends Fragment {
 
         // TODO si en un futuro no usas TaskList pasar a List<Task> directamente
         // Retrieve the TaskList from the Activity
-        TaskList taskList = (TaskList) getArguments().getParcelable(Constants.TASK_LIST+"");
+        TaskList taskList = getArguments().getParcelable(Constants.TASK_LIST+"");
 
         List<Task> tasks;
         // Retrieve the Tasks from the task
@@ -50,7 +49,7 @@ public class DashboardListFragment extends Fragment {
             tasks = taskList.getTasks();
         else {
             tasks = new ArrayList<>();
-            Log.e("DashboardListFragment", "taskList = null");
+            Log.e("DashboardListFragment", "taskList was null and was initialized");
         }
 
         // Setup the recycler view with the list of Tasks
@@ -66,6 +65,7 @@ public class DashboardListFragment extends Fragment {
 
         recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(getActivity(), tasks));
     }
+
 
     // ---------------------- Internal Adapter -----------------------
 
@@ -104,6 +104,12 @@ public class DashboardListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+            // TODO 1 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
+            if(position == 0)
+                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0,24,0,0);
+            if(position == mListOfTasks.size()-1)
+                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0,0,0,24);
+
             final Task task = mListOfTasks.get(position);
             holder.mBoundString = task.getTitle();
 
@@ -191,7 +197,6 @@ public class DashboardListFragment extends Fragment {
         }
 
 
-
         // -------------------- Internal ViewHolder ----------------------
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -204,6 +209,9 @@ public class DashboardListFragment extends Fragment {
             public final ImageButton mAlarm;
             public final CheckBox mCheckStar;
 
+            // TODO 2 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
+            public final LinearLayout mLinear;
+
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
@@ -212,6 +220,9 @@ public class DashboardListFragment extends Fragment {
 //                mPlace = (ImageButton) view.findViewById(R.id.button_location);
                 mAlarm = (ImageButton) view.findViewById(R.id.button_time);
                 mCheckStar = (CheckBox) view.findViewById(R.id.checkbox_favourite);
+
+                // TODO 3 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
+                mLinear = (LinearLayout) view.findViewById(R.id.taskLinearLayout);
             }
 
             @Override

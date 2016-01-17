@@ -111,6 +111,24 @@ public class FloatingActionMenuConfigurator {
 //        activity.getSupportActionBar().hide();
 //        activity.getSupportActionBar().show();
 
+//        RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.recyclerview);
+//        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//            }
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                if (dy > 0 && fam.getVisibility() == View.VISIBLE)
+//                    // User scrolled down and the FAB is currently visible -> hide the FAB
+//                    fam.hideMenu(true);
+//                 else if (dy < 0 && fam.getVisibility() != View.VISIBLE)
+//                    // User scrolled up and the FAB is currently not visible -> show the FAB
+//                    fam.showMenu(true);
+//                super.onScrolled(recyclerView, dx, dy);
+//            }
+//        });
+
 //        NestedScrollView scrollView = (NestedScrollView) activity.findViewById(R.id.scrollView);
 //        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
 
