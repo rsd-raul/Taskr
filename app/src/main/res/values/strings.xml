@@ -49,7 +49,8 @@
     <!-- FAB menu and childs -->
 
     <string name="shareList">Share list</string>
-    <string name="addMultiTasks">Add multiple task</string>
+    <!--<string name="addMultiTasks">Add multiple task</string>         DEPRECATED -->
+    <string name="addLabel">Add label</string>
     <string name="addTask">Add task</string>
     <string name="addList">Add list</string>
 

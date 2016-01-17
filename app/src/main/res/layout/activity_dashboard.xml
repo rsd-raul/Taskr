@@ -37,6 +37,9 @@
         <com.github.clans.fab.FloatingActionButton style="@style/fabShareList"
             android:id="@+id/shareListFAB"/>
 
+        <com.github.clans.fab.FloatingActionButton style="@style/fabAddLabel"
+            android:id="@+id/addLabelFAB"/>
+
         <com.github.clans.fab.FloatingActionButton style="@style/fabAddList"
             android:id="@+id/addListFAB"/>
 

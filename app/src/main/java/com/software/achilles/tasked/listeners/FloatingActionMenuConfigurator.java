@@ -182,14 +182,7 @@ public class FloatingActionMenuConfigurator {
             }
         });
 
-        FloatingActionButton addList = (FloatingActionButton) activity.findViewById(R.id.addListFAB);
-        addList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         FloatingActionButton addTask = (FloatingActionButton) activity.findViewById(R.id.addTaskFAB);
         addTask.setOnClickListener(new View.OnClickListener() {
@@ -199,6 +192,24 @@ public class FloatingActionMenuConfigurator {
                 closeFabMenu();
 
                 deployAddTaskLayout();
+            }
+        });
+
+        FloatingActionButton addList = (FloatingActionButton) activity.findViewById(R.id.addListFAB);
+        addList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        FloatingActionButton addLabel = (FloatingActionButton) activity.findViewById(R.id.addLabelFAB);
+        addLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
     }

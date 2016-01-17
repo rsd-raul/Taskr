@@ -104,6 +104,13 @@
         <item name="fab_colorPressed">@color/amberDateDark</item>
     </style>
 
+    <style name="fabAddLabel" parent="fabMenuChild">
+        <item name="fab_label">@string/addLabel</item>
+        <item name="android:src">@drawable/ic_label_outline</item>
+        <item name="fab_colorNormal">@color/colorAccent</item>
+        <item name="fab_colorPressed">@color/colorAccentDark</item>
+    </style>
+
     <style name="fabAddList" parent="fabMenuChild">
         <item name="fab_label">@string/addList</item>
         <item name="android:src">@drawable/ic_list_bullet</item>
