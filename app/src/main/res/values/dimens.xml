@@ -21,4 +21,10 @@
     <dimen name="app_text_size_large">18sp</dimen>
     <dimen name="app_text_size_xlarge">20sp</dimen>
 
+    <!--Task Creation Fragment-->
+
+    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin_left">54dp</dimen>
+    <dimen name="activity_horizontal_margin_right">26dp</dimen>
+
 </resources>

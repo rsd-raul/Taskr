@@ -63,7 +63,14 @@
         really_long_email_address_string_to_ensure_proper_overflow_formatting@gmail.com
     </string>
 
+    <!--TaskList toString-->
+
     <string name="listName">List name:</string>
     <string name="tasks">Tasks:</string>
+
+    <!--Task Creation Fragment-->
+
+    <string name="title">Title</string>
+    <string name="description">Description</string>
 
 </resources>
