@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
-    android:layout_height="match_parent"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinatorDashboard"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true" >
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
 
-    <!--DEPRECATED BY DRAWER LIBRARY DEPRECATED BY DRAWER LIBRARY DEPRECATED BY DRAWER LIBRARY-->
-
-    <!-- The main content view -->
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.design.widget.AppBarLayout style="@style/appBarLayout" >
 
-        <include layout="@layout/activity_dashboard"/>
-    </FrameLayout>
+            <android.support.v7.widget.Toolbar style="@style/toolbar"
+                android:id="@+id/toolbar" />
 
-</android.support.v4.widget.DrawerLayout>
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.github.clans.fab.FloatingActionMenu style="@style/menuFAB"
+        android:id="@+id/menuFAB" >
+
+        <com.github.clans.fab.FloatingActionButton style="@style/fabShareList"
+            android:id="@+id/shareListFAB"/>
+
+        <com.github.clans.fab.FloatingActionButton style="@style/fabAddLabel"
+            android:id="@+id/addLabelFAB"/>
+
+        <com.github.clans.fab.FloatingActionButton style="@style/fabAddList"
+            android:id="@+id/addListFAB"/>
+
+        <com.github.clans.fab.FloatingActionButton style="@style/fabAddTask"
+            android:id="@+id/addTaskFAB"/>
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+</android.support.design.widget.CoordinatorLayout>

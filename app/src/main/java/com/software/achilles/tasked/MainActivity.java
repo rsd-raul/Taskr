@@ -1,5 +1,7 @@
 package com.software.achilles.tasked;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -7,11 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
+
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.adapters.Adapter;
 import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.domain.*;
 import com.software.achilles.tasked.fragments.DashboardListFragment;
+import com.software.achilles.tasked.fragments.DashboardPagerFragment;
+import com.software.achilles.tasked.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.listeners.MainAndFilterDrawerConfiguration;
 import com.software.achilles.tasked.util.Constants;
@@ -28,14 +34,16 @@ public class MainActivity extends AppCompatActivity {
 
     private TaskController mTaskController;
     public Toolbar mToolbar;
-    public ViewPager mViewPager;
+//    public ViewPager mViewPager;
+    public DashboardPagerFragment mDashboardPagerFragment;
+    public TabLayout tabLayout;
 
     // ------------------------- Constructor -------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_main);
 
         // Initialize TaskController
         mTaskController = TaskController.getInstance();
@@ -50,45 +58,63 @@ public class MainActivity extends AppCompatActivity {
         // Configure the drawers, both main and filter
         mDrawersConfigurator = new MainAndFilterDrawerConfiguration(this, true);
 
-        // Setup the fragment composing the ViewPager
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(TaskController.sTaskLists);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        dashboardInitialize();
 
-        // Setup tabs for Dashboard and make Scrollable
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+//        // Setup the fragment composing the ViewPager
+//        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+//        setupViewPager(TaskController.sTaskLists);
+
+
+
+    }
+
+    private void dashboardInitialize(){
+
+        mDashboardPagerFragment = new DashboardPagerFragment();
+
+        // Insert the fragment by replacing any existing fragment
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, mDashboardPagerFragment)
+                .commit();
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+
     }
 
-    // -------------------------- View Pager -------------------------
-
-    private void setupViewPager(ArrayList<TaskList> taskLists) {
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-
-        // TODO quick jump to the desired list if too many lists present
-//        if(taskLists.size() > 5)
-//            adapter.addFragment(new DashboardSearchFragment(), "Search");
-
-        // Populate each of the pages of the ViewPager
-        for (TaskList taskList : taskLists) {
-            // Pick the fragment the page is going to show
-            DashboardListFragment dashboardListFragment = new DashboardListFragment();
-
-            // Introduce the TaskList corresponding to that fragment
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.TASK_LIST+"", taskList);
-            dashboardListFragment.setArguments(bundle);
-
-            // Add the fragment and it's bundle to the adapter
-            adapter.addFragment(dashboardListFragment, taskList.getTitle());
-        }
-        mViewPager.setAdapter(adapter);
+    @Override
+    public void onAttachFragment(android.support.v4.app.Fragment fragment) {
+        super.onAttachFragment(fragment);
     }
+
+    //    // -------------------------- View Pager -------------------------
+//
+//    private void setupViewPager(ArrayList<TaskList> taskLists) {
+//        Adapter adapter = new Adapter(getSupportFragmentManager());
+//
+//        // TODO quick jump to the desired list if too many lists present
+////        if(taskLists.size() > 5)
+////            adapter.addFragment(new DashboardSearchFragment(), "Search");
+//
+//        // Populate each of the pages of the ViewPager
+//        for (TaskList taskList : taskLists) {
+//            // Pick the fragment the page is going to show
+//            DashboardListFragment dashboardListFragment = new DashboardListFragment();
+//
+//            // Introduce the TaskList corresponding to that fragment
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelable(Constants.TASK_LIST+"", taskList);
+//            dashboardListFragment.setArguments(bundle);
+//
+//            // Add the fragment and it's bundle to the adapter
+//            adapter.addFragment(dashboardListFragment, taskList.getTitle());
+//        }
+//        mViewPager.setAdapter(adapter);
+//    }
 
     // -------------------------- Landscape --------------------------
 
