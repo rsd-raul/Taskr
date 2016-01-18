@@ -2,6 +2,8 @@ package com.software.achilles.tasked.listeners;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -10,15 +12,19 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.MainActivity;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.extras.FloatingActionMenuBehavior;
+import com.software.achilles.tasked.fragments.TaskCreationFragment;
 
 public class FloatingActionMenuConfigurator {
 
@@ -86,10 +92,6 @@ public class FloatingActionMenuConfigurator {
 //                return true;
 //            }
 //        });
-    }
-
-    public void closeFabMenu(){
-        fam.close(true);
     }
 
     public static void setMenuOnScrollReaction(){
@@ -188,10 +190,7 @@ public class FloatingActionMenuConfigurator {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                closeFabMenu();
-
-                deployAddTaskLayout();
+                activity.deployAddTaskLayout();
             }
         });
 
@@ -216,12 +215,12 @@ public class FloatingActionMenuConfigurator {
 
     // -------------------------- Use Cases --------------------------
 
-
-    private void deployAddTaskLayout(){
-
+    public void hideMenu(){
+        fam.hideMenu(true);
     }
 
-//    private void retractAddTaskLayout(){
-//
-//    }
+    public void showMenu(){
+        fam.showMenu(true);
+    }
+
 }

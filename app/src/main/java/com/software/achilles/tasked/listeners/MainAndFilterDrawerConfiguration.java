@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -48,7 +49,7 @@ public class MainAndFilterDrawerConfiguration {
 
     // ------------------------- Attributes --------------------------
 
-    private Activity mActivity;
+    private MainActivity mActivity;
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private AccountHeader mAccountHeader;
@@ -203,10 +204,10 @@ public class MainAndFilterDrawerConfiguration {
         // Create Filter Drawer
         mMainDrawer = new DrawerBuilder()
                 .withActivity(mActivity)
-                .withToolbar(mToolbar)
-                .withActionBarDrawerToggle(true)
                 .withAccountHeader(mAccountHeader)
-                .withActionBarDrawerToggleAnimated(true)
+//                .withToolbar(mToolbar)
+//                .withActionBarDrawerToggle(true)
+//                .withActionBarDrawerToggleAnimated(true)
                 .addDrawerItems(
                         dashboard, snoozed, completed,
                         new DividerDrawerItem(),
@@ -244,7 +245,7 @@ public class MainAndFilterDrawerConfiguration {
                         //  drawerView.getWidth() < 800
 
                         // We want the labels opened by default ONLY
-                        if (drawerView.getWidth() < 800 && mFilterDrawer != null && firstTime){
+                        if (drawerView.getWidth() < 800 && mFilterDrawer != null && firstTime) {
                             addLabelsToFilterDrawer(TaskController.sLabels);
                             firstTime = false;
                             mLabelCollapsable.withBadgeStyle(mBadgeStyleCollapse);
@@ -253,10 +254,12 @@ public class MainAndFilterDrawerConfiguration {
                     }
 
                     @Override
-                    public void onDrawerClosed(View drawerView) { }
+                    public void onDrawerClosed(View drawerView) {
+                    }
 
                     @Override
-                    public void onDrawerSlide(View drawerView, float slideOffset) { }
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                    }
                 })
                 .build();
     }
@@ -273,7 +276,6 @@ public class MainAndFilterDrawerConfiguration {
                     case Constants.DASHBOARD:
                         break;
                     case Constants.SNOOZED:
-                        snoozed();
                         break;
                     case Constants.COMPLETED:
                         break;
@@ -316,28 +318,6 @@ public class MainAndFilterDrawerConfiguration {
                 return true;
             }
         });
-    }
-    private void snoozed(){
-        // Create a new fragment and specify the planet to show based on position
-        Fragment fragment = new TaskCreationFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-//        fragment.setArguments(args);
-
-        FrameLayout frameLayout = (FrameLayout) mActivity.findViewById(R.id.content_frame);
-        frameLayout.removeView(mViewPager);
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = mActivity.getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
-
-//        // Highlight the selected item, update the title, and close the drawer
-//        mDrawerList.setItemChecked(position, true);
-//        setTitle(mPlanetTitles[position]);
-//        mDrawerLayout.closeDrawer(mDrawerList);
-
     }
 
     private void contactByEmail(){
