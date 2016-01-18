@@ -1,16 +1,21 @@
 package com.software.achilles.tasked.listeners;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
+
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -31,6 +36,7 @@ import com.software.achilles.tasked.domain.BasicType;
 import com.software.achilles.tasked.domain.FavoriteLocation;
 import com.software.achilles.tasked.domain.Label;
 import com.software.achilles.tasked.domain.TaskList;
+import com.software.achilles.tasked.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
@@ -267,6 +273,7 @@ public class MainAndFilterDrawerConfiguration {
                     case Constants.DASHBOARD:
                         break;
                     case Constants.SNOOZED:
+                        snoozed();
                         break;
                     case Constants.COMPLETED:
                         break;
@@ -309,6 +316,28 @@ public class MainAndFilterDrawerConfiguration {
                 return true;
             }
         });
+    }
+    private void snoozed(){
+        // Create a new fragment and specify the planet to show based on position
+        Fragment fragment = new TaskCreationFragment();
+//        Bundle args = new Bundle();
+//        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+//        fragment.setArguments(args);
+
+        FrameLayout frameLayout = (FrameLayout) mActivity.findViewById(R.id.content_frame);
+        frameLayout.removeView(mViewPager);
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = mActivity.getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .commit();
+
+//        // Highlight the selected item, update the title, and close the drawer
+//        mDrawerList.setItemChecked(position, true);
+//        setTitle(mPlanetTitles[position]);
+//        mDrawerLayout.closeDrawer(mDrawerList);
+
     }
 
     private void contactByEmail(){

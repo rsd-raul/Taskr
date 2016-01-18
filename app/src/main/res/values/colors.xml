@@ -13,6 +13,7 @@
     <!--<color name="colorPrimaryDark">#FF31277C</color>   EN colors.xml v21-->
     <color name="colorPrimaryDark">#3B2F93</color>
     <color name="colorPrimary">#3B2F93</color>
+    <color name="colorPrimaryLight">#6254C9</color>
     <color name="colorAccentDark">#FF1F48</color>
     <color name="colorAccent">#FF4A6B</color>
 

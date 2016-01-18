@@ -1,173 +1,368 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearCreation"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="top"
-    android:orientation="vertical"
-    tools:context=".MainActivity"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/relative"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin_left"
-        android:paddingStart="@dimen/activity_horizontal_margin_left"
-        android:paddingRight="@dimen/activity_horizontal_margin_right"
-        android:paddingEnd="@dimen/activity_horizontal_margin_right"
-        android:paddingTop="0dp"
-        android:paddingBottom="8dp" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin_left"
+                android:paddingStart="@dimen/activity_horizontal_margin_left"
+                android:paddingRight="@dimen/activity_horizontal_margin_right"
+                android:paddingEnd="@dimen/activity_horizontal_margin_right"
+                android:paddingTop="0dp"
+                android:paddingBottom="8dp"
+                android:background="@color/colorPrimary">
 
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textImput1"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textImput1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextAppearance.AppCompat"
+                    android:textColorHint="@color/md_white_1000">
+
+                    <android.support.v7.widget.AppCompatEditText style="@style/editText"
+                        android:id="@+id/task"
+                        android:hint="@string/title"
+                        android:textColorHint="@color/md_white_1000"
+                        android:textSize="30sp"
+
+                        android:focusable="false">
+                        <!--android:focusable="true">-->
+
+                    </android.support.v7.widget.AppCompatEditText>
+                </android.support.design.widget.TextInputLayout>
+
+
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinner"
+                    android:layout_below="@+id/textImput1"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:spinnerMode="dropdown" />
+
+            </RelativeLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <EditText style="@style/editText"
-                android:id="@+id/task"
-                android:hint="@string/title"
-                android:textSize="30sp"
-
-                android:focusable="false">
-                <!--android:focusable="true">-->
-
-            </EditText>
-        </android.support.design.widget.TextInputLayout>
-
-        <CheckBox
-            android:id="@+id/checkbox_favourite"
-            android:button="@drawable/custom_favourite"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:background="@color/colorPrimaryLight">
 
-            android:layout_gravity="end"
-            android:layout_below="@+id/textImput1"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            <CheckBox
+                android:id="@+id/checkbox_favourite"
+                android:button="@drawable/custom_favourite"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
 
-            android:layout_alignBottom="@+id/button_time" />
+                android:layout_gravity="end"
+                android:layout_below="@+id/spinner"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
 
-        <ImageButton
-            android:id="@+id/button_time"
-            android:src="@drawable/ic_time_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+                android:layout_alignBottom="@+id/button_time" />
 
-            android:layout_gravity="end"
-            android:layout_below="@+id/textImput1"
-            android:layout_toLeftOf="@+id/checkbox_favourite"
-            android:layout_toStartOf="@+id/checkbox_favourite" />
+            <ImageButton
+                android:id="@+id/button_time"
+                android:src="@drawable/ic_time_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
 
-        <ImageButton
-            android:id="@+id/button_location"
-            android:src="@drawable/ic_place_pin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+                android:layout_gravity="end"
+                android:layout_below="@+id/spinner"
+                android:layout_toLeftOf="@+id/checkbox_favourite"
+                android:layout_toStartOf="@+id/checkbox_favourite" />
 
-            android:layout_gravity="end"
-            android:layout_below="@+id/textImput1"
-            android:layout_toLeftOf="@+id/button_time"
-            android:layout_toStartOf="@+id/button_time" />
+            <ImageButton
+                android:id="@+id/button_location"
+                android:src="@drawable/ic_place_pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
 
-        <ImageButton
-            android:id="@+id/button_label"
-            android:src="@drawable/ic_label_multiple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+                android:layout_gravity="end"
+                android:layout_below="@+id/spinner"
+                android:layout_toLeftOf="@+id/button_time"
+                android:layout_toStartOf="@+id/button_time" />
 
-            android:layout_gravity="end"
-            android:layout_below="@+id/textImput1"
-            android:layout_toLeftOf="@+id/button_location"
-            android:layout_toStartOf="@+id/button_location" />
+            <ImageButton
+                android:id="@+id/button_label"
+                android:src="@drawable/ic_label_multiple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
 
-        <ImageButton
-            android:id="@+id/button_description"
-            android:src="@drawable/ic_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+                android:layout_gravity="end"
+                android:layout_below="@+id/spinner"
+                android:layout_toLeftOf="@+id/button_location"
+                android:layout_toStartOf="@+id/button_location" />
 
-            android:layout_gravity="end"
-            android:layout_below="@+id/textImput1"
-            android:layout_toLeftOf="@+id/button_label"
-            android:layout_toStartOf="@+id/button_label" />
+            <ImageButton
+                android:id="@+id/button_description"
+                android:src="@drawable/ic_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+
+                android:layout_gravity="end"
+                android:layout_below="@+id/spinner"
+                android:layout_toLeftOf="@+id/button_label"
+                android:layout_toStartOf="@+id/button_label" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+
+        </android.support.v7.widget.RecyclerView>
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_anchor="@id/relative"
+        app:layout_anchorGravity="bottom|left|start"
+        android:src="@drawable/ic_cancel"
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"/>
 
 
 
-        <!--android:paddingRight="5dp"-->
+</android.support.design.widget.CoordinatorLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/linearCreation"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="top"-->
+    <!--android:orientation="vertical"-->
+    <!--tools:context=".MainActivity"-->
+    <!--android:background="@color/colorPrimary">-->
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/relative"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingLeft="@dimen/activity_horizontal_margin_left"-->
+        <!--android:paddingStart="@dimen/activity_horizontal_margin_left"-->
+        <!--android:paddingRight="@dimen/activity_horizontal_margin_right"-->
+        <!--android:paddingEnd="@dimen/activity_horizontal_margin_right"-->
+        <!--android:paddingTop="0dp"-->
+        <!--android:paddingBottom="8dp" >-->
 
 
         <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:id="@+id/textImput2"-->
-            <!--android:layout_below="@+id/textImput1"-->
+            <!--android:id="@+id/textImput1"-->
             <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginBottom="10dp">-->
+            <!--android:layout_height="wrap_content" >-->
 
             <!--<EditText style="@style/editText"-->
-                <!--android:id="@+id/description"-->
-                <!--android:hint="@string/description"/>-->
+                <!--android:id="@+id/task"-->
+                <!--android:hint="@string/title"-->
+                <!--android:textSize="30sp"-->
+
+                <!--android:focusable="false">-->
+                <!--&lt;!&ndash;android:focusable="true">&ndash;&gt;-->
+
+            <!--</EditText>-->
         <!--</android.support.design.widget.TextInputLayout>-->
 
-
-        <!--<TextView-->
+        <!--<CheckBox-->
+            <!--android:id="@+id/checkbox_favourite"-->
+            <!--android:button="@drawable/custom_favourite"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
-            <!--android:text="Date"-->
-            <!--android:textSize="11dp"-->
-
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
             <!--android:paddingLeft="5dp"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:layout_below="@+id/textImput2"/>-->
-        <!--<Button style="@style/lightButtons"-->
-            <!--android:id="@+id/time"-->
+            <!--android:paddingRight="5dp"-->
 
+            <!--android:layout_gravity="end"-->
+            <!--android:layout_below="@+id/textImput1"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+
+            <!--android:layout_alignBottom="@+id/button_time" />-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/button_time"-->
+            <!--android:src="@drawable/ic_time_add"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@null"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
             <!--android:paddingLeft="5dp"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:layout_below="@+id/textImput2"-->
+            <!--android:paddingRight="5dp"-->
 
-            <!--android:paddingTop="12dp"-->
-            <!--android:textAlignment="viewStart"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:layout_alignParentTop="false"-->
-            <!--android:layout_width="wrap_content"/>-->
-    </RelativeLayout>
+            <!--android:layout_gravity="end"-->
+            <!--android:layout_below="@+id/textImput1"-->
+            <!--android:layout_toLeftOf="@+id/checkbox_favourite"-->
+            <!--android:layout_toStartOf="@+id/checkbox_favourite" />-->
 
-    <!--<FrameLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+        <!--<ImageButton-->
+            <!--android:id="@+id/button_location"-->
+            <!--android:src="@drawable/ic_place_pin"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@null"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingRight="5dp"-->
 
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="5dp"-->
-            <!--android:background="@drawable/ic_shadow" />-->
-    <!--</FrameLayout>-->
+            <!--android:layout_gravity="end"-->
+            <!--android:layout_below="@+id/textImput1"-->
+            <!--android:layout_toLeftOf="@+id/button_time"-->
+            <!--android:layout_toStartOf="@+id/button_time" />-->
 
-</LinearLayout>
+        <!--<ImageButton-->
+            <!--android:id="@+id/button_label"-->
+            <!--android:src="@drawable/ic_label_multiple"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@null"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingRight="5dp"-->
+
+            <!--android:layout_gravity="end"-->
+            <!--android:layout_below="@+id/textImput1"-->
+            <!--android:layout_toLeftOf="@+id/button_location"-->
+            <!--android:layout_toStartOf="@+id/button_location" />-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/button_description"-->
+            <!--android:src="@drawable/ic_description"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@null"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingRight="5dp"-->
+
+            <!--android:layout_gravity="end"-->
+            <!--android:layout_below="@+id/textImput1"-->
+            <!--android:layout_toLeftOf="@+id/button_label"-->
+            <!--android:layout_toStartOf="@+id/button_label" />-->
+
+
+
+        <!--&lt;!&ndash;android:paddingRight="5dp"&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;<android.support.design.widget.TextInputLayout&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/textImput2"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_below="@+id/textImput1"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_marginTop="10dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_marginBottom="10dp">&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<EditText style="@style/editText"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/description"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:hint="@string/description"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;</android.support.design.widget.TextInputLayout>&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="Date"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:textSize="11dp"&ndash;&gt;-->
+
+            <!--&lt;!&ndash;android:paddingLeft="5dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:textColor="@android:color/white"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_below="@+id/textImput2"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<Button style="@style/lightButtons"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/time"&ndash;&gt;-->
+
+            <!--&lt;!&ndash;android:paddingLeft="5dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:textColor="@android:color/white"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_below="@+id/textImput2"&ndash;&gt;-->
+
+            <!--&lt;!&ndash;android:paddingTop="12dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:textAlignment="viewStart"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_alignParentStart="true"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_alignParentTop="false"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"/>&ndash;&gt;-->
+    <!--</RelativeLayout>-->
+
+    <!--&lt;!&ndash;<FrameLayout&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="match_parent">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<View&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="5dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:background="@drawable/ic_shadow" />&ndash;&gt;-->
+    <!--&lt;!&ndash;</FrameLayout>&ndash;&gt;-->
+
+<!--</LinearLayout>-->
