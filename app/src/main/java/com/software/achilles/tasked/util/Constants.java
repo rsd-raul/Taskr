@@ -40,4 +40,6 @@ public class Constants {
     public static final int SETTINGS_ACCOUNTS = 21;                 // DEPRECATED
     public static final int ADD_ACCOUNT = 22;                       // DEPRECATED
 
+    public static final int LIST_SEPARATOR = 23;
+
 }

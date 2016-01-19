@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.adapters.Adapter;
 import com.software.achilles.tasked.controllers.TaskController;
@@ -54,10 +56,18 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(TaskController.sTaskLists);
 
-        // Setup tabs for Dashboard and make Scrollable
+
+        // Setup tabs for Dashboard if there is more than one TaskList, make them Scrollable/Fixed
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        int taskListsSize = TaskController.sTaskLists.size();
+        if(taskListsSize > 1) {
+            tabLayout.setupWithViewPager(mViewPager);
+            if(taskListsSize > 2)
+                tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            else
+                tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        } else
+            tabLayout.setVisibility(View.GONE);
     }
 
     @Override

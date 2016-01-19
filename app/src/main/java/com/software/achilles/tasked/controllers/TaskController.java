@@ -64,7 +64,7 @@ public class TaskController {
 
         String[] listTitles = new String[]{"Really long list", "Short list"};
 
-        String[] locationTitles = new String[]{"Home", "Work", "Gym", "Random"};
+        String[] locationTitles = new String[]{"Home", "Work", "Market", "Gym"};
         Location[] locations = new Location[]{new Location("test"), null, null};
 
         String[] labelTitles = new String[]{"Groceries", "Inspiration", "Personal", "Work"};

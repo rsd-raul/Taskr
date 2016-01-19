@@ -7,8 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
-    <!--tools:showIn="@layout/activity_main"-->
-    <!--android:fitsSystemWindows="true"-->
 
     <android.support.design.widget.AppBarLayout style="@style/appBarLayout" >
 
@@ -25,16 +23,6 @@
                 android:layout_height="wrap_content"
 
                 android:visibility="visible"/>
-                <!--android:visibility="gone"/>-->
-
-            <fragment class="com.software.achilles.tasked.fragments.TaskCreationFragment"
-                android:id="@+id/topFragment"
-                android:layout_width="match_parent"
-
-                tools:layout="@layout/task_creation_fragment"
-
-                android:layout_height="0dp"/>
-                <!--android:layout_height="wrap_content"/>-->
 
         </FrameLayout>
 
@@ -65,14 +53,5 @@
             android:id="@+id/addTaskFAB"/>
 
     </com.github.clans.fab.FloatingActionMenu>
-
-    <android.support.design.widget.FloatingActionButton style="@style/fabButtons"
-        android:id="@+id/saveAndCancelFAB"
-        android:src="@drawable/ic_cancel"
-        app:layout_anchor="@id/topFragment"
-        app:layout_anchorGravity="bottom|start"
-
-        android:visibility="gone"/>
-    <!--android:visibility="visible"/>-->
 
 </android.support.design.widget.CoordinatorLayout>

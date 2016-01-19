@@ -72,7 +72,7 @@ public class MainAndFilterDrawerConfiguration {
         setupProfileHeader();
         setupMainDrawer();
         setupMainDrawerListener();
-        setupExpandableTaskList();
+        setupMainList(TaskController.sTaskLists);
 
         if(!filter)
             return;
@@ -185,15 +185,6 @@ public class MainAndFilterDrawerConfiguration {
                 .withIconTintingEnabled(true)
                 .withSelectable(false);
 
-        // Create expandable and collapsable item
-        mTaskListCollapsableMain = new PrimaryDrawerItem()
-                .withName(R.string.taskList)
-                .withIcon(R.drawable.ic_list_bullet)
-                .withIconTintingEnabled(true)
-                .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
-                .withSelectable(false)
-                .withBadge("");
-
         // Create Filter Drawer
         mMainDrawer = new DrawerBuilder()
                 .withActivity(mActivity)
@@ -205,8 +196,8 @@ public class MainAndFilterDrawerConfiguration {
                         dashboard, snoozed, completed,
                         new DividerDrawerItem(),
                         glance, planner,
-                        new DividerDrawerItem(),
-                        mTaskListCollapsableMain
+                        new DividerDrawerItem().withIdentifier(Constants.LIST_SEPARATOR)
+//                        , mTaskListCollapsableMain
                 )
                 .addStickyDrawerItems(
                         settings, contact
@@ -329,13 +320,26 @@ public class MainAndFilterDrawerConfiguration {
                     resources.getString(R.string.send_email)));
     }
 
-    private void setupExpandableTaskList(){
-        // if Task List is expanded populate the Navigation Drawer
-        if(mExpandedTaskList) {
-            addTaskListToMainDrawer(TaskController.sTaskLists);
-            toggleTaskListExpandable(false);
-        }else
+    private void setupMainList(ArrayList<TaskList> taskLists){
+
+        // If there is more than 2 List of TaskList add the collapsable and its badge
+        if(taskLists.size() > 2) {
+            // Create expandable and collapsable item
+            mTaskListCollapsableMain = new PrimaryDrawerItem()
+                    .withName(R.string.taskList)
+                    .withIcon(R.drawable.ic_list_bullet)
+                    .withIconTintingEnabled(true)
+                    .withIdentifier(Constants.COLLAPSABLE_TASK_LIST)
+                    .withSelectable(false)
+                    .withBadge("");
+
+            mMainDrawer.addItem(mTaskListCollapsableMain);
+
             toggleTaskListExpandable(true);
+
+        // If there is 2 list or less, show them directly. (if only one, include "add list" button)
+        } else
+            addTaskListToMainDrawer(taskLists, (taskLists.size() < 2), 1);
     }
 
     private void switchExpandableTaskListContent(){
@@ -349,7 +353,7 @@ public class MainAndFilterDrawerConfiguration {
             removeTaskListFromMainDrawer(mTaskListIds);
         } else{
             toggleTaskListExpandable(false);
-            addTaskListToMainDrawer(TaskController.sTaskLists);
+            addTaskListToMainDrawer(TaskController.sTaskLists, true, 2);
         }
     }
 
@@ -572,23 +576,24 @@ public class MainAndFilterDrawerConfiguration {
 
     private void addTaskListToFilterDrawer(ArrayList<TaskList> listTaskList){
         addItemListToDrawer(new ArrayList<BasicType>(listTaskList), mFilterDrawer,
-                false, R.drawable.ic_done_all, Constants.COLLAPSABLE_TASK_LIST);
+                false, R.drawable.ic_done_all, Constants.COLLAPSABLE_TASK_LIST, 2);
     }
-    private void addTaskListToMainDrawer(ArrayList<TaskList> listTaskList){
+    private void addTaskListToMainDrawer(ArrayList<TaskList> listTaskList, boolean add, int level){
         addItemListToDrawer(new ArrayList<BasicType>(listTaskList), mMainDrawer,
-                true, R.drawable.ic_done_all, Constants.COLLAPSABLE_TASK_LIST);
+                add, R.drawable.ic_done_all,
+                (level==1) ? Constants.LIST_SEPARATOR : Constants.COLLAPSABLE_TASK_LIST , level);
     }
     private void addLabelsToFilterDrawer(ArrayList<Label> listLabels){
         addItemListToDrawer(new ArrayList<BasicType>(listLabels), mFilterDrawer,
-                false, R.drawable.ic_label_filled, Constants.COLLAPSABLE_LABEL_LIST);
+                false, R.drawable.ic_label_filled, Constants.COLLAPSABLE_LABEL_LIST, 2);
     }
     private void addLocationsFilterToDrawer(ArrayList<FavoriteLocation> favLocations){
         addItemListToDrawer(new ArrayList<BasicType>(favLocations), mFilterDrawer,
-                false, R.drawable.ic_place, Constants.COLLAPSABLE_LOCATION_LIST);
+                false, R.drawable.ic_place, Constants.COLLAPSABLE_LOCATION_LIST, 2);
     }
 
     private void addItemListToDrawer(ArrayList<BasicType> itemLists, final Drawer drawer,
-                                     boolean main, int iconRes, int identifier){
+                                     boolean main, int iconRes, int identifier, int level){
         List<Integer>addedIds = new ArrayList<>();
 
         // Get the position for the item in the drawer, in order to add its children (+1)
@@ -614,7 +619,7 @@ public class MainAndFilterDrawerConfiguration {
             // Construct the Item to add on the Drawer
             IDrawerItem itemToAdd = new SecondaryDrawerItem()
                     .withIdentifier(itemLists.get(i).getId())
-                    .withLevel(2)
+                    .withLevel(level)
                     .withName(itemLists.get(i).getTitle())
                     .withIcon(iconRes)
                     .withIconColorRes(color)
@@ -630,7 +635,7 @@ public class MainAndFilterDrawerConfiguration {
         // If on the main drawer, add a new "add Task List" item for convenience and its ID
         if(main) {
             mMainDrawer.addItem(new SecondaryDrawerItem().withIdentifier(Constants.ADD_TASK_LIST)
-                    .withLevel(2)
+                    .withLevel(level)
                     .withName(R.string.addList)
                     .withIcon(R.drawable.ic_add)
                     .withIconTintingEnabled(true)
