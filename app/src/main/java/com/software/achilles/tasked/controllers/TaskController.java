@@ -165,50 +165,50 @@ public class TaskController {
         getTasks().set(position, actualTask);
     }
 
-    // -------------------------- Use Cases --------------------------
-
-    public static List<Task> getTasksOnRange(String range, boolean today, boolean last){
-
-        Date min = Calendar.getInstance().getTime();
-        min.setSeconds(0);
-        Date max = new Date();
-
-        switch (range){
-            case "Daily":
-                max.setTime(min.getTime() + Constants.DAY_IN_MILLISECOND);
-                break;
-            case "Weekly":
-                max.setTime(min.getTime() + Constants.WEEK_IN_MILLISECOND);
-                break;
-            case "Minute":
-                max.setTime(min.getTime() + Constants.MINUTE_IN_MILLISECOND);
-                break;
-        }
-
-        // Include today inside the range if requested
-        if(today){
-            min.setMinutes(0);
-            min.setHours(0);
-        }
-
-        // Include the las day of the range if requested
-        if(last){
-            max.setHours(23);
-            max.setMinutes(59);
-            max.setSeconds(59);
-        }
-
-        // Filter the tasks depending on the range
-        List<Task> counter = new ArrayList<>();
-        for (Task task : sTasks) {
-            Date dueDate = task.getDueDate();
-            if(dueDate!=null)
-                if (!task.getFinished() && (dueDate.after(min) && dueDate.before(max) || dueDate.equals(max)))
-                    counter.add(task);
-        }
-
-        return counter;
-    }
+//    // -------------------------- Use Cases --------------------------
+//
+//    public static List<Task> getTasksOnRange(String range, boolean today, boolean last){
+//
+//        Date min = Calendar.getInstance().getTime();
+//        min.setSeconds(0);
+//        Date max = new Date();
+//
+//        switch (range){
+//            case "Daily":
+//                max.setTime(min.getTime() + Constants.DAY_IN_MILLISECOND);
+//                break;
+//            case "Weekly":
+//                max.setTime(min.getTime() + Constants.WEEK_IN_MILLISECOND);
+//                break;
+//            case "Minute":
+//                max.setTime(min.getTime() + Constants.MINUTE_IN_MILLISECOND);
+//                break;
+//        }
+//
+//        // Include today inside the range if requested
+//        if(today){
+//            min.setMinutes(0);
+//            min.setHours(0);
+//        }
+//
+//        // Include the las day of the range if requested
+//        if(last){
+//            max.setHours(23);
+//            max.setMinutes(59);
+//            max.setSeconds(59);
+//        }
+//
+//        // Filter the tasks depending on the range
+//        List<Task> counter = new ArrayList<>();
+//        for (Task task : sTasks) {
+//            Date dueDate = task.getDueDate();
+//            if(dueDate!=null)
+//                if (!task.getFinished() && (dueDate.after(min) && dueDate.before(max) || dueDate.equals(max)))
+//                    counter.add(task);
+//        }
+//
+//        return counter;
+//    }
 
     // ---------------------- Getters & Setters ----------------------
 
@@ -222,6 +222,17 @@ public class TaskController {
 
     public void setLastDeleted(Task lastDeleted) {
         this.lastDeleted = lastDeleted;
+    }
+
+    // -------------------------- Use Cases --------------------------
+
+    public static ArrayList<String> getTaskListTitles(){
+        ArrayList<String> result = new ArrayList<>();
+
+        for (int i = 0; i < sTaskLists.size(); i++)
+            result.add(sTaskLists.get(i).getTitle());
+
+        return result;
     }
 
 }

@@ -191,7 +191,7 @@ public class FloatingActionMenuConfigurator {
 
                 closeFabMenu();
 
-                deployAddTaskLayout();
+                activity.deployAddTaskLayout();
             }
         });
 
@@ -216,12 +216,4 @@ public class FloatingActionMenuConfigurator {
 
     // -------------------------- Use Cases --------------------------
 
-
-    private void deployAddTaskLayout(){
-
-    }
-
-//    private void retractAddTaskLayout(){
-//
-//    }
 }

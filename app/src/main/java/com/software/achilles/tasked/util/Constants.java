@@ -42,4 +42,8 @@ public class Constants {
 
     public static final int LIST_SEPARATOR = 23;
 
+    // Task creation
+
+    public static final int CURRENT_LIST = 24;
+
 }

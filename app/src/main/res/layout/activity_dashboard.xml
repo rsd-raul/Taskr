@@ -38,7 +38,8 @@
         <!--android:paddingBottom="8dp"-->
 
     <com.github.clans.fab.FloatingActionMenu style="@style/menuFAB"
-        android:id="@+id/menuFAB" >
+        android:id="@+id/menuFAB"
+        >
 
         <com.github.clans.fab.FloatingActionButton style="@style/fabShareList"
             android:id="@+id/shareListFAB"/>
