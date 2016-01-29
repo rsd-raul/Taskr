@@ -13,7 +13,7 @@
         android:id="@+id/task"
         android:hint="@string/title"
         android:textSize="30sp"
-        android:focusable="false">
+        android:textColor="@color/primaryText" >
 
     </EditText>
 
@@ -26,12 +26,13 @@
             android:id="@+id/checkbox_favourite"
             android:button="@drawable/custom_favourite"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="5dp"
+            android:layout_marginLeft="5dp"
             android:paddingRight="5dp"
-            android:onClick="myClickMethod" />
+            android:onClick="modifiersOnClick" />
 
         <ImageButton
             android:id="@+id/button_time"
@@ -43,7 +44,7 @@
             android:paddingBottom="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:onClick="myClickMethod" />
+            android:onClick="modifiersOnClick" />
 
         <ImageButton
             android:id="@+id/button_location"
@@ -55,7 +56,7 @@
             android:paddingBottom="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:onClick="myClickMethod" />
+            android:onClick="modifiersOnClick" />
 
         <ImageButton
             android:id="@+id/button_label"
@@ -67,7 +68,7 @@
             android:paddingBottom="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:onClick="myClickMethod" />
+            android:onClick="modifiersOnClick" />
 
         <ImageButton
             android:id="@+id/button_description"
@@ -79,12 +80,17 @@
             android:paddingBottom="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:onClick="myClickMethod" />
+            android:onClick="modifiersOnClick" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
 
         <Spinner
             android:id="@+id/spinner_task_lists"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:layout_gravity="end"
             android:spinnerMode="dialog"
             android:prompt="@string/select_task_list" />

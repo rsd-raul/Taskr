@@ -8,9 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.software.achilles.tasked.R;
@@ -42,38 +39,47 @@ public class TaskCreationFragment extends Fragment {
         mActivity = getActivity();
         mBundle = getArguments();
 
-        // Initializing Buttons and Spinner (dialog)
+        // Initializing Spinner data and behaviour
         initializeSpinner();
-//        initializeButtons();
     }
 
 
     private void initializeSpinner(){
-        ArrayList<String> taskListsString = TaskController.getTaskListTitles();
 
-        // Initialize the spinner name and populate the dialog with the possibilities
+        ArrayList<String> taskListsString = TaskController.getTaskListTitles();
         Spinner spinner = (Spinner) mActivity.findViewById(R.id.spinner_task_lists);
 
-        String defaultList = mBundle.getString(Constants.CURRENT_LIST + "", "Pick list");
-        //TODO enviar al desplegar fragment y recibir de este lado
-        // tal vez enviar la posicion en el viewpager y aqui rescatar el texto es más eficiente
-        // a fin de cuentas ya tienes taskListString
+        //TODO esto probablemente se pueda quitar una vez mandes el valor si o si
+        // Initialize the spinner value to the current list on Dashboard
+        if(mBundle!=null) {
+            int currentList = mBundle.getInt(Constants.CURRENT_LIST + "", -1);
+            if (currentList != -1)
+                spinner.setSelection(currentList);
+        }
 
+        // Populate the dialog with the possibilities and controll the click
         ArrayAdapter<String> taskListTitleAdapter = new ArrayAdapter<>
                 (mActivity, android.R.layout.simple_dropdown_item_1line, taskListsString);
 
         spinner.setAdapter(taskListTitleAdapter);
-        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 //TODO
 //              position corresponde 1:1 con TaskController.sTaskList, tener posicion =>lista
+                // your code here
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
         });
     }
 
-    //TODO onClick para todos los botnes del fragment de create
-    public void myClickMethod(View v) {
+    //TODO onClick para todos los botones del fragment de create
+    public void modifiersOnClick(View v) {
         switch(v.getId()) {
             case R.id.button_description:
                 // Add place for interface
@@ -121,8 +127,8 @@ public class TaskCreationFragment extends Fragment {
 
     // ------------------------ Time & Date --------------------------
 
-    private void showTimePickerDialog() {
-
+//    private void showTimePickerDialog() {
+//
 //        // Creation of the timePicker
 //        DialogFragment newFragment =  new TimePickerFragment();
 //
@@ -137,9 +143,9 @@ public class TaskCreationFragment extends Fragment {
 //
 //        // Showing the picker
 //        newFragment.show(getFragmentManager(), "timePicker");
-    }
+//    }
 
-    public static void dateToButton(Activity activity){
+//    public static void dateToButton(Activity activity){
 //        Button taskTimeBT = (Button) activity.findViewById(R.id.time);
 //        Date dueDate = TaskController.taskDate;
 //
@@ -147,6 +153,6 @@ public class TaskCreationFragment extends Fragment {
 //            taskTimeBT.setText(Task.dateToText(dueDate));
 //        }else
 //            taskTimeBT.setText(R.string.setDate);
-    }
+//    }
 
 }

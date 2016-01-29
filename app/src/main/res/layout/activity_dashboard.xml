@@ -13,18 +13,10 @@
         <android.support.v7.widget.Toolbar style="@style/toolbar"
             android:id="@+id/toolbar" />
 
-        <FrameLayout
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:visibility="visible"/>
-
-        </FrameLayout>
+            android:layout_height="wrap_content" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -38,8 +30,7 @@
         <!--android:paddingBottom="8dp"-->
 
     <com.github.clans.fab.FloatingActionMenu style="@style/menuFAB"
-        android:id="@+id/menuFAB"
-        >
+        android:id="@+id/menuFAB" >
 
         <com.github.clans.fab.FloatingActionButton style="@style/fabShareList"
             android:id="@+id/shareListFAB"/>
@@ -54,5 +45,21 @@
             android:id="@+id/addTaskFAB"/>
 
     </com.github.clans.fab.FloatingActionMenu>
+
+    <FrameLayout
+        android:id="@+id/taskCreationPlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:visibility="visible">
+        <!--android:visibility="gone">-->
+
+        <fragment class="com.software.achilles.tasked.fragments.TaskCreationFragment"
+            android:id="@+id/topFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/task_creation_fragment" />
+
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
