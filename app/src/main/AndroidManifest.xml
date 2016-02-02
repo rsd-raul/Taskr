@@ -12,7 +12,10 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/dashboard"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" >
+            <!--android:windowSoftInputMode="adjustPan" >      APAÑO NO SOLUCIÓN-->
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -92,6 +92,10 @@ public class FloatingActionMenuConfigurator {
         fam.close(true);
     }
 
+    public void hideFabMenu(){
+        fam.hideMenu(true);
+    }
+
     public static void setMenuOnScrollReaction(){
 
         // prepare animations
@@ -189,9 +193,11 @@ public class FloatingActionMenuConfigurator {
             @Override
             public void onClick(View view) {
 
-                closeFabMenu();
-
                 activity.deployAddTaskLayout();
+
+//                closeFabMenu();
+                hideFabMenu();
+                //TODO
             }
         });
 

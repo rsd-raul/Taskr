@@ -7,7 +7,7 @@
     android:layout_gravity="top"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/md_white_1000">
 
     <EditText style="@style/editText"
         android:id="@+id/task"
