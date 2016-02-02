@@ -195,8 +195,8 @@ public class FloatingActionMenuConfigurator {
 
                 activity.deployAddTaskLayout();
 
-//                closeFabMenu();
-                hideFabMenu();
+                closeFabMenu();
+//                hideFabMenu();
                 //TODO
             }
         });
