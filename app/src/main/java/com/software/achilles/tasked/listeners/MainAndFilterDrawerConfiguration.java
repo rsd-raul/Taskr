@@ -116,7 +116,8 @@ public class MainAndFilterDrawerConfiguration {
                                 .withName("John Doe Work")
                                 .withEmail("jonnydoework@gmail.com")
                                 .withIcon(R.drawable.person_image_empty)
-//                        new ProfileSettingDrawerItem()    //TODO Add y Manage profiles - Añade lag?
+                        // TODO Add y Manage profiles - Añade lag?
+//                        new ProfileSettingDrawerItem()
 //                                .withIdentifier(Constants.ADD_ACCOUNT)
 //                                .withName("Add Account")
 //                                .withIcon(R.drawable.ic_add)
@@ -224,9 +225,9 @@ public class MainAndFilterDrawerConfiguration {
                     @Override
                     public void onDrawerOpened(View drawerView) {
 
-                        // MainDrawer = 912
-                        // FilterDrawer = 750
-                        //  drawerView.getWidth() < 800
+                        // drawerViews.getWidth():
+                            // MainDrawer = 912
+                            // FilterDrawer = 750
 
                         // We want the labels opened by default ONLY
                         if (drawerView.getWidth() < 800 && mFilterDrawer != null && firstTime){
@@ -490,59 +491,23 @@ public class MainAndFilterDrawerConfiguration {
                         break;
 
                     case Constants.COLLAPSABLE_TASK_LIST:
-                        if (mExpandedTaskListFilter) {
-                            removeItemListFromFilterDrawer(mTaskListIds, false);
-                            mExpandedTaskListFilter = false;
-                            mTaskCollapsable.withBadgeStyle(mBadgeStyleExpand);
-                            mFilterDrawer.updateItem(mTaskCollapsable);
-                        } else {
-                            addTaskListToFilterDrawer(TaskController.sTaskLists);
-                            mExpandedTaskListFilter = true;
-                            mTaskCollapsable.withBadgeStyle(mBadgeStyleCollapse);
-                            mFilterDrawer.updateItem(mTaskCollapsable);
-                        }
+                        toogleExpandableFilters(Constants.COLLAPSABLE_TASK_LIST,
+                                mExpandedTaskListFilter, false);
                         break;
 
                     case Constants.COLLAPSABLE_LABEL_LIST:
-                        if (mExpandedLabelListFilter) {
-                            removeItemListFromFilterDrawer(mLabelListIds, false);
-                            mExpandedLabelListFilter = false;
-                            mLabelCollapsable.withBadgeStyle(mBadgeStyleExpand);
-                            mFilterDrawer.updateItem(mLabelCollapsable);
-                        } else {
-                            addLabelsToFilterDrawer(TaskController.sLabels);
-                            mExpandedLabelListFilter = true;
-                            mLabelCollapsable.withBadgeStyle(mBadgeStyleCollapse);
-                            mFilterDrawer.updateItem(mLabelCollapsable);
-                        }
+                        toogleExpandableFilters(Constants.COLLAPSABLE_LABEL_LIST,
+                                mExpandedLabelListFilter, false);
                         break;
 
                     case Constants.COLLAPSABLE_LOCATION_LIST:
-                        if (mExpandedLocationListFilter) {
-                            removeItemListFromFilterDrawer(mLocationListIds, false);
-                            mExpandedLocationListFilter = false;
-                            mLocationCollapsable.withBadgeStyle(mBadgeStyleExpand);
-                            mFilterDrawer.updateItem(mLocationCollapsable);
-                        } else {
-                            addLocationsFilterToDrawer(TaskController.sFavouriteLocations);
-                            mExpandedLocationListFilter = true;
-                            mLocationCollapsable.withBadgeStyle(mBadgeStyleCollapse);
-                            mFilterDrawer.updateItem(mLocationCollapsable);
-                        }
+                        toogleExpandableFilters(Constants.COLLAPSABLE_LOCATION_LIST,
+                                mExpandedLocationListFilter, false);
                         break;
 
                     case Constants.COLLAPSABLE_ORDER_LIST:
-                        if (mExpandedOrderListFilter) {
-                            removeItemListFromFilterDrawer(mOrderListIds, true);
-                            mExpandedOrderListFilter = false;
-                            mOrderCollapsable.withBadgeStyle(mBadgeStyleCollapse);
-                            mFilterDrawer.updateStickyFooterItem(mOrderCollapsable);
-                        } else {
-                            addOrderFilterToDrawer();
-                            mExpandedOrderListFilter = true;
-                            mOrderCollapsable.withBadgeStyle(mBadgeStyleExpand);
-                            mFilterDrawer.updateStickyFooterItem(mOrderCollapsable);
-                        }
+                        toogleExpandableFilters(Constants.COLLAPSABLE_ORDER_LIST,
+                                mExpandedOrderListFilter, true);
                         break;
 
                     default:
@@ -554,6 +519,58 @@ public class MainAndFilterDrawerConfiguration {
                 return true;
             }
         });
+    }
+
+    private void toogleExpandableFilters(int identifier, boolean expanded, boolean footer){
+        PrimaryDrawerItem toToggleCollapsible = new PrimaryDrawerItem();
+        List<Integer> toRemoveItems = null;
+        switch (identifier) {
+
+            case Constants.COLLAPSABLE_TASK_LIST:
+                toRemoveItems = mTaskListIds;
+                toToggleCollapsible = mTaskCollapsable;
+                mExpandedTaskListFilter = !expanded;    // if(expanded) ? False : True
+                if (!expanded)
+                    addTaskListToFilterDrawer(TaskController.sTaskLists);
+                break;
+
+            case Constants.COLLAPSABLE_LABEL_LIST:
+                toRemoveItems = mLabelListIds;
+                toToggleCollapsible = mLabelCollapsable;
+                mExpandedLabelListFilter = !expanded;    // if(expanded) ? False : True
+                if (!expanded)
+                    addLabelsToFilterDrawer(TaskController.sLabels);
+                break;
+
+            case Constants.COLLAPSABLE_LOCATION_LIST:
+                toRemoveItems = mLocationListIds;
+                toToggleCollapsible = mLocationCollapsable;
+                mExpandedLocationListFilter = !expanded;    // if(expanded) ? False : True
+                if (!expanded)
+                    addLocationsFilterToDrawer(TaskController.sFavouriteLocations);
+                break;
+
+            case Constants.COLLAPSABLE_ORDER_LIST:
+                toRemoveItems = mOrderListIds;
+                toToggleCollapsible = mOrderCollapsable;
+                // if(expanded) ? False : True
+                mExpandedOrderListFilter = !expanded;
+                if (!expanded)
+                    addOrderFilterToDrawer();
+                break;
+        }
+
+        if (expanded) {
+            removeItemListFromFilterDrawer(toRemoveItems, footer);
+        }
+
+        // Behaves like a XNOR, when expanded is true it collapses, if footer behaves opposite
+        toToggleCollapsible.withBadgeStyle(expanded == footer ? mBadgeStyleCollapse : mBadgeStyleExpand);
+
+        if(footer)
+            mFilterDrawer.updateStickyFooterItem(toToggleCollapsible);
+        else
+            mFilterDrawer.updateItem(toToggleCollapsible);
     }
 
     // ------------------ Remove Items From Drawer -------------------

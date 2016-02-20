@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-
+        // TODO Filtering
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_search:
-
+                // The calculations and filtering are done in "onCreateOptionsMenu"
                 break;
 
         }
