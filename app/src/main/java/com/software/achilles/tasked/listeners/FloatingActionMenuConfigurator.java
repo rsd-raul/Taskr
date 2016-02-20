@@ -88,9 +88,9 @@ public class FloatingActionMenuConfigurator {
 //        });
     }
 
-    public void closeFabMenu(){
-        fam.close(true);
-    }
+//    public void closeFabMenu(){
+//        fam.close(true);
+//    }
 
     public static void setMenuOnScrollReaction(){
 
@@ -182,14 +182,11 @@ public class FloatingActionMenuConfigurator {
             }
         });
 
-
-
         FloatingActionButton addTask = (FloatingActionButton) activity.findViewById(R.id.addTaskFAB);
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                closeFabMenu();
+                fam.close(true);
 
                 deployAddTaskLayout();
             }
@@ -199,6 +196,8 @@ public class FloatingActionMenuConfigurator {
         addList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fam.close(true);
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -208,6 +207,8 @@ public class FloatingActionMenuConfigurator {
         addLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fam.close(true);
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }

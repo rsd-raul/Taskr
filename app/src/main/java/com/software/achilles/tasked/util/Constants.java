@@ -28,11 +28,11 @@ public class Constants {
     public static final int DUE_TODAY = 14;
     public static final int DUE_THIS_WEEK = 15;
 
-    public static final int COLLAPSABLE_TASK_LIST = 9;
-    public static final int COLLAPSABLE_LABEL_LIST = 12;
-    public static final int COLLAPSABLE_LOCATION_LIST = 16;
+    public static final int COLLAPSIBLE_TASK_LIST = 9;
+    public static final int COLLAPSIBLE_LABEL_LIST = 12;
+    public static final int COLLAPSIBLE_LOCATION_LIST = 16;
 
-    public static final int COLLAPSABLE_ORDER_LIST = 17;
+    public static final int COLLAPSIBLE_ORDER_LIST = 17;
     public static final int ALPHABETICAL = 18;
     public static final int DUE_DATE = 19;
     public static final int CUSTOM_ORDER = 20;
@@ -41,5 +41,6 @@ public class Constants {
     public static final int ADD_ACCOUNT = 22;                       // DEPRECATED
 
     public static final int LIST_SEPARATOR = 23;
+    public static final int CLEAR = 24;
 
 }
