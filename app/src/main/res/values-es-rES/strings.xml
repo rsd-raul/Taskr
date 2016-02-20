@@ -1,0 +1,76 @@
+<resources>
+
+    <!-- ActionBar Title -->
+
+    <string name="app_name">Tasked</string>
+    <string name="statistics">Estadisticas</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="snoozed">Postpuesto</string>
+    <string name="completed">Completado</string>
+    <string name="glance">Glance</string>
+    <string name="planner">Planner</string>
+    <string name="taskList">Task list</string>
+    <string name="settings">Settings</string>
+    <string name="contact">Help &amp; feedback</string>
+
+    <!-- Filter -->
+
+    <string name="main_filters">Main filters</string>
+        <string name="starred">Starred</string>
+        <string name="dueToday">Due today</string>
+        <string name="dueThisWeek">Due this week</string>
+
+    <string name="list_filters">Grouped filters</string>
+        <string name="by_task_list">By task list</string>
+        <string name="by_label">By label</string>
+        <string name="by_location">By location</string>
+
+    <string name="reorder_items">Order list</string>
+        <string name="alphabetically">Alphabetical</string>
+        <string name="due_date">Due date</string>
+        <string name="custom_order">Custom order</string>
+
+    <!-- ActionBar Icons -->
+
+    <string name="mailto">mailto</string>
+    <string name="developer_email">achillessoftware@gmail.com</string>
+    <string name="subject_email">Tasked - Bug/Feature/Request</string>
+    <string name="send_email">Contact the developer</string>
+
+    <!-- ActionBar Icons -->
+
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
+
+    <!-- Generic -->
+
+    <string name="select">Select</string>
+
+    <!-- FAB menu and childs -->
+
+    <string name="shareList">Share list</string>
+    <!--<string name="addMultiTasks">Add multiple task</string>         DEPRECATED -->
+    <string name="addLabel">Add label</string>
+    <string name="addTask">Add task</string>
+    <string name="addList">Add list</string>
+
+    <!-- Navigation Drawer -->
+
+    <string name="navigation_drawer_default_image_description">Primary color with app icon</string>
+    <string name="navigation_drawer_user_image_description">Google Account cover image</string>
+    <string name="navigation_drawer_expand_image_description">Expand to switch accounts</string>
+    <string name="placeholder_email_address" translatable="false">
+        really_long_email_address_string_to_ensure_proper_overflow_formatting@gmail.com
+    </string>
+
+    <!--TaskList toString-->
+
+    <string name="listName">List name:</string>
+    <string name="tasks">Tasks:</string>
+
+    <!--Task Creation Fragment-->
+
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+
+</resources>
