@@ -56,8 +56,8 @@ public class MainAndFilterDrawerConfiguration {
     private boolean mExpandedLabelListFilter = true;
     private boolean mExpandedLocationListFilter = false;
     private boolean mExpandedOrderListFilter = false;
-    private PrimaryDrawerItem mTaskCollapsable, mLabelCollapsable,
-            mLocationCollapsable, mOrderCollapsable;
+    private PrimaryDrawerItem mTaskCollapsible, mLabelCollapsible,
+            mLocationCollapsible, mOrderCollapsible;
 
     // ------------------------- Constructor -------------------------
 
@@ -217,8 +217,8 @@ public class MainAndFilterDrawerConfiguration {
                             // We want the labels opened by default ONLY
                             addLabelsToFilterDrawer(TaskController.sLabels);
                             firstTime = false;
-                            mLabelCollapsable.withBadgeStyle(mBadgeCollapse);
-                            mFilterDrawer.updateItem(mLabelCollapsable);
+                            mLabelCollapsible.withBadgeStyle(mBadgeCollapse);
+                            mFilterDrawer.updateItem(mLabelCollapsible);
                         }
                     }
 
@@ -405,8 +405,8 @@ public class MainAndFilterDrawerConfiguration {
                 .withIdentifier(Constants.DUE_THIS_WEEK)
                 .withSelectable(false);
 
-        // Create expandable and collapsable items
-        mTaskCollapsable = new PrimaryDrawerItem()
+        // Create expandable and collapsible items
+        mTaskCollapsible = new PrimaryDrawerItem()
                 .withName(R.string.by_task_list)
                 .withIcon(R.drawable.ic_list_bullet)
                 .withIconTintingEnabled(true)
@@ -414,7 +414,7 @@ public class MainAndFilterDrawerConfiguration {
                 .withSelectable(false)
                 .withBadge("")
                 .withBadgeStyle(mBadgeExpand);
-        mLabelCollapsable = new PrimaryDrawerItem()
+        mLabelCollapsible = new PrimaryDrawerItem()
                 .withName(R.string.by_label)
                 .withIcon(R.drawable.ic_label_outline)
                 .withIconTintingEnabled(true)
@@ -422,7 +422,7 @@ public class MainAndFilterDrawerConfiguration {
                 .withSelectable(false)
                 .withBadge("")
                 .withBadgeStyle(mBadgeExpand);
-        mLocationCollapsable = new PrimaryDrawerItem()
+        mLocationCollapsible = new PrimaryDrawerItem()
                 .withName(R.string.by_location)
                 .withIcon(R.drawable.ic_map)
                 .withIconTintingEnabled(true)
@@ -432,7 +432,7 @@ public class MainAndFilterDrawerConfiguration {
                 .withBadgeStyle(mBadgeExpand);
 
         // Create expandable and collapsible item to order list
-        mOrderCollapsable = new PrimaryDrawerItem()
+        mOrderCollapsible = new PrimaryDrawerItem()
                 .withName(R.string.reorder_items)
                 .withIcon(R.drawable.ic_order_list)
                 .withIconTintingEnabled(true)
@@ -451,13 +451,13 @@ public class MainAndFilterDrawerConfiguration {
                         new SectionDrawerItem().withName(R.string.main_filters).withDivider(false),
                         starred, today, thisWeek,
                         new SectionDrawerItem().withName(R.string.list_filters),
-                        mLabelCollapsable, mLocationCollapsable
-                        , mTaskCollapsable
+                        mLabelCollapsible, mLocationCollapsible
+                        , mTaskCollapsible
                         // TODO si filtras sobre la lista es redundante, eso o lo que haces es llevar
                         // a el usuario a la lista y activar el resto de filtros... Pueeeeede ser util
                 )
                 .addStickyDrawerItems(
-                        mOrderCollapsable
+                        mOrderCollapsible
                 )
                 .withDrawerWidthRes(R.dimen.filter_drawer_width)
                 .withDrawerGravity(Gravity.END)
@@ -525,28 +525,28 @@ public class MainAndFilterDrawerConfiguration {
         switch (identifier) {
             case Constants.COLLAPSIBLE_TASK_LIST:
                 toRemoveItems = mTaskListIds;
-                toToggleCollapsible = mTaskCollapsable;
+                toToggleCollapsible = mTaskCollapsible;
                 mExpandedTaskListFilter = !expanded;        // if(expanded) ? False : True
                 if (!expanded)
                     addTaskListToFilterDrawer(TaskController.sTaskLists);
                 break;
             case Constants.COLLAPSIBLE_LABEL_LIST:
                 toRemoveItems = mLabelListIds;
-                toToggleCollapsible = mLabelCollapsable;
+                toToggleCollapsible = mLabelCollapsible;
                 mExpandedLabelListFilter = !expanded;       // if(expanded) ? False : True
                 if (!expanded)
                     addLabelsToFilterDrawer(TaskController.sLabels);
                 break;
             case Constants.COLLAPSIBLE_LOCATION_LIST:
                 toRemoveItems = mLocationListIds;
-                toToggleCollapsible = mLocationCollapsable;
+                toToggleCollapsible = mLocationCollapsible;
                 mExpandedLocationListFilter = !expanded;    // if(expanded) ? False : True
                 if (!expanded)
                     addLocationsFilterToDrawer(TaskController.sFavouriteLocations);
                 break;
             case Constants.COLLAPSIBLE_ORDER_LIST:
                 toRemoveItems = mOrderListIds;
-                toToggleCollapsible = mOrderCollapsable;
+                toToggleCollapsible = mOrderCollapsible;
                 mExpandedOrderListFilter = !expanded;       // if(expanded) ? False : True
                 if (!expanded)
                     addOrderFilterToDrawer();
@@ -669,7 +669,7 @@ public class MainAndFilterDrawerConfiguration {
         // TODO OnClick in "expandable" scroll to the header of the list
 //        drawer.getRecyclerView().scrollToPosition(6);
 //        drawer.getRecyclerView().getLayoutManager().scrollToPosition(identifier);    //   ESTO DABA EL APAÑO, pero no funciona para By task list
-//        drawer.getRecyclerView().getChildAdapterPosition(mLabelCollapsable.generateView(getApplication()));
+//        drawer.getRecyclerView().getChildAdapterPosition(mLabelCollapsible.generateView(getApplication()));
 //        drawer.getRecyclerView().
 //        drawer.getRecyclerView().getLayoutManager().sc
     }

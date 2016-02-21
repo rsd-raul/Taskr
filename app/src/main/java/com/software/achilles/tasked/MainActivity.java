@@ -48,28 +48,30 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        // Configure the fab menu and its children.
-        mFamConfigurator = new FloatingActionMenuConfigurator(this);
-
         // Configure the drawers, both main and filter
         mDrawersConfigurator = new MainAndFilterDrawerConfiguration(this, true);
 
-        // Setup the fragment composing the ViewPager
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(TaskController.sTaskLists);
+        final MainActivity aux = this;
+        // Configure the fab menu and its children. - NEW THREAD
+        threadManager(new Runnable() {
+            public void run() {
+                mFamConfigurator = new FloatingActionMenuConfigurator(aux);
+            }
+        });
 
+        // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
+        threadManager(new Runnable() {
+            public void run() {
+                setupViewPager(TaskController.sTaskLists);
+                setupTabLayout(TaskController.sTaskLists.size());
+            }
+        });
+    }
 
-        // Setup tabs for Dashboard if there is more than one TaskList, make them Scrollable/Fixed
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        int taskListsSize = TaskController.sTaskLists.size();
-        if(taskListsSize > 1) {
-            tabLayout.setupWithViewPager(mViewPager);
-            if(taskListsSize > 2)
-                tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            else
-                tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        } else
-            tabLayout.setVisibility(View.GONE);
+    // TODO Investigar sobre threads y como manejarlos, sigue dando "Skipped X frames!"
+    private void threadManager(Runnable runnable){
+        // Launch new thread
+        new Thread(runnable).start();
     }
 
     @Override
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     // -------------------------- View Pager -------------------------
 
     private void setupViewPager(ArrayList<TaskList> taskLists) {
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
         // TODO quick jump to the desired list if too many lists present
@@ -100,6 +103,20 @@ public class MainActivity extends AppCompatActivity {
             adapter.addFragment(dashboardListFragment, taskList.getTitle());
         }
         mViewPager.setAdapter(adapter);
+    }
+
+    private void setupTabLayout(int taskListsSize) {
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        // Setup tabs for Dashboard if there is more than one TaskList, make them Scrollable/Fixed
+        if(taskListsSize > 1) {
+            tabLayout.setupWithViewPager(mViewPager);
+            if(taskListsSize > 2)
+                tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            else
+                tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        } else
+            tabLayout.setVisibility(View.GONE);
     }
 
     // -------------------------- Landscape --------------------------
