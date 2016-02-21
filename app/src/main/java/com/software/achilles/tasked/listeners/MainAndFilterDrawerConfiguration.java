@@ -48,7 +48,7 @@ public class MainAndFilterDrawerConfiguration {
     private AccountHeader mAccountHeader;
     public Drawer mMainDrawer, mFilterDrawer;
     private List<Integer> mTaskListIds, mLabelListIds, mLocationListIds, mOrderListIds;
-    private PrimaryDrawerItem mTaskListCollapsableMain;
+    private PrimaryDrawerItem mTaskListCollapsibleMain;
     private BadgeStyle mBadgeExpand, mBadgeCollapse;
     private boolean firstTime = true;
     private boolean mExpandedTaskList = false;
@@ -199,13 +199,41 @@ public class MainAndFilterDrawerConfiguration {
                         new DividerDrawerItem(),
                         glance, planner,
                         new DividerDrawerItem().withIdentifier(Constants.LIST_SEPARATOR)
-//                        , mTaskListCollapsableMain
+//                        , mTaskListCollapsibleMain
                 )
                 .addStickyDrawerItems(
                         settings, contact
                 )
-//      TODO 1 de 2 - Descomentando esto tienes drawer solo en el click y puedes cerrarlo a mano :D
-//                .withOnDrawerListener(new Drawer.OnDrawerListener() {
+                .withOnDrawerListener(new Drawer.OnDrawerListener() {
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+
+                        // drawerViews.getWidth():
+                        // MainDrawer = 912
+                        // FilterDrawer = 750
+
+                        // If the opened one is filterDrawer and is the first time
+                        if (drawerView.getWidth() < 800 && mFilterDrawer != null && firstTime) {
+                            // We want the labels opened by default ONLY
+                            addLabelsToFilterDrawer(TaskController.sLabels);
+                            firstTime = false;
+                            mLabelCollapsable.withBadgeStyle(mBadgeCollapse);
+                            mFilterDrawer.updateItem(mLabelCollapsable);
+                        }
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // If filterDrawer closed and the orderListFilter is opened, close it.
+                        if (drawerView.getWidth() < 800 && mFilterDrawer != null && mExpandedOrderListFilter)
+                            toggleExpandableFilters(Constants.COLLAPSIBLE_ORDER_LIST, true, true);
+                    }
+
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) { }
+                })
+                .build();
+//      TODO 1 de 2 - Descomentando esto tienes filterDrawer solo en el click y puedes cerrarlo a mano :D
 //                    @Override
 //                    public void onDrawerOpened(View drawerView) {
 //                        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
@@ -217,40 +245,6 @@ public class MainAndFilterDrawerConfiguration {
 //                        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
 //                                DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
 //                    }
-//
-//                    @Override
-//                    public void onDrawerSlide(View drawerView, float slideOffset) {
-//                    }
-//                })
-                .withOnDrawerListener(new Drawer.OnDrawerListener() {
-                    @Override
-                    public void onDrawerOpened(View drawerView) {
-
-                        // drawerViews.getWidth():
-                            // MainDrawer = 912
-                            // FilterDrawer = 750
-
-                        // TRUE is the opened one is filterDrawer
-                        if (drawerView.getWidth() < 800 && mFilterDrawer != null && firstTime) {
-                                // We want the labels opened by default ONLY
-                                addLabelsToFilterDrawer(TaskController.sLabels);
-                                firstTime = false;
-                                mLabelCollapsable.withBadgeStyle(mBadgeCollapse);
-                                mFilterDrawer.updateItem(mLabelCollapsable);
-                        }
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        // TRUE is the opened one is filterDrawer
-                        if (drawerView.getWidth() < 800 && mFilterDrawer != null && mExpandedOrderListFilter)
-                            toggleExpandableFilters(Constants.COLLAPSIBLE_ORDER_LIST, true, true);
-                    }
-
-                    @Override
-                    public void onDrawerSlide(View drawerView, float slideOffset) { }
-                })
-                .build();
     }
 
     private void setupMainDrawerListener(){
@@ -272,6 +266,8 @@ public class MainAndFilterDrawerConfiguration {
                         break;
                     case Constants.PLANNER:
                         break;
+                    case Constants.ADD_TASK_LIST:
+                        break;
 
                     case Constants.SETTINGS:
                         // Launch the Preferences Fragment
@@ -279,17 +275,13 @@ public class MainAndFilterDrawerConfiguration {
                                 Preferences.class);
                         mActivity.startActivity(intSettings);
                         break;
-
                     case Constants.CONTACT:
+                        // Launch intent to contact the dev via Email
                         contactByEmail();
                         break;
-
                     case Constants.COLLAPSIBLE_TASK_LIST:
                         // Populate or remove the Task lists
                         switchExpandableTaskListContent();
-                        break;
-
-                    case Constants.ADD_TASK_LIST:
                         break;
 
                     default:
@@ -301,7 +293,7 @@ public class MainAndFilterDrawerConfiguration {
                             mViewPager.setCurrentItem(index, true);
                         break;
                 }
-                // Do not close the drawer at Task List click
+                // Do not close the drawer at Task List Expandable click
                 if (identifier != Constants.COLLAPSIBLE_TASK_LIST)
                     mMainDrawer.closeDrawer();
                 return true;
@@ -329,33 +321,32 @@ public class MainAndFilterDrawerConfiguration {
 
     private void setupMainList(ArrayList<TaskList> taskLists){
 
-        // If there is more than 2 List of TaskList add the collapsable and its badge
-        if(taskLists.size() > 2) {
-            // Create expandable and collapsible item
-            mTaskListCollapsableMain = new PrimaryDrawerItem()
-                    .withName(R.string.task_list_quick_access)
-                    .withIcon(R.drawable.ic_list_bullet)
-                    .withIconTintingEnabled(true)
-                    .withIdentifier(Constants.COLLAPSIBLE_TASK_LIST)
-                    .withSelectable(false)
-                    .withBadge("");
-
-            mMainDrawer.addItem(mTaskListCollapsableMain);
-
-            toggleTaskListExpandable(true);
-
         // If there is 2 list or less, show them directly. (if only one, include "add list" button)
-        } else
+        if(taskLists.size() <= 2) {
             addTaskListToMainDrawer(taskLists, (taskLists.size() < 2), 1);
+            return;
+        }
+
+        // Else (if there is more than 2 List of TaskList) add the collapsible and its badge
+        mTaskListCollapsibleMain = new PrimaryDrawerItem()
+                .withName(R.string.task_list_quick_access)
+                .withIcon(R.drawable.ic_list_bullet)
+                .withIconTintingEnabled(true)
+                .withIdentifier(Constants.COLLAPSIBLE_TASK_LIST)
+                .withSelectable(false)
+                .withBadge("");
+
+        mMainDrawer.addItem(mTaskListCollapsibleMain);
+
+        toggleTaskListExpandable(true);
     }
 
     private void switchExpandableTaskListContent(){
         // Get current status for the Task List and in this case switch it.
-        Boolean status = mExpandedTaskList;
         mExpandedTaskList = !mExpandedTaskList;
 
         // If it opened, remove all items, if closed, populate the drawer
-        if(status) {
+        if(!mExpandedTaskList) {
             toggleTaskListExpandable(true);
             removeTaskListFromMainDrawer(mTaskListIds);
         } else{
@@ -366,8 +357,8 @@ public class MainAndFilterDrawerConfiguration {
 
     private void toggleTaskListExpandable(boolean expand){
         // Switch the badge between expand and collapse icons
-        mTaskListCollapsableMain.withBadgeStyle( expand ? mBadgeExpand : mBadgeCollapse);
-        mMainDrawer.updateItem(mTaskListCollapsableMain);
+        mTaskListCollapsibleMain.withBadgeStyle( expand ? mBadgeExpand : mBadgeCollapse);
+        mMainDrawer.updateItem(mTaskListCollapsibleMain);
     }
 
     // ------------------------ Filter Drawer ------------------------
@@ -379,7 +370,7 @@ public class MainAndFilterDrawerConfiguration {
         PrimaryDrawerItem clear = new PrimaryDrawerItem()
                 .withName(R.string.clear_filter)
                 .withSelectedTextColorRes(color)
-                .withIdentifier(Constants.CLEAR)
+                .withIdentifier(Constants.CLEAR_FILTER)
                 .withSelectable(true);
 
         // Create main items
@@ -461,7 +452,9 @@ public class MainAndFilterDrawerConfiguration {
                         starred, today, thisWeek,
                         new SectionDrawerItem().withName(R.string.list_filters),
                         mLabelCollapsable, mLocationCollapsable
-                        , mTaskCollapsable    // TODO si filtras sobre la lista es redundante
+                        , mTaskCollapsable
+                        // TODO si filtras sobre la lista es redundante, eso o lo que haces es llevar
+                        // a el usuario a la lista y activar el resto de filtros... Pueeeeede ser util
                 )
                 .addStickyDrawerItems(
                         mOrderCollapsable
@@ -488,6 +481,8 @@ public class MainAndFilterDrawerConfiguration {
 
                 switch (drawerItem.getIdentifier()) {
 
+                    case Constants.CLEAR_FILTER:
+                        break;
                     case Constants.STARRED:
                         break;
                     case Constants.DUE_TODAY:
