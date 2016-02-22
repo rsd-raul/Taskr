@@ -304,19 +304,28 @@ public class MainAndFilterDrawerConfiguration {
     private void contactByEmail(){
         Resources resources= mActivity.getResources();
 
-        // Create a custom intent for Emails
-        Intent intentEmail = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                resources.getString(R.string.mailto),
+        // ShareCompat not viable, shows more than just email clients
+//        Intent intentEmail = ShareCompat.IntentBuilder
+//                .from(mActivity)
+//                .setType("text/html")          // Set the MIME type to filter the apps
+//                .addEmailTo(resources.getString(R.string.developer_email))
+//                .setSubject(resources.getString(R.string.subject_email))
+//                .setChooserTitle(resources.getString(R.string.send_email))
+//                .createChooserIntent();         // Build a custom dialog, not use defaults
+
+        // Create a custom intent for Emails    ShareCompat.IntentBuilder not utilisable
+        Intent intentEmail = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",
                 resources.getString(R.string.developer_email), null));
 
         //Populate the fields by default
         intentEmail.putExtra(Intent.EXTRA_SUBJECT,
                 resources.getString(R.string.subject_email));
 
-        // Create a dialog only for Email clients
+        // Create a dialog only for Email clients & Avoid ActivityNotFoundException
         if (intentEmail.resolveActivity(mActivity.getPackageManager()) != null)
             mActivity.startActivity(Intent.createChooser(intentEmail,
                     resources.getString(R.string.send_email)));
+//          mActivity.startActivity(intentEmail);
     }
 
     private void setupMainList(ArrayList<TaskList> taskLists){

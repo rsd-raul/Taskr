@@ -32,7 +32,6 @@
 
     <!-- ActionBar Icons -->
 
-    <string name="mailto">mailto</string>
     <string name="developer_email">achillessoftware@gmail.com</string>
     <string name="subject_email">Tasked - Bug/Feature/Request</string>
     <string name="send_email">Contact the developer</string>

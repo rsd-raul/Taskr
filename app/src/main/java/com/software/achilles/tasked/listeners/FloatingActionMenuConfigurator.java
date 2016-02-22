@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -18,7 +19,11 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.MainActivity;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.controllers.TaskController;
+import com.software.achilles.tasked.domain.Task;
+import com.software.achilles.tasked.domain.TaskList;
 import com.software.achilles.tasked.extras.FloatingActionMenuBehavior;
+
+import java.util.List;
 
 public class FloatingActionMenuConfigurator {
 
@@ -165,18 +170,20 @@ public class FloatingActionMenuConfigurator {
             public void onClick(View view) {
                 // Retrieving the current Task and extract data for intent
                 int positionOnViewPager = activity.mViewPager.getCurrentItem();
-                String taskListString = TaskController.sTaskLists.get(positionOnViewPager).toString();
+                TaskList taskList = TaskController.sTaskLists.get(positionOnViewPager);
+                String title = activity.getString(R.string.shareList) +": "+taskList.getTitle();
 
                 // Create the Intent and put the info to share
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, taskListString);
+                Intent shareIntent = ShareCompat.IntentBuilder
+                        .from(activity)
+                        .setType("text/plain")          // Set the MIME type to filter the apps
+                        .setText(taskList.toString())   // Translate the TaskList to String
+                        .setChooserTitle(title)         // Set a custom title for the chooser
+                        .createChooserIntent();         // Build a custom dialog, not use defaults
 
-                // Set the MIME type and start activity
-                shareIntent.setType("text/plain");
-
-                // Build a custom dialog
-                String chooserTitle = activity.getResources().getString(R.string.shareList);
-                activity.startActivity(Intent.createChooser(shareIntent, chooserTitle));
+                // Avoid ActivityNotFoundException
+                if(shareIntent.resolveActivity(activity.getPackageManager()) != null)
+                    activity.startActivity(shareIntent);
             }
         });
 
