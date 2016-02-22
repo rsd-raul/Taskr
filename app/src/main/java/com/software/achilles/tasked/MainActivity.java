@@ -85,24 +85,28 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
-        // TODO quick jump to the desired list if too many lists present
+        // TODO 1 de 2 - Quick jump to the desired list if too many lists present (necessary?)
 //        if(taskLists.size() > 5)
 //            adapter.addFragment(new DashboardSearchFragment(), "Search");
 
         // Populate each of the pages of the ViewPager
-        for (TaskList taskList : taskLists) {
+        for (int index = 0 ; index < taskLists.size(); index++){
             // Pick the fragment the page is going to show
             DashboardListFragment dashboardListFragment = new DashboardListFragment();
 
             // Introduce the TaskList corresponding to that fragment
             Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.TASK_LIST+"", taskList);
+            bundle.putInt(Constants.TASK_LIST+"", index);
             dashboardListFragment.setArguments(bundle);
 
             // Add the fragment and it's bundle to the adapter
-            adapter.addFragment(dashboardListFragment, taskList.getTitle());
+            adapter.addFragment(dashboardListFragment, taskLists.get(index).getTitle());
         }
+
         mViewPager.setAdapter(adapter);
+
+        // TODO 2 de 2 - Quick jump to the desired list if too many lists present (necessary?)
+//        mViewPager.setCurrentItem(1);     // show the first list by default, not the quick search
     }
 
     private void setupTabLayout(int taskListsSize) {

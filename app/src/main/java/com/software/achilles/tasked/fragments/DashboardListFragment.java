@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +17,12 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.domain.Task;
-import com.software.achilles.tasked.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,20 +36,11 @@ public class DashboardListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState) {
 
-        // TODO si en un futuro no usas TaskList pasar a List<Task> directamente
-        // Retrieve the TaskList from the Activity
-        TaskList taskList = getArguments().getParcelable(Constants.TASK_LIST+"");
-
-        List<Task> tasks;
-        // Retrieve the Tasks from the task
-        if(taskList!=null)
-            tasks = taskList.getTasks();
-        else {
-            tasks = new ArrayList<>();
-            Log.e("DashboardListFragment", "taskList was null and was initialized");
-        }
+        // Retrieve the TaskList index from the Activity and obtain its tasks
+        int positionOnViewPager = getArguments().getInt(Constants.TASK_LIST + "");
+        List<Task> tasks = TaskController.sTaskLists.get(positionOnViewPager).getTasks();
 
         // Setup the recycler view with the list of Tasks
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
@@ -61,8 +51,8 @@ public class DashboardListFragment extends Fragment {
     }
 
     private void setupRecyclerView(RecyclerView recyclerView, List<Task> tasks) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(getActivity(), tasks));
     }
 
@@ -105,10 +95,10 @@ public class DashboardListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             // TODO 1 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
-            if(position == 0)
-                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0,24,0,0);
-            if(position == mListOfTasks.size()-1)
-                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0,0,0,24);
+            if (position == 0)
+                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 24, 0, 0);
+            if (position == mListOfTasks.size() - 1)
+                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 0, 0, 24);
 
             final Task task = mListOfTasks.get(position);
             holder.mBoundString = task.getTitle();
@@ -170,7 +160,8 @@ public class DashboardListFragment extends Fragment {
 
             // Change icon and color if an alarm is set
             if (dueDate != null) {
-                alarm.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_time_alarm));
+                alarm.setImageDrawable(ContextCompat.getDrawable(mContext,
+                        R.drawable.ic_time_alarm));
                 int dateColor = ContextCompat.getColor(mContext, R.color.amberDateDark);
                 alarm.getDrawable().setColorFilter(dateColor, PorterDuff.Mode.SRC_IN);
             }
@@ -192,11 +183,6 @@ public class DashboardListFragment extends Fragment {
             return mListOfTasks.size();
         }
 
-        public String getValueAt(int position) {
-            return mListOfTasks.get(position).getTitle();
-        }
-
-
         // -------------------- Internal ViewHolder ----------------------
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -205,7 +191,7 @@ public class DashboardListFragment extends Fragment {
             public final View mView;
             public final CheckBox mCheckDone;
             public final TextView mTextView;
-//            public final ImageButton mPlace;
+            //            public final ImageButton mPlace;
             public final ImageButton mAlarm;
             public final CheckBox mCheckStar;
 
@@ -231,15 +217,6 @@ public class DashboardListFragment extends Fragment {
             }
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 //    @Override

@@ -26,7 +26,7 @@ public class FloatingActionMenuConfigurator {
 
     // ------------------------- Attributes --------------------------
 
-    //TODO cambiado a public para poder usar traductores en el domain
+    //TODO Cambiado a public para poder usar traductores en el domain
     public static MainActivity activity;
     private static FloatingActionMenu fam;
 
@@ -39,9 +39,7 @@ public class FloatingActionMenuConfigurator {
         configureMenu();
 //        setMenuOnScrollReaction();
         menuCustomizeBehaviour();
-
         configureChildren();
-
         setMenuOnScrollReaction();
     }
 
@@ -107,7 +105,7 @@ public class FloatingActionMenuConfigurator {
 
         // Control the behaviour when scrolling
         // TODO Controlar el FAM y la barra cuando se detecta scroll
-        // TODO si no escondes FAM tienes que dar extra padding/margin a el viewpager (o el boton tapa las acciones)
+        // TODO Si no escondes FAM tienes que dar extra padding/margin a el viewpager (o el boton tapa las acciones)
 //        activity.getSupportActionBar().hide();
 //        activity.getSupportActionBar().show();
 

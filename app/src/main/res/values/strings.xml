@@ -15,7 +15,7 @@
 
     <!-- Filter -->
 
-    <string name="clear_filter">\t\t\t\t\t\t\t\t\t\tCLEAR FILTER</string>
+    <string name="clear_filter">\t\t\t\t\t\t\t\t\t\tRESET FILTER</string>
 
     <string name="main_filters">Main filters</string>
         <string name="starred">Starred</string>

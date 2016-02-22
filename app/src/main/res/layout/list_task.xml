@@ -25,7 +25,6 @@
             android:id="@+id/checkbox"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:button="@drawable/custom_checkbox"
             android:padding="5dp" />
 
         <TextView
