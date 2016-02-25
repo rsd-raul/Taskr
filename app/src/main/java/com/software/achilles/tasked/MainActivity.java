@@ -1,5 +1,6 @@
 package com.software.achilles.tasked;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -185,7 +187,41 @@ public class MainActivity extends AppCompatActivity {
     // --------------------- Add Task Interface ----------------------
 
     public void taskCustomization(View view){
-        mTaskCreationFragment.taskCustomization(view);
+        switch (view.getId()){
+            // Close interface
+            case R.id.button_close:
+                dialogForTaskRemoval();
+                break;
+            // Task customization buttons
+            default:
+                mTaskCreationFragment.taskCustomization(view);
+                break;
+
+        }
+    }
+
+    private void dialogForTaskRemoval(){
+
+        // If the user haven't typed anything, close the interface
+        if(!mTaskCreationFragment.isDataPresent()){
+            removeAddTask();
+            return;
+        }
+
+        // Else, ask for confirmation
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.discard_changes))
+                .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeAddTask();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                    }
+                })
+                .show();
     }
 
     public void deployAddTask(){

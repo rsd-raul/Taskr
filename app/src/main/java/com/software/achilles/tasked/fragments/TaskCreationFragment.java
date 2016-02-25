@@ -2,20 +2,12 @@ package com.software.achilles.tasked.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.software.achilles.tasked.MainActivity;
 import com.software.achilles.tasked.R;
-
-import java.util.Date;
 
 public class TaskCreationFragment extends Fragment {
 
@@ -53,19 +45,39 @@ public class TaskCreationFragment extends Fragment {
 
     }
 
+    public boolean isDataPresent(){
+        // TODO si el usuario a introducido algun dato => TRUE, de lo contrario => FALSE
+
+        return true;
+    }
+
+
     public void resetFields(){
         // TODO esto es llamado cuando se despliega el layout tras borrarse, basicamente, todo a 0
     }
 
     // ------------------------ Time & Date --------------------------
 
+    // TODO Show information back to the user and also persist that information
     public void taskCustomization(View view){
         switch (view.getId()){
-            case R.id.button_close:
-                ((MainActivity)getActivity()).removeAddTask();
+//            case R.id.button_close:
+//                ((MainActivity)getActivity()).removeAddTask();
+//                break;
+            case R.id.button_description:
+                // TODO Deploy description
                 break;
-
-
+            case R.id.button_time:
+                // TODO how picker, then deploy result if any
+                break;
+            case R.id.button_location:
+                // TODO how picker, then deploy result if any
+                break;
+            case R.id.button_label:
+                // TODO how picker, then deploy result if any
+                break;
+            case R.id.checkbox_favourite:
+                break;
         }
     }
 

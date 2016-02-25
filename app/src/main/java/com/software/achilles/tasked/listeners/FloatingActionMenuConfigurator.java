@@ -191,9 +191,8 @@ public class FloatingActionMenuConfigurator {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fam.close(true);
-
                 activity.deployAddTask();
+                fam.close(true);
             }
         });
 
