@@ -1,18 +1,19 @@
 <resources>>
-    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar.ActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">#FFF</item>
+
+        <!-- Change the normal style of unchecked checkboxes, etc -->
+        <item name="colorControlNormal">#bdbdbd</item>
+
+        <!-- Override colorAccent on activated/checked UI controls -->
+        <!--<item name="colorControlActivated">#FFF</item>-->
+
+        <!-- Controls the ripple coloring -->
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
-
-        <!-- Makes the NavigationDrawer go behind the Status Bar -->
-
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">true</item>
-
     </style>
 </resources>
