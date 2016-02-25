@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true">
 
     <ImageButton
-        android:id="@+id/button_descriptison"
+        android:id="@+id/button_close"
         android:src="@drawable/ic_cancel"
         android:layout_width="56dp"
         android:layout_height="56dp"

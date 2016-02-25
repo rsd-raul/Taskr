@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskController mTaskController;
     public Toolbar mToolbar;
     public ViewPager mViewPager;
+    public View mAddTaskView;
     public TaskCreationFragment mTaskCreationFragment;
 
     // ------------------------- Constructor -------------------------
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // TODO only for testing
-        deployAddTask();
+//        deployAddTask();
     }
 
     // TODO Investigar sobre threads y como manejarlos, sigue dando "Skipped X frames!"
@@ -183,27 +185,58 @@ public class MainActivity extends AppCompatActivity {
     // --------------------- Add Task Interface ----------------------
 
     public void taskCustomization(View view){
-
+        mTaskCreationFragment.taskCustomization(view);
     }
 
     public void deployAddTask(){
+
+        // Hide the fam
+        mFamConfigurator.famVisibility(false);
+
+        // If the layout was created, show it and restart the fields
+        if (mAddTaskView != null) {
+            mAddTaskView.setVisibility(View.VISIBLE);
+            mTaskCreationFragment.resetFields();
+            return;
+        }
+
         // Create a new Fragment to be placed in the activity layout
         mTaskCreationFragment = new TaskCreationFragment();
-
-//        // In case this activity was started with special instructions from an
-//        // Intent, pass the Intent's extras to the fragment as arguments
-//        firstFragment.setArguments(getIntent().getExtras());
 
         // Add the fragment to the 'fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.bottom_fragment_container, mTaskCreationFragment).commit();
 
+        // Color the status bar in order to adapt the color to the shadow deployed
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.BLACK);
         }
 
+        // Block filter and navigation drawers
+        mDrawersConfigurator.blockDrawers(true);
+    }
+
+    public void removeAddTask(){
+
+        // Show the FAM
+        mFamConfigurator.famVisibility(true);
+
+        // Hide the container with the layout
+        mAddTaskView = findViewById(R.id.bottom_fragment_container);
+        mAddTaskView.setVisibility(View.GONE);
+
+        // Color the status bar in order to adapt the color to the shadow deployed
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            int color = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
+            window.setStatusBarColor(color);
+        }
+
+        // Unblock filter and navigation drawers
+        mDrawersConfigurator.blockDrawers(false);
     }
 
     // --------------------------- Details ---------------------------

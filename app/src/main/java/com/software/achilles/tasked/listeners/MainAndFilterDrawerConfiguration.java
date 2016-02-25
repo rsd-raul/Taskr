@@ -7,7 +7,9 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -723,5 +725,19 @@ public class MainAndFilterDrawerConfiguration {
         addedIds.add(idDueDate);
         addedIds.add(idCustomOrder);
         mOrderListIds = addedIds;
+    }
+
+    public void blockDrawers(boolean toggle) {
+        if (toggle) {
+            mFilterDrawer.getDrawerLayout().setDrawerLockMode(
+                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
+            mMainDrawer.getDrawerLayout().setDrawerLockMode(
+                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START);
+        } else {
+            mFilterDrawer.getDrawerLayout().setDrawerLockMode(
+                    DrawerLayout.LOCK_MODE_UNLOCKED);
+            mMainDrawer.getDrawerLayout().setDrawerLockMode(
+                    DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
     }
 }

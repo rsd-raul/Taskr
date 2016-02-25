@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.software.achilles.tasked.MainActivity;
 import com.software.achilles.tasked.R;
 
 import java.util.Date;
@@ -52,10 +53,20 @@ public class TaskCreationFragment extends Fragment {
 
     }
 
+    public void resetFields(){
+        // TODO esto es llamado cuando se despliega el layout tras borrarse, basicamente, todo a 0
+    }
+
     // ------------------------ Time & Date --------------------------
 
     public void taskCustomization(View view){
-        Toast.makeText(getContext(),"hola", Toast.LENGTH_LONG);
+        switch (view.getId()){
+            case R.id.button_close:
+                ((MainActivity)getActivity()).removeAddTask();
+                break;
+
+
+        }
     }
 
     private void showTimePickerDialog() {

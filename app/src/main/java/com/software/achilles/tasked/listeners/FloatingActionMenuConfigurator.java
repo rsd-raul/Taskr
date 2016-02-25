@@ -193,7 +193,7 @@ public class FloatingActionMenuConfigurator {
             public void onClick(View view) {
                 fam.close(true);
 
-                deployAddTaskLayout();
+                activity.deployAddTask();
             }
         });
 
@@ -222,12 +222,10 @@ public class FloatingActionMenuConfigurator {
 
     // -------------------------- Use Cases --------------------------
 
-
-    private void deployAddTaskLayout(){
-
+    public void famVisibility(boolean toggle){
+        if(toggle)
+            fam.setVisibility(View.VISIBLE);
+        else
+            fam.setVisibility(View.GONE);
     }
-
-//    private void retractAddTaskLayout(){
-//
-//    }
 }
