@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import com.software.achilles.tasked.R;
 
 import java.util.Date;
@@ -23,7 +25,7 @@ public class TaskCreationFragment extends Fragment {
     // ------------------------- Constructor -------------------------
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState){
         return inflater.inflate(R.layout.task_creation_fragment, container, false);
     }
 
@@ -31,7 +33,7 @@ public class TaskCreationFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Time button initializing
+//        // Time button initializing
 //        Button taskTimeBT = (Button) getView().findViewById(R.id.time);
 //        taskTimeBT.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -51,6 +53,10 @@ public class TaskCreationFragment extends Fragment {
     }
 
     // ------------------------ Time & Date --------------------------
+
+    public void taskCustomization(View view){
+        Toast.makeText(getContext(),"hola", Toast.LENGTH_LONG);
+    }
 
     private void showTimePickerDialog() {
 

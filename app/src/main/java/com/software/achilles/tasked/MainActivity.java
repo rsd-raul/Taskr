@@ -16,6 +16,7 @@ import com.software.achilles.tasked.adapters.Adapter;
 import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.domain.*;
 import com.software.achilles.tasked.fragments.DashboardListFragment;
+import com.software.achilles.tasked.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.listeners.MainAndFilterDrawerConfiguration;
 import com.software.achilles.tasked.util.Constants;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskController mTaskController;
     public Toolbar mToolbar;
     public ViewPager mViewPager;
+    public TaskCreationFragment mTaskCreationFragment;
 
     // ------------------------- Constructor -------------------------
 
@@ -66,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
                 setupTabLayout(TaskController.sTaskLists.size());
             }
         });
+
+        // TODO only for testing
+        deployAddTask();
     }
 
     // TODO Investigar sobre threads y como manejarlos, sigue dando "Skipped X frames!"
@@ -172,6 +177,25 @@ public class MainActivity extends AppCompatActivity {
     // -------------------------- Use Cases --------------------------
 
     // --------------------- Add Task Interface ----------------------
+
+    public void taskCustomization(View view){
+
+    }
+
+    public void deployAddTask(){
+        // Create a new Fragment to be placed in the activity layout
+        mTaskCreationFragment = new TaskCreationFragment();
+
+//        // In case this activity was started with special instructions from an
+//        // Intent, pass the Intent's extras to the fragment as arguments
+//        firstFragment.setArguments(getIntent().getExtras());
+
+        // Add the fragment to the 'fragment_container' FrameLayout
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.bottom_fragment_container, mTaskCreationFragment).commit();
+
+
+    }
 
     // --------------------------- Details ---------------------------
 

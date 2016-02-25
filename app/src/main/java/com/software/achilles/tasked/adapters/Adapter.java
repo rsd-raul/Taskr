@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter extends FragmentPagerAdapter {
+//public class Adapter extends FragmentStatePagerAdapter {   // More efficient if multiple tabs
 
     private final List<Fragment> mFragments = new ArrayList<>();
     private final List<String> mFragmentTitles = new ArrayList<>();

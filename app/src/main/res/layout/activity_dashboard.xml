@@ -28,6 +28,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -53,5 +54,11 @@
             android:id="@+id/addTaskFAB"/>
 
     </com.github.clans.fab.FloatingActionMenu>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/bottom_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end|bottom" />
 
 </android.support.design.widget.CoordinatorLayout>
