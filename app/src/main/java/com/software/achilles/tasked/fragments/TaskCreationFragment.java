@@ -51,7 +51,6 @@ public class TaskCreationFragment extends Fragment {
         return true;
     }
 
-
     public void resetFields(){
         // TODO esto es llamado cuando se despliega el layout tras borrarse, basicamente, todo a 0
     }

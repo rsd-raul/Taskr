@@ -192,7 +192,7 @@ public class FloatingActionMenuConfigurator {
             @Override
             public void onClick(View view) {
                 activity.deployAddTask();
-                fam.close(true);
+                fam.close(false);
             }
         });
 

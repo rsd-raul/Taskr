@@ -380,6 +380,9 @@ public class MainAndFilterDrawerConfiguration {
         int color = R.color.colorAccent;
         PrimaryDrawerItem clear = new PrimaryDrawerItem()
                 .withName(R.string.clear_filter)
+                .withIcon(R.drawable.ic_cancel)
+                .withIconTintingEnabled(true)
+                .withSelectedIconColorRes(R.color.transparent)
                 .withSelectedTextColorRes(color)
                 .withIdentifier(Constants.CLEAR_FILTER)
                 .withSelectable(true);

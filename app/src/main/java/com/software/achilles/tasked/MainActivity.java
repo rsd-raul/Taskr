@@ -1,5 +1,6 @@
 package com.software.achilles.tasked;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
@@ -209,8 +210,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Else, ask for confirmation
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.discard_changes))
+        Dialog dialog = new AlertDialog.Builder(this)
+                // For simple dialogs we don't use a Title (Google Guidelines)
+                .setMessage(getString(R.string.discard_changes))
+
+                // Only on discard the removeAddTask is triggered
                 .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         removeAddTask();
@@ -222,6 +226,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+
+        // Dialog width customization
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.width = 800;
+        dialog.getWindow().setAttributes(lp);
     }
 
     public void deployAddTask(){

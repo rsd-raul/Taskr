@@ -1,129 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.TaskCreationFragment"
     android:background="@color/shadow_dark"
-    android:fitsSystemWindows="true">
-
-    <ImageButton
-        android:id="@+id/button_close"
-        android:src="@drawable/ic_cancel"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:background="@null"
-
-        android:onClick="taskCustomization"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:src="@drawable/ic_menu_overflow"
-        android:layout_width="40dp"
-        android:layout_height="56dp"
-        android:background="@null"
-        android:onClick="taskCustomization"
-
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        android:background="@color/md_white_1000"
-        android:paddingLeft="8dp"
-        android:paddingStart="8dp"
-        android:paddingRight="8dp"
-        android:paddingEnd="8dp"
-        android:layout_alignParentBottom="true">
+        <RelativeLayout
+            android:id="@+id/topView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-        <EditText style="@style/editText"
-            android:id="@+id/textInput"
-            android:hint="@string/title"
-            android:textSize="30sp"/>
+            <ImageButton
+                android:id="@+id/button_close"
+                android:src="@drawable/ic_cancel"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@null"
+
+                android:onClick="taskCustomization"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:src="@drawable/ic_menu_overflow"
+                android:layout_width="40dp"
+                android:layout_height="56dp"
+                android:background="@null"
+                android:onClick="taskCustomization"
+
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/task_creation_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:orientation="horizontal" >
+            android:orientation="vertical"
 
-            <ImageButton
-                android:id="@+id/button_description"
-                android:src="@drawable/ic_description"
-                android:layout_width="wrap_content"
+            android:background="@color/md_white_1000"
+            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
+            android:paddingRight="8dp"
+            android:paddingEnd="8dp"
+            android:layout_alignParentBottom="true">
+
+            <EditText style="@style/editText"
+                android:id="@+id/textInput"
+                android:hint="@string/type_title"
+                android:textSize="24sp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:onClick="taskCustomization"/>
+                android:layout_gravity="top"
+                android:orientation="horizontal" >
 
-            <ImageButton
-                android:id="@+id/button_time"
-                android:src="@drawable/ic_time_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" />
+                <ImageButton
+                    android:id="@+id/button_description"
+                    android:src="@drawable/ic_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:onClick="taskCustomization"/>
 
-            <ImageButton
-                android:id="@+id/button_location"
-                android:src="@drawable/ic_place_pin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" />
+                <ImageButton
+                    android:id="@+id/button_time"
+                    android:src="@drawable/ic_time_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
 
-            <ImageButton
-                android:id="@+id/button_label"
-                android:src="@drawable/ic_label_multiple"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" />
+                <ImageButton
+                    android:id="@+id/button_location"
+                    android:src="@drawable/ic_place_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
 
-            <CheckBox
-                android:id="@+id/checkbox_favourite"
-                android:button="@drawable/custom_favourite"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                <ImageButton
+                    android:id="@+id/button_label"
+                    android:src="@drawable/ic_label_multiple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
 
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp" />
+                <CheckBox
+                    android:id="@+id/checkbox_favourite"
+                    android:button="@drawable/custom_favourite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:id="@+id/spinner_task_list"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="43dp"
+                    android:id="@+id/spinner_task_list"
 
 
-                android:layout_gravity="end"
-                android:spinnerMode="dropdown" />
-            <!--El drop down puede que sea por defecto-->
+                    android:layout_gravity="end"
+                    android:spinnerMode="dropdown" />
+                <!--El drop down puede que sea por defecto-->
 
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
 
-</RelativeLayout>
+
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/saveAndCancelFAB"
+        android:src="@drawable/ic_cancel"
+        android:visibility="visible"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_margin = "@dimen/fab_margin"
+
+        app:layout_anchor="@id/topView"
+        app:layout_anchorGravity="bottom|end" />
+</android.support.design.widget.CoordinatorLayout>

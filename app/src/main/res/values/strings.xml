@@ -13,9 +13,9 @@
     <string name="settings">Settings</string>
     <string name="contact">Help &amp; feedback</string>
 
-    <!-- Filter -->
+    <!-- Filters -->
 
-    <string name="clear_filter">\t\t\t\t\t\t\t\t\t\tRESET FILTER</string>
+    <string name="clear_filter">RESET FILTERS</string>
 
     <string name="main_filters">Main filters</string>
         <string name="starred">Starred</string>
@@ -74,6 +74,7 @@
     <!--Task Creation Fragment-->
 
     <string name="title">Title</string>
+    <string name="type_title">Type title...</string>
     <string name="description">Description</string>
     <string name="discard_changes">Discard changes?</string>
     <string name="discard">Discard</string>
