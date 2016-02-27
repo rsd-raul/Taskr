@@ -2,6 +2,7 @@ package com.software.achilles.tasked;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,13 +12,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.controllers.TaskController;
+import com.software.achilles.tasked.extras.ThreadManager;
 import com.software.achilles.tasked.fragments.DashboardFragment;
 import com.software.achilles.tasked.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
@@ -58,28 +59,14 @@ public class MainActivity extends AppCompatActivity {
 
         final MainActivity aux = this;
         // Configure the fab menu and its children. - NEW THREAD
-        threadManager(new Runnable() {
+        ThreadManager.launchIfPossible(new Runnable() {
             public void run() {
                 mFamConfigurator = new FloatingActionMenuConfigurator(aux);
             }
         });
 
-//        // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
-//        threadManager(new Runnable() {
-//            public void run() {
-//                setupViewPager(TaskController.sTaskLists);
-//                setupTabLayout(TaskController.sTaskLists.size());
-//            }
-//        });
-
         // Initialize with Dashboard
         setFragment(Constants.DASHBOARD);
-    }
-
-    // TODO Investigar sobre threads y como manejarlos, sigue dando "Skipped X frames!"
-    private void threadManager(Runnable runnable){
-        // Launch new thread
-        new Thread(runnable).start();
     }
 
     @Override
@@ -181,7 +168,10 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
 
-        // Dialog width customization
+        // Dialog width customization (BUG > LOLLIPOP)  TODO light BUG xD
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            return;
+
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.width = 850;
         dialog.getWindow().setAttributes(lp);
@@ -269,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------- Deprecated --------------------------
 
     int currentFragmentKey;
-    DashboardFragment dashboardFragment;
+
     public void setFragment(int keyConstant) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -279,8 +269,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (keyConstant) {
             case Constants.DASHBOARD:
-                if(dashboardFragment == null)
-                    dashboardFragment = new DashboardFragment();
+                DashboardFragment dashboardFragment = new DashboardFragment();
                 fragmentTransaction.replace(R.id.main_fragment_container, dashboardFragment);
                 break;
             case Constants.ADD_TASK:

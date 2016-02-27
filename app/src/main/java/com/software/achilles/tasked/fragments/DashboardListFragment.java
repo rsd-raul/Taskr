@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +38,6 @@ public class DashboardListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState) {
-        Log.d("myApp", "onCreateView - DashboardListFragment");
         // Retrieve the TaskList index from the Activity and obtain its tasks
         int positionOnViewPager = getArguments().getInt(Constants.TASK_LIST + "");
         List<Task> tasks = TaskController.sTaskLists.get(positionOnViewPager).getTasks();
