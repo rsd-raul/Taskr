@@ -11,13 +11,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.controllers.TaskController;
-import com.software.achilles.tasked.fragments.DashboardViewPagerFragment;
+import com.software.achilles.tasked.fragments.DashboardFragment;
 import com.software.achilles.tasked.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.listeners.MainAndFilterDrawerConfiguration;
@@ -268,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------- Deprecated --------------------------
 
     int currentFragmentKey;
-
+    DashboardFragment dashboardFragment;
     public void setFragment(int keyConstant) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -278,7 +279,8 @@ public class MainActivity extends AppCompatActivity {
 
         switch (keyConstant) {
             case Constants.DASHBOARD:
-                DashboardViewPagerFragment dashboardFragment = new DashboardViewPagerFragment();
+                if(dashboardFragment == null)
+                    dashboardFragment = new DashboardFragment();
                 fragmentTransaction.replace(R.id.main_fragment_container, dashboardFragment);
                 break;
             case Constants.ADD_TASK:

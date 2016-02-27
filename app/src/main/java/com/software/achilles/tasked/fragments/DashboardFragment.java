@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
 
-public class DashboardViewPagerFragment extends Fragment {
+public class DashboardFragment extends Fragment {
 
     // --------------------------- Values ----------------------------
 
@@ -30,11 +31,13 @@ public class DashboardViewPagerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState){
+        Log.d("myApp", "onCreateView");
         return inflater.inflate(R.layout.dashboard_viewpager_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        Log.d("myApp", "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
         // Initialize MainActivity
@@ -60,7 +63,8 @@ public class DashboardViewPagerFragment extends Fragment {
     private void setupViewPager(ArrayList<TaskList> taskLists) {
         mViewPager = (ViewPager) mMainActivity.findViewById(R.id.viewpager);
         mMainActivity.mViewPager = mViewPager;
-        Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
+//        Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
+        Adapter adapter = new Adapter(getChildFragmentManager());
 
         // TODO 1 de 2 - Quick jump to the desired list if too many lists present (necessary?)
 //        if(taskLists.size() > 5)
@@ -69,6 +73,7 @@ public class DashboardViewPagerFragment extends Fragment {
         // Populate each of the pages of the ViewPager
         for (int index = 0 ; index < taskLists.size(); index++){
             // Pick the fragment the page is going to show
+            Log.d("myApp", "holaaaaa");
             DashboardListFragment dashboardListFragment = new DashboardListFragment();
 
             // Introduce the TaskList corresponding to that fragment
@@ -79,9 +84,7 @@ public class DashboardViewPagerFragment extends Fragment {
             // Add the fragment and it's bundle to the adapter
             adapter.addFragment(dashboardListFragment, taskLists.get(index).getTitle());
         }
-
         mViewPager.setAdapter(adapter);
-
         // TODO 2 de 2 - Quick jump to the desired list if too many lists present (necessary?)
 //        mViewPager.setCurrentItem(1);     // show the first list by default, not the quick search
     }
