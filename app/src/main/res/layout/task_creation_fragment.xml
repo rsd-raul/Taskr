@@ -149,8 +149,8 @@
 
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/saveAndCancelFAB"
-        android:src="@drawable/ic_cancel"
+        android:id="@+id/saveAndVoiceFAB"
+        android:src="@drawable/ic_voice_microphone"
         android:visibility="visible"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"

@@ -203,6 +203,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void dialogForTaskRemoval(){
 
+        // Correcting bug, when switching to Landscape the onCreate does not initialize the fragment
+        if(mTaskCreationFragment == null)
+            mTaskCreationFragment = new TaskCreationFragment();
+
         // If the user haven't typed anything, close the interface
         if(!mTaskCreationFragment.isDataPresent()){
             removeAddTask();
@@ -229,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Dialog width customization
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.width = 800;
+        lp.width = 850;
         dialog.getWindow().setAttributes(lp);
     }
 
