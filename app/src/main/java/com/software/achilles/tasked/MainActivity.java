@@ -2,11 +2,9 @@ package com.software.achilles.tasked;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -16,19 +14,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-
 import com.github.clans.fab.FloatingActionMenu;
-import com.software.achilles.tasked.adapters.Adapter;
 import com.software.achilles.tasked.controllers.TaskController;
-import com.software.achilles.tasked.domain.*;
-import com.software.achilles.tasked.fragments.DashboardListFragment;
+import com.software.achilles.tasked.fragments.DashboardViewPagerFragment;
 import com.software.achilles.tasked.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.listeners.MainAndFilterDrawerConfiguration;
 import com.software.achilles.tasked.util.Constants;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_main);
 
         // Initialize TaskController
         mTaskController = TaskController.getInstance();
@@ -70,16 +63,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
-        threadManager(new Runnable() {
-            public void run() {
-                setupViewPager(TaskController.sTaskLists);
-                setupTabLayout(TaskController.sTaskLists.size());
-            }
-        });
+//        // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
+//        threadManager(new Runnable() {
+//            public void run() {
+//                setupViewPager(TaskController.sTaskLists);
+//                setupTabLayout(TaskController.sTaskLists.size());
+//            }
+//        });
 
-        // TODO only for testing
-//        deployAddTask();
+        // Initialize with Dashboard
+        setFragment(Constants.DASHBOARD);
     }
 
     // TODO Investigar sobre threads y como manejarlos, sigue dando "Skipped X frames!"
@@ -91,50 +84,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-    }
-
-    // -------------------------- View Pager -------------------------
-
-    private void setupViewPager(ArrayList<TaskList> taskLists) {
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-
-        // TODO 1 de 2 - Quick jump to the desired list if too many lists present (necessary?)
-//        if(taskLists.size() > 5)
-//            adapter.addFragment(new DashboardSearchFragment(), "Search");
-
-        // Populate each of the pages of the ViewPager
-        for (int index = 0 ; index < taskLists.size(); index++){
-            // Pick the fragment the page is going to show
-            DashboardListFragment dashboardListFragment = new DashboardListFragment();
-
-            // Introduce the TaskList corresponding to that fragment
-            Bundle bundle = new Bundle();
-            bundle.putInt(Constants.TASK_LIST+"", index);
-            dashboardListFragment.setArguments(bundle);
-
-            // Add the fragment and it's bundle to the adapter
-            adapter.addFragment(dashboardListFragment, taskLists.get(index).getTitle());
-        }
-
-        mViewPager.setAdapter(adapter);
-
-        // TODO 2 de 2 - Quick jump to the desired list if too many lists present (necessary?)
-//        mViewPager.setCurrentItem(1);     // show the first list by default, not the quick search
-    }
-
-    private void setupTabLayout(int taskListsSize) {
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-
-        // Setup tabs for Dashboard if there is more than one TaskList, make them Scrollable/Fixed
-        if(taskListsSize > 1) {
-            tabLayout.setupWithViewPager(mViewPager);
-            if(taskListsSize > 2)
-                tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            else
-                tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        } else
-            tabLayout.setVisibility(View.GONE);
     }
 
     // -------------------------- Landscape --------------------------
@@ -175,9 +124,9 @@ public class MainActivity extends AppCompatActivity {
                 mDrawersConfigurator.mFilterDrawer.openDrawer();
                 break;
 
-            case R.id.action_search:
-                // The calculations and filtering are done in "onCreateOptionsMenu"
-                break;
+//            case R.id.action_search:
+//                 The calculations and filtering are done in "onCreateOptionsMenu"
+//                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -237,52 +186,59 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().setAttributes(lp);
     }
 
-    public void deployAddTask(){
+    public void deployAddTask() {
+
+        // Deploy the layout
+        setFragment(Constants.ADD_TASK);
 
         // Hide the fam
         mFamConfigurator.famVisibility(false);
 
-        // If the layout was created, show it and restart the fields
-        if (mAddTaskView != null) {
-            mAddTaskView.setVisibility(View.VISIBLE);
-            mTaskCreationFragment.resetFields();
-            return;
-        }
-
-        // Create a new Fragment to be placed in the activity layout
-        mTaskCreationFragment = new TaskCreationFragment();
-
-        // Add the fragment to the 'fragment_container' FrameLayout
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.bottom_fragment_container, mTaskCreationFragment).commit();
-
-        // Color the status bar in order to adapt the color to the shadow deployed
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.BLACK);
-        }
-
+//        // If the layout was created, show it and restart the fields
+//        if (mAddTaskView != null) {
+//            mAddTaskView.setVisibility(View.VISIBLE);
+//            mTaskCreationFragment.resetFields();
+//            return;
+//        }
+//
+//        // Create a new Fragment to be placed in the activity layout
+//        mTaskCreationFragment = new TaskCreationFragment();
+//
+//        // Add the fragment to the 'fragment_container' FrameLayout
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.main_fragment_container, mTaskCreationFragment).commit();
+//
+//        // Color the status bar in order to adapt the color to the shadow deployed
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Window window = getWindow();
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Color.BLACK);
+//        }
+//
         // Block filter and navigation drawers
         mDrawersConfigurator.blockDrawers(true);
     }
 
     public void removeAddTask(){
 
+        setFragment(Constants.DASHBOARD);
+
         // Show the FAM
         mFamConfigurator.famVisibility(true);
 
-        // Hide the container with the layout
-        mAddTaskView = findViewById(R.id.bottom_fragment_container);
-        mAddTaskView.setVisibility(View.GONE);
 
-        // Color the status bar in order to adapt the color to the shadow deployed
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            int color = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
-            window.setStatusBarColor(color);
-        }
+
+//        // Hide the container with the layout
+//        mAddTaskView = findViewById(R.id.main_fragment_container);
+//        mAddTaskView.setVisibility(View.GONE);
+
+//        // Color the status bar in order to adapt the color to the shadow deployed
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Window window = getWindow();
+////            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            int color = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
+//            window.setStatusBarColor(color);
+//        }
 
         // Unblock filter and navigation drawers
         mDrawersConfigurator.blockDrawers(false);
@@ -301,7 +257,6 @@ public class MainActivity extends AppCompatActivity {
         // Add mDrawersConfigurator.mFilterDrawer != null && if not only on dashboard
         } else if(mDrawersConfigurator.mFilterDrawer.isDrawerOpen()) {
             mDrawersConfigurator.mFilterDrawer.closeDrawer();
-
         } else
             super.onBackPressed();
     }
@@ -312,4 +267,21 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Deprecated --------------------------
 
+
+    public void setFragment(int keyConstant) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        switch (keyConstant) {
+            case Constants.DASHBOARD:
+                DashboardViewPagerFragment dashboardFragment = new DashboardViewPagerFragment();
+                fragmentTransaction.replace(R.id.main_fragment_container, dashboardFragment);
+                break;
+            case Constants.ADD_TASK:
+                TaskCreationFragment creationFragment = new TaskCreationFragment();
+                fragmentTransaction.replace(R.id.main_fragment_container, creationFragment);
+
+                break;
+        }
+        fragmentTransaction.commit();
+    }
 }

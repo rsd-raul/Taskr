@@ -43,4 +43,6 @@ public class Constants {
     public static final int LIST_SEPARATOR = 23;
     public static final int CLEAR_FILTER = 24;
 
+    public static final int ADD_TASK = 25;
+
 }

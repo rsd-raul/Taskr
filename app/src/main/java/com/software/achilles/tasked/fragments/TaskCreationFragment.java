@@ -67,13 +67,13 @@ public class TaskCreationFragment extends Fragment {
                 // TODO Deploy description
                 break;
             case R.id.button_time:
-                // TODO how picker, then deploy result if any
+                // TODO show picker, then deploy result if any
                 break;
             case R.id.button_location:
-                // TODO how picker, then deploy result if any
+                // TODO show picker, then deploy result if any
                 break;
             case R.id.button_label:
-                // TODO how picker, then deploy result if any
+                // TODO show picker, then deploy result if any
                 break;
             case R.id.checkbox_favourite:
                 break;

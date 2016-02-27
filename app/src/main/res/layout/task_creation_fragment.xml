@@ -64,7 +64,7 @@
                 android:id="@+id/textInput"
                 android:hint="@string/type_title"
                 android:textSize="24sp"
-                />
+                android:elegantTextHeight="false" />
 
             <LinearLayout
                 android:layout_width="match_parent"
