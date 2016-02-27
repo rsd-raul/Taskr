@@ -267,10 +267,15 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Deprecated --------------------------
 
+    int currentFragmentKey;
 
     public void setFragment(int keyConstant) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if(keyConstant == currentFragmentKey)
+            return;
+        currentFragmentKey = keyConstant;
+
         switch (keyConstant) {
             case Constants.DASHBOARD:
                 DashboardViewPagerFragment dashboardFragment = new DashboardViewPagerFragment();

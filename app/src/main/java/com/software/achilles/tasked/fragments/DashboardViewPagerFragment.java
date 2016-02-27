@@ -41,12 +41,12 @@ public class DashboardViewPagerFragment extends Fragment {
         mMainActivity = ((MainActivity) getActivity());
 
         // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
-        threadManager(new Runnable() {
-            public void run() {
+//        threadManager(new Runnable() {
+//            public void run() {
                 setupViewPager(TaskController.sTaskLists);
                 setupTabLayout(TaskController.sTaskLists.size());
-            }
-        });
+//            }
+//        });
     }
 
     // TODO Investigar sobre threads y como manejarlos, sigue dando "Skipped X frames!"
@@ -58,7 +58,7 @@ public class DashboardViewPagerFragment extends Fragment {
     // -------------------------- View Pager -------------------------
 
     private void setupViewPager(ArrayList<TaskList> taskLists) {
-        mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
+        mViewPager = (ViewPager) mMainActivity.findViewById(R.id.viewpager);
         mMainActivity.mViewPager = mViewPager;
         Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
 

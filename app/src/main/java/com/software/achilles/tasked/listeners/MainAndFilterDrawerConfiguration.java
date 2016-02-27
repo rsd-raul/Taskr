@@ -256,14 +256,19 @@ public class MainAndFilterDrawerConfiguration {
                 switch (identifier) {
 
                     case Constants.DASHBOARD:
+                        mActivity.setFragment(Constants.DASHBOARD);
                         break;
                     case Constants.SNOOZED:
+                        mActivity.setFragment(Constants.SNOOZED);
                         break;
                     case Constants.COMPLETED:
+                        mActivity.setFragment(Constants.COMPLETED);
                         break;
                     case Constants.GLANCE:
+                        mActivity.setFragment(Constants.GLANCE);
                         break;
                     case Constants.PLANNER:
+                        mActivity.setFragment(Constants.PLANNER);
                         break;
                     case Constants.ADD_TASK_LIST:
                         break;
