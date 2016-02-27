@@ -44,9 +44,8 @@ public class MainAndFilterDrawerConfiguration {
 
     // ------------------------- Attributes --------------------------
 
-    private Activity mActivity;
+    private MainActivity mActivity;
     private Toolbar mToolbar;
-    private ViewPager mViewPager;
     private AccountHeader mAccountHeader;
     public Drawer mMainDrawer, mFilterDrawer;
     private List<Integer> mTaskListIds, mLabelListIds, mLocationListIds, mOrderListIds;
@@ -80,8 +79,6 @@ public class MainAndFilterDrawerConfiguration {
             return;
 
         // ------------------------ Dashboard Only -----------------------
-
-        mViewPager = (ViewPager) mActivity.findViewById(R.id.viewpager);
 
         // Setup Filter Drawer and its behaviour
         setupFilterDrawer();
@@ -292,7 +289,7 @@ public class MainAndFilterDrawerConfiguration {
 
                         // Set the view pager on the correct list
                         if (index != -1)
-                            mViewPager.setCurrentItem(index, true);
+                            mActivity.mViewPager.setCurrentItem(index, true);
                         break;
                 }
                 // Do not close the drawer at Task List Expandable click

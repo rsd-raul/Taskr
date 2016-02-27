@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.software.achilles.tasked.MainActivity;
 import com.software.achilles.tasked.R;
 
 public class TaskCreationFragment extends Fragment {
@@ -14,6 +15,8 @@ public class TaskCreationFragment extends Fragment {
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
+
+    private MainActivity mMainActivity;
 
     // ------------------------- Constructor -------------------------
 
@@ -25,6 +28,9 @@ public class TaskCreationFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // Initialize MainActivity
+        mMainActivity = ((MainActivity) getActivity());
 
 //        // Time button initializing
 //        Button taskTimeBT = (Button) getView().findViewById(R.id.time);

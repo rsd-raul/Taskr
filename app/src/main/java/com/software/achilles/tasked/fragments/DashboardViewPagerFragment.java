@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.software.achilles.tasked.MainActivity;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.adapters.Adapter;
 import com.software.achilles.tasked.controllers.TaskController;
@@ -23,6 +24,7 @@ public class DashboardViewPagerFragment extends Fragment {
     // ------------------------- Attributes --------------------------
 
     public ViewPager mViewPager;
+    private MainActivity mMainActivity;
 
     // ------------------------- Constructor -------------------------
 
@@ -34,6 +36,10 @@ public class DashboardViewPagerFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // Initialize MainActivity
+        mMainActivity = ((MainActivity) getActivity());
+
         // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
         threadManager(new Runnable() {
             public void run() {
@@ -53,6 +59,7 @@ public class DashboardViewPagerFragment extends Fragment {
 
     private void setupViewPager(ArrayList<TaskList> taskLists) {
         mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
+        mMainActivity.mViewPager = mViewPager;
         Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
 
         // TODO 1 de 2 - Quick jump to the desired list if too many lists present (necessary?)
