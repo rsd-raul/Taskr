@@ -733,16 +733,16 @@ public class MainAndFilterDrawerConfiguration {
     }
 
     public void blockDrawers(boolean toggle) {
-        if (toggle) {
-            mFilterDrawer.getDrawerLayout().setDrawerLockMode(
-                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
-            mMainDrawer.getDrawerLayout().setDrawerLockMode(
-                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START);
-        } else {
-            mFilterDrawer.getDrawerLayout().setDrawerLockMode(
-                    DrawerLayout.LOCK_MODE_UNLOCKED);
-            mMainDrawer.getDrawerLayout().setDrawerLockMode(
-                    DrawerLayout.LOCK_MODE_UNLOCKED);
-        }
+        int mode = toggle ? DrawerLayout.LOCK_MODE_LOCKED_CLOSED : DrawerLayout.LOCK_MODE_UNLOCKED;
+
+        mFilterDrawer.getDrawerLayout().setDrawerLockMode(mode);
+        mMainDrawer.getDrawerLayout().setDrawerLockMode(mode);
+    }
+
+    public void setDrawerIndicatorEnabled(boolean toggle) {
+        mMainDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(toggle);
+
+        // TODO if called once from MainActivity do this method there
+        mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

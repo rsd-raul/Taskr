@@ -13,10 +13,9 @@
             android:name=".MainActivity"
             android:label="@string/dashboard"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan" >   <!-- NO SOLUCION, solo un apaño -->
+            android:windowSoftInputMode="adjustResize" >   <!-- NO SOLUCION, solo un apaño -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

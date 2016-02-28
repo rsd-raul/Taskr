@@ -58,4 +58,6 @@
 
     <color name="shadow_dark">#be000000</color>
 
+    <!-- Miscellaneous -->
+    <color name="end_value_shadow">#33333333</color>
 </resources>

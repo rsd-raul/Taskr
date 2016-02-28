@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TaskController mTaskController;
     public Toolbar mToolbar;
+    private TabLayout mTabLayout;
     public ViewPager mViewPager;
     public View mAddTaskView;
     public TaskCreationFragment mTaskCreationFragment;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set ActionBar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
         setSupportActionBar(mToolbar);
 
         // Configure the drawers, both main and filter
@@ -124,12 +127,12 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------- Add Task Interface ----------------------
 
-    public void taskCustomization(View view){
+    public void onClickTaskCustomization(View view){
         switch (view.getId()){
             // Close interface
-            case R.id.button_close:
-                dialogForTaskRemoval();
-                break;
+//            case R.id.button_close:       // DEPRECATED no more close button
+//                dialogForTaskRemoval();
+//                break;
             // Task customization buttons
             default:
                 mTaskCreationFragment.taskCustomization(view);
@@ -269,13 +272,15 @@ public class MainActivity extends AppCompatActivity {
 
         switch (keyConstant) {
             case Constants.DASHBOARD:
+                mTabLayout.setVisibility(View.VISIBLE);
                 DashboardFragment dashboardFragment = new DashboardFragment();
                 fragmentTransaction.replace(R.id.main_fragment_container, dashboardFragment);
                 break;
             case Constants.ADD_TASK:
+                mDrawersConfigurator.setDrawerIndicatorEnabled(false);
+                mTabLayout.setVisibility(View.GONE);
                 TaskCreationFragment creationFragment = new TaskCreationFragment();
                 fragmentTransaction.replace(R.id.main_fragment_container, creationFragment);
-
                 break;
         }
         fragmentTransaction.commit();
