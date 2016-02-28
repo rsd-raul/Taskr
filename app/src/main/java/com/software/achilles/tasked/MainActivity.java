@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import com.github.clans.fab.FloatingActionMenu;
+import com.mikepenz.materialdrawer.util.KeyboardUtil;
 import com.software.achilles.tasked.controllers.TaskController;
 import com.software.achilles.tasked.extras.ThreadManager;
 import com.software.achilles.tasked.fragments.DashboardFragment;

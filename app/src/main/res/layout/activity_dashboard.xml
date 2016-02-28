@@ -1,65 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/coordinatorDashboard"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/contentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:fitsSystemWindows="true">
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<android.support.design.widget.AppBarLayout style="@style/appBarLayout" >-->
-
-            <!--<android.support.v7.widget.Toolbar style="@style/toolbar"-->
-                <!--android:id="@+id/toolbar" />-->
-
-            <!--&lt;!&ndash;<FrameLayout&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="wrap_content">&ndash;&gt;-->
-
-            <!--<android.support.design.widget.TabLayout-->
-                <!--android:id="@+id/tabs"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent" />-->
-
-            <!--&lt;!&ndash;</FrameLayout>&ndash;&gt;-->
-
-        <!--</android.support.design.widget.AppBarLayout>-->
-
-        <!--<FrameLayout-->
-            <!--android:id="@+id/main_fragment_container"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="1">-->
-
-            <!--&lt;!&ndash;app:layout_behavior="@string/appbar_scrolling_view_behavior">&ndash;&gt;-->
-        <!--</FrameLayout>-->
-
-    <!--</LinearLayout>-->
-
-
-    <!--<com.github.clans.fab.FloatingActionMenu style="@style/menuFAB"-->
-        <!--android:id="@+id/menuFAB" >-->
-
-        <!--<com.github.clans.fab.FloatingActionButton style="@style/fabShareList"-->
-            <!--android:id="@+id/shareListFAB"/>-->
-
-        <!--<com.github.clans.fab.FloatingActionButton style="@style/fabAddLabel"-->
-            <!--android:id="@+id/addLabelFAB"/>-->
-
-        <!--<com.github.clans.fab.FloatingActionButton style="@style/fabAddList"-->
-            <!--android:id="@+id/addListFAB"/>-->
-
-        <!--<com.github.clans.fab.FloatingActionButton style="@style/fabAddTask"-->
-            <!--android:id="@+id/addTaskFAB"/>-->
-
-    <!--</com.github.clans.fab.FloatingActionMenu>-->
-
-
-</android.support.design.widget.CoordinatorLayout>
+    <include layout="@layout/activity_main"/>
+</FrameLayout>
