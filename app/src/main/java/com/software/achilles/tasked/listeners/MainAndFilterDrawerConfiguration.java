@@ -252,7 +252,7 @@ public class MainAndFilterDrawerConfiguration {
         mMainDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                int identifier = drawerItem.getIdentifier();
+                int identifier = (int) drawerItem.getIdentifier();
                 switch (identifier) {
 
                     case Constants.DASHBOARD:
@@ -495,7 +495,7 @@ public class MainAndFilterDrawerConfiguration {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
-                switch (drawerItem.getIdentifier()) {
+                switch ((int) drawerItem.getIdentifier()) {
 
                     case Constants.CLEAR_FILTER:
                         break;
