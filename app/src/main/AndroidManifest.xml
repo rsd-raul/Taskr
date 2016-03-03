@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:label="@string/dashboard"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" >   <!-- NO SOLUCION, solo un apaño -->
@@ -23,15 +23,15 @@
         </activity>
 
         <activity
-            android:name=".Preferences"
+            android:name=".view.Preferences"
             android:label="@string/settings"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".view.MainActivity"
             android:theme="@style/SettingsList">
             <!--Meta-data is used to handle the back button, which right now is Dashboard, but it-->
             <!--won't be forever-->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".view.MainActivity" />
         </activity>
 
     </application>

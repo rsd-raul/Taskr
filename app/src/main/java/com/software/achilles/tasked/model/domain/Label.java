@@ -1,7 +1,6 @@
-package com.software.achilles.tasked.domain;
+package com.software.achilles.tasked.model.domain;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.software.achilles.tasked.R;
 import java.io.Serializable;

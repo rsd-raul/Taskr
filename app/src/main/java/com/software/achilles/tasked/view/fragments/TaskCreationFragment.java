@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.fragments;
+package com.software.achilles.tasked.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.software.achilles.tasked.MainActivity;
+import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
 
 public class TaskCreationFragment extends Fragment {

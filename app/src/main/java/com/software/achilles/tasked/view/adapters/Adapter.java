@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.adapters;
+package com.software.achilles.tasked.view.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

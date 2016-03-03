@@ -1,14 +1,14 @@
-package com.software.achilles.tasked.controllers;
+package com.software.achilles.tasked.model.controllers;
 
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.domain.FavoriteLocation;
-import com.software.achilles.tasked.domain.Label;
-import com.software.achilles.tasked.domain.Task;
-import com.software.achilles.tasked.domain.TaskList;
+import com.software.achilles.tasked.model.domain.FavoriteLocation;
+import com.software.achilles.tasked.model.domain.Label;
+import com.software.achilles.tasked.model.domain.Task;
+import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;

@@ -1,9 +1,11 @@
-package com.software.achilles.tasked;
+package com.software.achilles.tasked.view;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.software.achilles.tasked.R;
 
 public class Preferences extends AppCompatActivity {
 

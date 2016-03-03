@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.fragments;
+package com.software.achilles.tasked.view.fragments;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -19,8 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.controllers.TaskController;
-import com.software.achilles.tasked.domain.Task;
+import com.software.achilles.tasked.model.controllers.TaskController;
+import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.util.Constants;
 
 import java.util.Date;

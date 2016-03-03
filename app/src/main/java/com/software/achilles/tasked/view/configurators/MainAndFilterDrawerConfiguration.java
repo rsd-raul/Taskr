@@ -1,15 +1,14 @@
-package com.software.achilles.tasked.listeners;
+package com.software.achilles.tasked.view.configurators;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -25,14 +24,14 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.software.achilles.tasked.MainActivity;
-import com.software.achilles.tasked.Preferences;
+import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.Preferences;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.controllers.TaskController;
-import com.software.achilles.tasked.domain.BasicType;
-import com.software.achilles.tasked.domain.FavoriteLocation;
-import com.software.achilles.tasked.domain.Label;
-import com.software.achilles.tasked.domain.TaskList;
+import com.software.achilles.tasked.model.controllers.TaskController;
+import com.software.achilles.tasked.model.domain.BasicType;
+import com.software.achilles.tasked.model.domain.FavoriteLocation;
+import com.software.achilles.tasked.model.domain.Label;
+import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
@@ -45,11 +44,13 @@ public class MainAndFilterDrawerConfiguration {
     // ------------------------- Attributes --------------------------
 
     private MainActivity mActivity;
+
     private Toolbar mToolbar;
+    private TabLayout mTabLayout;
+
     private AccountHeader mAccountHeader;
     public Drawer mMainDrawer, mFilterDrawer;
     private List<Integer> mTaskListIds, mLabelListIds, mLocationListIds, mOrderListIds;
-    private PrimaryDrawerItem mTaskListCollapsibleMain;
     private BadgeStyle mBadgeExpand, mBadgeCollapse;
     private boolean firstTime = true;
     private boolean mExpandedTaskList = false;
@@ -57,7 +58,7 @@ public class MainAndFilterDrawerConfiguration {
     private boolean mExpandedLabelListFilter = true;
     private boolean mExpandedLocationListFilter = false;
     private boolean mExpandedOrderListFilter = false;
-    private PrimaryDrawerItem mTaskCollapsible, mLabelCollapsible,
+    private PrimaryDrawerItem mTaskListCollapsibleMain, mTaskCollapsible, mLabelCollapsible,
             mLocationCollapsible, mOrderCollapsible;
 
     // ------------------------- Constructor -------------------------
@@ -67,6 +68,7 @@ public class MainAndFilterDrawerConfiguration {
 
         // Set ActionBar
         mToolbar = (Toolbar) mActivity.findViewById(R.id.toolbar);
+        mTabLayout = (TabLayout) mActivity.findViewById(R.id.tabs);
 
         // Setup Main Drawer and its behaviour
         initializeBadges();
@@ -739,10 +741,48 @@ public class MainAndFilterDrawerConfiguration {
         mMainDrawer.getDrawerLayout().setDrawerLockMode(mode);
     }
 
-    public void setDrawerIndicatorEnabled(boolean toggle) {
-        mMainDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(toggle);
+    public void customizeActionBar(int drawer_item_id) {
+        ActionBar actionBar = mActivity.getSupportActionBar();
+        if(actionBar == null)
+            return;
 
-        // TODO if called once from MainActivity do this method there
-        mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        int title = R.string.add_task_bar;
+
+        switch (drawer_item_id){
+            case Constants.DASHBOARD:
+                mTabLayout.setVisibility(View.VISIBLE);
+
+                actionBar.setDisplayHomeAsUpEnabled(false);
+                mMainDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+
+                title = R.string.dashboard;
+                break;
+            case Constants.ADD_TASK:
+                mTabLayout.setVisibility(View.GONE);
+
+                mMainDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_cancel);
+                actionBar.setDisplayHomeAsUpEnabled(true);
+
+                title = R.string.add_task_bar;
+                break;
+            case Constants.SNOOZED:
+
+                title = R.string.snoozed;
+                break;
+            case Constants.COMPLETED:
+
+                title = R.string.completed;
+                break;
+            case Constants.GLANCE:
+
+                title = R.string.glance;
+                break;
+//            case Constants.PLANNER:       // Planner es completamente diferente
+//
+//                title = R.string.planner;
+//                break;
+        }
+        actionBar.setTitle(title);
     }
 }

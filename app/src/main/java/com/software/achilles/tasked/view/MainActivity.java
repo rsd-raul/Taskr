@@ -1,10 +1,11 @@
-package com.software.achilles.tasked;
+package com.software.achilles.tasked.view;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -18,13 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import com.github.clans.fab.FloatingActionMenu;
-import com.mikepenz.materialdrawer.util.KeyboardUtil;
-import com.software.achilles.tasked.controllers.TaskController;
-import com.software.achilles.tasked.extras.ThreadManager;
-import com.software.achilles.tasked.fragments.DashboardFragment;
-import com.software.achilles.tasked.fragments.TaskCreationFragment;
-import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
-import com.software.achilles.tasked.listeners.MainAndFilterDrawerConfiguration;
+import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.controllers.TaskController;
+import com.software.achilles.tasked.model.managers.ThreadManager;
+import com.software.achilles.tasked.view.fragments.DashboardFragment;
+import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
+import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfiguration;
 import com.software.achilles.tasked.util.Constants;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TaskController mTaskController;
     public Toolbar mToolbar;
-    private TabLayout mTabLayout;
     public ViewPager mViewPager;
     public View mAddTaskView;
     public TaskCreationFragment mTaskCreationFragment;
@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set ActionBar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
         setSupportActionBar(mToolbar);
 
         // Configure the drawers, both main and filter
@@ -265,25 +264,28 @@ public class MainActivity extends AppCompatActivity {
     int currentFragmentKey;
 
     public void setFragment(int keyConstant) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(keyConstant == currentFragmentKey)
             return;
         currentFragmentKey = keyConstant;
 
+        Fragment newOne = null;
+
         switch (keyConstant) {
             case Constants.DASHBOARD:
-                mTabLayout.setVisibility(View.VISIBLE);
-                DashboardFragment dashboardFragment = new DashboardFragment();
-                fragmentTransaction.replace(R.id.main_fragment_container, dashboardFragment);
+                mDrawersConfigurator.customizeActionBar(keyConstant);
+                newOne = new DashboardFragment();
                 break;
             case Constants.ADD_TASK:
-                mDrawersConfigurator.setDrawerIndicatorEnabled(false);
-                mTabLayout.setVisibility(View.GONE);
-                TaskCreationFragment creationFragment = new TaskCreationFragment();
-                fragmentTransaction.replace(R.id.main_fragment_container, creationFragment);
+                mDrawersConfigurator.customizeActionBar(keyConstant);
+                newOne = new TaskCreationFragment();
                 break;
         }
-        fragmentTransaction.commit();
+
+        if(newOne == null)
+            return;
+
+        // Initialize the fragment change
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_fragment_container, newOne).commit();
     }
 }

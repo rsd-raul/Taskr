@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.fragments;
+package com.software.achilles.tasked.view.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.software.achilles.tasked.MainActivity;
+import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.adapters.Adapter;
-import com.software.achilles.tasked.controllers.TaskController;
-import com.software.achilles.tasked.domain.TaskList;
-import com.software.achilles.tasked.extras.ThreadManager;
+import com.software.achilles.tasked.view.adapters.Adapter;
+import com.software.achilles.tasked.model.controllers.TaskController;
+import com.software.achilles.tasked.model.domain.TaskList;
+import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;

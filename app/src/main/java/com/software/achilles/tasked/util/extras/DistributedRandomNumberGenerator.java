@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.extras;
+package com.software.achilles.tasked.util.extras;
 
 import java.util.HashMap;
 

@@ -1,12 +1,12 @@
-package com.software.achilles.tasked.domain;
+package com.software.achilles.tasked.model.domain;
 
 import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.listeners.FloatingActionMenuConfigurator;
-import java.io.Serializable;
+import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
+
 import java.util.List;
 
 public class TaskList extends BasicType implements Parcelable {

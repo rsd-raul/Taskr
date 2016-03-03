@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.listeners;
+package com.software.achilles.tasked.view.configurators;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
@@ -16,14 +16,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.software.achilles.tasked.MainActivity;
+import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.controllers.TaskController;
-import com.software.achilles.tasked.domain.Task;
-import com.software.achilles.tasked.domain.TaskList;
-import com.software.achilles.tasked.extras.FloatingActionMenuBehavior;
-
-import java.util.List;
+import com.software.achilles.tasked.model.controllers.TaskController;
+import com.software.achilles.tasked.model.domain.TaskList;
+import com.software.achilles.tasked.util.extras.FloatingActionMenuBehavior;
 
 public class FloatingActionMenuConfigurator {
 

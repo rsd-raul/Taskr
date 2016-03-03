@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.extras;
+package com.software.achilles.tasked.util.extras;
 
 import android.content.Context;
 import android.content.res.TypedArray;

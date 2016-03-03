@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.pickers;
+package com.software.achilles.tasked.view.pickers;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
-
-import com.software.achilles.tasked.controllers.TaskController;
 
 import java.util.Date;
 

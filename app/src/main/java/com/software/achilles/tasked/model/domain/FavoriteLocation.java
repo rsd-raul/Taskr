@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.domain;
+package com.software.achilles.tasked.model.domain;
 
 import android.location.Location;
 import android.support.annotation.NonNull;
