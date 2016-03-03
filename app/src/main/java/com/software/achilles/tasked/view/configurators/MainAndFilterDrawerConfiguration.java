@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -68,7 +69,6 @@ public class MainAndFilterDrawerConfiguration {
 
         // Set ActionBar
         mToolbar = (Toolbar) mActivity.findViewById(R.id.toolbar);
-        mTabLayout = (TabLayout) mActivity.findViewById(R.id.tabs);
 
         // Setup Main Drawer and its behaviour
         initializeBadges();
@@ -746,6 +746,10 @@ public class MainAndFilterDrawerConfiguration {
         if(actionBar == null)
             return;
 
+        // Retrieve the toolbar in case it's the first time
+        if(mTabLayout == null)
+            mTabLayout = (TabLayout) mActivity.findViewById(R.id.tabs);
+
         int title = R.string.add_task_bar;
 
         switch (drawer_item_id){
@@ -783,6 +787,7 @@ public class MainAndFilterDrawerConfiguration {
 //                title = R.string.planner;
 //                break;
         }
+        actionBar.invalidateOptionsMenu();
         actionBar.setTitle(title);
     }
 }

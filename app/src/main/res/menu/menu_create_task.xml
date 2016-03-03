@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.MainActivity" >
+
+
+
+    <item
+        android:id="@+id/action_random"
+        android:icon="@drawable/ic_calendar_today"
+        android:title="@string/filter"
+        app:showAsAction="never" />
+    <!--android:orderInCategory="100"-->
+
+    <item
+        android:id="@+id/action_random2"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/search"
+        app:showAsAction="never"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+    <!--android:orderInCategory="100"-->
+
+</menu>
