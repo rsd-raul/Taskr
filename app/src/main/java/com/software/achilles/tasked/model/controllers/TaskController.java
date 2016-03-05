@@ -47,7 +47,13 @@ public class TaskController {
         if(sTasks == null)      //TODO ESTO HAY QUE QUITARLO
             sTasks = new ArrayList<>();
 
-        randomPopulation(5, 15);    // TODO SOLO PARA TEST
+        // TODO thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                randomPopulation(5, 15);    // TODO SOLO PARA TEST
+            }
+        }).start();
     }
 
     // TODO SOLO PARA TEST

@@ -12,7 +12,16 @@ android {
         versionName "1.0"
         renderscriptTargetApi 16
         renderscriptSupportModeEnabled true
+
+        // Para resolver bug de ActionBar Icons en negro:
+        // http://stackoverflow.com/questions/35653131/back-arrow-and-overflow-icons-wrong-color-in-pre-lollipop-devices-after-updating
+//        generatedDensities = []
     }
+    // Para resolver bug de ActionBar Icons en negro:
+    // http://stackoverflow.com/questions/35653131/back-arrow-and-overflow-icons-wrong-color-in-pre-lollipop-devices-after-updating
+//    aaptOptions {
+//        additionalParameters "--no-version-vectors"
+//    }
     buildTypes {
         release {
             minifyEnabled false

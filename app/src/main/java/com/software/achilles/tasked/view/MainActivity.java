@@ -4,9 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -14,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +23,7 @@ import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
-import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfiguration;
+import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.util.Constants;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,12 +33,11 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------- Attributes --------------------------
 
     private FloatingActionMenuConfigurator mFamConfigurator;
-    private MainAndFilterDrawerConfiguration mDrawersConfigurator;
+    private MainAndFilterDrawerConfigurator mDrawersConfigurator;
 
     private TaskController mTaskController;
     public Toolbar mToolbar;
     public ViewPager mViewPager;
-    public View mAddTaskView;
     public TaskCreationFragment mTaskCreationFragment;
 
     // ------------------------- Constructor -------------------------
@@ -58,17 +54,6 @@ public class MainActivity extends AppCompatActivity {
         // Set ActionBar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
-        // Configure the drawers, both main and filter
-        mDrawersConfigurator = new MainAndFilterDrawerConfiguration(this, true);
-
-        final MainActivity aux = this;
-        // Configure the fab menu and its children. - NEW THREAD
-        ThreadManager.launchIfPossible(new Runnable() {
-            public void run() {
-                mFamConfigurator = new FloatingActionMenuConfigurator(aux);
-            }
-        });
 
         // Initialize with Dashboard
         setFragment(Constants.DASHBOARD);
@@ -179,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
 
-        // Dialog width customization (BUG > LOLLIPOP)  TODO light BUG xD
+        // Dialog width customization (BUG > LOLLIPOP)  TODO light BUG with dialog size xD
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             return;
 
@@ -280,14 +265,33 @@ public class MainActivity extends AppCompatActivity {
 
         switch (keyConstant) {
             case Constants.DASHBOARD:
-                mDrawersConfigurator.customizeActionBar(keyConstant);
                 newOne = new DashboardFragment();
+
+                if(mFamConfigurator != null) {
+                    mFamConfigurator.famVisibility(true);
+                    // Unblock filter and navigation drawers
+                    mDrawersConfigurator.blockDrawers(false);
+                    break;
+                }
+                final MainActivity aux = this;
+                // Configure the fab menu and its children. - NEW THREAD
+                ThreadManager.launchIfPossible(new Runnable() {
+                    public void run() {
+                        mFamConfigurator = new FloatingActionMenuConfigurator(aux);
+                    }
+                });
+
+                // Configure the drawers, both main and filter
+                mDrawersConfigurator = new MainAndFilterDrawerConfigurator(this, true);
+
+
                 break;
             case Constants.ADD_TASK:
-                mDrawersConfigurator.customizeActionBar(keyConstant);
                 newOne = new TaskCreationFragment();
                 break;
         }
+
+        mDrawersConfigurator.customizeActionBar(keyConstant);
 
         if(newOne == null)
             return;

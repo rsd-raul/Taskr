@@ -219,9 +219,6 @@ public class FloatingActionMenuConfigurator {
     // -------------------------- Use Cases --------------------------
 
     public void famVisibility(boolean toggle){
-        if(toggle)
-            fam.setVisibility(View.VISIBLE);
-        else
-            fam.setVisibility(View.GONE);
+        fam.setVisibility( toggle ? View.VISIBLE : View.GONE );
     }
 }

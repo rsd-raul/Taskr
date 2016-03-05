@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -38,7 +37,7 @@ import com.software.achilles.tasked.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainAndFilterDrawerConfiguration {
+public class MainAndFilterDrawerConfigurator {
 
     // --------------------------- Values ----------------------------
 
@@ -64,7 +63,7 @@ public class MainAndFilterDrawerConfiguration {
 
     // ------------------------- Constructor -------------------------
 
-    public MainAndFilterDrawerConfiguration(MainActivity activity, boolean filter) {
+    public MainAndFilterDrawerConfigurator(MainActivity activity, boolean filter) {
         this.mActivity = activity;
 
         // Set ActionBar
