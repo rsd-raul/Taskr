@@ -63,7 +63,7 @@ public class MainAndFilterDrawerConfigurator {
 
     // ------------------------- Constructor -------------------------
 
-    public MainAndFilterDrawerConfigurator(MainActivity activity, boolean filter) {
+    public MainAndFilterDrawerConfigurator(MainActivity activity) {
         this.mActivity = activity;
 
         // Set ActionBar
@@ -75,11 +75,6 @@ public class MainAndFilterDrawerConfigurator {
         setupMainDrawer();
         setupMainDrawerListener();
         setupMainList(TaskController.sTaskLists);
-
-        if(!filter)
-            return;
-
-        // ------------------------ Dashboard Only -----------------------
 
         // Setup Filter Drawer and its behaviour
         setupFilterDrawer();

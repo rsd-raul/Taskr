@@ -2,7 +2,7 @@ package com.software.achilles.tasked.presenter;
 
 import com.software.achilles.tasked.view.MainActivity;
 
-public class DashboardPresenter implements Presenter<MainActivity> {
+public class MainPresenter implements Presenter<MainActivity> {
 
     private MainActivity mActivity;
 
@@ -18,5 +18,7 @@ public class DashboardPresenter implements Presenter<MainActivity> {
 //      Un-subscribe from the thread?
 //        if (subscription != null) subscription.unsubscribe();
     }
+
+
 
 }

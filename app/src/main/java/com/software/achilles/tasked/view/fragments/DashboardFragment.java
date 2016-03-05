@@ -55,6 +55,7 @@ public class DashboardFragment extends Fragment {
     private void setupViewPager(ArrayList<TaskList> taskLists) {
         mViewPager = (ViewPager) mMainActivity.findViewById(R.id.viewpager);
         mMainActivity.mViewPager = mViewPager;
+
 //        Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
         Adapter adapter = new Adapter(getChildFragmentManager());
 

@@ -5,8 +5,8 @@
     <string name="appearance">Appearance</string>
 
         <string name="adaptableColors">Adapt colors after functions</string>
-        <string name="adaptableColorsOff">Date and Location have its own color</string>
-        <string name="adaptableColorsOn">All activities use the main palette</string>
+        <string name="adaptableColorsOff">All activities use the main palette</string>
+        <string name="adaptableColorsOn">Date and Location have its own color</string>
 
     <string name="notifications">Notifications</string>
 

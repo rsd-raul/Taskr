@@ -219,6 +219,10 @@ public class FloatingActionMenuConfigurator {
     // -------------------------- Use Cases --------------------------
 
     public void famVisibility(boolean toggle){
+//        if(toggle)                // Fails to show the menu properly
+//            fam.showMenu(true);
+//        else
+//            fam.hideMenu(true);
         fam.setVisibility( toggle ? View.VISIBLE : View.GONE );
     }
 }

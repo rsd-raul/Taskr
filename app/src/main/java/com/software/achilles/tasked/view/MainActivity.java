@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setContentView(R.layout.activity_main);
 
         // Initialize TaskController
         mTaskController = TaskController.getInstance();
@@ -54,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         // Set ActionBar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
+        // Configure the drawers, both main and filter
+        mDrawersConfigurator = new MainAndFilterDrawerConfigurator(this);
 
         // Initialize with Dashboard
         setFragment(Constants.DASHBOARD);
@@ -91,8 +93,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 break;
+
             case Constants.ADD_TASK:
                 getMenuInflater().inflate(R.menu.menu_create_task, menu);
+                break;
         }
         return true;
     }
@@ -267,27 +271,25 @@ public class MainActivity extends AppCompatActivity {
             case Constants.DASHBOARD:
                 newOne = new DashboardFragment();
 
+                // Unblock filter and navigation drawers, show FAM
                 if(mFamConfigurator != null) {
                     mFamConfigurator.famVisibility(true);
-                    // Unblock filter and navigation drawers
                     mDrawersConfigurator.blockDrawers(false);
                     break;
                 }
-                final MainActivity aux = this;
+
                 // Configure the fab menu and its children. - NEW THREAD
+                final MainActivity aux = this;
                 ThreadManager.launchIfPossible(new Runnable() {
                     public void run() {
                         mFamConfigurator = new FloatingActionMenuConfigurator(aux);
                     }
                 });
 
-                // Configure the drawers, both main and filter
-                mDrawersConfigurator = new MainAndFilterDrawerConfigurator(this, true);
-
-
                 break;
             case Constants.ADD_TASK:
                 newOne = new TaskCreationFragment();
+
                 break;
         }
 
