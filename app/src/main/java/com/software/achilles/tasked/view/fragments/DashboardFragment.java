@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.view.adapters.Adapter;
@@ -25,7 +26,8 @@ public class DashboardFragment extends Fragment {
     // ------------------------- Attributes --------------------------
 
     public ViewPager mViewPager;
-    private MainActivity mMainActivity;
+//
+    private DashboardPresenter mPresenter;
 
     // ------------------------- Constructor -------------------------
 
@@ -38,21 +40,28 @@ public class DashboardFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Initialize MainActivity
-        mMainActivity = ((MainActivity) getActivity());
+        // Initialize presenter
+        mPresenter = new DashboardPresenter(this);
 
         // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
         ThreadManager.launchIfPossible(new Runnable() {
             public void run() {
-                setupViewPager(TaskController.sTaskLists);
-                setupTabLayout(TaskController.sTaskLists.size());
+                mPresenter.setupLayout();
             }
         });
     }
 
+    @Override
+    public void onDestroy() {
+        mPresenter.detachView();
+        super.onDestroy();
+    }
+
+
     // -------------------------- View Pager -------------------------
 
-    private void setupViewPager(ArrayList<TaskList> taskLists) {
+    public void setupViewPager(ArrayList<TaskList> taskLists) {
+        MainActivity mMainActivity = ((MainActivity) getActivity());
         mViewPager = (ViewPager) mMainActivity.findViewById(R.id.viewpager);
         mMainActivity.mViewPager = mViewPager;
 
@@ -81,7 +90,9 @@ public class DashboardFragment extends Fragment {
 //        mViewPager.setCurrentItem(1);     // show the first list by default, not the quick search
     }
 
-    private void setupTabLayout(int taskListsSize) {
+    // -------------------------- Tab Layout -------------------------
+
+    public void setupTabLayout(int taskListsSize) {
         TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
 
         // Setup tabs for Dashboard if there is more than one TaskList, make them Scrollable/Fixed

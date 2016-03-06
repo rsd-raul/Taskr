@@ -3,6 +3,8 @@ package com.software.achilles.tasked.model.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+// TODO - FINAL TESTING - Quitar y limpiar
+@SuppressWarnings("unused")
 public class PreferencesHelper {
 
     // --------------------------- Values ----------------------------
@@ -13,11 +15,20 @@ public class PreferencesHelper {
         public static final String NOTIF_SOUND = "notificationTone";
         public static final String NOTIF_VIBRATION = "notificationVibration";
         public static final String NOTIF_LED = "notificationLed";
-        public static final String SYNC_MODE="syncMode";
-        public static final String FIRST_DAY="firstDay";
+        public static final String SYNC_MODE = "syncMode";
+        public static final String FIRST_DAY = "firstDay";
+    }
+    public static class Defaults{
+        public static final String MAIN = "Dashboard";
+        public static final boolean ADAPT_COLOR = true;
+        public static final boolean NOTIF_SOUND = true;
+        public static final boolean NOTIF_VIBRATION = true;
+        public static final boolean NOTIF_LED = true;
+        public static final String SYNC_MODE = "At app start";
+        public static final String FIRST_DAY = "Monday";
     }
 
-    public static class FileName{
+    public static class PreferenceFiles{
         // For preference between Dashboard and Glance
         public static final String SETTINGS = "settings";
         public static final String CONFIGURATIONS="configurations";
@@ -66,7 +77,7 @@ public class PreferencesHelper {
     // -------------------------- Auxiliary --------------------------
 
     private static SharedPreferences getSharedPreferences(Context context){
-        return context.getSharedPreferences(FileName.SETTINGS, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(PreferenceFiles.SETTINGS, Context.MODE_PRIVATE);
     }
     private static SharedPreferences.Editor getSharedPreferences_Editor(Context context){
         return getSharedPreferences(context).edit();

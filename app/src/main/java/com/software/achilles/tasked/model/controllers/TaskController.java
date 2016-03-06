@@ -43,7 +43,7 @@ public class TaskController {
         return instance;
     }
 
-    public TaskController() {
+    private TaskController() {
         if(sTasks == null)      //TODO ESTO HAY QUE QUITARLO
             sTasks = new ArrayList<>();
 
@@ -119,16 +119,6 @@ public class TaskController {
                 sTaskLists.size() + " " +
                 sTaskLists.get(0).getTasks().size() + " " +
                 sLabels.size());
-    }
-
-    // TODO SOLO PARA TEST... O NO.
-    public static int getTaskListPositionById(int id){
-        // Gives you the position of a TaskList based on its id
-        for (int positionOnList = 0; positionOnList < sTaskLists.size(); positionOnList++)
-            if(sTaskLists.get(positionOnList).getId() == id)
-                return positionOnList;
-
-        return -1;
     }
 
     // ------------------------ Crud Methods -------------------------

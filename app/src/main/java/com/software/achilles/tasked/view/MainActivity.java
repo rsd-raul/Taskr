@@ -20,6 +20,8 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.controllers.TaskController;
 import com.software.achilles.tasked.model.managers.ThreadManager;
+import com.software.achilles.tasked.presenter.DashboardPresenter;
+import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
@@ -258,7 +260,11 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Deprecated --------------------------
 
-    int currentFragmentKey;
+    // ------------------- Fragment and Presenter --------------------
+
+    private int currentFragmentKey;
+    private DashboardPresenter mDashboardPresenter;
+    private TaskCreationPresenter mTaskCreationPresenter;
 
     public void setFragment(int keyConstant) {
         if(keyConstant == currentFragmentKey)
@@ -301,5 +307,27 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the fragment change
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment_container, newOne).commit();
+
+        // Initialize the presenter corresponding with the fragment
+        setPresenter(keyConstant);
+    }
+
+    // TODO Integrar con setFragment si no al final no crea conflictos
+    private void setPresenter(int keyConstant){
+
+        switch (keyConstant){
+
+            case Constants.DASHBOARD:
+                mDashboardPresenter = new DashboardPresenter(this);
+
+                mTaskCreationPresenter = null;
+                break;
+
+            case Constants.ADD_TASK:
+                mTaskCreationPresenter = new TaskCreationPresenter(this);
+
+                mDashboardPresenter = null;
+                break;
+        }
     }
 }

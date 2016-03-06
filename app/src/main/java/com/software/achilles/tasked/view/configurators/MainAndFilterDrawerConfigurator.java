@@ -24,6 +24,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.Preferences;
 import com.software.achilles.tasked.R;
@@ -52,12 +53,9 @@ public class MainAndFilterDrawerConfigurator {
     public Drawer mMainDrawer, mFilterDrawer;
     private List<Integer> mTaskListIds, mLabelListIds, mLocationListIds, mOrderListIds;
     private BadgeStyle mBadgeExpand, mBadgeCollapse;
-    private boolean firstTime = true;
-    private boolean mExpandedTaskList = false;
-    private boolean mExpandedTaskListFilter = false;
-    private boolean mExpandedLabelListFilter = true;
-    private boolean mExpandedLocationListFilter = false;
-    private boolean mExpandedOrderListFilter = false;
+    private boolean firstTime = true, mExpandedTaskList = false, mExpandedTaskListFilter = false,
+            mExpandedLabelListFilter = true, mExpandedLocationListFilter = false,
+            mExpandedOrderListFilter = false;
     private PrimaryDrawerItem mTaskListCollapsibleMain, mTaskCollapsible, mLabelCollapsible,
             mLocationCollapsible, mOrderCollapsible;
 
@@ -285,10 +283,13 @@ public class MainAndFilterDrawerConfigurator {
                         break;
 
                     default:
-                        // Calculate the position according to the Task List identifier.
-                        int index = TaskController.getTaskListPositionById(identifier);
+                        // Redirect to Dashboard in case the user is in other place
+                        mActivity.setFragment(Constants.DASHBOARD);
 
-                        // Set the view pager on the correct list
+                        // Calculate the position according to the Task List identifier.
+                        int index = DataManager.getInstance().getTaskListPositionById(identifier);
+
+                        // Set the view pager on the correct list if there is a correct list
                         if (index != -1)
                             mActivity.mViewPager.setCurrentItem(index, true);
                         break;
