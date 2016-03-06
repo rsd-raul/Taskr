@@ -25,8 +25,7 @@ public class DashboardFragment extends Fragment {
 
     // ------------------------- Attributes --------------------------
 
-    public ViewPager mViewPager;
-//
+    public static ViewPager mViewPager;
     private DashboardPresenter mPresenter;
 
     // ------------------------- Constructor -------------------------
@@ -63,7 +62,6 @@ public class DashboardFragment extends Fragment {
     public void setupViewPager(ArrayList<TaskList> taskLists) {
         MainActivity mMainActivity = ((MainActivity) getActivity());
         mViewPager = (ViewPager) mMainActivity.findViewById(R.id.viewpager);
-        mMainActivity.mViewPager = mViewPager;
 
 //        Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
         Adapter adapter = new Adapter(getChildFragmentManager());

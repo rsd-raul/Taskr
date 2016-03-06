@@ -1,25 +1,25 @@
 package com.software.achilles.tasked.presenter;
 
 import com.software.achilles.tasked.util.Constants;
-import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
-public class TaskCreationPresenter implements Presenter<MainActivity> {
+public class TaskCreationPresenter implements Presenter<TaskCreationFragment> {
 
     private int mKeyConstant = Constants.ADD_TASK;
-    private MainActivity mActivity;
+    private TaskCreationFragment mFragment;
 
-    public TaskCreationPresenter(MainActivity mActivity) {
-        this.mActivity = mActivity;
+    public TaskCreationPresenter(TaskCreationFragment mFragment) {
+        this.mFragment = mFragment;
     }
 
     @Override
-    public void attachView(MainActivity view) {
-        mActivity = view;
+    public void attachView(TaskCreationFragment view) {
+        mFragment = view;
     }
 
     @Override
     public void detachView() {
-        mActivity = null;
+        mFragment = null;
     }
 
     

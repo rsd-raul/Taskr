@@ -1,16 +1,15 @@
 package com.software.achilles.tasked.presenter;
 
 import com.software.achilles.tasked.model.controllers.TaskController;
+import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
-
 import java.util.ArrayList;
-import java.util.List;
 
-public class DashboardPresenter implements Presenter<MainActivity> {
+public class DashboardPresenter implements Presenter<DashboardFragment> {
 
     // --------------------------- Values ----------------------------
 
@@ -18,14 +17,9 @@ public class DashboardPresenter implements Presenter<MainActivity> {
 
     // ------------------------- Attributes --------------------------
 
-    private MainActivity mActivity;
     private DashboardFragment mFragment;
 
     // ------------------------- Constructor -------------------------
-
-    public DashboardPresenter(MainActivity mActivity) {
-        this.mActivity = mActivity;
-    }
 
     public DashboardPresenter(DashboardFragment mFragment){
         this.mFragment = mFragment;
@@ -34,18 +28,17 @@ public class DashboardPresenter implements Presenter<MainActivity> {
     // ------------------------- Life Cycle --------------------------
 
     @Override
-    public void attachView(MainActivity view) {
-        mActivity = view;
+    public void attachView(DashboardFragment mFragment) {
+        this.mFragment = mFragment;
     }
 
     @Override
     public void detachView() {
-        mActivity = null;
+        mFragment = null;
 
 //      Un-subscribe from the thread?
 //        if (subscription != null) subscription.unsubscribe();
     }
-
 
     // ---------------------------- Layout ---------------------------
 
@@ -66,6 +59,12 @@ public class DashboardPresenter implements Presenter<MainActivity> {
     }
 
     // ---------------------------- Menu -----------------------------
+
+    public static void filterByText(String query, Boolean searchDeep){
+        ArrayList<Task> tasks = DataManager.getInstance().filterByText(query, searchDeep);
+//        mFragment.updateViewPagerList(tasks);
+    }
+
     // -------------------------- Use Cases --------------------------
     // -------------------------- Interface --------------------------
     // --------------------- Add Task Interface ----------------------

@@ -25,6 +25,7 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.Preferences;
 import com.software.achilles.tasked.R;
@@ -34,6 +35,7 @@ import com.software.achilles.tasked.model.domain.FavoriteLocation;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.view.fragments.DashboardFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +74,10 @@ public class MainAndFilterDrawerConfigurator {
         setupProfileHeader();
         setupMainDrawer();
         setupMainDrawerListener();
-        setupMainList(TaskController.sTaskLists);
+
+        // TODO esto esta puesto para quitar el null pointer exception, corregir
+
+        setupMainList(DataManager.getInstance().findAllTaskList());
 
         // Setup Filter Drawer and its behaviour
         setupFilterDrawer();
@@ -291,7 +296,7 @@ public class MainAndFilterDrawerConfigurator {
 
                         // Set the view pager on the correct list if there is a correct list
                         if (index != -1)
-                            mActivity.mViewPager.setCurrentItem(index, true);
+                            DashboardFragment.mViewPager.setCurrentItem(index, true);
                         break;
                 }
                 // Do not close the drawer at Task List Expandable click

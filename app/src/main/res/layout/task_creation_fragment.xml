@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.TaskCreationFragment"
+    tools:fragment=".view.fragments.TaskCreationFragment"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -37,14 +37,12 @@
             android:paddingLeft="8dp"
             android:paddingStart="8dp"
             android:paddingRight="8dp"
-            android:paddingEnd="8dp"
-            android:layout_alignParentBottom="true">
+            android:paddingEnd="8dp">
 
             <EditText style="@style/editText"
                 android:id="@+id/textInput"
                 android:hint="@string/type_title"
-                android:textSize="24sp"
-                android:elegantTextHeight="false" />
+                android:textSize="24sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,10 +122,6 @@
         </LinearLayout>
     </LinearLayout>
 
-
-
-
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/saveAndVoiceFAB"
         android:src="@drawable/ic_voice_microphone"
@@ -136,4 +130,5 @@
         android:layout_margin = "@dimen/fab_margin"
         app:layout_anchor="@id/shadow"
         app:layout_anchorGravity="bottom|end" />
+
 </android.support.design.widget.CoordinatorLayout>

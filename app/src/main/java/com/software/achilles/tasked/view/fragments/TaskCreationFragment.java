@@ -1,11 +1,16 @@
 package com.software.achilles.tasked.view.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
@@ -70,24 +75,59 @@ public class TaskCreationFragment extends Fragment {
 //                ((MainActivity)getActivity()).removeAddTask();
 //                break;
             case R.id.button_description:
-                // TODO Deploy description
+                // Deploy description
                 break;
             case R.id.button_time:
-                // TODO show picker, then deploy result if any
+                // Show picker, then deploy result if any
                 break;
             case R.id.button_location:
-                // TODO show picker, then deploy result if any
+                // Show picker, then deploy result if any
                 break;
             case R.id.button_label:
-                // TODO show picker, then deploy result if any
+                // Show picker, then deploy result if any
                 break;
             case R.id.checkbox_favourite:
                 break;
         }
     }
 
-    private void showTimePickerDialog() {
+    private void dialogForTaskRemoval(){
 
+        // If the user haven't typed anything, close the interface
+        if(!isDataPresent()){
+            mMainActivity.removeAddTask();
+            return;
+        }
+
+        // Else, ask for confirmation
+        Dialog dialog = new AlertDialog.Builder(mMainActivity)
+                // For simple dialogs we don't use a Title (Google Guidelines)
+                .setMessage(getString(R.string.discard_changes))
+
+                        // Only on discard the removeAddTask is triggered
+                .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mMainActivity.removeAddTask();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                    }
+                })
+                .show();
+
+        // Dialog width customization (BUG > LOLLIPOP)  TODO light BUG with dialog size xD
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            return;
+
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.width = 850;
+        dialog.getWindow().setAttributes(lp);
+    }
+
+//    private void showTimePickerDialog() {
+//
 //        // Creation of the timePicker
 //        DialogFragment newFragment =  new TimePickerFragment();
 //
@@ -102,9 +142,9 @@ public class TaskCreationFragment extends Fragment {
 //
 //        // Showing the picker
 //        newFragment.show(getFragmentManager(), "timePicker");
-    }
+//    }
 
-    public static void dateToButton(Activity activity){
+//    public static void dateToButton(Activity activity){
 //        Button taskTimeBT = (Button) activity.findViewById(R.id.time);
 //        Date dueDate = TaskController.taskDate;
 //
@@ -112,6 +152,6 @@ public class TaskCreationFragment extends Fragment {
 //            taskTimeBT.setText(Task.dateToText(dueDate));
 //        }else
 //            taskTimeBT.setText(R.string.setDate);
-    }
+//    }
 
 }

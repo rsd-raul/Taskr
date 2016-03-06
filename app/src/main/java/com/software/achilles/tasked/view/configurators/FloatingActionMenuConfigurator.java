@@ -21,6 +21,7 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.controllers.TaskController;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.extras.FloatingActionMenuBehavior;
+import com.software.achilles.tasked.view.fragments.DashboardFragment;
 
 public class FloatingActionMenuConfigurator {
 
@@ -166,7 +167,7 @@ public class FloatingActionMenuConfigurator {
             @Override
             public void onClick(View view) {
                 // Retrieving the current Task and extract data for intent
-                int positionOnViewPager = activity.mViewPager.getCurrentItem();
+                int positionOnViewPager = DashboardFragment.mViewPager.getCurrentItem();
                 TaskList taskList = TaskController.sTaskLists.get(positionOnViewPager);
                 String title = activity.getString(R.string.shareList) +": "+taskList.getTitle();
 

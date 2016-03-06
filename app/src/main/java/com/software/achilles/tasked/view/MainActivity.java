@@ -1,21 +1,15 @@
 package com.software.achilles.tasked.view;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.controllers.TaskController;
@@ -34,13 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Attributes --------------------------
 
-    private FloatingActionMenuConfigurator mFamConfigurator;
-    private MainAndFilterDrawerConfigurator mDrawersConfigurator;
+    public FloatingActionMenuConfigurator mFamConfigurator;
+    public MainAndFilterDrawerConfigurator mDrawersConfigurator;
 
-    private TaskController mTaskController;
-    public Toolbar mToolbar;
-    public ViewPager mViewPager;
-    public TaskCreationFragment mTaskCreationFragment;
+    private TaskController mTaskController = TaskController.getInstance();
 
     // ------------------------- Constructor -------------------------
 
@@ -49,11 +40,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize TaskController
-        mTaskController = TaskController.getInstance();
-
         // Set ActionBar
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         // Configure the drawers, both main and filter
@@ -63,18 +51,15 @@ public class MainActivity extends AppCompatActivity {
         setFragment(Constants.DASHBOARD);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
     // -------------------------- Landscape --------------------------
 
     // ------------------------ Actionbar Menu -----------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         switch (currentFragmentKey){
+
             case Constants.DASHBOARD:
                 getMenuInflater().inflate(R.menu.menu_dashboard, menu);
 
@@ -84,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        // Perform the final search
+                        DashboardPresenter.filterByText(query, true);
                         return false;
                     }
 
                     @Override
-                    public boolean onQueryTextChange(String newText) {
-                        // Text has changed, apply filtering
+                    public boolean onQueryTextChange(String query) {
+                        DashboardPresenter.filterByText(query, false);
                         return false;
                     }
                 });
@@ -100,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 getMenuInflater().inflate(R.menu.menu_create_task, menu);
                 break;
         }
+
         return true;
     }
 
@@ -127,56 +113,17 @@ public class MainActivity extends AppCompatActivity {
     // --------------------- Add Task Interface ----------------------
 
     public void onClickTaskCustomization(View view){
-        switch (view.getId()){
-            // Close interface
-//            case R.id.button_close:       // DEPRECATED no more close button
-//                dialogForTaskRemoval();
+//        switch (view.getId()){
+//            // Close interface
+////            case R.id.button_close:       // DEPRECATED no more close button
+////                dialogForTaskRemoval();
+////                break;
+//            // Task customization buttons
+//            default:
+//                mTaskCreationFragment.taskCustomization(view);
 //                break;
-            // Task customization buttons
-            default:
-                mTaskCreationFragment.taskCustomization(view);
-                break;
-
-        }
-    }
-
-    private void dialogForTaskRemoval(){
-
-        // Correcting bug, when switching to Landscape the onCreate does not initialize the fragment
-        if(mTaskCreationFragment == null)
-            mTaskCreationFragment = new TaskCreationFragment();
-
-        // If the user haven't typed anything, close the interface
-        if(!mTaskCreationFragment.isDataPresent()){
-            removeAddTask();
-            return;
-        }
-
-        // Else, ask for confirmation
-        Dialog dialog = new AlertDialog.Builder(this)
-                // For simple dialogs we don't use a Title (Google Guidelines)
-                .setMessage(getString(R.string.discard_changes))
-
-                // Only on discard the removeAddTask is triggered
-                .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        removeAddTask();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing
-                    }
-                })
-                .show();
-
-        // Dialog width customization (BUG > LOLLIPOP)  TODO light BUG with dialog size xD
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            return;
-
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.width = 850;
-        dialog.getWindow().setAttributes(lp);
+//
+//        }
     }
 
     public void deployAddTask() {
@@ -187,27 +134,6 @@ public class MainActivity extends AppCompatActivity {
         // Hide the fam
         mFamConfigurator.famVisibility(false);
 
-//        // If the layout was created, show it and restart the fields
-//        if (mAddTaskView != null) {
-//            mAddTaskView.setVisibility(View.VISIBLE);
-//            mTaskCreationFragment.resetFields();
-//            return;
-//        }
-//
-//        // Create a new Fragment to be placed in the activity layout
-//        mTaskCreationFragment = new TaskCreationFragment();
-//
-//        // Add the fragment to the 'fragment_container' FrameLayout
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.main_fragment_container, mTaskCreationFragment).commit();
-//
-//        // Color the status bar in order to adapt the color to the shadow deployed
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            Window window = getWindow();
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(Color.BLACK);
-//        }
-//
         // Block filter and navigation drawers
         mDrawersConfigurator.blockDrawers(true);
     }
@@ -218,20 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Show the FAM
         mFamConfigurator.famVisibility(true);
-
-
-
-//        // Hide the container with the layout
-//        mAddTaskView = findViewById(R.id.main_fragment_container);
-//        mAddTaskView.setVisibility(View.GONE);
-
-//        // Color the status bar in order to adapt the color to the shadow deployed
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            Window window = getWindow();
-////            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            int color = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
-//            window.setStatusBarColor(color);
-//        }
 
         // Unblock filter and navigation drawers
         mDrawersConfigurator.blockDrawers(false);
@@ -275,7 +187,8 @@ public class MainActivity extends AppCompatActivity {
 
         switch (keyConstant) {
             case Constants.DASHBOARD:
-                newOne = new DashboardFragment();
+                DashboardFragment dashboardFragment = new DashboardFragment();
+                newOne = dashboardFragment;
 
                 // Unblock filter and navigation drawers, show FAM
                 if(mFamConfigurator != null) {
@@ -292,9 +205,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                mDashboardPresenter = new DashboardPresenter(dashboardFragment);
+                mTaskCreationPresenter = null;
+
                 break;
             case Constants.ADD_TASK:
-                newOne = new TaskCreationFragment();
+                TaskCreationFragment taskCreationFragment = new TaskCreationFragment();
+                newOne = taskCreationFragment;
+
+                mTaskCreationPresenter = new TaskCreationPresenter(taskCreationFragment);
+                mDashboardPresenter = null;
 
                 break;
         }
@@ -307,27 +227,5 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the fragment change
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment_container, newOne).commit();
-
-        // Initialize the presenter corresponding with the fragment
-        setPresenter(keyConstant);
-    }
-
-    // TODO Integrar con setFragment si no al final no crea conflictos
-    private void setPresenter(int keyConstant){
-
-        switch (keyConstant){
-
-            case Constants.DASHBOARD:
-                mDashboardPresenter = new DashboardPresenter(this);
-
-                mTaskCreationPresenter = null;
-                break;
-
-            case Constants.ADD_TASK:
-                mTaskCreationPresenter = new TaskCreationPresenter(this);
-
-                mDashboardPresenter = null;
-                break;
-        }
     }
 }
