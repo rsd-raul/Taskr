@@ -44,6 +44,13 @@
         <item>Sunday</item>
     </string-array>
 
+    <string name="dash_or_glance">Select your favourite view</string>
+    <string name="dash_or_glance_summary">She will take priority on the Navigation Drawer</string>
+    <string-array name="dashboardOrGlance">
+        <item>Dashboard</item>
+        <item>Glance</item>
+    </string-array>
+
     <string name="security">Security</string>
 
     <!--<string name="planner">Planner</string> IN STRINGS-->

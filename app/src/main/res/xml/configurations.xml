@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory
-        android:title="@string/appearance" >
 
         <CheckBoxPreference
             android:key="adaptColor"
@@ -10,11 +8,6 @@
             android:summaryOff="@string/adaptableColorsOff"
             android:summaryOn="@string/adaptableColorsOn"
             android:defaultValue="true"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/notifications" >
 
         <CheckBoxPreference
             android:key="notificationTone"
@@ -33,11 +26,6 @@
             android:title="@string/notificationLed"
             android:defaultValue="true"/>
 
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/account" >
-
         <ListPreference
             android:key="syncMode"
             android:title="@string/syncMode"
@@ -47,18 +35,6 @@
             android:entryValues="@array/syncValues"
             android:defaultValue="At app start" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/predictions" >
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/sharing" >
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/customization" >
 
         <ListPreference
             android:key="firstDay"
@@ -76,19 +52,12 @@
             android:entries="@array/dashboardOrGlance"
             android:entryValues="@array/dashboardOrGlance"
             android:defaultValue="Dashboard" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/security" >
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/planner" >
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/author" >
-    </PreferenceCategory>
-
+        <ListPreference
+            android:key="syncMode"
+            android:title="@string/syncMode"
+            android:summary="@string/syncModeSummary"
+            android:dialogTitle="@string/select"
+            android:entries="@array/syncValues"
+            android:entryValues="@array/syncValues"
+            android:defaultValue="At app start" />
 </PreferenceScreen>
