@@ -147,6 +147,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        switch (currentFragmentKey){
+            case Constants.ADD_TASK:
+                setFragment(Constants.DASHBOARD);
+                return;
+            case Constants.SNOOZED:
+                break;
+            case Constants.COMPLETED:
+                break;
+        }
+
         FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.menuFAB);
 
         if(fam.isOpened() || mDrawersConfigurator.mMainDrawer.isDrawerOpen()) {

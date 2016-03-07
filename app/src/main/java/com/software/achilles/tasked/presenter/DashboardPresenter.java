@@ -48,6 +48,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
     // ---------------------------- Layout ---------------------------
 
     public void setupLayout(){
+        // TODO esto va aqui?
         DataManager dataManager = new DataManager();
 
         // Get data for setting the ViewPager

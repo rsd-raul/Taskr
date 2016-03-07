@@ -23,11 +23,11 @@
         <LinearLayout
             android:id="@+id/shadow"
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="3dp"
             android:background="@drawable/res_shadow_up"
             android:orientation="vertical"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/task_creation_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,89 +37,113 @@
             android:paddingLeft="8dp"
             android:paddingStart="8dp"
             android:paddingRight="8dp"
-            android:paddingEnd="8dp">
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp">
 
             <EditText style="@style/editText"
                 android:id="@+id/textInput"
                 android:hint="@string/type_title"
-                android:textSize="24sp"/>
+                android:textSize="20sp"
+                android:textColor="@color/secondaryText"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginRight="70dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginBottom="4dp"
+                android:singleLine="true"
+                android:background="@android:color/transparent"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/button_description"
+                android:src="@drawable/ic_description"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:orientation="horizontal" >
+                android:background="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:onClick="onClickTaskCustomization"
 
-                <ImageButton
-                    android:id="@+id/button_description"
-                    android:src="@drawable/ic_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:onClick="onClickTaskCustomization"/>
+                android:layout_below="@+id/textInput"/>
 
-                <ImageButton
-                    android:id="@+id/button_time"
-                    android:src="@drawable/ic_time_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+            <ImageButton
+                android:id="@+id/button_time"
+                android:src="@drawable/ic_time_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
 
-                <ImageButton
-                    android:id="@+id/button_location"
-                    android:src="@drawable/ic_place_pin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+                android:layout_below="@+id/textInput"
+                android:layout_toEndOf="@+id/button_description"
+                android:layout_toRightOf="@+id/button_description"/>
 
-                <ImageButton
-                    android:id="@+id/button_label"
-                    android:src="@drawable/ic_label_multiple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+            <ImageButton
+                android:id="@+id/button_location"
+                android:src="@drawable/ic_place_pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
 
-                <CheckBox
-                    android:id="@+id/checkbox_favourite"
-                    android:button="@drawable/custom_favourite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
+                android:layout_below="@+id/textInput"
+                android:layout_toEndOf="@+id/button_time"
+                android:layout_toRightOf="@+id/button_time"/>
 
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp" />
+            <ImageButton
+                android:id="@+id/button_label"
+                android:src="@drawable/ic_label_multiple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
 
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="43dp"
-                    android:id="@+id/spinner_task_list"
+                android:layout_below="@+id/textInput"
+                android:layout_toEndOf="@+id/button_location"
+                android:layout_toRightOf="@+id/button_location" />
 
+            <CheckBox
+                android:id="@+id/checkbox_favourite"
+                android:button="@drawable/custom_favourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="17dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
 
-                    android:layout_gravity="end"
-                    android:spinnerMode="dropdown" />
-                <!--El drop down puede que sea por defecto-->
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
 
-            </LinearLayout>
-        </LinearLayout>
+                android:layout_below="@+id/textInput"
+                android:layout_toEndOf="@+id/button_label"
+                android:layout_toRightOf="@+id/button_label" />
+
+            <!--El drop down puede que sea por defecto-->
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:id="@+id/spinner_task_list"
+
+                android:layout_gravity="end"
+
+                android:layout_below="@+id/textInput"
+                android:layout_toEndOf="@+id/checkbox_favourite"
+                android:layout_toRightOf="@+id/checkbox_favourite"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -129,6 +153,7 @@
         android:layout_height = "wrap_content"
         android:layout_margin = "@dimen/fab_margin"
         app:layout_anchor="@id/shadow"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end"
+        app:fab_size="mini"/>
 
 </android.support.design.widget.CoordinatorLayout>

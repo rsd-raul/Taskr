@@ -14,7 +14,7 @@
         <!--<item name="colorControlActivated">#FFF</item>-->
 
         <!-- Controls the ripple coloring -->
-        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <!--<item name="colorControlHighlight">@color/colorPrimary</item>-->
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
