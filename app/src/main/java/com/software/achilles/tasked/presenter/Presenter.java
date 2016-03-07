@@ -1,9 +1,8 @@
 package com.software.achilles.tasked.presenter;
 
-public interface Presenter<V> {
+public interface Presenter<V,T> {
 
-    void attachView(V view);
+    T attachView(V view);
 
-    void detachView();
-
+//    void destroyPresenter();
 }

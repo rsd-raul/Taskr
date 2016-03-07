@@ -40,7 +40,7 @@ public class DashboardFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Initialize presenter
-        mPresenter = new DashboardPresenter(this);
+        mPresenter = DashboardPresenter.getInstance().attachView(this);
 
         // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
         ThreadManager.launchIfPossible(new Runnable() {
@@ -52,7 +52,7 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        mPresenter.detachView();
+        mPresenter.destroyPresenter();
         super.onDestroy();
     }
 

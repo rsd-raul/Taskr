@@ -25,7 +25,6 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.software.achilles.tasked.model.managers.DataManager;
-import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.Preferences;
 import com.software.achilles.tasked.R;
@@ -202,6 +201,14 @@ public class MainAndFilterDrawerConfigurator {
                 .addStickyDrawerItems(
                         settings, contact
                 )
+                .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
+                    @Override
+                    public boolean onNavigationClickListener(View clickedView) {
+                        // TODO Esto reacciona cuando esta dentro de AddTask
+                        mActivity.setFragment(Constants.DASHBOARD);
+                        return true;
+                    }
+                })
                 .withOnDrawerListener(new Drawer.OnDrawerListener() {
                     @Override
                     public void onDrawerOpened(View drawerView) {
@@ -228,7 +235,8 @@ public class MainAndFilterDrawerConfigurator {
                     }
 
                     @Override
-                    public void onDrawerSlide(View drawerView, float slideOffset) { }
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                    }
                 })
                 .build();
 //      TODO 1 de 2 - Descomentando esto tienes filterDrawer solo en el click y puedes cerrarlo a mano :D

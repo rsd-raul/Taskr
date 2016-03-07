@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.software.achilles.tasked.presenter.DashboardPresenter;
+import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
 
@@ -22,6 +24,7 @@ public class TaskCreationFragment extends Fragment {
     // ------------------------- Attributes --------------------------
 
     private MainActivity mMainActivity;
+    private TaskCreationPresenter mPresenter;
 
     // ------------------------- Constructor -------------------------
 
@@ -36,6 +39,9 @@ public class TaskCreationFragment extends Fragment {
 
         // Initialize MainActivity
         mMainActivity = ((MainActivity) getActivity());
+
+        // Initialize presenter
+        mPresenter = TaskCreationPresenter.getInstance().attachView(this);
 
 //        // Time button initializing
 //        Button taskTimeBT = (Button) getView().findViewById(R.id.time);
@@ -54,6 +60,12 @@ public class TaskCreationFragment extends Fragment {
 //        MarginLayoutParams params = (MarginLayoutParams) relative.getLayoutParams();
 //        params.setMargins(0, 50, 0, 0);
 
+    }
+
+    @Override
+    public void onDestroy() {
+        mPresenter.destroyPresenter();
+        super.onDestroy();
     }
 
     public boolean isDataPresent(){

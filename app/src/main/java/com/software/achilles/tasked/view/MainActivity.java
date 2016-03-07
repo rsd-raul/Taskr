@@ -95,15 +95,9 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-
             case R.id.action_filter:
                 mDrawersConfigurator.mFilterDrawer.openDrawer();
                 break;
-
-//            case R.id.action_search:
-//                 The calculations and filtering are done in "onCreateOptionsMenu"
-//                break;
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -187,8 +181,8 @@ public class MainActivity extends AppCompatActivity {
 
         switch (keyConstant) {
             case Constants.DASHBOARD:
-                DashboardFragment dashboardFragment = new DashboardFragment();
-                newOne = dashboardFragment;
+                DashboardFragment dashFragment = new DashboardFragment();
+                newOne = dashFragment;
 
                 // Unblock filter and navigation drawers, show FAM
                 if(mFamConfigurator != null) {
@@ -205,16 +199,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                mDashboardPresenter = new DashboardPresenter(dashboardFragment);
-                mTaskCreationPresenter = null;
+                mDashboardPresenter = DashboardPresenter.getInstance().attachView(dashFragment);
+                TaskCreationPresenter.destroyPresenter();
 
                 break;
             case Constants.ADD_TASK:
-                TaskCreationFragment taskCreationFragment = new TaskCreationFragment();
-                newOne = taskCreationFragment;
+                TaskCreationFragment tasCreFrag = new TaskCreationFragment();
+                newOne = tasCreFrag;
 
-                mTaskCreationPresenter = new TaskCreationPresenter(taskCreationFragment);
-                mDashboardPresenter = null;
+                mTaskCreationPresenter = TaskCreationPresenter.getInstance().attachView(tasCreFrag);
+                DashboardPresenter.destroyPresenter();
 
                 break;
         }

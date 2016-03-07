@@ -81,7 +81,7 @@ public class DataManager {
 
     // Retrieve the current Tasks in the ViewPager (take advantage of a previous filter)
     public ArrayList<Task> getAllTasks(){
-//        return mDatabaseHelper.getAllTaksForTaskList(index);
+//        return mDatabaseHelper.getAllTaskForTaskList(index);
         return new ArrayList<>();
     }
 

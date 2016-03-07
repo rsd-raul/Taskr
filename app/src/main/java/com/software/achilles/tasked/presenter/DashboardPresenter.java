@@ -1,15 +1,13 @@
 package com.software.achilles.tasked.presenter;
 
-import com.software.achilles.tasked.model.controllers.TaskController;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
-import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import java.util.ArrayList;
 
-public class DashboardPresenter implements Presenter<DashboardFragment> {
+public class DashboardPresenter implements Presenter<DashboardFragment, DashboardPresenter> {
 
     // --------------------------- Values ----------------------------
 
@@ -18,23 +16,30 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
     // ------------------------- Attributes --------------------------
 
     private DashboardFragment mFragment;
+    private static DashboardPresenter instance;
 
     // ------------------------- Constructor -------------------------
 
-    public DashboardPresenter(DashboardFragment mFragment){
-        this.mFragment = mFragment;
+    public static DashboardPresenter getInstance() {
+        if(instance == null)
+            instance = new DashboardPresenter();
+        return instance;
     }
 
     // ------------------------- Life Cycle --------------------------
 
     @Override
-    public void attachView(DashboardFragment mFragment) {
+    public DashboardPresenter attachView(DashboardFragment mFragment) {
         this.mFragment = mFragment;
+        return instance;
     }
 
-    @Override
-    public void detachView() {
-        mFragment = null;
+    public static void destroyPresenter() {
+        if(instance == null)
+            return;
+
+        instance.mFragment = null;
+        instance = null;
 
 //      Un-subscribe from the thread?
 //        if (subscription != null) subscription.unsubscribe();
