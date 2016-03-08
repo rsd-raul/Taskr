@@ -45,6 +45,7 @@
                 android:hint="@string/type_title"
                 android:textSize="20sp"
                 android:textColor="@color/secondaryText"
+                android:textColorHint="@color/secondaryText"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginRight="70dp"
