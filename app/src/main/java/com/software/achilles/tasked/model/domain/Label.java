@@ -5,15 +5,26 @@ import android.support.annotation.NonNull;
 import com.software.achilles.tasked.R;
 import java.io.Serializable;
 
-public class Label extends BasicType implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.Index;
+import io.realm.annotations.PrimaryKey;
+
+public class Label extends RealmObject implements Serializable, BasicType {
 
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
 
+    @PrimaryKey
+    private int id;
+    private String title;
     private Integer colorRes;
 
     // ------------------------- Constructor -------------------------
+
+
+    public Label() {
+    }
 
     public Label(int id, @NonNull String title, Integer colorRes) {
         setId(id);
@@ -26,6 +37,20 @@ public class Label extends BasicType implements Serializable {
     }
 
     // ---------------------- Getters & Setters ----------------------
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
 
     public int getColorRes() {
         return colorRes;

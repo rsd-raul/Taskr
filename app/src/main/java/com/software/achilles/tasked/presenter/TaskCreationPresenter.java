@@ -3,13 +3,11 @@ package com.software.achilles.tasked.presenter;
 import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
-
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +22,8 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
     private TaskCreationFragment mFragment;
     private Context mContext;
     private static TaskCreationPresenter instance;
+    private boolean desStatus = false, timStatus = false, locStatus = false,
+            labStatus = false, favStatus = false;
 
     // ------------------------- Constructor -------------------------
 
@@ -51,7 +51,8 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
         instance = null;
 
 //      Un-subscribe from the thread?
-//        if (subscription != null) subscription.unsubscribe();
+//        if (subscription != null)
+//            subscription.unsubscribe();
     }
 
     // ---------------------------- Layout ---------------------------
@@ -73,9 +74,6 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
     }
 
     // -------------------------- Listeners --------------------------
-
-    private boolean desStatus = false, timStatus = false, locStatus = false,
-            labStatus = false, favStatus = false;
 
     public void modifiersOnClick(View v){
         int id = v.getId();
@@ -110,7 +108,6 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
                 break;
             case R.id.button_favourite:
                 // Save
-                Toast.makeText(mContext, "Button id: " + v.getId(), Toast.LENGTH_SHORT).show();
 
                 // If it's OFF, turn ON and vice-versa
                 favStatus = !favStatus;

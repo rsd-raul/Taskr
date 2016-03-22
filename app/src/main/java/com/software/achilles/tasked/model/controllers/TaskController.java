@@ -1,11 +1,10 @@
 package com.software.achilles.tasked.model.controllers;
 
-import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.domain.FavoriteLocation;
+import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
@@ -19,6 +18,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import io.realm.RealmList;
+
 public class TaskController {
 
     // --------------------------- Values ----------------------------
@@ -29,7 +30,7 @@ public class TaskController {
     public static ArrayList<Task> sTasks;
     public static ArrayList<TaskList> sTaskLists;
     public static ArrayList<Label> sLabels;
-    public static ArrayList<FavoriteLocation> sFavouriteLocations;
+    public static ArrayList<Location> sFavouriteLocations;
     private Task actualTask, lastDeleted;
 //    public static Date taskDate;
 
@@ -71,7 +72,6 @@ public class TaskController {
         String[] listTitles = new String[]{"Really long list", "Short list"};
 
         String[] locationTitles = new String[]{"Home", "Work", "Market", "Gym"};
-        Location[] locations = new Location[]{new Location("test"), null, null};
 
         String[] labelTitles = new String[]{"Groceries", "Inspiration", "Personal", "Work"};
         Integer[] labelColors = new Integer[]{R.color.amberDate, R.color.colorPrimary,
@@ -79,7 +79,7 @@ public class TaskController {
         Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
 
         for (int i = 0; i < locationTitles.length; i++) {
-            sFavouriteLocations.add(new FavoriteLocation(i+900, locationTitles[i], new Location("")));
+            sFavouriteLocations.add(new Location(i+900, locationTitles[i], "", 0.0, 0.0, true));
         }
 
         for (int i = 0; i < 4; i++)
@@ -87,7 +87,7 @@ public class TaskController {
 
         Random random = new Random();
         while (amountList > 0) {
-            List<Task> aux = new ArrayList<>();
+            RealmList<Task> aux = new RealmList<>();
             int amountTaskWhile = amountTasks;
 
             while (amountTaskWhile > 0) {
@@ -96,15 +96,15 @@ public class TaskController {
                 String title = titles[random.nextInt(2)];
                 String description = descriptions[random.nextInt(3)];
                 Date dueDate = dueDates[random.nextInt(2)];
-                Set<Label> labels = new HashSet<>();
+                RealmList<Label> labels = new RealmList<>();
                 Integer labelQuantity = labelQuantities[random.nextInt(4)];
-                Location location = locations[random.nextInt(3)];
+                Location location = sFavouriteLocations.get(random.nextInt(3));
 
                 for (int i = 0; i < labelQuantity; i++)
                     labels.add(sLabels.get(random.nextInt(4)));
 
                 // TODO Location es parcelable no serializable... Cambiado a Parcelable.
-                aux.add(new Task(finished, starred, title, description, dueDate, location, new ArrayList<>(labels)));
+                aux.add(new Task(finished, starred, title, description, dueDate, location, labels));
 //                aux.add(new Task(finished, starred, title, description, dueDate, null, new ArrayList<>(labels)));
                 amountTaskWhile--;
             }

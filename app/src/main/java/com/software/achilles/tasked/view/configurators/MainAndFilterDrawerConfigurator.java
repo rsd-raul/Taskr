@@ -30,7 +30,7 @@ import com.software.achilles.tasked.view.Preferences;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.controllers.TaskController;
 import com.software.achilles.tasked.model.domain.BasicType;
-import com.software.achilles.tasked.model.domain.FavoriteLocation;
+import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
@@ -622,7 +622,7 @@ public class MainAndFilterDrawerConfigurator {
         addItemListToDrawer(new ArrayList<BasicType>(listLabels), mFilterDrawer,
                 false, R.drawable.ic_label_filled, Constants.COLLAPSIBLE_LABEL_LIST, 2);
     }
-    private void addLocationsFilterToDrawer(ArrayList<FavoriteLocation> favLocations){
+    private void addLocationsFilterToDrawer(ArrayList<Location> favLocations){
         addItemListToDrawer(new ArrayList<BasicType>(favLocations), mFilterDrawer,
                 false, R.drawable.ic_place, Constants.COLLAPSIBLE_LOCATION_LIST, 2);
     }
@@ -641,7 +641,7 @@ public class MainAndFilterDrawerConfigurator {
                 color = R.color.tealLocation;
                 break;
             case Constants.COLLAPSIBLE_TASK_LIST:
-                color = (main) ? R.color.secondaryText : R.color.colorPrimary;
+                color = main ? R.color.secondaryText : R.color.colorPrimary;
                 break;
         }
 

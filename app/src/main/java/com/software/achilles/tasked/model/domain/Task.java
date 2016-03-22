@@ -1,32 +1,46 @@
 package com.software.achilles.tasked.model.domain;
 
-import android.location.Location;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
+import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
+
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
-public class Task extends BasicType implements Serializable {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.Index;
+import io.realm.annotations.PrimaryKey;
+
+public class Task extends RealmObject implements Serializable, BasicType {
 
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
 
+    @PrimaryKey
+    private int id;
+    @Index
+    private String title;
     private Boolean finished, starred;
     private String description;
     private Date dueDate;
     private Location location;
-    ArrayList<Label> labels;
+    private RealmList<Label> labels;
 
     // ------------------------- Constructor -------------------------
 
-    public Task(Boolean finished, Boolean starred, @NonNull String title, String description, Date dueDate, Location location, ArrayList<Label> labels) {
+    public Task() {
+    }
+
+    public Task(Boolean finished, Boolean starred, @NonNull String title, String description, Date dueDate, Location location, RealmList<Label> labels) {
         this.finished = finished;
         this.starred = starred;
-        setTitle(title);
+        this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.location = location;
@@ -34,6 +48,20 @@ public class Task extends BasicType implements Serializable {
     }
 
     // ---------------------- Getters & Setters ----------------------
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
 
     public Boolean getFinished() {
         return finished;
@@ -63,10 +91,10 @@ public class Task extends BasicType implements Serializable {
         this.location = location;
     }
 
-    public ArrayList<Label> getLabels() {
+    public RealmList<Label> getLabels() {
         return labels;
     }
-    public void setLabels(ArrayList<Label> labels) {
+    public void setLabels(RealmList<Label> labels) {
         this.labels = labels;
     }
 
@@ -81,14 +109,16 @@ public class Task extends BasicType implements Serializable {
 
     @Override
     public String toString() {
-        return (finished ? "DONE - " : "") + getTitle() +
+        // Access resources from Android in order to translate at sharing
+        Resources resources = FloatingActionMenuConfigurator.activity.getResources();
+        return (finished ? resources.getString(R.string.task_done) : "") + getTitle() +
                 (dueDate == null ? "" : " - " + dateToText(dueDate));
     }
 
     // ------------------------ Other methods ------------------------
 
     public static String dateToText(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.ENGLISH);
-        return sdf.format(date);
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
+        return df.format(date);
     }
 }

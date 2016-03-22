@@ -4,12 +4,9 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class BasicType implements Serializable{
+public interface BasicType{
 
     // --------------------------- Values ----------------------------
-
-    private int id;
-    private String title;
 
     // ------------------------- Attributes --------------------------
 
@@ -17,19 +14,11 @@ public class BasicType implements Serializable{
 
     // ---------------------- Getters & Setters ----------------------
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
+    int getId();
+    void setId(int id);
 
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(@NonNull String title) {
-        this.title = title;
-    }
+    String getTitle();
+    void setTitle(@NonNull String title);
 
     // -------------------------- Landscape --------------------------
     // ---------------------------- Menu -----------------------------

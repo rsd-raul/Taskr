@@ -1,49 +1,59 @@
 package com.software.achilles.tasked.model.domain;
 
 import android.content.res.Resources;
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
 
 import java.util.List;
 
-public class TaskList extends BasicType implements Parcelable {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class TaskList extends RealmObject implements BasicType{
 
     // --------------------------- Values ----------------------------
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
-
     // ------------------------- Attributes --------------------------
 
-    private List<Task> tasks;
+    @PrimaryKey
+    private int id;
+    private String title;
+    private RealmList<Task> tasks;
 
     // ------------------------- Constructor -------------------------
 
-    public TaskList(int id, String title, List<Task> tasks) {
+    public TaskList() {
+    }
+
+    public TaskList(int id, String title, RealmList<Task> tasks) {
         setId(id);
         setTitle(title);
         this.tasks = tasks;
     }
 
-
-
     // ---------------------- Getters & Setters ----------------------
 
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public List<Task> getTasks() {
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
+
+    public RealmList<Task> getTasks() {
         return tasks;
     }
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(RealmList<Task> tasks) {
         this.tasks = tasks;
     }
 
