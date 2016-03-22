@@ -113,22 +113,37 @@
                 android:layout_toEndOf="@+id/button_location"
                 android:layout_toRightOf="@+id/button_location" />
 
-            <CheckBox
-                android:id="@+id/checkbox_favourite"
-                android:button="@drawable/custom_favourite"
+            <ImageButton
+                android:id="@+id/button_favourite"
+                android:src="@drawable/ic_star_clear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="17dp"
+                android:background="@null"
+                android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
 
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-
                 android:layout_below="@+id/textInput"
                 android:layout_toEndOf="@+id/button_label"
                 android:layout_toRightOf="@+id/button_label" />
+
+            <!--<CheckBox-->
+                <!--android:id="@+id/checkbox_favourite"-->
+                <!--android:button="@drawable/custom_favourite"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="17dp"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:paddingRight="5dp"-->
+
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_marginStart="5dp"-->
+
+                <!--android:layout_below="@+id/textInput"-->
+                <!--android:layout_toEndOf="@+id/button_label"-->
+                <!--android:layout_toRightOf="@+id/button_label" />-->
 
             <!--El drop down puede que sea por defecto-->
             <Spinner
@@ -139,8 +154,8 @@
                 android:layout_gravity="end"
 
                 android:layout_below="@+id/textInput"
-                android:layout_toEndOf="@+id/checkbox_favourite"
-                android:layout_toRightOf="@+id/checkbox_favourite"
+                android:layout_toEndOf="@+id/button_favourite"
+                android:layout_toRightOf="@+id/button_favourite"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"/>
 

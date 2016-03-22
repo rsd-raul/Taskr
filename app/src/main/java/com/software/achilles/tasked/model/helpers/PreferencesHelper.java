@@ -3,83 +3,90 @@ package com.software.achilles.tasked.model.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-// TODO - FINAL TESTING - Quitar y limpiar
+// TODO - FINAL TESTING - Remove and Clean
 @SuppressWarnings("unused")
 public class PreferencesHelper {
 
     // --------------------------- Values ----------------------------
 
     public static class Keys{
+        // User settings
         public static final String MAIN = "dash_or_glance";
         public static final String ADAPT_COLOR = "adaptColor";
-        public static final String NOTIF_SOUND = "notificationTone";
-        public static final String NOTIF_VIBRATION = "notificationVibration";
-        public static final String NOTIF_LED = "notificationLed";
+        public static final String NOTIFICATION_SOUND = "notificationTone";
+        public static final String NOTIFICATION_VIBRATION = "notificationVibration";
+        public static final String NOTIFICATION_LED = "notificationLed";
         public static final String SYNC_MODE = "syncMode";
         public static final String FIRST_DAY = "firstDay";
+
+        // App settings
+        public static final String FIRST_TIME = "first_time";
     }
     public static class Defaults{
         public static final String MAIN = "Dashboard";
         public static final boolean ADAPT_COLOR = true;
-        public static final boolean NOTIF_SOUND = true;
-        public static final boolean NOTIF_VIBRATION = true;
-        public static final boolean NOTIF_LED = true;
+        public static final boolean NOTIFICATION_SOUND = true;
+        public static final boolean NOTIFICATION_VIBRATION = true;
+        public static final boolean NOTIFICATION_LED = true;
         public static final String SYNC_MODE = "At app start";
         public static final String FIRST_DAY = "Monday";
+
+        // App settings
+        public static final boolean FIRST_TIME = true;
     }
 
-    public static class PreferenceFiles{
+    public static class Files{
         // For preference between Dashboard and Glance
-        public static final String SETTINGS = "settings";
-        public static final String CONFIGURATIONS="configurations";
+        public static final String USER = "settings";
+        public static final String SYSTEM = "configurations";
     }
 
     // --------------------------- Getters ---------------------------
 
-    public static int getSharedPreferencesInt(Context context, String key, int defaultValue) {
-        return getSharedPreferences(context).getInt(key, defaultValue);
+    public static int getShaPrefInt(Context context, String key, int defaultValue, boolean system) {
+        return getSharedPreferences(context, system).getInt(key, defaultValue);
     }
 
-    public static String getSharedPreferencesString(Context context, String key, String defaultValue) {
-        return getSharedPreferences(context).getString(key, defaultValue);
+    public static String getShaPrefString(Context context, String key, String defaultValue, boolean system) {
+        return getSharedPreferences(context, system).getString(key, defaultValue);
     }
 
-    public static boolean getSharedPreferencesBoolean(Context context, String key, boolean defaultValue) {
-        return getSharedPreferences(context).getBoolean(key, defaultValue);
+    public static boolean getShaPrefBoolean(Context context, String key, boolean defaultValue, boolean system) {
+        return getSharedPreferences(context, system).getBoolean(key, defaultValue);
     }
 
-    public static float getSharedPreferencesFloat(Context context, String key, float defaultValue) {
-        return getSharedPreferences(context).getFloat(key, defaultValue);
+    public static float getShaPrefFloat(Context context, String key, float defaultValue, boolean system) {
+        return getSharedPreferences(context, system).getFloat(key, defaultValue);
     }
 
-    public static long getSharedPreferencesLong(Context context, String key, long defaultValue){
-        return getSharedPreferences(context).getLong(key, defaultValue);
+    public static long getShaPrefLong(Context context, String key, long defaultValue, boolean system){
+        return getSharedPreferences(context, system).getLong(key, defaultValue);
     }
 
     // --------------------------- Setters ---------------------------
 
-    public static void setPreferenceInteger(Context context, String key, Integer value){
-        getSharedPreferences_Editor(context).putInt(key, value).apply();
+    public static void setShaPrefInteger(Context context, String key, Integer value, boolean system){
+        getSharedPreferences_Editor(context, system).putInt(key, value).apply();
     }
-    public static void setPreferenceString(Context context, String key, String value) {
-        getSharedPreferences_Editor(context).putString(key, value).apply();
+    public static void setShaPrefString(Context context, String key, String value, boolean system) {
+        getSharedPreferences_Editor(context, system).putString(key, value).apply();
     }
-    public static void setPreferenceBoolean(Context context, String key, Boolean value){
-        getSharedPreferences_Editor(context).putBoolean(key, value).apply();
+    public static void setShaPrefBoolean(Context context, String key, Boolean value, boolean system){
+        getSharedPreferences_Editor(context, system).putBoolean(key, value).apply();
     }
-    public static void setPreferenceFloat(Context context, String key, Float value){
-        getSharedPreferences_Editor(context).putFloat(key, value).apply();
+    public static void setShaPrefFloat(Context context, String key, Float value, boolean system){
+        getSharedPreferences_Editor(context, system).putFloat(key, value).apply();
     }
-    public static void setPreferenceLong(Context context, String key, Long value){
-        getSharedPreferences_Editor(context).putLong(key, value).apply();
+    public static void setShaPrefLong(Context context, String key, Long value, boolean system){
+        getSharedPreferences_Editor(context, system).putLong(key, value).apply();
     }
 
     // -------------------------- Auxiliary --------------------------
 
-    private static SharedPreferences getSharedPreferences(Context context){
-        return context.getSharedPreferences(PreferenceFiles.SETTINGS, Context.MODE_PRIVATE);
+    private static SharedPreferences getSharedPreferences(Context context, boolean system){
+        return context.getSharedPreferences(system ? Files.SYSTEM : Files.USER, Context.MODE_PRIVATE);
     }
-    private static SharedPreferences.Editor getSharedPreferences_Editor(Context context){
-        return getSharedPreferences(context).edit();
+    private static SharedPreferences.Editor getSharedPreferences_Editor(Context context, boolean system){
+        return getSharedPreferences(context, system).edit();
     }
 }

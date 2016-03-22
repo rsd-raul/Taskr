@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,14 +19,12 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
-import com.software.achilles.tasked.util.extras.FloatingActionMenuBehavior;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
 
@@ -42,8 +41,7 @@ public class TaskCreationFragment extends Fragment {
 
     private Spinner mSpinner;
     private FloatingActionButton mFabSaveAndVoice;
-    private ImageButton mDescription, mReminder, mLocation, mLabels;
-    private CheckBox mFavourite;
+    private ImageButton mDescription, mReminder, mLocation, mLabels, mFavourite;
 
     // ------------------------- Constructor -------------------------
 
@@ -77,10 +75,10 @@ public class TaskCreationFragment extends Fragment {
         mReminder = (ImageButton) mMainActivity.findViewById(R.id.button_time);
         mLocation = (ImageButton) mMainActivity.findViewById(R.id.button_location);
         mLabels = (ImageButton) mMainActivity.findViewById(R.id.button_label);
-        mFavourite = (CheckBox) mMainActivity.findViewById(R.id.checkbox_favourite);
+        mFavourite = (ImageButton) mMainActivity.findViewById(R.id.button_favourite);
 
-        setupColors();
-        setupListeners();
+        setupModifiersColors();
+        setupModifiersListeners();
 
         // Setup the fab and its listeners
         setupSaveOrVoice(false);
@@ -90,39 +88,60 @@ public class TaskCreationFragment extends Fragment {
                 android.R.layout.simple_list_item_1, taskListNames));
     }
 
-    private void setupColors(){
-        int color = ContextCompat.getColor(mMainActivity, R.color.secondaryText);
-        PorterDuffColorFilter filter = new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY);
-
+    private void setupModifiersColors(){
+        PorterDuffColorFilter filter = getColorFilter(R.color.task_modifier_icons);
         mDescription.setColorFilter(filter);
         mReminder.setColorFilter(filter);
         mLocation.setColorFilter(filter);
         mLabels.setColorFilter(filter);
-        mFavourite.setHintTextColor(color);
-        mFavourite.setHighlightColor(color);
+        mFavourite.setColorFilter(filter);
     }
 
-    private void setupListeners(){
+    public void colorModifierButton(int modifierId, boolean active){
+        // If we are going to turn the button ON we don't need a color
+        int stock = active? -1 : R.color.task_modifier_icons;
+
+        // Switch ON or OFF by adjusting the color
+        switch (modifierId){
+            case R.id.button_description:
+                mDescription.setColorFilter(getColorFilter(active ? R.color.md_black_1000 : stock));
+                break;
+            case R.id.button_time:
+                mReminder.setColorFilter(getColorFilter(active ? R.color.amberDate : stock));
+                break;
+            case R.id.button_location:
+                mLocation.setColorFilter(getColorFilter(active ? R.color.tealLocation : stock));
+                break;
+            case R.id.button_label:
+                mLabels.setColorFilter(getColorFilter(active ? R.color.colorPrimary : stock));
+                break;
+            case R.id.button_favourite:
+                // Change the icon for ON and OFF
+                Drawable star = ContextCompat.getDrawable(getContext(),
+                        active ? R.drawable.ic_star_filled : R.drawable.ic_star_clear);
+
+                // Set the drawable
+                mFavourite.setImageDrawable(star);
+
+                // Color the drawable if ON
+                if(active)
+                    mFavourite.clearColorFilter();
+                else
+                    mFavourite.setColorFilter(getColorFilter(stock));
+                break;
+        }
+    }
+
+    private PorterDuffColorFilter getColorFilter(int colorRes){
+        int color = ContextCompat.getColor(mMainActivity, colorRes);
+        return new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY);
+    }
+
+    private void setupModifiersListeners(){
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()){
-                    case R.id.button_description:
-                        Toast.makeText(mMainActivity, "Button id: " + v.getId(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.button_time:
-                        Toast.makeText(mMainActivity, "Button id: " + v.getId(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.button_location:
-                        Toast.makeText(mMainActivity, "Button id: " + v.getId(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.button_label:
-                        Toast.makeText(mMainActivity, "Button id: " + v.getId(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.checkbox_favourite:
-                        Toast.makeText(mMainActivity, "Button id: " + v.getId(), Toast.LENGTH_SHORT).show();
-                        break;
-                }
+                mPresenter.modifiersOnClick(v);
             }};
 
         mDescription.setOnClickListener(listener);

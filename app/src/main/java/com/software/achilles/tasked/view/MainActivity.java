@@ -7,12 +7,17 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.controllers.TaskController;
+import com.software.achilles.tasked.model.helpers.PreferencesHelper;
+import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
@@ -40,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // If first time, launch the introduction
+        if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Defaults.FIRST_TIME, true)){
+            // Set the value to false
+            PreferencesHelper.setShaPrefBoolean(this, Keys.FIRST_TIME, false, true);
+            // launchIntro();
+            // return;
+            Toast.makeText(this, "first time", Toast.LENGTH_LONG).show();
+        }
+
         // Set ActionBar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -58,14 +72,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        // Set the menu depending on the fragment
         switch (currentFragmentKey){
 
             case Constants.DASHBOARD:
                 getMenuInflater().inflate(R.menu.menu_dashboard, menu);
 
-                MenuItem menuItem = menu.findItem(R.id.action_search);
-                SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-                // TODO Filtering
+                // Set the filtering by text
+                MenuItem searchItem = menu.findItem(R.id.action_search);
+                SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
@@ -121,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deployAddTask() {
-
         // Deploy the layout
         setFragment(Constants.ADD_TASK);
 

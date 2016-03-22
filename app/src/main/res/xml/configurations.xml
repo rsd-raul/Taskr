@@ -1,63 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
+        <!--<CheckBoxPreference-->
+            <!--android:key="adaptColor"-->
+            <!--android:title="@string/adaptableColors"-->
+            <!--android:summaryOff="@string/adaptableColorsOff"-->
+            <!--android:summaryOn="@string/adaptableColorsOn"-->
+            <!--android:defaultValue="true"/>-->
+
+        <!--<ListPreference-->
+            <!--android:key="dash_or_glance"-->
+            <!--android:title="@string/dash_or_glance"-->
+            <!--android:summary="@string/dash_or_glance_summary"-->
+            <!--android:dialogTitle="@string/select"-->
+            <!--android:entries="@array/dashboardOrGlance"-->
+            <!--android:entryValues="@array/dashboardOrGlance"-->
+            <!--android:defaultValue="Dashboard" />-->
 
         <CheckBoxPreference
-            android:key="adaptColor"
-            android:title="@string/adaptableColors"
-            android:summaryOff="@string/adaptableColorsOff"
-            android:summaryOn="@string/adaptableColorsOn"
+            android:key="first_time"
             android:defaultValue="true"/>
 
-        <CheckBoxPreference
-            android:key="notificationTone"
-            android:title="@string/notificationSound"
-            android:summaryOff="@string/notificationSoundOff"
-            android:summaryOn="@string/notificationSoundOn"
-            android:defaultValue="true"/>
 
-        <CheckBoxPreference
-            android:key="notificationVibration"
-            android:title="@string/notificationVibration"
-            android:defaultValue="true"/>
-
-        <CheckBoxPreference
-            android:key="notificationLed"
-            android:title="@string/notificationLed"
-            android:defaultValue="true"/>
-
-        <ListPreference
-            android:key="syncMode"
-            android:title="@string/syncMode"
-            android:summary="@string/syncModeSummary"
-            android:dialogTitle="@string/select"
-            android:entries="@array/syncValues"
-            android:entryValues="@array/syncValues"
-            android:defaultValue="At app start" />
-
-
-        <ListPreference
-            android:key="firstDay"
-            android:title="@string/firstDay"
-            android:dialogTitle="@string/select"
-            android:entries="@array/mondayOrSunday"
-            android:entryValues="@array/mondayOrSunday"
-            android:defaultValue="Monday" />
-
-        <ListPreference
-            android:key="dash_or_glance"
-            android:title="@string/dash_or_glance"
-            android:summary="@string/dash_or_glance_summary"
-            android:dialogTitle="@string/select"
-            android:entries="@array/dashboardOrGlance"
-            android:entryValues="@array/dashboardOrGlance"
-            android:defaultValue="Dashboard" />
-        <ListPreference
-            android:key="syncMode"
-            android:title="@string/syncMode"
-            android:summary="@string/syncModeSummary"
-            android:dialogTitle="@string/select"
-            android:entries="@array/syncValues"
-            android:entryValues="@array/syncValues"
-            android:defaultValue="At app start" />
 </PreferenceScreen>
