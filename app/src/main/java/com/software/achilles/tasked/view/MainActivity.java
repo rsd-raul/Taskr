@@ -7,6 +7,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,9 +16,11 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.controllers.TaskController;
+import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.ThreadManager;
+import com.software.achilles.tasked.model.repositiories.LabelRepository;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
@@ -49,9 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the RealmConfiguration for Realm usage
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
-
-        // Initialize Realm
-        Realm realm = Realm.getDefaultInstance();
 
         // If first time, launch the introduction
         if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Defaults.FIRST_TIME, true)){

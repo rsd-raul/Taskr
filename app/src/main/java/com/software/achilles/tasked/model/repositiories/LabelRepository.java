@@ -1,22 +1,74 @@
 package com.software.achilles.tasked.model.repositiories;
 
+import android.util.Log;
+
 import com.software.achilles.tasked.model.domain.Label;
-import java.util.UUID;
+import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
+
+import java.security.KeyFactory;
+
 import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 public class LabelRepository {
 
-    public void addUniversity(Label label /*, OnAddUniversityCallback callback*/) {
+    // TODO quitar URL cuando todo funcione
+    // http://mlsdev.com/en/blog/47-realm-practical-use-in-android
+
+    public void add(Label label /*, OnAddLabelCallback callback*/) {
+        Realm realm = Realm.getDefaultInstance();
+        PrimaryKeyFactory.initialize(realm);
+
+        realm.beginTransaction();
+
+            Label temp = realm.createObject(Label.class);
+            temp.setId(PrimaryKeyFactory.nextKey());
+            temp.setTitle(label.getTitle());
+            temp.setColorRes(label.getColorRes());
+
+        realm.commitTransaction();
+        
+//        if (callback != null)
+//            callback.onSuccess();
+    }
+
+    public void deleteById(String Id /*, OnDeleteLabelCallback callback*/) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        Label u = realm.createObject(Label.class);
-//        u.setId(UUID.randomUUID());       TODO generate Unique ID
-        u.setTitle(label.getTitle());
+        Label Label = realm.where(Label.class).equalTo("id", Id).findFirst();
+        Label.removeFromRealm();
         realm.commitTransaction();
 
-        /*
-        if (callback != null)
-            callback.onSuccess();
-        */
+//        if (callback != null)
+//            callback.onSuccess();
+    }
+
+    public void deleteByPosition(int position /*, OnDeleteLabelCallback callback*/) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmQuery query = realm.where(Label.class);
+        RealmResults results = query.findAll();
+        results.remove(position);
+        realm.commitTransaction();
+
+//        if (callback != null)
+//            callback.onSuccess();
+    }
+
+    public void findOneById(String id /*, OnGetLabelByIdCallback callback*/) {
+        Realm realm = Realm.getDefaultInstance();
+        Label result = realm.where(Label.class).equalTo("id", id).findFirst();
+
+//        if (callback != null)
+//            callback.onSuccess(result);
+    }
+
+    public RealmResults<Label> findAll(/*, OnGetAllLabelCallback callback*/) {
+        Realm realm = Realm.getDefaultInstance();
+
+        return realm.where(Label.class).findAll();
+//        if (callback != null)
+//            callback.onSuccess(results);
     }
 }

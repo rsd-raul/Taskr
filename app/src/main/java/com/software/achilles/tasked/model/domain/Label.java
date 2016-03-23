@@ -14,7 +14,7 @@ public class Label extends RealmObject implements BasicType {
     // ------------------------- Attributes --------------------------
 
     @PrimaryKey
-    private int id;
+    private long id;
     @Required
     private String title;
     private int colorRes;
@@ -25,8 +25,7 @@ public class Label extends RealmObject implements BasicType {
     public Label() {
     }
 
-    public Label(int id, @NonNull String title, int colorRes) {
-        this.id = id;
+    public Label(@NonNull String title, int colorRes) {
         this.title = title;
         // If the user doesn't select a color, the label will be "colorAccent"
         this.colorRes = colorRes == -1 ? R.color.colorAccent : colorRes;
@@ -34,10 +33,10 @@ public class Label extends RealmObject implements BasicType {
 
     // ---------------------- Getters & Setters ----------------------
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

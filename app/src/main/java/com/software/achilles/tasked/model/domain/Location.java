@@ -13,7 +13,7 @@ public class Location extends RealmObject implements BasicType{
     // ------------------------- Attributes --------------------------
 
     @PrimaryKey
-    private int id;
+    private long id;
 //    @Index        // Para lugares favoritos?
     @Required
     private String title;
@@ -27,7 +27,7 @@ public class Location extends RealmObject implements BasicType{
     public Location() {
     }
 
-    public Location(int id, @NonNull String tit, String add, double lat, double lon, boolean isFav){
+    public Location(long id, @NonNull String tit, String add, double lat, double lon, boolean isFav){
         this.id = id;
         this.title = tit;
         this.address = add;
@@ -38,10 +38,10 @@ public class Location extends RealmObject implements BasicType{
 
     // ---------------------- Getters & Setters ----------------------
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

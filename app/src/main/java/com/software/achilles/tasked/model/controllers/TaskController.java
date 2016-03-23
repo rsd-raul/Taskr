@@ -80,7 +80,7 @@ public class TaskController {
         }
 
         for (int i = 0; i < 4; i++)
-            sLabels.add(new Label(i+600, labelTitles[i], labelColors[i]));
+            sLabels.add(new Label(labelTitles[i], labelColors[i]));
 
         Random random = new Random();
         while (amountList > 0) {

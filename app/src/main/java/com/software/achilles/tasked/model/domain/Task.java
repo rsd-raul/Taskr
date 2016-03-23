@@ -22,7 +22,7 @@ public class Task extends RealmObject implements BasicType {
     // ------------------------- Attributes --------------------------
 
     @PrimaryKey
-    private int id;
+    private long id;
     @Index
     @Required
     private String title;
@@ -50,10 +50,10 @@ public class Task extends RealmObject implements BasicType {
 
     // ---------------------- Getters & Setters ----------------------
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -14,8 +14,8 @@ public interface BasicType{
 
     // ---------------------- Getters & Setters ----------------------
 
-    int getId();
-    void setId(int id);
+    long getId();
+    void setId(long id);
 
     String getTitle();
     void setTitle(@NonNull String title);

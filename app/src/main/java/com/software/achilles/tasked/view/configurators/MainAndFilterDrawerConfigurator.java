@@ -654,7 +654,7 @@ public class MainAndFilterDrawerConfigurator {
 
             // Construct the Item to add on the Drawer
             IDrawerItem itemToAdd = new SecondaryDrawerItem()
-                    .withIdentifier(itemLists.get(i).getId())
+                    .withIdentifier((int) itemLists.get(i).getId())
                     .withLevel(level)
                     .withName(itemLists.get(i).getTitle())
                     .withIcon(iconRes)
@@ -665,7 +665,7 @@ public class MainAndFilterDrawerConfigurator {
 
             // Move the pointer for an ordered insertion and save the id for posterior deletion
             position++;
-            addedIds.add(itemLists.get(i).getId());
+            addedIds.add((int) itemLists.get(i).getId());
         }
 
         // If on the main drawer, add a new "add Task List" item for convenience and its ID

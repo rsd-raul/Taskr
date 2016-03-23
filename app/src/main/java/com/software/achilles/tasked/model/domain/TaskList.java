@@ -19,7 +19,7 @@ public class TaskList extends RealmObject implements BasicType{
     // ------------------------- Attributes --------------------------
 
     @PrimaryKey
-    private int id;
+    private long id;
     private String title;
     private RealmList<Task> tasks;
 
@@ -28,7 +28,7 @@ public class TaskList extends RealmObject implements BasicType{
     public TaskList() {
     }
 
-    public TaskList(int id, String title, RealmList<Task> tasks) {
+    public TaskList(long id, String title, RealmList<Task> tasks) {
         this.id = id;
         this.title = title;
         this.tasks = tasks;
@@ -36,10 +36,10 @@ public class TaskList extends RealmObject implements BasicType{
 
     // ---------------------- Getters & Setters ----------------------
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
