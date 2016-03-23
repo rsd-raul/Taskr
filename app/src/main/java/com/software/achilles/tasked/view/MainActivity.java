@@ -7,7 +7,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +26,9 @@ import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigu
 import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.util.Constants;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class MainActivity extends AppCompatActivity {
 
     // --------------------------- Values ----------------------------
@@ -44,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Set the RealmConfiguration for Realm usage
+        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
+
+        // Initialize Realm
+        Realm realm = Realm.getDefaultInstance();
 
         // If first time, launch the introduction
         if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Defaults.FIRST_TIME, true)){

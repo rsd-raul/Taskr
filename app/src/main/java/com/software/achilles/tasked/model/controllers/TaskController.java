@@ -9,14 +9,11 @@ import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import io.realm.RealmList;
 
@@ -103,9 +100,7 @@ public class TaskController {
                 for (int i = 0; i < labelQuantity; i++)
                     labels.add(sLabels.get(random.nextInt(4)));
 
-                // TODO Location es parcelable no serializable... Cambiado a Parcelable.
                 aux.add(new Task(finished, starred, title, description, dueDate, location, labels));
-//                aux.add(new Task(finished, starred, title, description, dueDate, null, new ArrayList<>(labels)));
                 amountTaskWhile--;
             }
 

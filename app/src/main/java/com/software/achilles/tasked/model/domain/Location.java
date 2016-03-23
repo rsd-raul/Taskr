@@ -2,12 +2,11 @@ package com.software.achilles.tasked.model.domain;
 
 import android.support.annotation.NonNull;
 
-import java.io.Serializable;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
-public class Location extends RealmObject implements Serializable, BasicType{
+public class Location extends RealmObject implements BasicType{
 
     // --------------------------- Values ----------------------------
 
@@ -16,10 +15,11 @@ public class Location extends RealmObject implements Serializable, BasicType{
     @PrimaryKey
     private int id;
 //    @Index        // Para lugares favoritos?
+    @Required
     private String title;
     private String address;
-    private Double latitude;
-    private Double longitude;
+    private double latitude;
+    private double longitude;
     private boolean isFavourite;
 
     // ------------------------- Constructor -------------------------
@@ -27,13 +27,13 @@ public class Location extends RealmObject implements Serializable, BasicType{
     public Location() {
     }
 
-    public Location(int id, @NonNull String title, String address, Double lat, Double lon, boolean isFavourite) {
+    public Location(int id, @NonNull String tit, String add, double lat, double lon, boolean isFav){
         this.id = id;
-        this.title = title;
-        this.address = address;
+        this.title = tit;
+        this.address = add;
         this.latitude = lat;
         this.longitude = lon;
-        this.isFavourite = isFavourite;
+        this.isFavourite = isFav;
     }
 
     // ---------------------- Getters & Setters ----------------------
@@ -59,17 +59,17 @@ public class Location extends RealmObject implements Serializable, BasicType{
         this.address = address;
     }
 
-    public Double getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
-    public void setLatitude(Double latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public Double getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
-    public void setLongitude(Double longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

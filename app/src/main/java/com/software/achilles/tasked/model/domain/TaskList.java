@@ -29,8 +29,8 @@ public class TaskList extends RealmObject implements BasicType{
     }
 
     public TaskList(int id, String title, RealmList<Task> tasks) {
-        setId(id);
-        setTitle(title);
+        this.id = id;
+        this.title = title;
         this.tasks = tasks;
     }
 

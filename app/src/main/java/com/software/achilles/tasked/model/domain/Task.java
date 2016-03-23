@@ -6,17 +6,16 @@ import android.support.annotation.NonNull;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
 
-import java.io.Serializable;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
-public class Task extends RealmObject implements Serializable, BasicType {
+public class Task extends RealmObject implements BasicType {
 
     // --------------------------- Values ----------------------------
 
@@ -25,8 +24,9 @@ public class Task extends RealmObject implements Serializable, BasicType {
     @PrimaryKey
     private int id;
     @Index
+    @Required
     private String title;
-    private Boolean finished, starred;
+    private boolean finished, starred;
     private String description;
     private Date dueDate;
     private Location location;
@@ -37,7 +37,8 @@ public class Task extends RealmObject implements Serializable, BasicType {
     public Task() {
     }
 
-    public Task(Boolean finished, Boolean starred, @NonNull String title, String description, Date dueDate, Location location, RealmList<Label> labels) {
+    // TODO no id in constructor
+    public Task(boolean finished, boolean starred, @NonNull String title, String description, Date dueDate, Location location, RealmList<Label> labels) {
         this.finished = finished;
         this.starred = starred;
         this.title = title;
@@ -63,10 +64,10 @@ public class Task extends RealmObject implements Serializable, BasicType {
         this.title = title;
     }
 
-    public Boolean getFinished() {
+    public boolean getFinished() {
         return finished;
     }
-    public void setFinished(Boolean finished) {
+    public void setFinished(boolean finished) {
         this.finished = finished;
     }
 
@@ -98,10 +99,10 @@ public class Task extends RealmObject implements Serializable, BasicType {
         this.labels = labels;
     }
 
-    public Boolean getStarred() {
+    public boolean getStarred() {
         return starred;
     }
-    public void setStarred(Boolean starred) {
+    public void setStarred(boolean starred) {
         this.starred = starred;
     }
 

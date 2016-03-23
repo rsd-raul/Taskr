@@ -3,13 +3,11 @@ package com.software.achilles.tasked.model.domain;
 import android.support.annotation.NonNull;
 
 import com.software.achilles.tasked.R;
-import java.io.Serializable;
-
 import io.realm.RealmObject;
-import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
-public class Label extends RealmObject implements Serializable, BasicType {
+public class Label extends RealmObject implements BasicType {
 
     // --------------------------- Values ----------------------------
 
@@ -17,8 +15,9 @@ public class Label extends RealmObject implements Serializable, BasicType {
 
     @PrimaryKey
     private int id;
+    @Required
     private String title;
-    private Integer colorRes;
+    private int colorRes;
 
     // ------------------------- Constructor -------------------------
 
@@ -26,14 +25,11 @@ public class Label extends RealmObject implements Serializable, BasicType {
     public Label() {
     }
 
-    public Label(int id, @NonNull String title, Integer colorRes) {
-        setId(id);
-        setTitle(title);
-
-        if(colorRes == null)
-            this.colorRes = R.color.accent;
-        else
-            this.colorRes = colorRes;
+    public Label(int id, @NonNull String title, int colorRes) {
+        this.id = id;
+        this.title = title;
+        // If the user doesn't select a color, the label will be "colorAccent"
+        this.colorRes = colorRes == -1 ? R.color.colorAccent : colorRes;
     }
 
     // ---------------------- Getters & Setters ----------------------
@@ -70,7 +66,7 @@ public class Label extends RealmObject implements Serializable, BasicType {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Label && ((Label) o).getTitle() == getTitle();
+        return o instanceof Label && ((Label) o).getTitle().equals(getTitle());
     }
 
     @Override
