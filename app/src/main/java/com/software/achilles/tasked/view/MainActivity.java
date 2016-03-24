@@ -20,6 +20,7 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.controllers.TaskController;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
+import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.MainPresenter;
@@ -61,7 +62,11 @@ public class MainActivity extends AppCompatActivity {
             // launchIntro();
             // return;
             Toast.makeText(this, "first time", Toast.LENGTH_LONG).show();
+
+            // Data population for testing and introduction
+//            DataManager.getInstance().firstTimePopulation();
         }
+        DataManager.getInstance().firstTimePopulation();
 
         // Set ActionBar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);

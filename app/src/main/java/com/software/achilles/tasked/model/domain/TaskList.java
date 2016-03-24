@@ -32,7 +32,7 @@ public class TaskList extends RealmObject implements BasicType{
 
     public TaskList(@NonNull String title, RealmList<Task> tasks) {
         this.title = title;
-        this.tasks = tasks;
+        this.tasks = tasks != null ? tasks : new RealmList<Task>();
     }
 
     // ---------------------- Getters & Setters ----------------------
