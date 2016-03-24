@@ -25,6 +25,8 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.presenter.MainPresenter;
+import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.Preferences;
 import com.software.achilles.tasked.R;
@@ -204,8 +206,7 @@ public class MainAndFilterDrawerConfigurator {
                 .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
                     @Override
                     public boolean onNavigationClickListener(View clickedView) {
-                        // TODO Esto reacciona cuando esta dentro de AddTask
-                        mActivity.setFragment(Constants.DASHBOARD);
+                        MainPresenter.getInstance().backToBack();
                         return true;
                     }
                 })

@@ -1,6 +1,8 @@
 package com.software.achilles.tasked.view;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -10,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
@@ -19,6 +22,7 @@ import com.software.achilles.tasked.model.helpers.PreferencesHelper;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
+import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
@@ -65,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Configure the drawers, both main and filter
         mDrawersConfigurator = new MainAndFilterDrawerConfigurator(this);
+
+        // Initialize the main Presenter
+        MainPresenter.getInstance().attachView(this);
 
         // Initialize with Dashboard
         setFragment(Constants.DASHBOARD);
@@ -142,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deployAddTask() {
+        // Remove the behaviour
+        bestBehaviour_drake(true);
+
         // Deploy the layout
         setFragment(Constants.ADD_TASK);
 
@@ -152,8 +162,18 @@ public class MainActivity extends AppCompatActivity {
         mDrawersConfigurator.blockDrawers(true);
     }
 
-    public void removeAddTask(){
+    // TODO esto deberia hacer que la ActionBar volviera
+    private void bestBehaviour_drake(boolean remove){
+        FrameLayout fl = ((FrameLayout) findViewById(R.id.main_fragment_container));
 
+        CoordinatorLayout.LayoutParams aux = (CoordinatorLayout.LayoutParams) fl.getLayoutParams();
+        aux.setBehavior(remove ? null : new AppBarLayout.ScrollingViewBehavior());
+
+        fl.requestLayout();
+    }
+
+    public void removeAddTask(){
+        // TODO volver a Dashboard o a Glance
         setFragment(Constants.DASHBOARD);
 
         // Show the FAM
@@ -161,6 +181,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Unblock filter and navigation drawers
         mDrawersConfigurator.blockDrawers(false);
+
+        // Restore @string/appbar_scrolling_view_behavior
+        bestBehaviour_drake(false);
     }
 
     // --------------------------- Details ---------------------------
@@ -169,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         switch (currentFragmentKey){
             case Constants.ADD_TASK:
-                setFragment(Constants.DASHBOARD);
+                MainPresenter.getInstance().backToBack();
                 return;
             case Constants.SNOOZED:
                 break;

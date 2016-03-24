@@ -34,6 +34,8 @@ public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
 //        if (subscription != null) subscription.unsubscribe();
     }
 
-
+    public void backToBack(){
+        mActivity.removeAddTask();
+    }
 
 }
