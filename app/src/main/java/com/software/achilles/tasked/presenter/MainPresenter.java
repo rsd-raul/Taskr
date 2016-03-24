@@ -1,5 +1,6 @@
 package com.software.achilles.tasked.presenter;
 
+import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
 
 public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
@@ -38,4 +39,15 @@ public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
         mActivity.removeAddTask();
     }
 
+    public void deployLayout(int key){
+        switch (key) {
+            case Constants.ADD_TASK:
+                mActivity.deployAddTask();
+                break;
+            case Constants.ADD_LABEL:
+                break;
+            case Constants.ADD_TASK_LIST:
+                break;
+        }
+    }
 }

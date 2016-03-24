@@ -37,12 +37,13 @@ public class Constants {
     public static final int DUE_DATE = 19;
     public static final int CUSTOM_ORDER = 20;
 
-    public static final int SETTINGS_ACCOUNTS = 21;                 // DEPRECATED
-    public static final int ADD_ACCOUNT = 22;                       // DEPRECATED
+    public static final int SETTINGS_ACCOUNTS = 21;                 // UNUSED
+    public static final int ADD_ACCOUNT = 22;                       // UNUSED
 
     public static final int LIST_SEPARATOR = 23;
     public static final int CLEAR_FILTER = 24;
 
     public static final int ADD_TASK = 25;
+    public static final int ADD_LABEL = 26;
 
 }

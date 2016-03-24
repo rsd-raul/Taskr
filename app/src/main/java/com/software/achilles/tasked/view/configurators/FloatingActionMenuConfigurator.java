@@ -16,6 +16,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.software.achilles.tasked.presenter.MainPresenter;
+import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.controllers.TaskController;
@@ -189,8 +191,8 @@ public class FloatingActionMenuConfigurator {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.deployAddTask();
                 fam.close(false);
+                MainPresenter.getInstance().deployLayout(Constants.ADD_TASK);
             }
         });
 
@@ -199,9 +201,7 @@ public class FloatingActionMenuConfigurator {
             @Override
             public void onClick(View view) {
                 fam.close(true);
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                MainPresenter.getInstance().deployLayout(Constants.ADD_TASK_LIST);
             }
         });
 
@@ -210,9 +210,7 @@ public class FloatingActionMenuConfigurator {
             @Override
             public void onClick(View view) {
                 fam.close(true);
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                MainPresenter.getInstance().deployLayout(Constants.ADD_LABEL);
             }
         });
     }
