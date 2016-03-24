@@ -36,8 +36,8 @@ public class LabelRepository {
     public void deleteById(String Id /*, OnDeleteLabelCallback callback*/) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        Label Label = realm.where(Label.class).equalTo("id", Id).findFirst();
-        Label.removeFromRealm();
+            Label label = realm.where(Label.class).equalTo("id", Id).findFirst();
+            label.removeFromRealm();
         realm.commitTransaction();
 
 //        if (callback != null)
@@ -47,19 +47,21 @@ public class LabelRepository {
     public void deleteByPosition(int position /*, OnDeleteLabelCallback callback*/) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        RealmQuery query = realm.where(Label.class);
-        RealmResults results = query.findAll();
-        results.remove(position);
+
+            RealmQuery query = realm.where(Label.class);
+            RealmResults results = query.findAll();
+            results.remove(position);
+
         realm.commitTransaction();
 
 //        if (callback != null)
 //            callback.onSuccess();
     }
 
-    public void findOneById(String id /*, OnGetLabelByIdCallback callback*/) {
+    public Label findOneById(String id /*, OnGetLabelByIdCallback callback*/) {
         Realm realm = Realm.getDefaultInstance();
-        Label result = realm.where(Label.class).equalTo("id", id).findFirst();
 
+        return realm.where(Label.class).equalTo("id", id).findFirst();
 //        if (callback != null)
 //            callback.onSuccess(result);
     }

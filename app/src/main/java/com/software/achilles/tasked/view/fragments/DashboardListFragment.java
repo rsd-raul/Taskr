@@ -122,7 +122,7 @@ public class DashboardListFragment extends Fragment {
             CheckBox checkDone = holder.mCheckDone;
 
             // Checked if task is done
-            if (task.getFinished())
+            if (task.isFinished())
                 checkDone.setChecked(true);
 
             // On click update the status of the Task
@@ -142,7 +142,7 @@ public class DashboardListFragment extends Fragment {
             CheckBox checkStar = holder.mCheckStar;
 
             // Checked if task is favourite
-            if (task.getStarred())
+            if (task.isStarred())
                 checkStar.setChecked(true);
 
             // On click update the status of the Task

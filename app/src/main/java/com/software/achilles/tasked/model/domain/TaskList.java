@@ -11,6 +11,7 @@ import java.util.List;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class TaskList extends RealmObject implements BasicType{
 
@@ -20,6 +21,7 @@ public class TaskList extends RealmObject implements BasicType{
 
     @PrimaryKey
     private long id;
+    @Required
     private String title;
     private RealmList<Task> tasks;
 
@@ -28,8 +30,7 @@ public class TaskList extends RealmObject implements BasicType{
     public TaskList() {
     }
 
-    public TaskList(long id, String title, RealmList<Task> tasks) {
-        this.id = id;
+    public TaskList(@NonNull String title, RealmList<Task> tasks) {
         this.title = title;
         this.tasks = tasks;
     }

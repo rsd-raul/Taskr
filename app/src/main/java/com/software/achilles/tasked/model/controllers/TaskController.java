@@ -75,9 +75,8 @@ public class TaskController {
                                             R.color.tealLocation, R.color.app_body_text_1};
         Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
 
-        for (int i = 0; i < locationTitles.length; i++) {
-            sFavouriteLocations.add(new Location(i+900, locationTitles[i], "", 0.0, 0.0, true));
-        }
+        for (int i = 0; i < locationTitles.length; i++)
+            sFavouriteLocations.add(new Location(locationTitles[i], "", 0.0, 0.0, true));
 
         for (int i = 0; i < 4; i++)
             sLabels.add(new Label(labelTitles[i], labelColors[i]));
@@ -100,12 +99,12 @@ public class TaskController {
                 for (int i = 0; i < labelQuantity; i++)
                     labels.add(sLabels.get(random.nextInt(4)));
 
-                aux.add(new Task(finished, starred, title, description, dueDate, location, labels));
+                aux.add(new Task(title, finished, starred, description, dueDate, location, labels));
                 amountTaskWhile--;
             }
 
             String listTitle = listTitles[random.nextInt(2)];
-            TaskList taskList = new TaskList(amountList+300, listTitle, aux);
+            TaskList taskList = new TaskList(listTitle, aux);
             sTaskLists.add(taskList);
             amountList--;
         }
@@ -194,7 +193,7 @@ public class TaskController {
         for (Task task : sTasks) {
             Date dueDate = task.getDueDate();
             if(dueDate!=null)
-                if (!task.getFinished() && (dueDate.after(min) && dueDate.before(max) || dueDate.equals(max)))
+                if (!task.isFinished() && (dueDate.after(min) && dueDate.before(max) || dueDate.equals(max)))
                     counter.add(task);
         }
 

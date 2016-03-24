@@ -20,20 +20,19 @@ public class Location extends RealmObject implements BasicType{
     private String address;
     private double latitude;
     private double longitude;
-    private boolean isFavourite;
+    private boolean favourite;
 
     // ------------------------- Constructor -------------------------
 
     public Location() {
     }
 
-    public Location(long id, @NonNull String tit, String add, double lat, double lon, boolean isFav){
-        this.id = id;
+    public Location(@NonNull String tit, String add, double lat, double lon, boolean fav){
         this.title = tit;
         this.address = add;
         this.latitude = lat;
         this.longitude = lon;
-        this.isFavourite = isFav;
+        this.favourite = fav;
     }
 
     // ---------------------- Getters & Setters ----------------------
@@ -74,10 +73,10 @@ public class Location extends RealmObject implements BasicType{
     }
 
     public boolean isFavourite() {
-        return isFavourite;
+        return favourite;
     }
-    public void setIsFavourite(boolean isFavourite) {
-        this.isFavourite = isFavourite;
+    public void setFavourite(boolean isFavourite) {
+        this.favourite = isFavourite;
     }
 
     // -------------------------- To String --------------------------
