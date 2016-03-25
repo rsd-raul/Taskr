@@ -7,6 +7,8 @@ import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import java.util.ArrayList;
 
+import io.realm.RealmResults;
+
 public class DashboardPresenter implements Presenter<DashboardFragment, DashboardPresenter> {
 
     // --------------------------- Values ----------------------------
@@ -52,7 +54,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
         DataManager dataManager = new DataManager();
 
         // Get data for setting the ViewPager
-        ArrayList<TaskList> taskList = dataManager.findAllTaskList();
+        RealmResults<TaskList> taskList = dataManager.findAllTaskList();
 
         // Setup the viewpager
         mFragment.setupViewPager(taskList);

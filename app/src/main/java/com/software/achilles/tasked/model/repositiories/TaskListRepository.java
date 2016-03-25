@@ -11,20 +11,30 @@ public class TaskListRepository implements BaseRepository<TaskList> {
 
     // ---------------------------- Find -----------------------------
 
+    @Override
     public TaskList findOne(long id) {
         Realm realm = Realm.getDefaultInstance();
 
         return realm.where(TaskList.class).equalTo("id", id).findFirst();
     }
 
+    @Override
     public RealmResults<TaskList> findAll() {
         Realm realm = Realm.getDefaultInstance();
 
         return realm.where(TaskList.class).findAll();
     }
 
+    public TaskList findLast() {
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmResults<TaskList> tl = realm.where(TaskList.class).findAll();
+        return tl.get(tl.size()-1);
+    }
+
     // ----------------------------- Add -----------------------------
 
+    @Override
     public void add(TaskList taskList) {
         Realm realm = Realm.getDefaultInstance();
         PrimaryKeyFactory.initialize(realm);
@@ -40,8 +50,19 @@ public class TaskListRepository implements BaseRepository<TaskList> {
         realm.commitTransaction();
     }
 
+    public void addTaskToTaskList(long taskListId, Task task){
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.beginTransaction();
+
+        findOne(taskListId).getTasks().add(task);
+
+        realm.commitTransaction();
+    }
+
     // --------------------------- Delete ----------------------------
 
+    @Override
     public void deleteById(long id) {
         Realm realm = Realm.getDefaultInstance();
 
@@ -53,6 +74,7 @@ public class TaskListRepository implements BaseRepository<TaskList> {
         realm.commitTransaction();
     }
 
+    @Override
     public void deleteByPosition(int position) {
         Realm realm = Realm.getDefaultInstance();
 

@@ -41,6 +41,8 @@ import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmResults;
+
 public class MainAndFilterDrawerConfigurator {
 
     // --------------------------- Values ----------------------------
@@ -221,7 +223,7 @@ public class MainAndFilterDrawerConfigurator {
                         // If the opened one is filterDrawer and is the first time
                         if (drawerView.getWidth() < 800 && mFilterDrawer != null && firstTime) {
                             // We want the labels opened by default ONLY
-                            addLabelsToFilterDrawer(TaskController.sLabels);
+                            addLabelsToFilterDrawer(DataManager.getInstance().findAllLabels());
                             firstTime = false;
                             mLabelCollapsible.withBadgeStyle(mBadgeCollapse);
                             mFilterDrawer.updateItem(mLabelCollapsible);
@@ -343,7 +345,7 @@ public class MainAndFilterDrawerConfigurator {
 //          mActivity.startActivity(intentEmail);
     }
 
-    private void setupMainList(ArrayList<TaskList> taskLists){
+    private void setupMainList(RealmResults<TaskList> taskLists){
 
         // If there is 2 list or less, show them directly. (if only one, include "add list" button)
         if(taskLists.size() <= 2) {
@@ -375,7 +377,7 @@ public class MainAndFilterDrawerConfigurator {
             removeTaskListFromMainDrawer(mTaskListIds);
         } else{
             toggleTaskListExpandable(false);
-            addTaskListToMainDrawer(TaskController.sTaskLists, true, 2);
+            addTaskListToMainDrawer(DataManager.getInstance().findAllTaskList(), true, 2);
         }
     }
 
@@ -555,21 +557,21 @@ public class MainAndFilterDrawerConfigurator {
                 toToggleCollapsible = mTaskCollapsible;
                 mExpandedTaskListFilter = !expanded;        // if(expanded) ? False : True
                 if (!expanded)
-                    addTaskListToFilterDrawer(TaskController.sTaskLists);
+                    addTaskListToFilterDrawer(DataManager.getInstance().findAllTaskList());
                 break;
             case Constants.COLLAPSIBLE_LABEL_LIST:
                 toRemoveItems = mLabelListIds;
                 toToggleCollapsible = mLabelCollapsible;
                 mExpandedLabelListFilter = !expanded;       // if(expanded) ? False : True
                 if (!expanded)
-                    addLabelsToFilterDrawer(TaskController.sLabels);
+                    addLabelsToFilterDrawer(DataManager.getInstance().findAllLabels());
                 break;
             case Constants.COLLAPSIBLE_LOCATION_LIST:
                 toRemoveItems = mLocationListIds;
                 toToggleCollapsible = mLocationCollapsible;
                 mExpandedLocationListFilter = !expanded;    // if(expanded) ? False : True
                 if (!expanded)
-                    addLocationsFilterToDrawer(TaskController.sFavouriteLocations);
+                    addLocationsFilterToDrawer(DataManager.getInstance().findAllLocations());
                 break;
             case Constants.COLLAPSIBLE_ORDER_LIST:
                 toRemoveItems = mOrderListIds;
@@ -610,20 +612,20 @@ public class MainAndFilterDrawerConfigurator {
 
     // --------------------- Add Items To Drawer ---------------------
 
-    private void addTaskListToFilterDrawer(ArrayList<TaskList> listTaskList){
+    private void addTaskListToFilterDrawer(RealmResults<TaskList> listTaskList){
         addItemListToDrawer(new ArrayList<BasicType>(listTaskList), mFilterDrawer,
                 false, R.drawable.ic_stop, Constants.COLLAPSIBLE_TASK_LIST, 2);
     }
-    private void addTaskListToMainDrawer(ArrayList<TaskList> listTaskList, boolean add, int level){
+    private void addTaskListToMainDrawer(RealmResults<TaskList> listTaskList, boolean add, int level){
         addItemListToDrawer(new ArrayList<BasicType>(listTaskList), mMainDrawer,
                 add, R.drawable.ic_stop,
                 (level==1) ? Constants.LIST_SEPARATOR : Constants.COLLAPSIBLE_TASK_LIST, level);
     }
-    private void addLabelsToFilterDrawer(ArrayList<Label> listLabels){
+    private void addLabelsToFilterDrawer(RealmResults<Label> listLabels){
         addItemListToDrawer(new ArrayList<BasicType>(listLabels), mFilterDrawer,
                 false, R.drawable.ic_label_filled, Constants.COLLAPSIBLE_LABEL_LIST, 2);
     }
-    private void addLocationsFilterToDrawer(ArrayList<Location> favLocations){
+    private void addLocationsFilterToDrawer(RealmResults<Location> favLocations){
         addItemListToDrawer(new ArrayList<BasicType>(favLocations), mFilterDrawer,
                 false, R.drawable.ic_place, Constants.COLLAPSIBLE_LOCATION_LIST, 2);
     }

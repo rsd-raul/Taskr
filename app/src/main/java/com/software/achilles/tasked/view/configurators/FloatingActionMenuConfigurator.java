@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
@@ -170,7 +171,7 @@ public class FloatingActionMenuConfigurator {
             public void onClick(View view) {
                 // Retrieving the current Task and extract data for intent
                 int positionOnViewPager = DashboardFragment.mViewPager.getCurrentItem();
-                TaskList taskList = TaskController.sTaskLists.get(positionOnViewPager);
+                TaskList taskList = DataManager.getInstance().findAllTaskList().get(positionOnViewPager);
                 String title = activity.getString(R.string.shareList) +": "+taskList.getTitle();
 
                 // Create the Intent and put the info to share

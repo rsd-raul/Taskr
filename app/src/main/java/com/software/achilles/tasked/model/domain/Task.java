@@ -109,13 +109,13 @@ public class Task extends RealmObject implements BasicType {
 
     // -------------------------- To String --------------------------
 
-    @Override
-    public String toString() {
-        // Access resources from Android in order to translate at sharing
-        Resources resources = FloatingActionMenuConfigurator.activity.getResources();
-        return (finished ? resources.getString(R.string.task_done) : "") + getTitle() +
-                (dueDate == null ? "" : " - " + dateToText(dueDate));
-    }
+//    @Override
+//    public String toString() {
+//        // Access resources from Android in order to translate at sharing
+//        Resources resources = FloatingActionMenuConfigurator.activity.getResources();
+//        return (finished ? resources.getString(R.string.task_done) : "") + getTitle() +
+//                (dueDate == null ? "" : " - " + dateToText(dueDate));
+//    }
 
     // ------------------------ Other methods ------------------------
 

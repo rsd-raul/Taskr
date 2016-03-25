@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     public FloatingActionMenuConfigurator mFamConfigurator;
     public MainAndFilterDrawerConfigurator mDrawersConfigurator;
 
-    private TaskController mTaskController = TaskController.getInstance();
-
     // ------------------------- Constructor -------------------------
 
     @Override
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
 
         // If first time, launch the introduction
-        if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Defaults.FIRST_TIME, true)){
+        if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Defaults.FIRST_TIME, true)) {
             // Set the value to false
             PreferencesHelper.setShaPrefBoolean(this, Keys.FIRST_TIME, false, true);
             // launchIntro();
@@ -64,9 +62,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "first time", Toast.LENGTH_LONG).show();
 
             // Data population for testing and introduction
-//            DataManager.getInstance().firstTimePopulation();
+            DataManager.getInstance().firstTimePopulation();
         }
-        DataManager.getInstance().firstTimePopulation();
 
         // Set ActionBar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);

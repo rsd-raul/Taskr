@@ -42,13 +42,21 @@ public class DataManager {
         this.mDatabaseHelper = new DatabaseHelper();
     }
 
-    public ArrayList<TaskList> findAllTaskList(){
+    public RealmResults<TaskList> findAllTaskList(){
         return mDatabaseHelper.findAllTaskList();
+    }
+
+    public RealmResults<Label> findAllLabels(){
+        return mDatabaseHelper.findAllLabels();
+    }
+
+    public RealmResults<Location> findAllLocations(){
+        return mDatabaseHelper.findAllLocations();
     }
 
     public int getTaskListPositionById(int id){
         // Get the current task lists
-        ArrayList<TaskList> taskLists = mDatabaseHelper.findAllTaskList();
+        RealmResults<TaskList> taskLists = mDatabaseHelper.findAllTaskList();
 
         // Gives you the position of a TaskList based on its id
         for (int position = 0; position < taskLists.size(); position++)
@@ -73,7 +81,7 @@ public class DataManager {
 
         String[] titles = new String[]{"Unbelievable long task", "Short task"};
         String[] descriptions = new String[]{"Unbelievable long description, like, really long",
-                "Short description", null};
+                "Short description",null};
         Date[] dueDates = new Date[]{Calendar.getInstance().getTime(), null};
 
         String[] listTitles = new String[]{"Really long list", "Short list"};
@@ -99,46 +107,41 @@ public class DataManager {
         while (amountList > 0) {
             String listTitle = listTitles[random.nextInt(2)];
             taskListRepository.add(new TaskList(listTitle, null));
+            TaskList taskList = taskListRepository.findLast();
 
             RealmList<Task> aux = new RealmList<>();
             int amountTaskWhile = amountTasks;
 
             //TODO aqui nos quedamos, tenemos que popular para cada lista X tasks
-//            while (amountTaskWhile > 0) {
-//                Boolean finished = random.nextBoolean();
-//                Boolean starred = random.nextBoolean();
-//                String title = titles[random.nextInt(2)];
-//                String description = descriptions[random.nextInt(3)];
-//                Date dueDate = dueDates[random.nextInt(2)];
-//                RealmList<Label> auxLabels = new RealmList<>();
-//                Integer labelQuantity = labelQuantities[random.nextInt(4)];
-//                Location location = locations.get(random.nextInt(3));
-//
-//                for (int i = 0; i < labelQuantity; i++)
-//                    auxLabels.add(labels.get(random.nextInt(4)));
-//
-//                taskRepository.add(new Task(title, finished, starred, description, dueDate, location, auxLabels));
-//
-//                amountTaskWhile--;
-//            }
+            while (amountTaskWhile > 0) {
+                Boolean finished = random.nextBoolean();
+                Boolean starred = random.nextBoolean();
+                String title = titles[random.nextInt(2)];
+                String description = descriptions[random.nextInt(3)];
+                Date dueDate = dueDates[random.nextInt(2)];
+                RealmList<Label> auxLabels = new RealmList<>();
+                Integer labelQuantity = labelQuantities[random.nextInt(4)];
+                Location location = locations.get(random.nextInt(3));
 
-//            String listTitle = listTitles[random.nextInt(2)];
-//            TaskList taskList = new TaskList(listTitle, aux);
-//            taskLists.add(taskList);
+                for (int i = 0; i < labelQuantity; i++)
+                    auxLabels.add(labels.get(random.nextInt(4)));
+
+                Task task = new Task(title, finished, starred, description, dueDate, location, auxLabels);
+                taskRepository.add(task);
+                taskListRepository.addTaskToTaskList(taskList.getId(), task);
+
+                amountTaskWhile--;
+            }
             amountList--;
         }
 
-
-
-        Log.d("POPULATION: ", "COMPLETED");
+        Log.d("POPULATION: ", "STARTED");
         Log.d("TASKS: ", taskRepository.findAll() + "");
         Log.d("TASK_LISTS: ", taskListRepository.findAll() + "");
         Log.d("LOCATIONS: ", locationRepository.findAll() + "");
         Log.d("LABELS: ", labelRepository.findAll() + "");
-//        Log.d("myApp", "CONTROLLER POPULATED" + " " +
-//                taskLists.size() + " " +
-//                taskLists.get(0).getTasks().size() + " " +
-//                labels.size());
+        Log.d("POPULATION: ", "COMPLETED");
+
     }
 
 // ------------------------ NOT TESTED ------------------------ NOT TESTED ------------------------

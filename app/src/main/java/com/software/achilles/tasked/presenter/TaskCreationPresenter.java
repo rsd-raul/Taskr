@@ -11,6 +11,8 @@ import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmResults;
+
 public class TaskCreationPresenter implements Presenter<TaskCreationFragment, TaskCreationPresenter> {
 
     // --------------------------- Values ----------------------------
@@ -63,7 +65,7 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
         List<String> taskListTitles = new ArrayList<>();
 
         // Get data for setting the ViewPager
-        ArrayList<TaskList> taskList = dataManager.findAllTaskList();
+        RealmResults<TaskList> taskList = dataManager.findAllTaskList();
 
         // Format that data for the spinner
         for (int i = 0; i < taskList.size(); i++)

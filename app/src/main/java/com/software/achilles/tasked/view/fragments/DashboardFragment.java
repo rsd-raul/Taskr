@@ -19,6 +19,8 @@ import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
 
+import io.realm.RealmResults;
+
 public class DashboardFragment extends Fragment {
 
     // --------------------------- Values ----------------------------
@@ -59,7 +61,7 @@ public class DashboardFragment extends Fragment {
 
     // -------------------------- View Pager -------------------------
 
-    public void setupViewPager(ArrayList<TaskList> taskLists) {
+    public void setupViewPager(RealmResults<TaskList> taskLists) {
         MainActivity mMainActivity = ((MainActivity) getActivity());
         mViewPager = (ViewPager) mMainActivity.findViewById(R.id.viewpager);
 
