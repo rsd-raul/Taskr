@@ -23,19 +23,22 @@ public class LocationRepository implements BaseRepository<Location> {
 
     // ----------------------------- Add -----------------------------
 
-    public void add(Location location) {
+    public void save(Location location) {
         Realm realm = Realm.getDefaultInstance();
         PrimaryKeyFactory.initialize(realm);
 
         realm.beginTransaction();
 
-        Location temp = realm.createObject(Location.class);
-        temp.setId(PrimaryKeyFactory.nextKey());
-        temp.setTitle(location.getTitle());
-        temp.setAddress(location.getAddress());
-        temp.setLatitude(location.getLatitude());
-        temp.setLongitude(location.getLongitude());
-        temp.setFavourite(location.isFavourite());
+//        Location temp = realm.createObject(Location.class);
+//        temp.setId(PrimaryKeyFactory.nextKey());
+//        temp.setTitle(location.getTitle());
+//        temp.setAddress(location.getAddress());
+//        temp.setLatitude(location.getLatitude());
+//        temp.setLongitude(location.getLongitude());
+//        temp.setFavourite(location.isFavourite());
+        if(location.getId() == 0)
+            location.setId(PrimaryKeyFactory.nextKey());
+        realm.copyToRealmOrUpdate(location);
 
         realm.commitTransaction();
     }

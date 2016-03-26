@@ -1,6 +1,9 @@
 package com.software.achilles.tasked.model.repositiories;
 
+import android.util.Log;
+
 import com.software.achilles.tasked.model.domain.Label;
+import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -31,16 +34,19 @@ public class LabelRepository implements BaseRepository<Label> {
 
     // ----------------------------- Add -----------------------------
 
-    public void add(Label label /*, OnAddLabelCallback callback*/) {
+    public void save(Label label /*, OnAddLabelCallback callback*/) {
         Realm realm = Realm.getDefaultInstance();
         PrimaryKeyFactory.initialize(realm);
 
         realm.beginTransaction();
 
-        Label temp = realm.createObject(Label.class);
-        temp.setId(PrimaryKeyFactory.nextKey());
-        temp.setTitle(label.getTitle());
-        temp.setColorRes(label.getColorRes());
+//        Label temp = realm.createObject(Label.class);
+//        temp.setId(PrimaryKeyFactory.nextKey());
+//        temp.setTitle(label.getTitle());
+//        temp.setColorRes(label.getColorRes());
+        if(label.getId() == 0)
+            label.setId(PrimaryKeyFactory.nextKey());
+        realm.copyToRealmOrUpdate(label);
 
         realm.commitTransaction();
 

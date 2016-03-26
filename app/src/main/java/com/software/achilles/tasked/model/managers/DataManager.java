@@ -67,6 +67,8 @@ public class DataManager {
     }
 
     public void firstTimePopulation(){
+        Log.d("POPULATION: ", "STARTED");
+
         TaskRepository taskRepository = new TaskRepository();
         LabelRepository labelRepository = new LabelRepository();
         TaskListRepository taskListRepository = new TaskListRepository();
@@ -76,12 +78,11 @@ public class DataManager {
         int amountTasks = 15;
         RealmList<TaskList> taskLists = new RealmList<>();
 
-
-        // Fields to switch and use
+        // Fields to switch and use randomly
 
         String[] titles = new String[]{"Unbelievable long task", "Short task"};
         String[] descriptions = new String[]{"Unbelievable long description, like, really long",
-                "Short description",null};
+                "Short description", null};
         Date[] dueDates = new Date[]{Calendar.getInstance().getTime(), null};
 
         String[] listTitles = new String[]{"Really long list", "Short list"};
@@ -94,25 +95,27 @@ public class DataManager {
         Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
 
         for (int i = 0; i < locationTitles.length; i++)
-            locationRepository.add(new Location(locationTitles[i], "", i, -i, true));
+            locationRepository.save(new Location(locationTitles[i], "", i, -i, true));
         RealmResults<Location> locations = locationRepository.findAll();
 
+        Log.d("LOCATIONS: ", locationRepository.findAll() + "");
+
         for (int i = 0; i < labelTitles.length; i++)
-            labelRepository.add(new Label(labelTitles[i], labelColors[i]));
+            labelRepository.save(new Label(labelTitles[i], labelColors[i]));
         RealmResults<Label> labels = labelRepository.findAll();
 
+        Log.d("LABELS: ", labelRepository.findAll() + "");
 
 
         Random random = new Random();
         while (amountList > 0) {
             String listTitle = listTitles[random.nextInt(2)];
-            taskListRepository.add(new TaskList(listTitle, null));
+            taskListRepository.save(new TaskList(listTitle, null));
             TaskList taskList = taskListRepository.findLast();
 
             RealmList<Task> aux = new RealmList<>();
             int amountTaskWhile = amountTasks;
 
-            //TODO aqui nos quedamos, tenemos que popular para cada lista X tasks
             while (amountTaskWhile > 0) {
                 Boolean finished = random.nextBoolean();
                 Boolean starred = random.nextBoolean();
@@ -127,7 +130,7 @@ public class DataManager {
                     auxLabels.add(labels.get(random.nextInt(4)));
 
                 Task task = new Task(title, finished, starred, description, dueDate, location, auxLabels);
-                taskRepository.add(task);
+                taskRepository.save(task);
                 taskListRepository.addTaskToTaskList(taskList.getId(), task);
 
                 amountTaskWhile--;
@@ -135,11 +138,10 @@ public class DataManager {
             amountList--;
         }
 
-        Log.d("POPULATION: ", "STARTED");
         Log.d("TASKS: ", taskRepository.findAll() + "");
         Log.d("TASK_LISTS: ", taskListRepository.findAll() + "");
-        Log.d("LOCATIONS: ", locationRepository.findAll() + "");
-        Log.d("LABELS: ", labelRepository.findAll() + "");
+
+
         Log.d("POPULATION: ", "COMPLETED");
 
     }

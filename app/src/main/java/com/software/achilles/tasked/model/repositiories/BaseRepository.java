@@ -9,7 +9,7 @@ public interface BaseRepository<V extends RealmObject> {
 
     RealmResults<V> findAll();
 
-    void add(V location);
+    void save(V domain);
 
     void deleteById(long id);
 

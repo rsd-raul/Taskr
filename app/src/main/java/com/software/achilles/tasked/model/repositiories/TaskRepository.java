@@ -30,13 +30,12 @@ public class TaskRepository implements BaseRepository<Task> {
     // ----------------------------- Add -----------------------------
 
     @Override
-    public void add(Task task) {
+    public void save(Task task) {
         Realm realm = Realm.getDefaultInstance();
         PrimaryKeyFactory.initialize(realm);
 
         realm.beginTransaction();
 
-        // Failing
 //        Task temp = realm.createObject(Task.class);
 //        temp.setId(PrimaryKeyFactory.nextKey());
 //        temp.setTitle(task.getTitle());
@@ -47,9 +46,8 @@ public class TaskRepository implements BaseRepository<Task> {
 //        temp.setLocation(task.getLocation());
 //        RealmList<Label> labels = task.getLabels();
 //        temp.setLabels(labels != null ? labels : new RealmList<Label>());
-
-        // Working
-        task.setId(PrimaryKeyFactory.nextKey());
+        if(task.getId() == 0)
+            task.setId(PrimaryKeyFactory.nextKey());
         realm.copyToRealmOrUpdate(task);
 
         realm.commitTransaction();

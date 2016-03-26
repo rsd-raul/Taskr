@@ -35,17 +35,22 @@ public class TaskListRepository implements BaseRepository<TaskList> {
     // ----------------------------- Add -----------------------------
 
     @Override
-    public void add(TaskList taskList) {
+    public void save(TaskList taskList) {
         Realm realm = Realm.getDefaultInstance();
         PrimaryKeyFactory.initialize(realm);
 
         realm.beginTransaction();
 
-        TaskList temp = realm.createObject(TaskList.class);
-        temp.setId(PrimaryKeyFactory.nextKey());
-        temp.setTitle(taskList.getTitle());
-        RealmList<Task> tasks = taskList.getTasks();
-        temp.setTasks(tasks != null ? tasks : new RealmList<Task>());
+//        TaskList temp = realm.createObject(TaskList.class);
+//        temp.setId(PrimaryKeyFactory.nextKey());
+//        temp.setTitle(taskList.getTitle());
+//        RealmList<Task> tasks = taskList.getTasks();
+//        temp.setTasks(tasks != null ? tasks : new RealmList<Task>());
+        if(taskList.getId() == 0)
+            taskList.setId(PrimaryKeyFactory.nextKey());
+        if(taskList.getTasks() == null)
+            taskList.setTasks(new RealmList<Task>());
+        realm.copyToRealmOrUpdate(taskList);
 
         realm.commitTransaction();
     }

@@ -28,9 +28,13 @@ public class Constants {
     public static final int DUE_TODAY = 14;
     public static final int DUE_THIS_WEEK = 15;
 
-    public static final int COLLAPSIBLE_TASK_LIST = 9;
-    public static final int COLLAPSIBLE_LABEL_LIST = 12;
-    public static final int COLLAPSIBLE_LOCATION_LIST = 16;
+//    public static final int COLLAPSIBLE_TASK_LIST = 9;            // DEPRECATED
+//    public static final int COLLAPSIBLE_LABEL_LIST = 12;          // DEPRECATED
+//    public static final int COLLAPSIBLE_LOCATION_LIST = 16;       // DEPRECATED
+    // If the number is too short it collapses with the id of the actual elements and misbehaves
+    public static final int COLLAPSIBLE_TASK_LIST =  2147483001;
+    public static final int COLLAPSIBLE_LABEL_LIST = 2147483002;
+    public static final int COLLAPSIBLE_LOCATION_LIST = 2147483003;
 
     public static final int COLLAPSIBLE_ORDER_LIST = 17;
     public static final int ALPHABETICAL = 18;
