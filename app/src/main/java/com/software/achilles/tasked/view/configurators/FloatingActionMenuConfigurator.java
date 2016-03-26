@@ -170,8 +170,8 @@ public class FloatingActionMenuConfigurator {
             @Override
             public void onClick(View view) {
                 // Retrieving the current Task and extract data for intent
-                int positionOnViewPager = DashboardFragment.mViewPager.getCurrentItem();
-                TaskList taskList = DataManager.getInstance().findAllTaskList().get(positionOnViewPager);
+                int posOnPager = DashboardFragment.mViewPager.getCurrentItem();
+                TaskList taskList = DataManager.getInstance().findTaskListByPosition(posOnPager);
                 String title = activity.getString(R.string.shareList) +": "+taskList.getTitle();
 
                 // Create the Intent and put the info to share

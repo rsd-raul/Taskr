@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
+import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -25,6 +26,12 @@ public class TaskRepository implements BaseRepository<Task> {
         Realm realm = Realm.getDefaultInstance();
 
         return realm.where(Task.class).findAll();
+    }
+
+    public RealmList<Task> findAllByTaskListPosition(int position){
+        Realm realm = Realm.getDefaultInstance();
+
+        return realm.where(TaskList.class).findAll().get(position).getTasks();
     }
 
     // ----------------------------- Add -----------------------------

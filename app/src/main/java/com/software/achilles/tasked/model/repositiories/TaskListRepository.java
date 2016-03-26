@@ -25,10 +25,16 @@ public class TaskListRepository implements BaseRepository<TaskList> {
         return realm.where(TaskList.class).findAll();
     }
 
+    public TaskList findByPosition(int position){
+        Realm realm = Realm.getDefaultInstance();
+
+        return findAll().get(position);
+    }
+
     public TaskList findLast() {
         Realm realm = Realm.getDefaultInstance();
 
-        RealmResults<TaskList> tl = realm.where(TaskList.class).findAll();
+        RealmResults<TaskList> tl = findAll();
         return tl.get(tl.size()-1);
     }
 

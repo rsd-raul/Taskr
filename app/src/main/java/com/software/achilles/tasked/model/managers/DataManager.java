@@ -46,6 +46,14 @@ public class DataManager {
         return mDatabaseHelper.findAllTaskList();
     }
 
+    public RealmList<Task> findAllTasksByTaskListPosition(int position){
+        return mDatabaseHelper.findAllTasksByTaskListPosition(position);
+    }
+
+    public TaskList findTaskListByPosition(int position){
+        return mDatabaseHelper.findTaskListByPosition(position);
+    }
+
     public RealmResults<Label> findAllLabels(){
         return mDatabaseHelper.findAllLabels();
     }
@@ -55,15 +63,7 @@ public class DataManager {
     }
 
     public int getTaskListPositionById(int id){
-        // Get the current task lists
-        RealmResults<TaskList> taskLists = mDatabaseHelper.findAllTaskList();
-
-        // Gives you the position of a TaskList based on its id
-        for (int position = 0; position < taskLists.size(); position++)
-            if(taskLists.get(position).getId() == id)
-                return position;
-
-        return -1;
+        return mDatabaseHelper.findTaskListPositionById(id);
     }
 
     public void firstTimePopulation(){

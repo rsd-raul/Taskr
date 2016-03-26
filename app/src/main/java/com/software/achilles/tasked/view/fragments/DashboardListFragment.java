@@ -17,9 +17,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.controllers.TaskController;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
@@ -40,8 +38,8 @@ public class DashboardListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState) {
         // Retrieve the TaskList index from the Activity and obtain its tasks
-        int positionOnViewPager = getArguments().getInt(Constants.TASK_LIST + "");
-        List<Task> tasks = DataManager.getInstance().findAllTaskList().get(positionOnViewPager).getTasks();
+        int posOnPager = getArguments().getInt(Constants.TASK_LIST + "");
+        List<Task> tasks = DataManager.getInstance().findAllTasksByTaskListPosition(posOnPager);
 
         // Setup the recycler view with the list of Tasks
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
