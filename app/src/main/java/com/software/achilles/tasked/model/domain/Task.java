@@ -26,9 +26,9 @@ public class Task extends RealmObject implements BasicType {
     @Index
     @Required
     private String title;
-    private boolean finished, starred;
-    private String description;
-    private Date dueDate;
+    private boolean completed, starred;
+    private String notes;
+    private Date due;
     private Location location;
     private RealmList<Label> labels;
 
@@ -38,13 +38,13 @@ public class Task extends RealmObject implements BasicType {
     }
 
     // TODO no id in constructor
-    public Task(@NonNull String title, boolean finished, boolean starred, String description,
-                Date dueDate, Location location, RealmList<Label> labels) {
-        this.finished = finished;
+    public Task(@NonNull String title, boolean completed, boolean starred, String notes,
+                Date due, Location location, RealmList<Label> labels) {
+        this.completed = completed;
         this.starred = starred;
         this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
+        this.notes = notes;
+        this.due = due;
         this.location = location;
         this.labels = labels;
     }
@@ -65,25 +65,25 @@ public class Task extends RealmObject implements BasicType {
         this.title = title;
     }
 
-    public boolean isFinished() {
-        return finished;
+    public boolean isCompleted() {
+        return completed;
     }
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public String getNotes() {
+        return notes;
     }
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Date getDue() {
+        return due;
+    }
+    public void setDue(Date due) {
+        this.due = due;
     }
 
     public Location getLocation() {
@@ -113,8 +113,8 @@ public class Task extends RealmObject implements BasicType {
 //    public String toString() {
 //        // Access resources from Android in order to translate at sharing
 //        Resources resources = FloatingActionMenuConfigurator.activity.getResources();
-//        return (finished ? resources.getString(R.string.task_done) : "") + getTitle() +
-//                (dueDate == null ? "" : " - " + dateToText(dueDate));
+//        return (completed ? resources.getString(R.string.task_done) : "") + getTitle() +
+//                (due == null ? "" : " - " + dateToText(due));
 //    }
 
     // ------------------------ Other methods ------------------------

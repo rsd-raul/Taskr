@@ -121,7 +121,7 @@ public class DashboardListFragment extends Fragment {
             CheckBox checkDone = holder.mCheckDone;
 
             // Checked if task is done
-            if (task.isFinished())
+            if (task.isCompleted())
                 checkDone.setChecked(true);
 
             // On click update the status of the Task
@@ -154,7 +154,7 @@ public class DashboardListFragment extends Fragment {
 
             // ------------------------ Date Control -------------------------
 
-            Date dueDate = task.getDueDate();
+            Date dueDate = task.getDue();
             ImageButton alarm = holder.mAlarm;
 
             // Change icon and color if an alarm is set

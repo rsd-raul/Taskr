@@ -28,7 +28,6 @@ public class DashboardFragment extends Fragment {
     // ------------------------- Attributes --------------------------
 
     public static ViewPager mViewPager;
-    private DashboardPresenter mPresenter;
 
     // ------------------------- Constructor -------------------------
 
@@ -42,22 +41,21 @@ public class DashboardFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Initialize presenter
-        mPresenter = DashboardPresenter.getInstance().attachView(this);
+        DashboardPresenter.getInstance().attachView(this);
 
         // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
         ThreadManager.launchIfPossible(new Runnable() {
             public void run() {
-                mPresenter.setupLayout();
+                DashboardPresenter.getInstance().setupLayout();
             }
         });
     }
 
     @Override
     public void onDestroy() {
-        mPresenter.destroyPresenter();
+        DashboardPresenter.destroyPresenter();
         super.onDestroy();
     }
-
 
     // -------------------------- View Pager -------------------------
 

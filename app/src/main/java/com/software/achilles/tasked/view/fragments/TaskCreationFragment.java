@@ -37,7 +37,6 @@ public class TaskCreationFragment extends Fragment {
     // ------------------------- Attributes --------------------------
 
     private MainActivity mMainActivity;
-    private TaskCreationPresenter mPresenter;
 
     private Spinner mSpinner;
     private FloatingActionButton mFabSaveAndVoice;
@@ -58,12 +57,12 @@ public class TaskCreationFragment extends Fragment {
         mMainActivity = ((MainActivity) getActivity());
 
         // Initialize presenter
-        mPresenter = TaskCreationPresenter.getInstance().attachView(this);
+        TaskCreationPresenter.getInstance().attachView(this);
 
         // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
         ThreadManager.launchIfPossible(new Runnable() {
             public void run() {
-                mPresenter.setupLayout();
+                TaskCreationPresenter.getInstance().setupLayout();
             }
         });
     }
@@ -141,7 +140,7 @@ public class TaskCreationFragment extends Fragment {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.modifiersOnClick(v);
+                TaskCreationPresenter.getInstance().modifiersOnClick(v);
             }};
 
         mDescription.setOnClickListener(listener);

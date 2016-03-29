@@ -66,6 +66,9 @@ public class DataManager {
         return mDatabaseHelper.findTaskListPositionById(id);
     }
 
+    // TODO Remove everything and include "tips and tricks" tasks
+    // If the user doesn't have any labels, add 3/4 by default
+    // If user doesn't have locations, add "Home" and "Work" by default and ask to initialize.
     public void firstTimePopulation(){
         Log.d("POPULATION: ", "STARTED");
 
