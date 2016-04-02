@@ -50,11 +50,8 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
     // ---------------------------- Layout ---------------------------
 
     public void setupLayout(){
-        // TODO esto va aqui?
-        DataManager dataManager = new DataManager();
-
         // Get data for setting the ViewPager
-        RealmResults<TaskList> taskList = dataManager.findAllTaskList();
+        RealmResults<TaskList> taskList = DataManager.getInstance().findAllTaskList();
 
         // Setup the viewpager
         mFragment.setupViewPager(taskList);
@@ -69,11 +66,20 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
     // ---------------------------- Menu -----------------------------
 
     public static void filterByText(String query, Boolean searchDeep){
-        ArrayList<Task> tasks = DataManager.getInstance().filterByText(query, searchDeep);
+//        ArrayList<Task> tasks = DataManager.getInstance().filterByText(query, searchDeep);
 //        mFragment.updateViewPagerList(tasks);
     }
 
     // -------------------------- Use Cases --------------------------
+
+    public void taskModifier(int uniqueParameterId, Task task){
+        if(uniqueParameterId == Constants.DASH_TASK)
+            //GO to details
+            return;
+
+        DataManager.getInstance().dashTaskModifier(uniqueParameterId, task);
+    }
+
     // -------------------------- Interface --------------------------
     // --------------------- Add Task Interface ----------------------
     // --------------------------- Details ---------------------------

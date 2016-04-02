@@ -25,75 +25,66 @@ public class TaskListRepository implements BaseRepository<TaskList> {
         return realm.where(TaskList.class).findAll();
     }
 
-    public TaskList findByPosition(int position){
-        Realm realm = Realm.getDefaultInstance();
+    public TaskList findByPosition(int position) {
 
         return findAll().get(position);
     }
 
     public TaskList findLast() {
-        Realm realm = Realm.getDefaultInstance();
+        RealmResults<TaskList> taskLists = findAll();
 
-        RealmResults<TaskList> tl = findAll();
-        return tl.get(tl.size()-1);
+        return taskLists.get(taskLists.size() - 1);
     }
 
     // ----------------------------- Add -----------------------------
 
     @Override
-    public void save(TaskList taskList) {
-        Realm realm = Realm.getDefaultInstance();
-        PrimaryKeyFactory.initialize(realm);
+    public void save(final TaskList taskList) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                if (taskList.getId() == 0) {
+                    PrimaryKeyFactory.initialize(realm);
+                    taskList.setId(PrimaryKeyFactory.nextKey());
+                } else if (taskList.getTasks() == null)
+                    taskList.setTasks(new RealmList<Task>());
 
-        realm.beginTransaction();
-
-//        TaskList temp = realm.createObject(TaskList.class);
-//        temp.setId(PrimaryKeyFactory.nextKey());
-//        temp.setTitle(taskList.getTitle());
-//        RealmList<Task> tasks = taskList.getTasks();
-//        temp.setTasks(tasks != null ? tasks : new RealmList<Task>());
-        if(taskList.getId() == 0)
-            taskList.setId(PrimaryKeyFactory.nextKey());
-        if(taskList.getTasks() == null)
-            taskList.setTasks(new RealmList<Task>());
-        realm.copyToRealmOrUpdate(taskList);
-
-        realm.commitTransaction();
+                realm.copyToRealmOrUpdate(taskList);
+            }
+        });
     }
 
-    public void addTaskToTaskList(long taskListId, Task task){
-        Realm realm = Realm.getDefaultInstance();
-
-        realm.beginTransaction();
-
-        findOne(taskListId).getTasks().add(task);
-
-        realm.commitTransaction();
+    public void addTaskToTaskList(final long taskListId, final Task task) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                findOne(taskListId).getTasks().add(task);
+            }
+        });
     }
 
     // --------------------------- Delete ----------------------------
 
     @Override
-    public void deleteById(long id) {
-        Realm realm = Realm.getDefaultInstance();
-
-        realm.beginTransaction();
-
-        TaskList taskList = realm.where(TaskList.class).equalTo("id", id).findFirst();
-        taskList.removeFromRealm();
-
-        realm.commitTransaction();
+    public void deleteById(final long id) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                TaskList taskList = realm.where(TaskList.class).equalTo("id", id).findFirst();
+                taskList.removeFromRealm();
+            }
+        });
     }
 
     @Override
-    public void deleteByPosition(int position) {
-        Realm realm = Realm.getDefaultInstance();
+    public void deleteByPosition(final int position) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults results = realm.where(TaskList.class).findAll();
+                results.remove(position);
 
-        realm.beginTransaction();
-
-        RealmResults results = realm.where(TaskList.class).findAll();
-        results.remove(position);
-
-        realm.commitTransaction();
+            }
+        });
     }
 }

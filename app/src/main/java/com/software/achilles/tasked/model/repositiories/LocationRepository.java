@@ -23,47 +23,41 @@ public class LocationRepository implements BaseRepository<Location> {
 
     // ----------------------------- Add -----------------------------
 
-    public void save(Location location) {
-        Realm realm = Realm.getDefaultInstance();
-        PrimaryKeyFactory.initialize(realm);
+    public void save(final Location location) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                if (location.getId() == 0) {
+                    PrimaryKeyFactory.initialize(realm);
+                    location.setId(PrimaryKeyFactory.nextKey());
+                }
 
-        realm.beginTransaction();
-
-//        Location temp = realm.createObject(Location.class);
-//        temp.setId(PrimaryKeyFactory.nextKey());
-//        temp.setTitle(location.getTitle());
-//        temp.setAddress(location.getAddress());
-//        temp.setLatitude(location.getLatitude());
-//        temp.setLongitude(location.getLongitude());
-//        temp.setFavourite(location.isFavourite());
-        if(location.getId() == 0)
-            location.setId(PrimaryKeyFactory.nextKey());
-        realm.copyToRealmOrUpdate(location);
-
-        realm.commitTransaction();
+                realm.copyToRealmOrUpdate(location);
+            }
+        });
     }
 
     // --------------------------- Delete ----------------------------
 
-    public void deleteById(long id) {
-        Realm realm = Realm.getDefaultInstance();
-
-        realm.beginTransaction();
-
-        Location location = realm.where(Location.class).equalTo("id", id).findFirst();
-        location.removeFromRealm();
-
-        realm.commitTransaction();
+    public void deleteById(final long id) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Location location = realm.where(Location.class).equalTo("id", id).findFirst();
+                location.removeFromRealm();
+            }
+        });
     }
 
-    public void deleteByPosition(int position) {
-        Realm realm = Realm.getDefaultInstance();
+    public void deleteByPosition(final int position) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults results = realm.where(Location.class).findAll();
+                results.remove(position);
 
-        realm.beginTransaction();
-
-        RealmResults results = realm.where(Location.class).findAll();
-        results.remove(position);
-
-        realm.commitTransaction();
+                realm.commitTransaction();
+            }
+        });
     }
 }

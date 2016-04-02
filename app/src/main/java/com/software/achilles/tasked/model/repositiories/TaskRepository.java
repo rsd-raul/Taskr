@@ -1,11 +1,11 @@
 package com.software.achilles.tasked.model.repositiories;
 
-import android.util.Log;
-
-import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
+import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.util.Constants;
+
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
@@ -37,52 +37,64 @@ public class TaskRepository implements BaseRepository<Task> {
     // ----------------------------- Add -----------------------------
 
     @Override
-    public void save(Task task) {
-        Realm realm = Realm.getDefaultInstance();
-        PrimaryKeyFactory.initialize(realm);
+    public void save(final Task task) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                if (task.getId() == 0) {
+                    PrimaryKeyFactory.initialize(realm);
+                    task.setId(PrimaryKeyFactory.nextKey());
+                }
 
-        realm.beginTransaction();
-
-//        Task temp = realm.createObject(Task.class);
-//        temp.setId(PrimaryKeyFactory.nextKey());
-//        temp.setTitle(task.getTitle());
-//        temp.setFinished(task.isFinished());
-//        temp.setStarred(task.isStarred());
-//        temp.setDescription(task.getDescription());
-//        temp.setDueDate(task.getDueDate());
-//        temp.setLocation(task.getLocation());
-//        RealmList<Label> labels = task.getLabels();
-//        temp.setLabels(labels != null ? labels : new RealmList<Label>());
-        if(task.getId() == 0)
-            task.setId(PrimaryKeyFactory.nextKey());
-        realm.copyToRealmOrUpdate(task);
-
-        realm.commitTransaction();
+                realm.copyToRealmOrUpdate(task);
+            }
+        });
     }
 
     // --------------------------- Delete ----------------------------
 
     @Override
-    public void deleteById(long id) {
-        Realm realm = Realm.getDefaultInstance();
-
-        realm.beginTransaction();
-
-        Task task = realm.where(Task.class).equalTo("id", id).findFirst();
-        task.removeFromRealm();
-
-        realm.commitTransaction();
+    public void deleteById(final long id) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Task task = realm.where(Task.class).equalTo("id", id).findFirst();
+                task.removeFromRealm();
+            }
+        });
     }
 
     @Override
-    public void deleteByPosition(int position) {
-        Realm realm = Realm.getDefaultInstance();
+    public void deleteByPosition(final int position) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults results = realm.where(Task.class).findAll();
+                results.remove(position);
+            }
+        });
+    }
 
-        realm.beginTransaction();
+    public void taskModifier(final int uniqueParameterId, final Task task){
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                switch (uniqueParameterId){
 
-        RealmResults results = realm.where(Task.class).findAll();
-        results.remove(position);
+                    case Constants.DASH_DONE:
+                        task.setCompleted(!task.isCompleted());
+                        break;
 
-        realm.commitTransaction();
+                    case Constants.DASH_FAVE:
+                        task.setStarred(!task.isStarred());
+                        break;
+
+                    case Constants.DASH_DATE:
+//                        Retrieve the date from SOME place (DataManager?) and save it
+                        break;
+                }
+            }
+        });
     }
 }
+

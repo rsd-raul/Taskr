@@ -13,6 +13,7 @@ import com.software.achilles.tasked.model.repositiories.LocationRepository;
 import com.software.achilles.tasked.model.repositiories.TaskListRepository;
 import com.software.achilles.tasked.model.repositiories.TaskRepository;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
+import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,8 +30,9 @@ public class DataManager {
     // ------------------------- Attributes --------------------------
 
     private static DataManager instance;
-
     private DatabaseHelper mDatabaseHelper;
+
+    // ------------------------- Constructor -------------------------
 
     public static DataManager getInstance() {
         if(instance == null)
@@ -38,9 +40,11 @@ public class DataManager {
         return instance;
     }
 
-    public DataManager() {
+    private DataManager() {
         this.mDatabaseHelper = new DatabaseHelper();
     }
+
+    // ---------------------------- Find -----------------------------
 
     public RealmResults<TaskList> findAllTaskList(){
         return mDatabaseHelper.findAllTaskList();
@@ -62,92 +66,29 @@ public class DataManager {
         return mDatabaseHelper.findAllLocations();
     }
 
+    // ---------------------------- Save -----------------------------
+
+    public void saveTask(Task task){
+        mDatabaseHelper.saveTask(task);
+    }
+
+    // --------------------------- Delete ----------------------------
+
+    // ----------------------------- Get -----------------------------
+
     public int getTaskListPositionById(int id){
         return mDatabaseHelper.findTaskListPositionById(id);
     }
 
-    // TODO Remove everything and include "tips and tricks" tasks
-    // If the user doesn't have any labels, add 3/4 by default
-    // If user doesn't have locations, add "Home" and "Work" by default and ask to initialize.
-    public void firstTimePopulation(){
-        Log.d("POPULATION: ", "STARTED");
+    // -------------------------- Use Cases --------------------------
 
-        TaskRepository taskRepository = new TaskRepository();
-        LabelRepository labelRepository = new LabelRepository();
-        TaskListRepository taskListRepository = new TaskListRepository();
-        LocationRepository locationRepository = new LocationRepository();
+    public void dashTaskModifier(int uniqueParameterId, Task task){
 
-        int amountList = 5;
-        int amountTasks = 15;
-        RealmList<TaskList> taskLists = new RealmList<>();
-
-        // Fields to switch and use randomly
-
-        String[] titles = new String[]{"Unbelievable long task", "Short task"};
-        String[] descriptions = new String[]{"Unbelievable long description, like, really long",
-                "Short description", null};
-        Date[] dueDates = new Date[]{Calendar.getInstance().getTime(), null};
-
-        String[] listTitles = new String[]{"Really long list", "Short list"};
-
-        String[] locationTitles = new String[]{"Home", "Work", "Market", "Gym"};
-
-        String[] labelTitles = new String[]{"Groceries", "Inspiration", "Personal", "Work"};
-        Integer[] labelColors = new Integer[]{R.color.amberDate, R.color.colorPrimary,
-                R.color.tealLocation, R.color.app_body_text_1};
-        Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
-
-        for (int i = 0; i < locationTitles.length; i++)
-            locationRepository.save(new Location(locationTitles[i], "", i, -i, true));
-        RealmResults<Location> locations = locationRepository.findAll();
-
-        Log.d("LOCATIONS: ", locationRepository.findAll() + "");
-
-        for (int i = 0; i < labelTitles.length; i++)
-            labelRepository.save(new Label(labelTitles[i], labelColors[i]));
-        RealmResults<Label> labels = labelRepository.findAll();
-
-        Log.d("LABELS: ", labelRepository.findAll() + "");
-
-
-        Random random = new Random();
-        while (amountList > 0) {
-            String listTitle = listTitles[random.nextInt(2)];
-            taskListRepository.save(new TaskList(listTitle, null));
-            TaskList taskList = taskListRepository.findLast();
-
-            RealmList<Task> aux = new RealmList<>();
-            int amountTaskWhile = amountTasks;
-
-            while (amountTaskWhile > 0) {
-                Boolean finished = random.nextBoolean();
-                Boolean starred = random.nextBoolean();
-                String title = titles[random.nextInt(2)];
-                String description = descriptions[random.nextInt(3)];
-                Date dueDate = dueDates[random.nextInt(2)];
-                RealmList<Label> auxLabels = new RealmList<>();
-                Integer labelQuantity = labelQuantities[random.nextInt(4)];
-                Location location = locations.get(random.nextInt(3));
-
-                for (int i = 0; i < labelQuantity; i++)
-                    auxLabels.add(labels.get(random.nextInt(4)));
-
-                Task task = new Task(title, finished, starred, description, dueDate, location, auxLabels);
-                taskRepository.save(task);
-                taskListRepository.addTaskToTaskList(taskList.getId(), task);
-
-                amountTaskWhile--;
-            }
-            amountList--;
-        }
-
-        Log.d("TASKS: ", taskRepository.findAll() + "");
-        Log.d("TASK_LISTS: ", taskListRepository.findAll() + "");
-
-
-        Log.d("POPULATION: ", "COMPLETED");
-
+        mDatabaseHelper.dashTaskModifier(uniqueParameterId, task);
     }
+
+
+
 
 // ------------------------ NOT TESTED ------------------------ NOT TESTED ------------------------
 
@@ -211,4 +152,80 @@ public class DataManager {
     // ------------------------- Preferences -------------------------
     // -------------------------- FAB child --------------------------
     // -------------------------- FAB menu ---------------------------
+
+    // TODO Remove everything and include "tips and tricks" tasks
+    // If the user doesn't have any labels, add 3/4 by default
+    // If user doesn't have locations, add "Home" and "Work" by default and ask to initialize.
+    public void firstTimePopulation(){
+        int amountList = 5;
+        int amountTasks = 15;
+
+        Log.d("POPULATION: ", "STARTED");
+
+        TaskRepository taskRepository = new TaskRepository();
+        LabelRepository labelRepository = new LabelRepository();
+        TaskListRepository taskListRepository = new TaskListRepository();
+        LocationRepository locationRepository = new LocationRepository();
+
+        // Fields to switch and use randomly
+        String[] titles = new String[]{"Unbelievable long task", "Short task"};
+        String[] descriptions = new String[]{"Unbelievable long description, like, really long",
+                "Short description", null};
+        Date[] dueDates = new Date[]{Calendar.getInstance().getTime(), null};
+        String[] listTitles = new String[]{"Really long list", "Short list"};
+
+        String[] locationTitles = new String[]{"Home", "Work", "Market", "Gym"};
+
+        String[] labelTitles = new String[]{"Groceries", "Inspiration", "Personal", "Work"};
+        Integer[] labelColors = new Integer[]{R.color.amberDate, R.color.colorPrimary,
+                R.color.tealLocation, R.color.app_body_text_1};
+        Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
+
+        for (int i = 0; i < locationTitles.length; i++)
+            locationRepository.save(new Location(locationTitles[i], "", i, -i, true));
+        RealmResults<Location> locations = locationRepository.findAll();
+
+        Log.d("LOCATIONS: ", locationRepository.findAll() + "");
+
+        for (int i = 0; i < labelTitles.length; i++)
+            labelRepository.save(new Label(labelTitles[i], labelColors[i]));
+        RealmResults<Label> labels = labelRepository.findAll();
+
+        Log.d("LABELS: ", labelRepository.findAll() + "");
+
+        Random random = new Random();
+        while (amountList > 0) {
+            String listTitle = listTitles[random.nextInt(2)];
+            taskListRepository.save(new TaskList(listTitle, null));
+            TaskList taskList = taskListRepository.findLast();
+
+            int amountTaskWhile = amountTasks;
+
+            while (amountTaskWhile > 0) {
+                Boolean finished = random.nextBoolean();
+                Boolean starred = random.nextBoolean();
+                String title = titles[random.nextInt(2)];
+                String description = descriptions[random.nextInt(3)];
+                Date dueDate = dueDates[random.nextInt(2)];
+                RealmList<Label> auxLabels = new RealmList<>();
+                Integer labelQuantity = labelQuantities[random.nextInt(4)];
+                Location location = locations.get(random.nextInt(3));
+
+                for (int i = 0; i < labelQuantity; i++)
+                    auxLabels.add(labels.get(random.nextInt(4)));
+
+                Task task = new Task(title, finished, starred, description, dueDate, location, auxLabels);
+                taskRepository.save(task);
+                taskListRepository.addTaskToTaskList(taskList.getId(), task);
+
+                amountTaskWhile--;
+            }
+            amountList--;
+        }
+
+        Log.d("TASKS: ", taskRepository.findAll() + "");
+        Log.d("TASK_LISTS: ", taskListRepository.findAll() + "");
+
+        Log.d("POPULATION: ", "COMPLETED");
+    }
 }

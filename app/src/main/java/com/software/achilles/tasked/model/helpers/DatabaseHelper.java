@@ -1,6 +1,5 @@
 package com.software.achilles.tasked.model.helpers;
 
-import com.software.achilles.tasked.model.controllers.TaskController;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Task;
@@ -9,13 +8,14 @@ import com.software.achilles.tasked.model.repositiories.LabelRepository;
 import com.software.achilles.tasked.model.repositiories.LocationRepository;
 import com.software.achilles.tasked.model.repositiories.TaskListRepository;
 import com.software.achilles.tasked.model.repositiories.TaskRepository;
-
-import java.util.ArrayList;
+import com.software.achilles.tasked.util.Constants;
 
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class DatabaseHelper {
+
+    // ---------------------------- Find -----------------------------
 
     public RealmList<Task> findAllTasksByTaskListPosition(int position){
         TaskRepository taskRepository = new TaskRepository();
@@ -59,4 +59,23 @@ public class DatabaseHelper {
 
         return locationRepository.findAll();
     }
+
+    // ---------------------------- Save -----------------------------
+
+    public void saveTask(Task task){
+        TaskRepository taskRepository = new TaskRepository();
+
+        taskRepository.save(task);
+    }
+
+    // --------------------------- Delete ----------------------------
+
+    // ----------------------------- Get -----------------------------
+
+
+    public void dashTaskModifier(int uniqueParameterId, Task task){
+
+        new TaskRepository().taskModifier(uniqueParameterId, task);
+    }
+
 }

@@ -2,7 +2,6 @@ package com.software.achilles.tasked.presenter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -60,12 +59,10 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
     // ---------------------------- Layout ---------------------------
 
     public void setupLayout(){
-        // TODO esto va aqui?
-        DataManager dataManager = new DataManager();
         List<String> taskListTitles = new ArrayList<>();
 
         // Get data for setting the ViewPager
-        RealmResults<TaskList> taskList = dataManager.findAllTaskList();
+        RealmResults<TaskList> taskList = DataManager.getInstance().findAllTaskList();
 
         // Format that data for the spinner
         for (int i = 0; i < taskList.size(); i++)

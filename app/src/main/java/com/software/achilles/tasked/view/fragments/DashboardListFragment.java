@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.util.Constants;
 
 import java.util.Date;
@@ -107,12 +108,7 @@ public class DashboardListFragment extends Fragment {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Context context = view.getContext();
-//                    Intent intent = new Intent(context, CheeseDetailActivity.class);
-//                    intent.putExtra(CheeseDetailActivity.EXTRA_NAME, holder.mBoundString);
-//
-//                    context.startActivity(intent);
-                    Snackbar.make(view, "Clicked: " + task.getId(), Snackbar.LENGTH_LONG).show();
+                    DashboardPresenter.getInstance().taskModifier(Constants.DASH_TASK, task);
                 }
             });
 
@@ -128,7 +124,7 @@ public class DashboardListFragment extends Fragment {
             checkDone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Status clicked", Snackbar.LENGTH_LONG).show();
+                    DashboardPresenter.getInstance().taskModifier(Constants.DASH_DONE, task);
                 }
             });
 
@@ -148,7 +144,7 @@ public class DashboardListFragment extends Fragment {
             checkStar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Star clicked", Snackbar.LENGTH_LONG).show();
+                    DashboardPresenter.getInstance().taskModifier(Constants.DASH_FAVE, task);
                 }
             });
 

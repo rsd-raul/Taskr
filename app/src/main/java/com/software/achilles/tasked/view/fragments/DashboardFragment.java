@@ -12,12 +12,9 @@ import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.view.adapters.Adapter;
-import com.software.achilles.tasked.model.controllers.TaskController;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.util.Constants;
-
-import java.util.ArrayList;
 
 import io.realm.RealmResults;
 

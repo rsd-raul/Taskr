@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.controllers.TaskController;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
