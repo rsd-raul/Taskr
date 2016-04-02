@@ -64,6 +64,11 @@ public class DataManager {
         return mDatabaseHelper.findAllLocations();
     }
 
+    public Label findLastLabel(){
+        return mDatabaseHelper.findLastLabel();
+    }
+
+
     // ---------------------------- Save -----------------------------
 
     public void saveTask(Task task){
@@ -202,7 +207,7 @@ public class DataManager {
         while (amountList > 0) {
             String listTitle = listTitles[random.nextInt(2)];
             taskListRepository.save(new TaskList(listTitle, null));
-            TaskList taskList = taskListRepository.findLast();
+            TaskList taskList = mDatabaseHelper.findLastTaskList();
 
             int amountTaskWhile = amountTasks;
 

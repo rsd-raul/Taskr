@@ -30,12 +30,6 @@ public class TaskListRepository implements BaseRepository<TaskList> {
         return findAll().get(position);
     }
 
-    public TaskList findLast() {
-        RealmResults<TaskList> taskLists = findAll();
-
-        return taskLists.get(taskLists.size() - 1);
-    }
-
     // ----------------------------- Add -----------------------------
 
     @Override

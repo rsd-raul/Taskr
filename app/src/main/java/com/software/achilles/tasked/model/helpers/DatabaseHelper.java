@@ -60,6 +60,20 @@ public class DatabaseHelper {
         return locationRepository.findAll();
     }
 
+    public Label findLastLabel(){
+        LabelRepository labelRepository = new LabelRepository();
+        RealmResults<Label> labels = labelRepository.findAll();
+
+        return labels.get(labels.size() - 1);
+    }
+
+    public TaskList findLastTaskList() {
+        TaskListRepository taskListRepository = new TaskListRepository();
+        RealmResults<TaskList> taskLists = taskListRepository.findAll();
+
+        return taskLists.get(taskLists.size() - 1);
+    }
+
     // ---------------------------- Save -----------------------------
 
     public void saveTask(Task task){

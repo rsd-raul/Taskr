@@ -89,17 +89,25 @@ public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
                     DataManager.getInstance().saveTaskList(newTaskList);
 
                     // Update the Tabs
+
+                    // Update the filterDrawer and the MainDrawer
+                    mActivity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_TASK_LIST);
                 }else {
-                    int[] color = new int[]{R.color.colorAccent, R.color.colorPrimary, R.color.md_orange_500,
-                            R.color.tealLocation, R.color.amberDate, R.color.md_black_1000};
+                    int[] color = new int[]{R.color.colorAccent, R.color.colorPrimary,
+                            R.color.tealLocation, R.color.amberDate, R.color.md_black_1000,
+                            R.color.md_orange_500};
 
                     // TODO manually pick the color for the Label instead of randomly
                     Label newLabel = new Label(input, color[new Random().nextInt(5)]);
 
                     DataManager.getInstance().saveLabel(newLabel);
 
-                    // If label list is expanded update? or wait for opening filterDrawer an then update
-                    // If label list is closed... Do nothing
+                    // If label list on filterDrawer is closed... Do nothing
+                    if (!mActivity.mDrawersConfigurator.mExpandedLabelListFilter)
+                        return;
+
+                    // If label list is expanded update the lists (or wait for opening drawer?)
+                    mActivity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_LABEL_LIST);
                 }
 
             }

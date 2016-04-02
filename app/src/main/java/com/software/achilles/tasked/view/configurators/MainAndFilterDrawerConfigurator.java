@@ -39,6 +39,7 @@ import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class MainAndFilterDrawerConfigurator {
@@ -57,10 +58,11 @@ public class MainAndFilterDrawerConfigurator {
     private List<Integer> mTaskListIds, mLabelListIds, mLocationListIds, mOrderListIds;
     private BadgeStyle mBadgeExpand, mBadgeCollapse;
     private boolean firstTime = true, mExpandedTaskList = false, mExpandedTaskListFilter = false,
-            mExpandedLabelListFilter = true, mExpandedLocationListFilter = false,
-            mExpandedOrderListFilter = false;
+            mExpandedLocationListFilter = false, mExpandedOrderListFilter = false;
+    public boolean mExpandedLabelListFilter = true;
     private PrimaryDrawerItem mTaskListCollapsibleMain, mTaskCollapsible, mLabelCollapsible,
             mLocationCollapsible, mOrderCollapsible;
+
 
     // ------------------------- Constructor -------------------------
 
@@ -619,6 +621,62 @@ public class MainAndFilterDrawerConfigurator {
                 add, R.drawable.ic_stop,
                 (level==1) ? Constants.LIST_SEPARATOR : Constants.COLLAPSIBLE_TASK_LIST, level);
     }
+
+
+    public void includeTheNew(int uniqueId){
+
+        switch (uniqueId){
+            case Constants.COLLAPSIBLE_LABEL_LIST:
+                if(!mExpandedLabelListFilter)
+                    break;
+
+                toggleExpandableFilters(uniqueId,
+                        mExpandedLabelListFilter, false);
+                break;
+            case Constants.COLLAPSIBLE_TASK_LIST:
+                if(mExpandedTaskListFilter)
+                    toggleExpandableFilters(uniqueId,
+                            mExpandedTaskListFilter, false);
+                if(mExpandedTaskList)
+                    break; // TODO toggle main filter
+
+                break;
+
+        }
+
+        toggleExpandableFilters(uniqueId, false, false);
+
+        if(uniqueId == Constants.COLLAPSIBLE_TASK_LIST)
+            toggleTaskListExpandable(false);
+
+
+
+
+//        Label lastAdded = DataManager.getInstance().findLastLabel();
+//
+//        int size = mLabelListIds.size();
+//
+//        // Get the position for the item in the drawer, in order to add its children (+1)
+//        Integer position = mFilterDrawer.getPosition(uniqueId) + 1 + size;
+//
+//        // In case of a Label we customize the color according to each label
+//        int color = lastAdded.getColorRes();
+//
+//        // Construct the Item to add on the Drawer
+//        IDrawerItem itemToAdd = new SecondaryDrawerItem()
+//                .withIdentifier((int) lastAdded.getId())
+//                .withLevel(2)
+//                .withName(lastAdded.getTitle())
+//                .withIcon(R.drawable.ic_label_filled)
+//                .withIconColorRes(color)
+//                .withIconTintingEnabled(true)
+//                .withSelectable(false);
+//        mFilterDrawer.addItemAtPosition(itemToAdd, position);
+//
+//        // Add the id to the other ones
+//        mLabelListIds.add((int) lastAdded.getId());
+    }
+
     private void addLabelsToFilterDrawer(RealmResults<Label> listLabels){
         addItemListToDrawer(new ArrayList<BasicType>(listLabels), mFilterDrawer,
                 false, R.drawable.ic_label_filled, Constants.COLLAPSIBLE_LABEL_LIST, 2);
