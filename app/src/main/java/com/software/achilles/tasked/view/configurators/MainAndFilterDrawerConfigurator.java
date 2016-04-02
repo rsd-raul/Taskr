@@ -55,7 +55,8 @@ public class MainAndFilterDrawerConfigurator {
 
     private AccountHeader mAccountHeader;
     public Drawer mMainDrawer, mFilterDrawer;
-    private List<Integer> mTaskListIds, mLabelListIds, mLocationListIds, mOrderListIds;
+    private List<Integer> mTaskListIds, mLocationListIds, mOrderListIds,
+            mLabelListIds = new ArrayList<>();
     private BadgeStyle mBadgeExpand, mBadgeCollapse;
     private boolean firstTime = true, mExpandedTaskList = false, mExpandedTaskListFilter = false,
             mExpandedLocationListFilter = false, mExpandedOrderListFilter = false;
@@ -627,18 +628,20 @@ public class MainAndFilterDrawerConfigurator {
 
         switch (uniqueId){
             case Constants.COLLAPSIBLE_LABEL_LIST:
-                if(!mExpandedLabelListFilter)
-                    break;
+                if(firstTime)
+                    return;
 
-                toggleExpandableFilters(uniqueId,
-                        mExpandedLabelListFilter, false);
+                if(!mExpandedLabelListFilter)
+                    return;
+
+                toggleExpandableFilters(uniqueId, mExpandedLabelListFilter, false);
                 break;
             case Constants.COLLAPSIBLE_TASK_LIST:
                 if(mExpandedTaskListFilter)
-                    toggleExpandableFilters(uniqueId,
-                            mExpandedTaskListFilter, false);
+                    toggleExpandableFilters(uniqueId, mExpandedTaskListFilter, false);
+
                 if(mExpandedTaskList)
-                    break; // TODO toggle main filter
+                    return; // TODO toggle main filter
 
                 break;
 
