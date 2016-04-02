@@ -12,8 +12,6 @@ import com.software.achilles.tasked.model.repositiories.LabelRepository;
 import com.software.achilles.tasked.model.repositiories.LocationRepository;
 import com.software.achilles.tasked.model.repositiories.TaskListRepository;
 import com.software.achilles.tasked.model.repositiories.TaskRepository;
-import com.software.achilles.tasked.presenter.DashboardPresenter;
-import com.software.achilles.tasked.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -72,6 +70,14 @@ public class DataManager {
         mDatabaseHelper.saveTask(task);
     }
 
+    public void saveTaskList(TaskList taskList){
+        mDatabaseHelper.saveTaskList(taskList);
+    }
+
+    public void saveLabel(Label label){
+        mDatabaseHelper.saveLabel(label);
+    }
+
     // --------------------------- Delete ----------------------------
 
     // ----------------------------- Get -----------------------------
@@ -83,7 +89,6 @@ public class DataManager {
     // -------------------------- Use Cases --------------------------
 
     public void dashTaskModifier(int uniqueParameterId, Task task){
-
         mDatabaseHelper.dashTaskModifier(uniqueParameterId, task);
     }
 

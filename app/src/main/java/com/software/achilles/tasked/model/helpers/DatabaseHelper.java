@@ -68,6 +68,18 @@ public class DatabaseHelper {
         taskRepository.save(task);
     }
 
+    public void saveTaskList(TaskList taskList){
+        TaskListRepository taskListRepository = new TaskListRepository();
+
+        taskListRepository.save(taskList);
+    }
+
+    public void saveLabel(Label label){
+        LabelRepository labelRepository = new LabelRepository();
+
+        labelRepository.save(label);
+    }
+
     // --------------------------- Delete ----------------------------
 
     // ----------------------------- Get -----------------------------
