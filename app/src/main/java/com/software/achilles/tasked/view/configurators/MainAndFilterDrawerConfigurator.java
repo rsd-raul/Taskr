@@ -628,20 +628,20 @@ public class MainAndFilterDrawerConfigurator {
 
         switch (uniqueId){
             case Constants.COLLAPSIBLE_LABEL_LIST:
-                if(firstTime)
-                    return;
-
-                if(!mExpandedLabelListFilter)
+                if(firstTime || !mExpandedLabelListFilter)
                     return;
 
                 toggleExpandableFilters(uniqueId, mExpandedLabelListFilter, false);
                 break;
-            case Constants.COLLAPSIBLE_TASK_LIST:
-                if(mExpandedTaskListFilter)
-                    toggleExpandableFilters(uniqueId, mExpandedTaskListFilter, false);
 
-                if(mExpandedTaskList)
-                    return; // TODO toggle main filter
+            case Constants.COLLAPSIBLE_TASK_LIST:
+                if(!mExpandedTaskListFilter)
+                    return;
+
+                toggleExpandableFilters(uniqueId, mExpandedTaskListFilter, false);
+
+//                if(mExpandedTaskList)
+//                    return; // TODO toggle main filter
 
                 break;
 
