@@ -34,7 +34,6 @@ public class DashboardListFragment extends Fragment {
 
     // ------------------------- Constructor -------------------------
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState) {

@@ -1,6 +1,9 @@
 package com.software.achilles.tasked.presenter;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
@@ -70,35 +73,45 @@ public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
         }
     }
 
+    /**
+     * This method is responsible of the creation of a dialog, dialog that includes a text
+     * input and it's responsible of adding a list or a label to the database, including the
+     * update of the interface.
+     *
+     * @param titRes    The resource that represents the title for the dialog
+     * @param uniqueId  If the type of Dialog we want (Add task list or add label)
+     */
     private void buildAndShowInputDialog(int titRes, final int uniqueId) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle(mActivity.getString(titRes));
 
-        LayoutInflater li = LayoutInflater.from(mActivity);
-        final View dialogView = li.inflate(R.layout.list_dialog_view, null);
+        final View dialogView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_view, null);
 
         builder.setView(dialogView);
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(mActivity.getString(R.string.save),
+                new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String input = ((EditText) dialogView.findViewById(R.id.input)).getText().toString();
+                String text = ((EditText) dialogView.findViewById(R.id.input)).getText().toString();
 
                 if(uniqueId == Constants.ADD_TASK_LIST){
-                    TaskList newTaskList = new TaskList(input, null);
+                    TaskList newTaskList = new TaskList(text, null);
 
                     DataManager.getInstance().saveTaskList(newTaskList);
 
                     // Update the Tabs
 
+
                     // Update the filterDrawer and the MainDrawer
                     mActivity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_TASK_LIST);
-                }else {
+                }
+                if(uniqueId == Constants.ADD_LABEL) {
                     int[] color = new int[]{R.color.colorAccent, R.color.colorPrimary,
                             R.color.tealLocation, R.color.amberDate, R.color.md_black_1000,
                             R.color.md_orange_500};
 
                     // TODO manually pick the color for the Label instead of randomly
-                    Label newLabel = new Label(input, color[new Random().nextInt(5)]);
+                    Label newLabel = new Label(text, color[new Random().nextInt(5)]);
 
                     DataManager.getInstance().saveLabel(newLabel);
 
@@ -109,10 +122,10 @@ public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
                     // If label list is expanded update the lists (or wait for opening drawer?)
                     mActivity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_LABEL_LIST);
                 }
-
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(mActivity.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             PreferencesHelper.setShaPrefBoolean(this, Keys.FIRST_TIME, false, true);
             // launchIntro();
             // return;
-            Toast.makeText(this, "first time", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "first time \n populating", Toast.LENGTH_LONG).show();
 
             // Data population for testing and introduction
             DataManager.getInstance().firstTimePopulation();
@@ -275,5 +275,9 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the fragment change
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment_container, newOne).commit();
+    }
+
+    public void updateViewPagerAndTabs(){
+        mDashboardPresenter.updateViewPagerAndTabs();
     }
 }

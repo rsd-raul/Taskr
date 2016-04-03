@@ -80,6 +80,10 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
         DataManager.getInstance().dashTaskModifier(uniqueParameterId, task);
     }
 
+    public void updateViewPagerAndTabs(){
+        mFragment.updateViewPagerAndTabs();
+    }
+
     // -------------------------- Interface --------------------------
     // --------------------- Add Task Interface ----------------------
     // --------------------------- Details ---------------------------

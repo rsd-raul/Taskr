@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -623,61 +624,43 @@ public class MainAndFilterDrawerConfigurator {
                 (level==1) ? Constants.LIST_SEPARATOR : Constants.COLLAPSIBLE_TASK_LIST, level);
     }
 
-
+    /**
+     * This method updates both filter and main Drawer in order to reflect changes such as
+     * a new list or label being added.
+     *
+     * @param uniqueId  Refers to the ID on the drawer
+     */
+    @SuppressWarnings("all")
+    // mExpandedLabelListFilter and mExpandedTaskListFilter change dinamically.
     public void includeTheNew(int uniqueId){
 
         switch (uniqueId){
             case Constants.COLLAPSIBLE_LABEL_LIST:
+                // If labels are not expanded but set to (first time) or labels closed, exit method
                 if(firstTime || !mExpandedLabelListFilter)
                     return;
 
+                // If the label list is expanded, close it
                 toggleExpandableFilters(uniqueId, mExpandedLabelListFilter, false);
                 break;
 
             case Constants.COLLAPSIBLE_TASK_LIST:
+
+                // On the main drawer, if the TaskList list is opened, close it
+                if(mExpandedTaskList)
+                    switchExpandableTaskListContent();
+
+                // On the filter drawer, if the TaskList list is closed, exit method
                 if(!mExpandedTaskListFilter)
                     return;
 
+                // If the TaskList list is expanded, close it
                 toggleExpandableFilters(uniqueId, mExpandedTaskListFilter, false);
-
-//                if(mExpandedTaskList)
-//                    return; // TODO toggle main filter
-
                 break;
-
         }
 
+        // This expands again showing the changes
         toggleExpandableFilters(uniqueId, false, false);
-
-        if(uniqueId == Constants.COLLAPSIBLE_TASK_LIST)
-            toggleTaskListExpandable(false);
-
-
-
-
-//        Label lastAdded = DataManager.getInstance().findLastLabel();
-//
-//        int size = mLabelListIds.size();
-//
-//        // Get the position for the item in the drawer, in order to add its children (+1)
-//        Integer position = mFilterDrawer.getPosition(uniqueId) + 1 + size;
-//
-//        // In case of a Label we customize the color according to each label
-//        int color = lastAdded.getColorRes();
-//
-//        // Construct the Item to add on the Drawer
-//        IDrawerItem itemToAdd = new SecondaryDrawerItem()
-//                .withIdentifier((int) lastAdded.getId())
-//                .withLevel(2)
-//                .withName(lastAdded.getTitle())
-//                .withIcon(R.drawable.ic_label_filled)
-//                .withIconColorRes(color)
-//                .withIconTintingEnabled(true)
-//                .withSelectable(false);
-//        mFilterDrawer.addItemAtPosition(itemToAdd, position);
-//
-//        // Add the id to the other ones
-//        mLabelListIds.add((int) lastAdded.getId());
     }
 
     private void addLabelsToFilterDrawer(RealmResults<Label> listLabels){

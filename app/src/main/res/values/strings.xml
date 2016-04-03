@@ -47,6 +47,8 @@
     <!-- Generic -->
 
     <string name="select">Select</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
     <!-- FAB menu and childs -->
 

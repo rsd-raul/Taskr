@@ -100,4 +100,9 @@ public class DashboardFragment extends Fragment {
         } else
             tabLayout.setVisibility(View.GONE);
     }
+
+    // TODO NOT WORKING
+    public void updateViewPagerAndTabs(){
+        mViewPager.getAdapter().notifyDataSetChanged();
+    }
 }
