@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             PreferencesHelper.setShaPrefBoolean(this, Keys.FIRST_TIME, false, true);
             // launchIntro();
             // return;
-            Toast.makeText(this, "first time \n populating", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "- populating -", Toast.LENGTH_LONG).show();
 
             // Data population for testing and introduction
             DataManager.getInstance().firstTimePopulation();
@@ -76,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize with Dashboard
         setFragment(Constants.DASHBOARD);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        DashboardPresenter.destroyPresenter();
     }
 
     // -------------------------- Landscape --------------------------
@@ -277,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_fragment_container, newOne).commit();
     }
 
-    public void updateViewPagerAndTabs(){
-        mDashboardPresenter.updateViewPagerAndTabs();
+    public void setupViewPagerAndTabs(boolean goToEnd){
+        mDashboardPresenter.setupViewPagerAndTabs(goToEnd);
     }
 }

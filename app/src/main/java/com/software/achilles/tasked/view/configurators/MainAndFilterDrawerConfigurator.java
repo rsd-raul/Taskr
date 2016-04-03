@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -39,8 +38,6 @@ import com.software.achilles.tasked.view.fragments.DashboardFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class MainAndFilterDrawerConfigurator {
@@ -803,7 +800,7 @@ public class MainAndFilterDrawerConfigurator {
         if(mTabLayout == null)
             mTabLayout = (TabLayout) mActivity.findViewById(R.id.tabs);
 
-        int title = R.string.add_task_bar;
+        int title = R.string.blank;
 
         switch (drawer_item_id){
             case Constants.DASHBOARD:
@@ -821,7 +818,7 @@ public class MainAndFilterDrawerConfigurator {
                 actionBar.setHomeAsUpIndicator(R.drawable.ic_cancel);
                 actionBar.setDisplayHomeAsUpEnabled(true);
 
-                title = R.string.add_task_bar;
+                title = R.string.blank;
                 break;
             case Constants.SNOOZED:
 

@@ -5,7 +5,6 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
-import java.util.ArrayList;
 
 import io.realm.RealmResults;
 
@@ -49,7 +48,20 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
 
     // ---------------------------- Layout ---------------------------
 
+    /**
+     * Main method to setup the Dashboard interface, mainly the TabLayout and the ViewPager
+     */
     public void setupLayout(){
+
+        setupViewPagerAndTabs(false);
+
+        // Activate a Progress Bar (Circle)
+        // Retrieve new data from API if Preferences to Sync -> On App Start
+        // Update the ViewPager
+        // Deactivate the Progress Bar
+    }
+
+    public void setupViewPagerAndTabs(boolean goToEnd){
         // Get data for setting the ViewPager
         RealmResults<TaskList> taskList = DataManager.getInstance().findAllTaskList();
 
@@ -57,10 +69,8 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
         mFragment.setupViewPager(taskList);
         mFragment.setupTabLayout(taskList.size());
 
-        // Activate a Progress Bar (Circle)
-        // Retrieve new data from API if Preferences to Sync -> On App Start
-        // Update the ViewPager
-        // Deactivate the Progress Bar
+        if(goToEnd)
+            DashboardFragment.mViewPager.setCurrentItem(taskList.size()-1, true);
     }
 
     // ---------------------------- Menu -----------------------------
@@ -74,15 +84,13 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
 
     public void taskModifier(int uniqueParameterId, Task task){
         if(uniqueParameterId == Constants.DASH_TASK)
-            //GO to details
+            // TODO Go to details
             return;
 
         DataManager.getInstance().dashTaskModifier(uniqueParameterId, task);
     }
 
-    public void updateViewPagerAndTabs(){
-        mFragment.updateViewPagerAndTabs();
-    }
+
 
     // -------------------------- Interface --------------------------
     // --------------------- Add Task Interface ----------------------

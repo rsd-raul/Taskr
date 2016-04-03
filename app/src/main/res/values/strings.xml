@@ -12,7 +12,6 @@
     <string name="taskList">Task list</string>
     <string name="settings">Settings</string>
     <string name="contact">Help &amp; feedback</string>
-    <string name="add_task_bar"/>
 
     <!-- Filters -->
 
@@ -49,6 +48,7 @@
     <string name="select">Select</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="blank"/>
 
     <!-- FAB menu and childs -->
 
@@ -78,7 +78,8 @@
     <!--Task Creation Fragment-->
 
     <string name="title">Title</string>
-    <string name="type_title">Type title...</string>
+    <string name="type_title">Type title&#8230;</string>
+    <string name="ask_for_title">Introduce the title</string>
     <string name="description">Description</string>
     <string name="discard_changes">Discard changes?</string>
     <string name="discard">Discard</string>

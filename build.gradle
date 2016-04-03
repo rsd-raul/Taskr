@@ -17,6 +17,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+
+        //    External libraries
+        maven { url "https://jitpack.io" }                  // Required by MaterialDialogs
     }
 }
 
