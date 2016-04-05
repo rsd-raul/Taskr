@@ -1,16 +1,13 @@
 package com.software.achilles.tasked.model.factories;
 
-import com.software.achilles.tasked.model.domain.Label;
-import com.software.achilles.tasked.model.domain.Location;
-import com.software.achilles.tasked.model.domain.Task;
-import com.software.achilles.tasked.model.domain.TaskList;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import io.realm.Realm;
+import io.realm.RealmObject;
 
 public class PrimaryKeyFactory {
 
     // Model classes
-    private static Class[] model = {Location.class, Label.class, Task.class, TaskList.class};
     private static AtomicLong unique;
 
 
@@ -20,6 +17,9 @@ public class PrimaryKeyFactory {
         if (unique != null)
             return;
 
+        // Retrieve the model
+        Set<Class<? extends RealmObject>> model = realm.getConfiguration().getRealmObjectClasses();
+
         // Start the DB in id = 2, for some reason id 1 is in being used.
         unique = new AtomicLong(1);
 
@@ -27,7 +27,7 @@ public class PrimaryKeyFactory {
         for (Class clazz : model) {
             Number num = realm.where(clazz).max("id");
 
-            // If there are no ids, skip
+            // If there are no ids for that model class, skip
             if(num != null) {
                 AtomicLong maxKey = new AtomicLong(num.longValue());
                 if (maxKey.longValue() > unique.longValue())

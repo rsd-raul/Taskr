@@ -4,9 +4,9 @@ public class Constants {
 
     // --------------------------- Values ----------------------------
 
-    public static final long DAY_IN_MILLISECOND = 86400000L;
-    public static final long WEEK_IN_MILLISECOND = 604800000L;
-    public static final long MINUTE_IN_MILLISECOND = 60000L;
+    public static final long WEEK_IN_MILLISECOND =      604800000L; // UNUSED
+    public static final long DAY_IN_MILLISECOND =       86400000L;  // UNUSED
+    public static final long MINUTE_IN_MILLISECOND =    60000L;     // UNUSED
 
     public static final int TASK_LIST =                 1;
 
@@ -52,8 +52,8 @@ public class Constants {
 
     // -------------------------- Dashboard --------------------------
 
-    public static final int DASH_TASK = 21;
-    public static final int DASH_DONE = 22;
-    public static final int DASH_FAVE = 12;
-    public static final int DASH_DATE = 16;
+    public static final int DASH_TASK =                 21;
+    public static final int DASH_DONE =                 22;
+    public static final int DASH_FAVE =                 12;
+    public static final int DASH_DATE =                 16;
 }
