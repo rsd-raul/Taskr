@@ -34,7 +34,7 @@
 
     <!-- Contact developer -->
 
-    <string name="developer_email">achillessoftware@gmail.com</string>
+    <string name="developer_email" translatable="false">achillessoftware@gmail.com</string>
     <string name="subject_email">Tasked - Bug/Feature/Request</string>
     <string name="send_email">Contact the developer</string>
 
@@ -83,5 +83,16 @@
     <string name="description">Description</string>
     <string name="discard_changes">Discard changes?</string>
     <string name="discard">Discard</string>
+
+    <!-- Error report -->
+    <string name="error_report_tasked">Error report - Tasked</string>
+    <string name="error_report_taken">Error report taken:</string>
+    <string name="error_report_send">Send error report?</string>
+    <string name="error_trace_collected">New Trace collected :</string>
+    <string name="error_collected_on">"Error Report collected on : "</string>
+    <string name="error_information">Information :</string>
+    <string name="error_stack">Stack : \n</string>
+    <string name="error_cause">Cause : \n</string>
+    <string name="error_report_end">****  End of current Report ***</string>
 
 </resources>

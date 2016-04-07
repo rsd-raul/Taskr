@@ -17,11 +17,11 @@ public class PrimaryKeyFactory {
         if (unique != null)
             return;
 
-        // Retrieve the model
-        Set<Class<? extends RealmObject>> model = realm.getConfiguration().getRealmObjectClasses();
-
         // Start the DB in id = 2, for some reason id 1 is in being used.
         unique = new AtomicLong(1);
+
+        // Retrieve the model
+        Set<Class<? extends RealmObject>> model = realm.getConfiguration().getRealmObjectClasses();
 
         // Loop through all classes and determine the global maximum value
         for (Class clazz : model) {

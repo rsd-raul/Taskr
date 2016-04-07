@@ -24,6 +24,7 @@ import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
+import com.software.achilles.tasked.util.extras.ErrorReporter;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
@@ -48,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //TODO ONLY FOR DEVELOPMENT ******
+        // Simple BUG report, retrieves the last error and tries to send an email
+        ErrorReporter errorReporter = ErrorReporter.getInstance();
+        errorReporter.Init(this);
+        errorReporter.CheckErrorAndSendMail(this);
+        //TODO ONLY FOR DEVELOPMENT ******
 
         // Set the RealmConfiguration for Realm usage
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
