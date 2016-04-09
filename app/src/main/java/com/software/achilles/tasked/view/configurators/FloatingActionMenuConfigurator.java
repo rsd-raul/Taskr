@@ -2,7 +2,6 @@ package com.software.achilles.tasked.view.configurators;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
@@ -10,9 +9,6 @@ import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -55,11 +51,10 @@ public class FloatingActionMenuConfigurator {
 
         // Change the background depending on the fabMenu Status
         fam.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
-            Context context = activity.getApplicationContext();
-            int fromColor = ContextCompat.getColor(context, R.color.transparent);
-            int toColor = ContextCompat.getColor(context, R.color.background);
+            int fromColor = ContextCompat.getColor(activity, R.color.transparent);
+            int toColor = ContextCompat.getColor(activity, R.color.background);
 
-            // Creation of animator to transition between the transparent color and other
+            // Creation of animator to transition between the transparent color and the other one
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(fam,
                     "backgroundColor", new ArgbEvaluator(), fromColor, toColor).setDuration(100);
 
@@ -94,22 +89,23 @@ public class FloatingActionMenuConfigurator {
 //        fam.close(true);
 //    }
 
+    // TODO Controlar el FAM y la barra cuando se detecta scroll
+    // TODO Si no escondes FAM tienes que dar extra padding/margin a el viewpager (o el boton tapa las acciones)
     public static void setMenuOnScrollReaction(){
 
-        // prepare animations
-        Animation fab_slide_down = AnimationUtils.loadAnimation(activity, R.anim.fab_slide_down);
-        fab_slide_down.setInterpolator(new AccelerateInterpolator());
-
-        Animation fab_slide_up = AnimationUtils.loadAnimation(activity, R.anim.fab_slide_up);
-        fab_slide_up.setInterpolator(new AccelerateInterpolator());
-
-        // Set animations
-        fam.setMenuButtonHideAnimation(fab_slide_down);
-        fam.setMenuButtonShowAnimation(fab_slide_up);
+//        // prepare animations
+//        Animation fab_slide_down = AnimationUtils.loadAnimation(activity, R.anim.fab_slide_down);
+//        fab_slide_down.setInterpolator(new AccelerateInterpolator());
+//
+//        Animation fab_slide_up = AnimationUtils.loadAnimation(activity, R.anim.fab_slide_up);
+//        fab_slide_up.setInterpolator(new AccelerateInterpolator());
+//
+//        // Set animations
+//        fam.setMenuButtonHideAnimation(fab_slide_down);
+//        fam.setMenuButtonShowAnimation(fab_slide_up);
 
         // Control the behaviour when scrolling
-        // TODO Controlar el FAM y la barra cuando se detecta scroll
-        // TODO Si no escondes FAM tienes que dar extra padding/margin a el viewpager (o el boton tapa las acciones)
+
 //        activity.getSupportActionBar().hide();
 //        activity.getSupportActionBar().show();
 

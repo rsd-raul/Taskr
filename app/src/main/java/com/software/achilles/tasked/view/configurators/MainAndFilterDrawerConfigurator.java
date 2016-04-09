@@ -187,7 +187,7 @@ public class MainAndFilterDrawerConfigurator {
                 .withIconTintingEnabled(true)
                 .withSelectable(false);
 
-        // Create Filter Drawer
+        // Create Main Drawer
         mMainDrawer = new DrawerBuilder()
                 .withActivity(mActivity)
                 .withToolbar(mToolbar)
@@ -261,23 +261,23 @@ public class MainAndFilterDrawerConfigurator {
         mMainDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+
                 int identifier = drawerItem.getIdentifier();
                 switch (identifier) {
-
                     case Constants.DASHBOARD:
-                        mActivity.setFragment(Constants.DASHBOARD);
+                        mActivity.setFragment(identifier);
                         break;
                     case Constants.SNOOZED:
-                        mActivity.setFragment(Constants.SNOOZED);
+                        mActivity.setFragment(identifier);
                         break;
                     case Constants.COMPLETED:
-                        mActivity.setFragment(Constants.COMPLETED);
+                        mActivity.setFragment(identifier);
                         break;
                     case Constants.GLANCE:
-                        mActivity.setFragment(Constants.GLANCE);
+                        mActivity.setFragment(identifier);
                         break;
                     case Constants.PLANNER:
-                        mActivity.setFragment(Constants.PLANNER);
+                        mActivity.setFragment(identifier);
                         break;
                     case Constants.ADD_TASK_LIST:
                         break;
@@ -818,7 +818,6 @@ public class MainAndFilterDrawerConfigurator {
                 actionBar.setHomeAsUpIndicator(R.drawable.ic_cancel);
                 actionBar.setDisplayHomeAsUpEnabled(true);
 
-                title = R.string.blank;
                 break;
             case Constants.SNOOZED:
 
