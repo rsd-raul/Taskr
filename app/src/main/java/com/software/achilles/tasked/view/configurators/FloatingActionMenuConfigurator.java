@@ -132,20 +132,22 @@ public class FloatingActionMenuConfigurator {
 
         // ---------------------- Marshmallow Only -----------------------
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-            return;
+        //TODO CORRECT, NOT WORKING on MARSHMALLOW
 
-        ViewPager viewPager = (ViewPager) activity.findViewById(R.id.viewpager);
-        viewPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY,
-                                       int oldScrollX, int oldScrollY) {
-                if (scrollY - oldScrollY > 0)
-                    fam.hideMenu(true);
-                else
-                    fam.showMenu(true);
-            }
-        });
+//        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+//            return;
+//
+//        ViewPager viewPager = (ViewPager) activity.findViewById(R.id.viewpager);
+//        viewPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(View v, int scrollX, int scrollY,
+//                                       int oldScrollX, int oldScrollY) {
+//                if (scrollY - oldScrollY > 0)
+//                    fam.hideMenu(true);
+//                else
+//                    fam.showMenu(true);
+//            }
+//        });
     }
 
     // Make the menu react to external stimuli such as a Snackbar
