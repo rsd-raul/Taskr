@@ -11,6 +11,8 @@ public class TaskListRepository implements BaseRepository<TaskList> {
 
     // ---------------------------- Find -----------------------------
 
+
+
     @Override
     public TaskList findOne(long id) {
         Realm realm = Realm.getDefaultInstance();

@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rsd_raul.r00143615.tasks.MainActivity" >
+    tools:context="com.software.achilles.tasked.view.MainActivity" >
 
     <LinearLayout style="@style/linearVertical" >
 
