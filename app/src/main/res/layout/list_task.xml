@@ -3,15 +3,15 @@
     android:id="@+id/taskLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="0dp"
-    android:paddingRight="0dp"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp"
     android:paddingTop="1dp"
     android:paddingBottom="1dp"
     android:gravity="center_vertical">
 
     <LinearLayout
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_layout_mask"
@@ -39,31 +39,19 @@
             android:layout_marginStart="-2dp"
             android:textColor="@color/primaryText"/>
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/button_location"-->
-            <!--android:src="@drawable/ic_place_pin"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@null"-->
-            <!--android:paddingTop="10dp"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingLeft="5dp"-->
-            <!--android:paddingRight="5dp"-->
-            <!--/>-->
-
         <ImageButton
             android:id="@+id/button_time"
+            android:contentDescription="@string/alarm"
             android:src="@drawable/ic_time_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            />
+            android:layout_marginEnd="5dp" />
 
         <CheckBox
             android:id="@+id/checkbox_favourite"

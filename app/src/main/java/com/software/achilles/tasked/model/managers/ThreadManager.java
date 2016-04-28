@@ -1,9 +1,5 @@
 package com.software.achilles.tasked.model.managers;
 
-//import android.util.Log;
-
-import android.util.Log;
-
 public class ThreadManager {
 
     private static int THREADS_AVAILABLE = Runtime.getRuntime().availableProcessors();

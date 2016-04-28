@@ -27,15 +27,41 @@ public class DataManager {
 
     // ------------------------- Attributes --------------------------
 
-    private static DataManager instance;
     private DatabaseHelper mDatabaseHelper;
 
-    // ------------------------- Constructor -------------------------
+    // -------------------------- Singleton --------------------------
+
+////  Correct lazy initialization in Java - TODO - FINAL TESTING - Test if better performance
+//
+//    // Nested classes are not loaded until they are referenced.
+//    private static class DataManagerHolder {
+//        public static final DataManager instance = new DataManager();
+//    }
+//
+//    public static DataManager getInstance() {
+//        return DataManagerHolder.instance;
+//    }
+
+//  Double-checked locking - Effective in Java 1.5 and later:
+    private static final Object lock = new Object();
+    private static volatile DataManager instance;
 
     public static DataManager getInstance() {
-        if(instance == null)
-            instance = new DataManager();
-        return instance;
+        DataManager result = instance;
+
+        // Only synchronize if the DataManager haven't been instantiated
+        if (result == null) {
+            synchronized (lock) {
+                result = instance;
+
+                // If no other threads have instantiated the DataManager while waiting for the lock.
+                if (result == null) {
+                    result = new DataManager();
+                    instance = result;
+                }
+            }
+        }
+        return result;
     }
 
     private DataManager() {

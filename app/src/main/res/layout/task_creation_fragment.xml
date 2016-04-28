@@ -49,7 +49,7 @@
                 android:textColorHint="@color/secondaryText"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginRight="70dp"
+                android:layout_marginRight="100dp"
                 android:layout_marginEnd="64dp"
                 android:layout_marginBottom="4dp"
                 android:singleLine="true"
@@ -57,28 +57,30 @@
 
             <ImageButton
                 android:id="@+id/button_description"
+                android:contentDescription="@string/description"
                 android:src="@drawable/ic_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:onClick="onClickTaskCustomization"
 
                 android:layout_below="@+id/textInput"/>
 
             <ImageButton
                 android:id="@+id/button_time"
+                android:contentDescription="@string/alarm"
                 android:src="@drawable/ic_time_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
 
                 android:layout_below="@+id/textInput"
                 android:layout_toEndOf="@+id/button_description"
@@ -86,14 +88,15 @@
 
             <ImageButton
                 android:id="@+id/button_location"
+                android:contentDescription="@string/location"
                 android:src="@drawable/ic_place_pin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
 
                 android:layout_below="@+id/textInput"
                 android:layout_toEndOf="@+id/button_time"
@@ -101,14 +104,15 @@
 
             <ImageButton
                 android:id="@+id/button_label"
+                android:contentDescription="@string/labels"
                 android:src="@drawable/ic_label_multiple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
 
                 android:layout_below="@+id/textInput"
                 android:layout_toEndOf="@+id/button_location"
@@ -116,44 +120,27 @@
 
             <ImageButton
                 android:id="@+id/button_favourite"
+                android:contentDescription="@string/favourite"
                 android:src="@drawable/ic_star_clear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
 
                 android:layout_below="@+id/textInput"
                 android:layout_toEndOf="@+id/button_label"
                 android:layout_toRightOf="@+id/button_label" />
 
-            <!--<CheckBox-->
-                <!--android:id="@+id/checkbox_favourite"-->
-                <!--android:button="@drawable/custom_favourite"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:paddingTop="17dp"-->
-                <!--android:paddingBottom="10dp"-->
-                <!--android:paddingLeft="5dp"-->
-                <!--android:paddingRight="5dp"-->
-
-                <!--android:layout_marginLeft="5dp"-->
-                <!--android:layout_marginStart="5dp"-->
-
-                <!--android:layout_below="@+id/textInput"-->
-                <!--android:layout_toEndOf="@+id/button_label"-->
-                <!--android:layout_toRightOf="@+id/button_label" />-->
-
-            <!--El drop down puede que sea por defecto-->
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="43dp"
                 android:id="@+id/spinner_task_list"
 
                 android:layout_gravity="end"
-
+                android:spinnerMode="dialog"
                 android:layout_below="@+id/textInput"
                 android:layout_toEndOf="@+id/button_favourite"
                 android:layout_toRightOf="@+id/button_favourite"

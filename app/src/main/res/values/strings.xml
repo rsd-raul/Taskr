@@ -84,6 +84,11 @@
     <string name="discard_changes">Discard changes?</string>
     <string name="discard">Discard</string>
 
+    <string name="alarm">Alarm</string>
+    <string name="location">Location</string>
+    <string name="labels">Labels</string>
+    <string name="favourite">Favourite</string>
+
     <!-- Error report -->
     <string name="error_report_tasked">Error report - Tasked</string>
     <string name="error_report_taken">Error report taken:</string>
