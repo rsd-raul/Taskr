@@ -3,14 +3,13 @@ package com.software.achilles.tasked.view.configurators;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.software.achilles.tasked.model.helpers.LocalizationHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.util.Constants;
@@ -162,54 +161,58 @@ public class FloatingActionMenuConfigurator {
     private void configureChildren(){
 
         final FloatingActionButton share = (FloatingActionButton) activity.findViewById(R.id.shareListFAB);
-        share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Retrieving the current Task and extract data for intent
-                int posOnPager = DashboardFragment.mViewPager.getCurrentItem();
-                TaskList taskList = DataManager.getInstance().findTaskListByPosition(posOnPager);
-                String title = activity.getString(R.string.shareList) +": "+taskList.getTitle();
+        if(share !=null)
+            share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Retrieving the current Task and extract data for intent
+                    int posOnPager = DashboardFragment.mViewPager.getCurrentItem();
+                    TaskList taskList = DataManager.getInstance().findTaskListByPosition(posOnPager);
+                    String title = activity.getString(R.string.shareList) +": "+taskList.getTitle();
 
-                // Create the Intent and put the info to share
-                Intent shareIntent = ShareCompat.IntentBuilder
-                        .from(activity)
-                        .setType("text/plain")          // Set the MIME type to filter the apps
-                        .setText(taskList.toString())   // Translate the TaskList to String
-                        .setChooserTitle(title)         // Set a custom title for the chooser
-                        .createChooserIntent();         // Build a custom dialog, not use defaults
+                    // Create the Intent and put the info to share
+                    Intent shareIntent = ShareCompat.IntentBuilder
+                            .from(activity)
+                            .setType("text/plain")          // Set the MIME type to filter the apps
+                            .setText(LocalizationHelper.TaskListToString(taskList, activity))   // Translate the TaskList to String
+                            .setChooserTitle(title)         // Set a custom title for the chooser
+                            .createChooserIntent();         // Build a custom dialog, not use defaults
 
-                // Avoid ActivityNotFoundException
-                if(shareIntent.resolveActivity(activity.getPackageManager()) != null)
-                    activity.startActivity(shareIntent);
-            }
-        });
+                    // Avoid ActivityNotFoundException
+                    if(shareIntent.resolveActivity(activity.getPackageManager()) != null)
+                        activity.startActivity(shareIntent);
+                }
+            });
 
         FloatingActionButton addTask = (FloatingActionButton) activity.findViewById(R.id.addTaskFAB);
-        addTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fam.close(false);
-                MainPresenter.getInstance().deployLayout(Constants.ADD_TASK);
-            }
-        });
+        if(addTask != null)
+            addTask.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fam.close(false);
+                    MainPresenter.getInstance().deployLayout(Constants.ADD_TASK);
+                }
+            });
 
         FloatingActionButton addList = (FloatingActionButton) activity.findViewById(R.id.addListFAB);
-        addList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fam.close(true);
-                MainPresenter.getInstance().deployLayout(Constants.ADD_TASK_LIST);
-            }
-        });
+        if(addList != null)
+            addList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fam.close(true);
+                    MainPresenter.getInstance().deployLayout(Constants.ADD_TASK_LIST);
+                }
+            });
 
         FloatingActionButton addLabel = (FloatingActionButton) activity.findViewById(R.id.addLabelFAB);
-        addLabel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fam.close(true);
-                MainPresenter.getInstance().deployLayout(Constants.ADD_LABEL);
-            }
-        });
+        if(addLabel!=null)
+            addLabel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fam.close(true);
+                    MainPresenter.getInstance().deployLayout(Constants.ADD_LABEL);
+                }
+            });
     }
 
     // -------------------------- Use Cases --------------------------

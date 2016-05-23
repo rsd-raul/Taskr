@@ -1,12 +1,7 @@
 package com.software.achilles.tasked.model.domain;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
-import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
-
-import java.text.DateFormat;
 import java.util.Date;
 
 import io.realm.RealmList;
@@ -117,10 +112,4 @@ public class Task extends RealmObject implements BasicType {
 //                (due == null ? "" : " - " + dateToText(due));
 //    }
 
-    // ------------------------ Other methods ------------------------
-
-    public static String dateToText(Date date){
-        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-        return df.format(date);
-    }
 }

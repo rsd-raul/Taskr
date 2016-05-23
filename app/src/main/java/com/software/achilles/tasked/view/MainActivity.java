@@ -178,14 +178,23 @@ public class MainActivity extends AppCompatActivity {
         mDrawersConfigurator.blockDrawers(true);
     }
 
-    // TODO esto deberia hacer que la ActionBar volviera
+    // TODO esto deberia hacer que la ActionBar volviera - NO LO HACE
+
+    /**
+     * This method will make sure the behavior that hides the action bar is disabled
+     * or enabled at convenience.
+     *
+     * @param remove    Boolean that controls if the behaviour is implemented or not
+     */
     private void bestBehaviour_drake(boolean remove){
         FrameLayout fl = ((FrameLayout) findViewById(R.id.main_fragment_container));
 
-        CoordinatorLayout.LayoutParams aux = (CoordinatorLayout.LayoutParams) fl.getLayoutParams();
-        aux.setBehavior(remove ? null : new AppBarLayout.ScrollingViewBehavior());
+        if (fl != null) {
+            CoordinatorLayout.LayoutParams aux = (CoordinatorLayout.LayoutParams) fl.getLayoutParams();
+            aux.setBehavior(remove ? null : new AppBarLayout.ScrollingViewBehavior());
 
-        fl.requestLayout();
+            fl.requestLayout();
+        }
     }
 
     public void removeAddTask(){
@@ -218,8 +227,9 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.menuFAB);
 
-        if(fam.isOpened() || mDrawersConfigurator.mMainDrawer.isDrawerOpen()) {
-            fam.close(true);
+        if((fam != null && fam.isOpened()) || mDrawersConfigurator.mMainDrawer.isDrawerOpen()) {
+            if(fam != null)
+                fam.close(true);
             mDrawersConfigurator.mMainDrawer.closeDrawer();
 
         // Add mDrawersConfigurator.mFilterDrawer != null && if not only on dashboard
@@ -274,6 +284,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case Constants.ADD_TASK:
                 TaskCreationFragment tasCreFrag = new TaskCreationFragment();
+
+                // Send the list the user is on
+                Bundle bundle = new Bundle();
+                bundle.putInt("listIndex", DashboardFragment.mViewPager.getCurrentItem());
+                tasCreFrag.setArguments(bundle);
+
                 newOne = tasCreFrag;
 
                 mTaskCreationPresenter = TaskCreationPresenter.getInstance().attachView(tasCreFrag);

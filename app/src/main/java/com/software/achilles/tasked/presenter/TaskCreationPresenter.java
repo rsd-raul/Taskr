@@ -58,7 +58,7 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
 
     // ---------------------------- Layout ---------------------------
 
-    public void setupLayout(){
+    public void setupLayout(int listIndex){
         List<String> taskListTitles = new ArrayList<>();
 
         // Get data for setting the ViewPager
@@ -69,7 +69,7 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
             taskListTitles.add(taskList.get(i).getTitle());
 
         // Setup the layout
-        mFragment.setupLayout(taskListTitles);
+        mFragment.setupLayout(taskListTitles, listIndex);
     }
 
     // -------------------------- Listeners --------------------------

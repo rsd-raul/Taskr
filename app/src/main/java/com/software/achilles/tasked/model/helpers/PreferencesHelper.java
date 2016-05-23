@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 // TODO - FINAL TESTING - Remove and Clean
 @SuppressWarnings("unused")
-public class PreferencesHelper {
+public abstract class PreferencesHelper {
 
     // --------------------------- Values ----------------------------
 

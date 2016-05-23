@@ -23,10 +23,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.software.achilles.tasked.model.managers.ThreadManager;
+import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
-import com.software.achilles.tasked.R;
 
 import java.util.List;
 
@@ -59,15 +58,19 @@ public class TaskCreationFragment extends Fragment {
         // Initialize presenter
         TaskCreationPresenter.getInstance().attachView(this);
 
-        // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
-        ThreadManager.launchIfPossible(new Runnable() {
-            public void run() {
-                TaskCreationPresenter.getInstance().setupLayout();
-            }
-        });
+        // Get the list the user is at if it's coming from Dashboard
+        int listIndex = 0;
+        try {
+            listIndex = getArguments().getInt("listIndex", 0);
+        }catch (NullPointerException e){
+            // Do nothing, 0 by default
+        }
+
+        // Setup the fragment composing the ViewPager and the Tabs to control it
+        TaskCreationPresenter.getInstance().setupLayout(listIndex);
     }
 
-    public void setupLayout(List<String> taskListNames){
+    public void setupLayout(List<String> taskListNames, int listIndex){
         mFabSaveAndVoice = (FloatingActionButton) mMainActivity.findViewById(R.id.saveAndVoiceFAB);
         mSpinner = (Spinner) mMainActivity.findViewById(R.id.spinner_task_list);
         mDescription = (ImageButton) mMainActivity.findViewById(R.id.button_description);
@@ -85,6 +88,7 @@ public class TaskCreationFragment extends Fragment {
         // Populate Spinner
         mSpinner.setAdapter(new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, taskListNames));
+        mSpinner.setSelection(listIndex);
     }
 
     private void setupModifiersColors(){
