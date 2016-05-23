@@ -3,6 +3,8 @@ apply plugin: 'com.android.application'
 //    External libraries
 apply plugin: 'realm-android'       // Required by Realm
 
+apply plugin: 'com.neenbedankt.android-apt'     // Required by ButterKnife
+
 android {
 
     // Using Java 8 and Jack... Error:Could not find property 'options' on task ':app:compileDebugJavaWithJack'.

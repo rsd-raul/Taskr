@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import io.realm.Realm;
 import io.realm.RealmObject;
 
-public class PrimaryKeyFactory {
+public abstract class PrimaryKeyFactory {
 
     private static AtomicLong unique;
 

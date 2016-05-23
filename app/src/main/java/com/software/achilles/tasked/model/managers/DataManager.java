@@ -31,12 +31,13 @@ public class DataManager {
 
     // -------------------------- Singleton --------------------------
 
-////  Correct lazy initialization in Java - TODO - FINAL TESTING - Test if better performance
+//  Correct lazy initialization in Java - TODO - FINAL TESTING - Test in case of better performance
 //
 //    // Nested classes are not loaded until they are referenced.
 //    private static class DataManagerHolder {
 //        public static final DataManager instance = new DataManager();
 //    }
+
 //
 //    public static DataManager getInstance() {
 //        return DataManagerHolder.instance;

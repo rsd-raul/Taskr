@@ -1,6 +1,6 @@
 package com.software.achilles.tasked.util;
 
-public class Constants {
+public abstract class Constants {
 
     // --------------------------- Values ----------------------------
 

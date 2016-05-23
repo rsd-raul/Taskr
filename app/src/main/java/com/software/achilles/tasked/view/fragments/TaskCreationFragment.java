@@ -201,7 +201,7 @@ public class TaskCreationFragment extends Fragment {
 
         mFabSaveAndVoice.startAnimation(expandAnimation);
     }
-    
+
 
     @Override
     public void onDestroy() {
@@ -256,7 +256,7 @@ public class TaskCreationFragment extends Fragment {
                 // For simple dialogs we don't use a Title (Google Guidelines)
                 .setMessage(getString(R.string.discard_changes))
 
-                        // Only on discard the removeAddTask is triggered
+                // Only on discard the removeAddTask is triggered
                 .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mMainActivity.removeAddTask();
