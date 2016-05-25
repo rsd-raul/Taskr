@@ -118,6 +118,18 @@ public class DataManager {
         return mDatabaseHelper.findTaskListPositionById(id);
     }
 
+    // ------------------------ Temporal Task ------------------------
+
+    private Task temporalTask;
+
+    public Task getTemporalTask() {
+        return temporalTask != null ? temporalTask : new Task();
+    }
+
+    public void setTemporalTask(Task temporalTask) {
+        this.temporalTask = temporalTask;
+    }
+
     // -------------------------- Use Cases --------------------------
 
     public void dashTaskModifier(int uniqueParameterId, Task task){

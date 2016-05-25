@@ -19,6 +19,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
 
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class TaskCreationFragment extends Fragment {
 
     private Spinner mSpinner;
     private FloatingActionButton mFabSaveAndVoice;
+    private EditText mTitle;
     private ImageButton mDescription, mReminder, mLocation, mLabels, mFavourite;
 
     // ------------------------- Constructor -------------------------
@@ -78,12 +81,25 @@ public class TaskCreationFragment extends Fragment {
         mLocation = (ImageButton) mMainActivity.findViewById(R.id.button_location);
         mLabels = (ImageButton) mMainActivity.findViewById(R.id.button_label);
         mFavourite = (ImageButton) mMainActivity.findViewById(R.id.button_favourite);
+        mTitle = (EditText) mMainActivity.findViewById(R.id.textInput);
 
         setupModifiersColors();
         setupModifiersListeners();
 
         // Setup the fab and its listeners
-        setupSaveOrVoice(false);
+        Runnable positive = new Runnable() {
+            @Override
+            public void run() {
+                setupSaveOrVoice(true);
+            }
+        };
+        Runnable negative = new Runnable() {
+            @Override
+            public void run() {
+                setupSaveOrVoice(false);
+            }
+        };
+        mTitle.addTextChangedListener(new OnText_EditTextListener(positive, negative));
 
         // Populate Spinner
         mSpinner.setAdapter(new ArrayAdapter<>(this.getContext(),
@@ -154,6 +170,11 @@ public class TaskCreationFragment extends Fragment {
         mFavourite.setOnClickListener(listener);
     }
 
+    /**
+     * This method will toggle the characteristics of the FAB between Save and Voice input
+     *
+     * @param save  Will set the FAB to Save if true, to Voice if not.
+     */
     private void setupSaveOrVoice(boolean save){
         View.OnLongClickListener longClickListener;
         View.OnClickListener clickListener;
