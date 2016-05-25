@@ -73,7 +73,7 @@
 
     <string name="listName">List name:</string>
     <string name="tasks">Tasks:</string>
-    <string name="task_done">DONE - </string>
+    <string name="task_done">DONE</string>
 
     <!--Task Creation Fragment-->
 

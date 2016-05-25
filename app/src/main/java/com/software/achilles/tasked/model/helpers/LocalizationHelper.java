@@ -32,7 +32,7 @@ public abstract class LocalizationHelper {
 
     public static String  TaskToString(Task task, MainActivity activity){
         Resources resources = activity.getResources();
-        return (task.isCompleted() ? resources.getString(R.string.task_done)+" " : "") + task.getTitle()
+        return (task.isCompleted() ? resources.getString(R.string.task_done)+" - " : "") + task.getTitle()
                 + (task.getDue() == null ? "" : " - " + dateToText(task.getDue()));
     }
 

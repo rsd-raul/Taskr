@@ -83,9 +83,10 @@ public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
             .titleColorRes(titColRes)
             .negativeColorRes(titColRes)
             .positiveColorRes(titColRes)
+            .widgetColorRes(titColRes)
 
             // Input customization
-            .inputRangeRes(2, 24, titColRes)
+            .inputRangeRes(1, 24, titColRes)
             .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_CLASS_TEXT)
             .input(R.string.title, R.string.blank, new MaterialDialog.InputCallback() {
                 @Override

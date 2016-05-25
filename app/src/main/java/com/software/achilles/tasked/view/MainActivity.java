@@ -189,12 +189,13 @@ public class MainActivity extends AppCompatActivity {
     private void bestBehaviour_drake(boolean remove){
         FrameLayout fl = ((FrameLayout) findViewById(R.id.main_fragment_container));
 
-        if (fl != null) {
-            CoordinatorLayout.LayoutParams aux = (CoordinatorLayout.LayoutParams) fl.getLayoutParams();
-            aux.setBehavior(remove ? null : new AppBarLayout.ScrollingViewBehavior());
+        if (fl == null)
+            return;
 
-            fl.requestLayout();
-        }
+        CoordinatorLayout.LayoutParams aux = (CoordinatorLayout.LayoutParams) fl.getLayoutParams();
+        aux.setBehavior(remove ? null : new AppBarLayout.ScrollingViewBehavior());
+
+        fl.requestLayout();
     }
 
     public void removeAddTask(){

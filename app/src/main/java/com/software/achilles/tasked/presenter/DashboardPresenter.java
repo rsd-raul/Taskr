@@ -55,6 +55,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
 
         setupViewPagerAndTabs(false);
 
+        // TODO
         // Activate a Progress Bar (Circle)
         // Retrieve new data from API if Preferences to Sync -> On App Start
         // Update the ViewPager
