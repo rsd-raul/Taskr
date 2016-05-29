@@ -121,8 +121,9 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
     public void saveTask(boolean reset){
 
 //        mFragment.populateAndGetTemporal();
+        Task temporal = mFragment.populateAndGetTemporal();
         int taskListPosition = DataManager.getInstance().getTemporalTaskListPosition();
-        DataManager.getInstance().saveTask(taskListPosition, mFragment.populateAndGetTemporal());
+        DataManager.getInstance().saveTask(taskListPosition, temporal);
 
         Log.d("TaskCreationPresenter", "" +
                 DataManager.getInstance().getTemporalTask().getTitle()

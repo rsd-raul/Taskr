@@ -241,6 +241,8 @@ public class TaskCreationFragment extends Fragment {
         result.setTitle(mTitle.getText().toString());
 //        result.setNotes(mNotes.toString());
 
+        DataManager.getInstance().setTemporalTaskListPosition(mSpinner.getSelectedItemPosition());
+
         return result;
     }
 

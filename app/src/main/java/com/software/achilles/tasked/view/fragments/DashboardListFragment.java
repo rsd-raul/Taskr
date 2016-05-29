@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -44,22 +46,17 @@ public class DashboardListFragment extends Fragment {
         // Setup the recycler view with the list of Tasks
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.fragment_dashboard_list, container, false);
-        setupRecyclerView(recyclerView, tasks);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        recyclerView.setAdapter(new TaskRecyclerViewAdapter(getActivity(), tasks));
 
         return recyclerView;
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView, List<Task> tasks) {
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(getActivity(), tasks));
-    }
-
-
     // ---------------------- Internal Adapter -----------------------
 
-    public static class SimpleStringRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleStringRecyclerViewAdapter.ViewHolder> {
+    public static class TaskRecyclerViewAdapter
+            extends RecyclerView.Adapter<ViewHolder> {
 
         // --------------------------- Values ----------------------------
 
@@ -72,7 +69,7 @@ public class DashboardListFragment extends Fragment {
 
         // ------------------------- Constructor -------------------------
 
-        public SimpleStringRecyclerViewAdapter(Context context, List<Task> items) {
+        public TaskRecyclerViewAdapter(Context context, List<Task> items) {
             context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
             this.mContext = context;
             mBackground = mTypedValue.resourceId;
@@ -91,13 +88,18 @@ public class DashboardListFragment extends Fragment {
             return new ViewHolder(view);
         }
 
+        // FIXME Android is not providing the correct position
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-//            // TODO 1 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
-//            if (position == 0)
-//                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 24, 0, 0);
-//            if (position == mListOfTasks.size() - 1)
-//                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 0, 0, 24);
+
+            Log.d(" AAAAAA ", "onBindViewHolder: " + position);
+            Log.d(" AAAAAA ", "onBindViewHolder: " + holder.hashCode());
+
+            // TODO 1 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
+            if (position == 0)
+                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 24, 0, 0);
+            if (position == mListOfTasks.size() - 1)
+                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 0, 0, 24);
 
             final Task task = mListOfTasks.get(position);
             holder.mBoundString = task.getTitle();
@@ -177,77 +179,40 @@ public class DashboardListFragment extends Fragment {
             return mListOfTasks.size();
         }
 
-        // -------------------- Internal ViewHolder ----------------------
 
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            public String mBoundString;
-
-            public final View mView;
-            public final CheckBox mCheckDone;
-            public final TextView mTextView;
-            //            public final ImageButton mPlace;
-            public final ImageButton mAlarm;
-            public final CheckBox mCheckStar;
-
-//            // TODO 2 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
-//            public final LinearLayout mLinear;
-
-            public ViewHolder(View view) {
-                super(view);
-                mView = view;
-                mCheckDone = (CheckBox) view.findViewById(R.id.checkbox);
-                mTextView = (TextView) view.findViewById(R.id.task_title);
-//                mPlace = (ImageButton) view.findViewById(R.id.button_location);
-                mAlarm = (ImageButton) view.findViewById(R.id.button_time);
-                mCheckStar = (CheckBox) view.findViewById(R.id.checkbox_favourite);
-
-//                // TODO 3 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
-//                mLinear = (LinearLayout) view.findViewById(R.id.taskLinearLayout);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mTextView.getText();
-            }
-        }
     }
 
+    // -------------------- Internal ViewHolder ----------------------
 
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//    }
-//
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState){
-//        super.onActivityCreated(savedInstanceState);
-//
-//        sTasks = TaskController.getInstance().getTasks();
-//        this.adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, sTasks);
-//        setListAdapter(this.adapter);
-//    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public String mBoundString;
 
-    // -------------------------- Use Cases --------------------------
+        View mView;
+        CheckBox mCheckDone;
+        TextView mTextView;
+        //            public final ImageButton mPlace;
+        ImageButton mAlarm;
+        CheckBox mCheckStar;
 
-//    @Override
-//    public void onListItemClick(ListView l, View v, int position, long id){
-//
-//        if(TaskController.firstTime)
-//            return;
-//
-//        //  Intent creation
-//        Intent intent = new Intent(getActivity(), TaskEdit.class);
-//
-//        //  Retrieve and save data in the bundle
-//        Task selectedTask = sTasks.get(position);
-//        intent.putExtra("selectedTask", selectedTask);
-//        intent.putExtra("selectedPosition", position);
-//
-//        //  Start activity
-//        startActivity(intent);
-//    }
+        // TODO 2 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
+        public final LinearLayout mLinear;
 
-//    public void refreshList(){
-//        this.adapter.notifyDataSetChanged();
-//    }
+        public ViewHolder(View view) {
+            super(view);
+            mView = view;
+            mCheckDone = (CheckBox) view.findViewById(R.id.checkbox);
+            mTextView = (TextView) view.findViewById(R.id.task_title);
+//                mPlace = (ImageButton) view.findViewById(R.id.button_location);
+            mAlarm = (ImageButton) view.findViewById(R.id.button_time);
+            mCheckStar = (CheckBox) view.findViewById(R.id.checkbox_favourite);
+
+            // TODO 3 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
+            mLinear = (LinearLayout) view.findViewById(R.id.taskLinearLayout);
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " '" + mTextView.getText();
+        }
+    }
 }

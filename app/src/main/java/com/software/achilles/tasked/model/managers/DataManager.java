@@ -131,7 +131,6 @@ public class DataManager {
 
     public void destroyTemporalTask() {
         temporalTask = null;
-        temporalTaskListPosition = -1;
     }
 
     public int getTemporalTaskListPosition(){
