@@ -11,8 +11,6 @@ public class TaskListRepository implements BaseRepository<TaskList> {
 
     // ---------------------------- Find -----------------------------
 
-
-
     @Override
     public TaskList findOne(long id) {
         Realm realm = Realm.getDefaultInstance();
@@ -50,11 +48,11 @@ public class TaskListRepository implements BaseRepository<TaskList> {
         });
     }
 
-    public void addTaskToTaskList(final long taskListId, final Task task) {
+    public void addTaskToTaskList(final int taskListPosition, final Task task) {
         Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                findOne(taskListId).getTasks().add(task);
+                findByPosition(taskListPosition).getTasks().add(task);
             }
         });
     }

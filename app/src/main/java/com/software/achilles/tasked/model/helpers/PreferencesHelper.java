@@ -9,7 +9,7 @@ public abstract class PreferencesHelper {
 
     // --------------------------- Values ----------------------------
 
-    public static class Keys{
+    public abstract static class Keys{
         // User settings
         public static final String MAIN = "dash_or_glance";
         public static final String ADAPT_COLOR = "adaptColor";
@@ -22,7 +22,7 @@ public abstract class PreferencesHelper {
         // App settings
         public static final String FIRST_TIME = "first_time";
     }
-    public static class Defaults{
+    public abstract static class Defaults{
         public static final String MAIN = "Dashboard";
         public static final boolean ADAPT_COLOR = true;
         public static final boolean NOTIFICATION_SOUND = true;

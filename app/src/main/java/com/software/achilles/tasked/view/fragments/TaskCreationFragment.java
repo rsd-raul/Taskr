@@ -25,6 +25,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.domain.Task;
+import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
@@ -65,9 +67,7 @@ public class TaskCreationFragment extends Fragment {
         int listIndex = 0;
         try {
             listIndex = getArguments().getInt("listIndex", 0);
-        }catch (NullPointerException e){
-            // Do nothing, 0 by default
-        }
+        }catch (NullPointerException e){ /* Do nothing, 0 by default */ }
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
         TaskCreationPresenter.getInstance().setupLayout(listIndex);
@@ -190,6 +190,7 @@ public class TaskCreationFragment extends Fragment {
                 public boolean onLongClick(View v) {
                     // Save and reset fields (except spinner)
                     Toast.makeText(mMainActivity, "Save and reset", Toast.LENGTH_SHORT).show();
+                    TaskCreationPresenter.getInstance().saveTask(true);
                     return false;
                 }};
             clickListener = new View.OnClickListener() {
@@ -197,6 +198,7 @@ public class TaskCreationFragment extends Fragment {
                 public void onClick(View v) {
                     // Save and go back to the Dashboard/Glance
                     Toast.makeText(mMainActivity, "Save and go back", Toast.LENGTH_SHORT).show();
+                    TaskCreationPresenter.getInstance().saveTask(false);
                 }};
 
         }else{
@@ -227,6 +229,20 @@ public class TaskCreationFragment extends Fragment {
         mFabSaveAndVoice.startAnimation(expandAnimation);
     }
 
+    /**
+     * Before saving, this method will populate the parameters in the temporal Task that are not
+     * populated in real time.
+     *
+     * @return      The temporal task once updated
+     */
+    public Task populateAndGetTemporal(){
+        Task result = DataManager.getInstance().getTemporalTask();
+
+        result.setTitle(mTitle.getText().toString());
+//        result.setNotes(mNotes.toString());
+
+        return result;
+    }
 
     @Override
     public void onDestroy() {
@@ -240,7 +256,8 @@ public class TaskCreationFragment extends Fragment {
     }
 
     public void resetFields(){
-        // TODO esto es llamado cuando se despliega el layout tras borrarse, basicamente, todo a 0
+        setupModifiersColors();
+        mTitle.setText(R.string.blank);
     }
 
     // ------------------------ Time & Date --------------------------

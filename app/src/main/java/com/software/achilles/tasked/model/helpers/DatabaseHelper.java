@@ -76,10 +76,12 @@ public class DatabaseHelper {
 
     // ---------------------------- Save -----------------------------
 
-    public void saveTask(Task task){
+    public void saveTask(int taskListPosition, Task task){
         TaskRepository taskRepository = new TaskRepository();
+        TaskListRepository taskListRepository = new TaskListRepository();
 
         taskRepository.save(task);
+        taskListRepository.addTaskToTaskList(taskListPosition, task);
     }
 
     public void saveTaskList(TaskList taskList){

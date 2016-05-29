@@ -93,11 +93,11 @@ public class DashboardListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            // TODO 1 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
-            if (position == 0)
-                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 24, 0, 0);
-            if (position == mListOfTasks.size() - 1)
-                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 0, 0, 24);
+//            // TODO 1 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
+//            if (position == 0)
+//                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 24, 0, 0);
+//            if (position == mListOfTasks.size() - 1)
+//                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 0, 0, 24);
 
             final Task task = mListOfTasks.get(position);
             holder.mBoundString = task.getTitle();
@@ -189,8 +189,8 @@ public class DashboardListFragment extends Fragment {
             public final ImageButton mAlarm;
             public final CheckBox mCheckStar;
 
-            // TODO 2 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
-            public final LinearLayout mLinear;
+//            // TODO 2 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
+//            public final LinearLayout mLinear;
 
             public ViewHolder(View view) {
                 super(view);
@@ -201,8 +201,8 @@ public class DashboardListFragment extends Fragment {
                 mAlarm = (ImageButton) view.findViewById(R.id.button_time);
                 mCheckStar = (CheckBox) view.findViewById(R.id.checkbox_favourite);
 
-                // TODO 3 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
-                mLinear = (LinearLayout) view.findViewById(R.id.taskLinearLayout);
+//                // TODO 3 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
+//                mLinear = (LinearLayout) view.findViewById(R.id.taskLinearLayout);
             }
 
             @Override

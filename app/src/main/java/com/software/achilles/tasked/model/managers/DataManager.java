@@ -98,8 +98,9 @@ public class DataManager {
 
     // ---------------------------- Save -----------------------------
 
-    public void saveTask(Task task){
-        mDatabaseHelper.saveTask(task);
+    public void saveTask(int taskListPosition, Task task){
+
+        mDatabaseHelper.saveTask(taskListPosition, task);
     }
 
     public void saveTaskList(TaskList taskList){
@@ -121,14 +122,26 @@ public class DataManager {
     // ------------------------ Temporal Task ------------------------
 
     private Task temporalTask;
+    private int temporalTaskListPosition;
 
     public Task getTemporalTask() {
-        return temporalTask != null ? temporalTask : new Task();
+        temporalTask = (temporalTask != null) ? temporalTask : new Task();
+        return temporalTask;
     }
 
-    public void setTemporalTask(Task temporalTask) {
-        this.temporalTask = temporalTask;
+    public void destroyTemporalTask() {
+        temporalTask = null;
+        temporalTaskListPosition = -1;
     }
+
+    public int getTemporalTaskListPosition(){
+        return temporalTaskListPosition;
+    }
+
+    public void setTemporalTaskListPosition(int temporalTaskListPosition){
+        this.temporalTaskListPosition = temporalTaskListPosition;
+    }
+
 
     // -------------------------- Use Cases --------------------------
 
@@ -265,7 +278,8 @@ public class DataManager {
 
                 Task task = new Task(title, finished, starred, description, dueDate, location, auxLabels);
                 taskRepository.save(task);
-                taskListRepository.addTaskToTaskList(taskList.getId(), task);
+
+                taskListRepository.addTaskToTaskList(5-amountList, task);
 
                 amountTaskWhile--;
             }

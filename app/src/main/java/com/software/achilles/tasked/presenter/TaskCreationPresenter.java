@@ -1,8 +1,9 @@
 package com.software.achilles.tasked.presenter;
 
-import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
@@ -21,7 +22,6 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
     // ------------------------- Attributes --------------------------
 
     private TaskCreationFragment mFragment;
-    private Context mContext;
     private static TaskCreationPresenter instance;
     private boolean desStatus = false, timStatus = false, locStatus = false,
             labStatus = false, favStatus = false;
@@ -39,7 +39,6 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
     @Override
     public TaskCreationPresenter attachView(TaskCreationFragment view) {
         mFragment = view;
-        mContext = view.getContext();
         return instance;
     }
 
@@ -48,7 +47,6 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
             return;
 
         instance.mFragment = null;
-        instance.mContext = null;
         instance = null;
 
 //      Un-subscribe from the thread?
@@ -67,6 +65,9 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
         // Format that data for the spinner
         for (int i = 0; i < taskList.size(); i++)
             taskListTitles.add(taskList.get(i).getTitle());
+
+        // Setup a temporal task
+        DataManager.getInstance().getTemporalTask();
 
         // Setup the layout
         mFragment.setupLayout(taskListTitles, listIndex);
@@ -113,5 +114,33 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
                 mFragment.colorModifierButton(id, favStatus);
                 break;
         }
+    }
+
+    // -------------------------- Use Cases --------------------------
+
+    public void saveTask(boolean reset){
+
+//        mFragment.populateAndGetTemporal();
+        int taskListPosition = DataManager.getInstance().getTemporalTaskListPosition();
+        DataManager.getInstance().saveTask(taskListPosition, mFragment.populateAndGetTemporal());
+
+        Log.d("TaskCreationPresenter", "" +
+                DataManager.getInstance().getTemporalTask().getTitle()
+                + " " + DataManager.getInstance().getTemporalTask().isStarred()
+                + " " + DataManager.getInstance().getTemporalTask().isCompleted()
+                + " " + DataManager.getInstance().getTemporalTask().getNotes()
+                + " " + DataManager.getInstance().getTemporalTask().getDue()
+                + " " + DataManager.getInstance().getTemporalTask().getLabels()
+                + " " + DataManager.getInstance().getTemporalTask().getLocation()
+                + " " + DataManager.getInstance().getTemporalTask().getId()
+        );
+
+        DataManager.getInstance().destroyTemporalTask();
+
+        // If long press, restart all fields, if short, back to Dashboard
+        if(reset)
+            mFragment.resetFields();
+        else
+            MainPresenter.getInstance().backToBack();
     }
 }
