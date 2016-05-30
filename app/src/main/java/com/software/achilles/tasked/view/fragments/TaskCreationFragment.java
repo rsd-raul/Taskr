@@ -1,20 +1,15 @@
 package com.software.achilles.tasked.view.fragments;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -23,14 +18,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
-
 import java.util.List;
 
 public class TaskCreationFragment extends Fragment {
@@ -258,6 +251,10 @@ public class TaskCreationFragment extends Fragment {
     }
 
     public void resetFields(){
+        // FIXME Favourite needs to be set to unchecked
+        if(DataManager.getInstance().getTemporalTask().isStarred())
+            TaskCreationPresenter.getInstance().modifiersOnClick(mFavourite);
+
         setupModifiersColors();
         mTitle.setText(R.string.blank);
     }
@@ -285,41 +282,6 @@ public class TaskCreationFragment extends Fragment {
             case R.id.checkbox_favourite:
                 break;
         }
-    }
-
-    private void dialogForTaskRemoval(){
-
-        // If the user haven't typed anything, close the interface
-        if(!isDataPresent()){
-            mMainActivity.removeAddTask();
-            return;
-        }
-
-        // Else, ask for confirmation
-        Dialog dialog = new AlertDialog.Builder(mMainActivity)
-                // For simple dialogs we don't use a Title (Google Guidelines)
-                .setMessage(getString(R.string.discard_changes))
-
-                // Only on discard the removeAddTask is triggered
-                .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        mMainActivity.removeAddTask();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing
-                    }
-                })
-                .show();
-
-        // Dialog width customization (BUG > LOLLIPOP)  TODO light BUG with dialog size xD
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            return;
-
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.width = 850;
-        dialog.getWindow().setAttributes(lp);
     }
 
 //    private void showTimePickerDialog() {

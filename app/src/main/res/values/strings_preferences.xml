@@ -21,7 +21,7 @@
     <string name="account">Account</string>
 
         <string name="syncMode">Sync Mode</string>
-        <string name="syncModeSummary">Frecuencies to update the task list</string>
+        <string name="syncModeSummary">Frequencies to update the task list</string>
         <string-array name="syncValues">
             <item>Manual</item>
             <item>At app start</item>

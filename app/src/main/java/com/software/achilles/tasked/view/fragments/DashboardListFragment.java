@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +29,6 @@ import java.util.List;
 
 public class DashboardListFragment extends Fragment {
 
-    // --------------------------- Values ----------------------------
-
-    // ------------------------- Attributes --------------------------
-
     // ------------------------- Constructor -------------------------
 
     @Nullable
@@ -53,10 +48,13 @@ public class DashboardListFragment extends Fragment {
         return recyclerView;
     }
 
+
+
+
+
     // ---------------------- Internal Adapter -----------------------
 
-    public static class TaskRecyclerViewAdapter
-            extends RecyclerView.Adapter<ViewHolder> {
+    public static class TaskRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         // --------------------------- Values ----------------------------
 
@@ -88,18 +86,16 @@ public class DashboardListFragment extends Fragment {
             return new ViewHolder(view);
         }
 
-        // FIXME Android is not providing the correct position
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-
-            Log.d(" AAAAAA ", "onBindViewHolder: " + position);
-            Log.d(" AAAAAA ", "onBindViewHolder: " + holder.hashCode());
 
             // TODO 1 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
             if (position == 0)
                 ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 24, 0, 0);
-            if (position == mListOfTasks.size() - 1)
+            else if (position == (mListOfTasks.size() - 1))
                 ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 0, 0, 24);
+            else
+                ((ViewGroup.MarginLayoutParams) holder.mLinear.getLayoutParams()).setMargins(0, 0, 0, 0);
 
             final Task task = mListOfTasks.get(position);
             holder.mBoundString = task.getTitle();
@@ -118,8 +114,7 @@ public class DashboardListFragment extends Fragment {
             CheckBox checkDone = holder.mCheckDone;
 
             // Checked if task is done
-            if (task.isCompleted())
-                checkDone.setChecked(true);
+            checkDone.setChecked(task.isCompleted());
 
             // On click update the status of the Task
             checkDone.setOnClickListener(new View.OnClickListener() {
@@ -138,8 +133,7 @@ public class DashboardListFragment extends Fragment {
             CheckBox checkStar = holder.mCheckStar;
 
             // Checked if task is favourite
-            if (task.isStarred())
-                checkStar.setChecked(true);
+            checkStar.setChecked(task.isStarred());
 
             // On click update the status of the Task
             checkStar.setOnClickListener(new View.OnClickListener() {
@@ -155,12 +149,12 @@ public class DashboardListFragment extends Fragment {
             ImageButton alarm = holder.mAlarm;
 
             // Change icon and color if an alarm is set
-            if (dueDate != null) {
-                alarm.setImageDrawable(ContextCompat.getDrawable(mContext,
-                        R.drawable.ic_time_alarm));
-                int dateColor = ContextCompat.getColor(mContext, R.color.amberDateDark);
-                alarm.getDrawable().setColorFilter(dateColor, PorterDuff.Mode.SRC_IN);
-            }
+            int drawRes = dueDate != null ? R.drawable.ic_time_alarm : R.drawable.ic_time_clean;
+            alarm.setImageDrawable(ContextCompat.getDrawable(mContext, drawRes));
+
+            int colRes = dueDate != null ? R.color.amberDateDark : R.color.task_modifier_icons_dash;
+            int color = ContextCompat.getColor(mContext, colRes);
+            alarm.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
             // Launch Date Picker on touch and update the task
             alarm.setOnClickListener(new View.OnClickListener() {
@@ -181,6 +175,10 @@ public class DashboardListFragment extends Fragment {
 
 
     }
+
+
+
+
 
     // -------------------- Internal ViewHolder ----------------------
 
@@ -209,6 +207,8 @@ public class DashboardListFragment extends Fragment {
             // TODO 3 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
             mLinear = (LinearLayout) view.findViewById(R.id.taskLinearLayout);
         }
+
+
 
         @Override
         public String toString() {

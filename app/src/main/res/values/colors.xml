@@ -59,6 +59,10 @@
     <color name="shadow_dark">#be000000</color>
     <color name="task_modifier_icons">#727272</color>
 
+    <!-- Dashboard -->
+
+    <color name="task_modifier_icons_dash">#bdbdbd</color>
+
     <!-- Miscellaneous -->
     <color name="end_value_shadow">#33333333</color>
     <color name="spinner_text_color">#8A000000</color>

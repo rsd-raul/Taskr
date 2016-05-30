@@ -77,6 +77,7 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
 
     public void modifiersOnClick(View v){
         int id = v.getId();
+        Log.d("AAAAAAAAAAAA", "modifiersOnClick: " + id);
         switch (id){
             case R.id.button_description:
                 // Show field
@@ -107,13 +108,20 @@ public class TaskCreationPresenter implements Presenter<TaskCreationFragment, Ta
                 mFragment.colorModifierButton(id, labStatus);
                 break;
             case R.id.button_favourite:
-                // Save
 
                 // If it's OFF, turn ON and vice-versa
                 favStatus = !favStatus;
+
+                // Save
+                DataManager.getInstance().getTemporalTask().setStarred(favStatus);
+
                 mFragment.colorModifierButton(id, favStatus);
                 break;
         }
+    }
+
+    public boolean isDataPresent(){
+        return mFragment.isDataPresent();
     }
 
     // -------------------------- Use Cases --------------------------
