@@ -12,19 +12,32 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
 
     // --------------------------- Values ----------------------------
 
-    private int mKeyConstant = Constants.DASHBOARD;
-
     // ------------------------- Attributes --------------------------
 
     private DashboardFragment mFragment;
-    private static DashboardPresenter instance;
 
-    // ------------------------- Constructor -------------------------
+    // -------------------------- Singleton --------------------------
 
+    private static final Object lock = new Object();
+    private static volatile DashboardPresenter instance;
+
+    //  Double-checked locking - Effective in Java 1.5 and later:
     public static DashboardPresenter getInstance() {
-        if(instance == null)
-            instance = new DashboardPresenter();
-        return instance;
+        DashboardPresenter result = instance;
+
+        // Only synchronize if the DashboardPresenter haven't been instantiated
+        if (result == null) {
+            synchronized (lock) {
+                result = instance;
+
+                // If no other threads have instantiated the DashboardPresenter while waiting for the lock.
+                if (result == null) {
+                    result = new DashboardPresenter();
+                    instance = result;
+                }
+            }
+        }
+        return result;
     }
 
     // ------------------------- Life Cycle --------------------------
@@ -62,6 +75,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
         // Deactivate the Progress Bar
     }
 
+    // FIXME mFragment is null as Presenter has been destroyed before
     public void setupViewPagerAndTabs(boolean goToEnd){
         // Get data for setting the ViewPager
         RealmResults<TaskList> taskList = DataManager.getInstance().findAllTaskList();

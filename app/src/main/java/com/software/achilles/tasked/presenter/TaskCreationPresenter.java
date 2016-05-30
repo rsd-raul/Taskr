@@ -15,23 +15,35 @@ import io.realm.RealmResults;
 
 public class TaskCreationPresenter implements Presenter<TaskCreationFragment, TaskCreationPresenter> {
 
-    // --------------------------- Values ----------------------------
-
-    private int mKeyConstant = Constants.ADD_TASK;
 
     // ------------------------- Attributes --------------------------
 
     private TaskCreationFragment mFragment;
-    private static TaskCreationPresenter instance;
     private boolean desStatus = false, timStatus = false, locStatus = false,
             labStatus = false, favStatus = false;
 
-    // ------------------------- Constructor -------------------------
+    // -------------------------- Singleton --------------------------
 
+    private static final Object lock = new Object();
+    private static volatile TaskCreationPresenter instance;
+
+    //  Double-checked locking - Effective in Java 1.5 and later:
     public static TaskCreationPresenter getInstance() {
-        if(instance == null)
-            instance = new TaskCreationPresenter();
-        return instance;
+        TaskCreationPresenter result = instance;
+
+        // Only synchronize if the TaskCreationPresenter haven't been instantiated
+        if (result == null) {
+            synchronized (lock) {
+                result = instance;
+
+                // If no other threads have instantiated the TaskCreationPresenter while waiting for the lock.
+                if (result == null) {
+                    result = new TaskCreationPresenter();
+                    instance = result;
+                }
+            }
+        }
+        return result;
     }
 
     // ------------------------- Life Cycle --------------------------

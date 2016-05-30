@@ -19,15 +19,32 @@ import java.util.Random;
 
 public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
 
+    // ------------------------- Attributes --------------------------
+
     private MainActivity mActivity;
-    private static MainPresenter instance;
 
-    // ------------------------- Constructor -------------------------
+    // -------------------------- Singleton --------------------------
 
+    private static final Object lock = new Object();
+    private static volatile MainPresenter instance;
+
+    //  Double-checked locking - Effective in Java 1.5 and later:
     public static MainPresenter getInstance() {
-        if(instance == null)
-            instance = new MainPresenter();
-        return instance;
+        MainPresenter result = instance;
+
+        // Only synchronize if the MainPresenter haven't been instantiated
+        if (result == null) {
+            synchronized (lock) {
+                result = instance;
+
+                // If no other threads have instantiated the MainPresenter while waiting for the lock.
+                if (result == null) {
+                    result = new MainPresenter();
+                    instance = result;
+                }
+            }
+        }
+        return result;
     }
 
     // ------------------------- Life Cycle --------------------------
