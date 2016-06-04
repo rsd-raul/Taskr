@@ -6,15 +6,14 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
-import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmResults;
 
-public class TaskCreationPresenter implements Presenter<TaskCreationFragment, TaskCreationPresenter> {
-
+public class TaskCreationPresenter
+        implements Presenter<TaskCreationFragment, TaskCreationPresenter> {
 
     // ------------------------- Attributes --------------------------
 

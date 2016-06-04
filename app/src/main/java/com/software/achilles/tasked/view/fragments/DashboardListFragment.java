@@ -185,12 +185,12 @@ public class DashboardListFragment extends Fragment {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public String mBoundString;
 
-        View mView;
-        CheckBox mCheckDone;
-        TextView mTextView;
+        private View mView;
+        private CheckBox mCheckDone;
+        private TextView mTextView;
         //            public final ImageButton mPlace;
-        ImageButton mAlarm;
-        CheckBox mCheckStar;
+        private ImageButton mAlarm;
+        private CheckBox mCheckStar;
 
         // TODO 2 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
         public final LinearLayout mLinear;

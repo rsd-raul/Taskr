@@ -10,8 +10,6 @@ import io.realm.RealmResults;
 
 public class DashboardPresenter implements Presenter<DashboardFragment, DashboardPresenter> {
 
-    // --------------------------- Values ----------------------------
-
     // ------------------------- Attributes --------------------------
 
     private DashboardFragment mFragment;
@@ -104,15 +102,5 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
 
         DataManager.getInstance().dashTaskModifier(uniqueParameterId, task);
     }
-
-
-
-    // -------------------------- Interface --------------------------
-    // --------------------- Add Task Interface ----------------------
-    // --------------------------- Details ---------------------------
-    // ------------------------ Notifications ------------------------
-    // ------------------------- Preferences -------------------------
-    // -------------------------- FAB child --------------------------
-    // -------------------------- FAB menu ---------------------------
 
 }

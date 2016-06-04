@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.view.adapters.Adapter;
+import com.software.achilles.tasked.view.adapters.PagerAdapter;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.util.Constants;
@@ -61,7 +61,7 @@ public class DashboardFragment extends Fragment {
         mViewPager = (ViewPager) mMainActivity.findViewById(R.id.viewpager);
 
 //        Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
-        Adapter adapter = new Adapter(getChildFragmentManager());
+        PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
 
         // TODO 1 de 2 - Quick jump to the desired list if too many lists present (necessary?)
 //        if(taskLists.size() > 5)

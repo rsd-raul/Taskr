@@ -280,6 +280,7 @@ public class MainAndFilterDrawerConfigurator {
                         mActivity.setFragment(identifier);
                         break;
                     case Constants.ADD_TASK_LIST:
+                        MainPresenter.getInstance().deployLayout(Constants.ADD_TASK_LIST);
                         break;
 
                     case Constants.SETTINGS:
