@@ -246,7 +246,7 @@ public class TaskCreationFragment extends Fragment {
     }
 
     public boolean isDataPresent(){
-        // TODO si el usuario a introducido algun dato => TRUE, de lo contrario => FALSE
+        // FIXME si el usuario a introducido algun dato => TRUE, de lo contrario => FALSE
         return true;
     }
 

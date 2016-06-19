@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Random;
 
 
-// TODO ONLY FOR DEVELOPMENT
+// REVIEW - ONLY FOR DEVELOPMENT
 public class ErrorReporter implements Thread.UncaughtExceptionHandler {
     String VersionName;
     String PackageName;
@@ -205,7 +205,7 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler {
 
     private void SendErrorMail( Context _context, String ErrorContent ) {
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
-        // TODO (DEL DESARROLLADOR ORIGINAL) NOT SAVE
+
         String subject = _context.getString( R.string.error_report_tasked );
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 

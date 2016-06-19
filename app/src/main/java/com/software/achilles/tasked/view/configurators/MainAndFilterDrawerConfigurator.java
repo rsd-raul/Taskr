@@ -241,7 +241,7 @@ public class MainAndFilterDrawerConfigurator {
                     }
                 })
                 .build();
-//      TODO 1 de 2 - Descomentando esto tienes filterDrawer solo en el click y puedes cerrarlo a mano :D
+//      REVIEW 1 de 2 - Descomentando esto tienes filterDrawer solo en el click y puedes cerrarlo a mano :D
 //                    @Override
 //                    public void onDrawerOpened(View drawerView) {
 //                        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
@@ -492,7 +492,7 @@ public class MainAndFilterDrawerConfigurator {
                 .withDrawerGravity(Gravity.END)
                 .append(mMainDrawer);
 
-//      TODO 2 de 2 - descomentando esto tienes drawer solo en el click y puedes cerrarlo a mano :D
+//      REVIEW 2 de 2 - descomentando esto tienes drawer solo en el click y puedes cerrarlo a mano :D
 //        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
 //                DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
 

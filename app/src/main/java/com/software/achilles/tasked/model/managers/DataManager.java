@@ -31,7 +31,7 @@ public class DataManager {
 
     // -------------------------- Singleton --------------------------
 
-//  Correct lazy initialization in Java - TODO - FINAL TESTING - Test in case of better performance
+//  Correct lazy initialization in Java - REVIEW - Test in case of better performance
 //
 //    // Nested classes are not loaded until they are referenced.
 //    private static class DataManagerHolder {
@@ -214,7 +214,7 @@ public class DataManager {
     // -------------------------- FAB child --------------------------
     // -------------------------- FAB menu ---------------------------
 
-    // TODO Remove everything and include "tips and tricks" tasks
+    // REVIEW - Helper - Remove everything and include "tips and tricks" tasks
     // If the user doesn't have any labels, add 3/4 by default
     // If user doesn't have locations, add "Home" and "Work" by default and ask to initialize.
     public void firstTimePopulation(){

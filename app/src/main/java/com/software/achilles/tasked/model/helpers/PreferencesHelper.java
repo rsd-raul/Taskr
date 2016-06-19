@@ -3,7 +3,7 @@ package com.software.achilles.tasked.model.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-// TODO - FINAL TESTING - Remove and Clean
+// REVIEW - Remove and Clean
 @SuppressWarnings("unused")
 public abstract class PreferencesHelper {
 

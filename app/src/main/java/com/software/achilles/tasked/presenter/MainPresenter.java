@@ -96,7 +96,7 @@ public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
                 })
                 .show();
 
-        // Dialog width customization (BUG > LOLLIPOP)  TODO light BUG with dialog size xD
+        // Dialog width customization (BUG > LOLLIPOP)  REVIEW - light BUG with dialog size xD
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             return;
 
@@ -166,7 +166,7 @@ public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
                                 R.color.tealLocation, R.color.amberDate, R.color.md_black_1000,
                                 R.color.md_orange_500};
 
-                        // TODO manually pick the color for the Label instead of randomly
+                        // FIXME manually pick the color for the Label instead of randomly
                         Label newLabel = new Label(input.toString(), clr[new Random().nextInt(5)]);
 
                         // Save the label

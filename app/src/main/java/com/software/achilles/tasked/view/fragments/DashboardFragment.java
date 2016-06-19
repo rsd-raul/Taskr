@@ -63,7 +63,7 @@ public class DashboardFragment extends Fragment {
 //        Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
         PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
 
-        // TODO 1 de 2 - Quick jump to the desired list if too many lists present (necessary?)
+        // FIXME 1 de 2 - Quick jump to the desired list if too many lists present (necessary?)
 //        if(taskLists.size() > 5)
 //            adapter.addFragment(new DashboardSearchFragment(), "Search");
 
@@ -81,7 +81,7 @@ public class DashboardFragment extends Fragment {
             adapter.addFragment(dashboardListFragment, taskLists.get(index).getTitle());
         }
         mViewPager.setAdapter(adapter);
-        // TODO 2 de 2 - Quick jump to the desired list if too many lists present (necessary?)
+        // FIXME 2 de 2 - Quick jump to the desired list if too many lists present (necessary?)
 //        mViewPager.setCurrentItem(1);     // show the first list by default, not the quick search
     }
 

@@ -26,7 +26,7 @@ import com.software.achilles.tasked.R;
 
 // Original author: Google Dev - iosched 2015 - https://github.com/google/iosched
 
-// TODO DEPRECATED?
+// REVIEW DEPRECATED?
 public class BezelImageView extends ImageView {
     private Paint mBlackPaint;
     private Paint mMaskedPaint;

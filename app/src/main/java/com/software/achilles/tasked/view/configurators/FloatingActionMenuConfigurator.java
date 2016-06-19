@@ -25,8 +25,7 @@ public class FloatingActionMenuConfigurator {
 
     // ------------------------- Attributes --------------------------
 
-    //TODO Cambiado a public para poder usar traductores en el domain
-    public static MainActivity activity;
+    private static MainActivity activity;
     private static FloatingActionMenu fam;
 
     // ------------------------- Constructor -------------------------
@@ -71,7 +70,7 @@ public class FloatingActionMenuConfigurator {
 
 
 
-        // TODO onLongClick => Desplegar añadir tarea
+        // FIXME onLongClick => Desplegar añadir tarea
 //        fam.setOnLongClickListener(new FloatingActionMenu.OnLongClickListener() {
 //            @Override
 //            public boolean onLongClick(View v) {
@@ -88,8 +87,8 @@ public class FloatingActionMenuConfigurator {
 //        fam.close(true);
 //    }
 
-    // TODO Controlar el FAM y la barra cuando se detecta scroll
-    // TODO Si no escondes FAM tienes que dar extra padding/margin a el viewpager (o el boton tapa las acciones)
+    // FIXME 1/2 Controlar el FAM y la barra cuando se detecta scroll
+    // FIXME 2/2 Si no escondes FAM tienes que dar extra padding/margin a el viewpager (o el boton tapa las acciones)
     public static void setMenuOnScrollReaction(){
 
 //        // prepare animations
@@ -131,7 +130,7 @@ public class FloatingActionMenuConfigurator {
 
         // ---------------------- Marshmallow Only -----------------------
 
-        //TODO CORRECT, NOT WORKING on MARSHMALLOW
+        //FIXME - NOT WORKING on MARSHMALLOW -> BUG
 
 //        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
 //            return;

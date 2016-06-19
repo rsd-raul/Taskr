@@ -8,7 +8,7 @@ import io.realm.RealmResults;
 
 public class LabelRepository implements BaseRepository<Label> {
 
-    // TODO quitar URL cuando todo funcione
+    // REVIEW quitar URL cuando este listo completamente
     // http://mlsdev.com/en/blog/47-realm-practical-use-in-android
 
     // ---------------------------- Find -----------------------------

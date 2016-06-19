@@ -14,7 +14,7 @@ public class Location extends RealmObject implements BasicType{
 
     @PrimaryKey
     private long id;
-//    @Index        // TODO Para lugares favoritos?
+//    @Index        // REVIEW Para lugares favoritos?
     @Required
     private String title;
     private String address;
