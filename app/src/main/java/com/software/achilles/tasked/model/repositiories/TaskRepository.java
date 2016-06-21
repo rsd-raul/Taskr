@@ -3,9 +3,9 @@ package com.software.achilles.tasked.model.repositiories;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
-import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
@@ -32,6 +32,12 @@ public class TaskRepository implements BaseRepository<Task> {
         Realm realm = Realm.getDefaultInstance();
 
         return realm.where(TaskList.class).findAll().get(position).getTasks();
+    }
+
+    public RealmResults<Task> findAllByTitle(String query){
+        Realm realm = Realm.getDefaultInstance();
+
+        return realm.where(Task.class).contains("title", query, Case.INSENSITIVE).findAll();
     }
 
     // ----------------------------- Add -----------------------------

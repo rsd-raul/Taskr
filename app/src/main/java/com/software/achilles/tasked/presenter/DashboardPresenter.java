@@ -1,10 +1,14 @@
 package com.software.achilles.tasked.presenter;
 
+import android.util.Log;
+
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
+
+import java.util.ArrayList;
 
 import io.realm.RealmResults;
 
@@ -88,8 +92,16 @@ public class DashboardPresenter implements Presenter<DashboardFragment, Dashboar
 
     // ---------------------------- Menu -----------------------------
 
-    public static void filterByText(String query, Boolean searchDeep){
-//        ArrayList<Task> tasks = DataManager.getInstance().filterByText(query, searchDeep);
+    public void filterByText(String query, Boolean searchDeep){
+        if(query.isEmpty()) {
+            // TODO volver a vacio, no dejar simplemente en el ultimo resultado
+        }else {
+            RealmResults<Task> tasks = DataManager.getInstance().filterByText(query, searchDeep);
+
+            for (Task aux : tasks) {
+                Log.i("Holaa", "filterByText: " + aux.getTitle());
+            }
+        }
 //        mFragment.updateViewPagerList(tasks);
     }
 

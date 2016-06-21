@@ -9,6 +9,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -109,18 +110,18 @@ public class MainActivity extends AppCompatActivity {
                 // Set the filtering by text
                 MenuItem searchItem = menu.findItem(R.id.action_search);
                 SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        DashboardPresenter.filterByText(query, true);
-                        return false;
-                    }
-
-                    @Override
                     public boolean onQueryTextChange(String query) {
-                        DashboardPresenter.filterByText(query, false);
-                        return false;
+                        DashboardPresenter.getInstance().filterByText(query, false);
+                        Log.i("onQueryTextChange1: ", query);
+                        return true;
+                    }
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        DashboardPresenter.getInstance().filterByText(query, true);
+                        Log.i("onQueryTextChange2: ", query);
+                        return true;
                     }
                 });
                 break;

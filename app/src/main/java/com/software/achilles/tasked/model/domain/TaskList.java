@@ -1,13 +1,6 @@
 package com.software.achilles.tasked.model.domain;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
-
-import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
-
-import java.util.List;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -56,24 +49,6 @@ public class TaskList extends RealmObject implements BasicType{
     }
     public void setTasks(RealmList<Task> tasks) {
         this.tasks = tasks;
-    }
-
-    // -------------------------- To String --------------------------
-
-    @Override
-    public String toString() {
-
-        // Access resources from Android in order to translate at sharing
-        Resources resources = FloatingActionMenuConfigurator.activity.getResources();
-        String result = resources.getString(R.string.listName) + " " + getTitle() + "\n\n";
-        result += resources.getString(R.string.tasks);
-
-        // This is supposed to be more efficient that an extended for
-        List<Task> tasks = getTasks();
-        for (int i = 0; i < tasks.size(); i++)
-            result += "\n" + tasks.get(i).toString();
-
-        return result;
     }
 
     // ------------------------ Other methods ------------------------

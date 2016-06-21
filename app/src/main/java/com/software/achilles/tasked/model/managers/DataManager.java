@@ -157,12 +157,18 @@ public class DataManager {
 
     int size = 0;
 
-    public ArrayList<Task> filterByText(String query, Boolean searchDeep){
-        ArrayList<Task> result = size < query.length() ? getCurrentTasks() : getAllTasks();
-        size = query.length();
+    public RealmResults<Task> filterByText(String query, Boolean searchDeep){
 
-        return searchDeep ? deepSearch(result) : lightSearch(result);
+
+        return mDatabaseHelper.findAllTasksByText(query);
     }
+
+//    public ArrayList<Task> filterByText(String query, Boolean searchDeep){
+//        ArrayList<Task> result = size < query.length() ? getCurrentTasks() : getAllTasks();
+//        size = query.length();
+//
+//        return searchDeep ? deepSearch(result) : lightSearch(result);
+//    }
 
     public ArrayList<Task> deepSearch(ArrayList<Task> tasks){
         // Busqueda final, aprovecha lo que tienes

@@ -10,8 +10,8 @@ import com.software.achilles.tasked.model.repositiories.TaskListRepository;
 import com.software.achilles.tasked.model.repositiories.TaskRepository;
 import com.software.achilles.tasked.util.Constants;
 
-import io.realm.RealmList;
 import io.realm.RealmResults;
+import io.realm.RealmList;
 
 public class DatabaseHelper {
 
@@ -21,6 +21,12 @@ public class DatabaseHelper {
         TaskRepository taskRepository = new TaskRepository();
 
         return taskRepository.findAllByTaskListPosition(position);
+    }
+
+    public RealmResults<Task> findAllTasksByText(String query){
+        TaskRepository taskRepository = new TaskRepository();
+
+        return taskRepository.findAllByTitle(query);
     }
 
     public int findTaskListPositionById(long id){
