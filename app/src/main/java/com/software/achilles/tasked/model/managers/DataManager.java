@@ -7,7 +7,6 @@ import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
-import com.software.achilles.tasked.model.helpers.DatabaseHelper;
 import com.software.achilles.tasked.model.repositiories.LabelRepository;
 import com.software.achilles.tasked.model.repositiories.LocationRepository;
 import com.software.achilles.tasked.model.repositiories.TaskListRepository;
@@ -26,8 +25,6 @@ public class DataManager {
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
-
-    private DatabaseHelper mDatabaseHelper;
 
     // -------------------------- Singleton --------------------------
 
@@ -66,58 +63,86 @@ public class DataManager {
     }
 
     private DataManager() {
-        this.mDatabaseHelper = new DatabaseHelper();
+
     }
 
     // ---------------------------- Find -----------------------------
 
     public RealmResults<TaskList> findAllTaskList(){
-        return mDatabaseHelper.findAllTaskList();
+        TaskListRepository taskListRepository = new TaskListRepository();
+
+        return taskListRepository.findAll();
     }
 
     public RealmList<Task> findAllTasksByTaskListPosition(int position){
-        return mDatabaseHelper.findAllTasksByTaskListPosition(position);
+        TaskRepository taskRepository = new TaskRepository();
+
+        return taskRepository.findAllByTaskListPosition(position);
     }
 
     public TaskList findTaskListByPosition(int position){
-        return mDatabaseHelper.findTaskListByPosition(position);
+        TaskListRepository taskListRepository = new TaskListRepository();
+
+        return taskListRepository.findByPosition(position);
     }
 
     public RealmResults<Label> findAllLabels(){
-        return mDatabaseHelper.findAllLabels();
+        LabelRepository labelRepository = new LabelRepository();
+
+        return labelRepository.findAll();
     }
 
     public RealmResults<Location> findAllLocations(){
-        return mDatabaseHelper.findAllLocations();
+        LocationRepository locationRepository = new LocationRepository();
+
+        return locationRepository.findAll();
     }
 
     public Label findLastLabel(){
-        return mDatabaseHelper.findLastLabel();
+        LabelRepository labelRepository = new LabelRepository();
+        RealmResults<Label> labels = labelRepository.findAll();
+
+        return labels.get(labels.size() - 1);
     }
 
+    public int findTaskListPositionById(int id){
+        TaskListRepository taskListRepository = new TaskListRepository();
+
+        RealmResults<TaskList> taskLists = taskListRepository.findAll();
+
+        // Gives you the position of a TaskList based on its id
+        for (int position = 0; position < taskLists.size(); position++)
+            if(taskLists.get(position).getId() == id)
+                return position;
+
+        return -1;
+    }
 
     // ---------------------------- Save -----------------------------
 
     public void saveTask(int taskListPosition, Task task){
+        TaskRepository taskRepository = new TaskRepository();
+        TaskListRepository taskListRepository = new TaskListRepository();
 
-        mDatabaseHelper.saveTask(taskListPosition, task);
+        taskRepository.save(task);
+        taskListRepository.addTaskToTaskList(taskListPosition, task);
     }
 
     public void saveTaskList(TaskList taskList){
-        mDatabaseHelper.saveTaskList(taskList);
+        TaskListRepository taskListRepository = new TaskListRepository();
+
+        taskListRepository.save(taskList);
     }
 
     public void saveLabel(Label label){
-        mDatabaseHelper.saveLabel(label);
+        LabelRepository labelRepository = new LabelRepository();
+
+        labelRepository.save(label);
     }
 
     // --------------------------- Delete ----------------------------
 
     // ----------------------------- Get -----------------------------
-
-    public int getTaskListPositionById(int id){
-        return mDatabaseHelper.findTaskListPositionById(id);
-    }
 
     // ------------------------ Temporal Task ------------------------
 
@@ -145,7 +170,7 @@ public class DataManager {
     // -------------------------- Use Cases --------------------------
 
     public void dashTaskModifier(int uniqueParameterId, Task task){
-        mDatabaseHelper.dashTaskModifier(uniqueParameterId, task);
+        new TaskRepository().taskModifier(uniqueParameterId, task);
     }
 
 
@@ -159,8 +184,9 @@ public class DataManager {
 
     public RealmResults<Task> filterByText(String query, Boolean searchDeep){
 
+        TaskRepository taskRepository = new TaskRepository();
 
-        return mDatabaseHelper.findAllTasksByText(query);
+        return taskRepository.findAllByTitle(query);
     }
 
 //    public ArrayList<Task> filterByText(String query, Boolean searchDeep){
@@ -264,7 +290,6 @@ public class DataManager {
         while (amountList > 0) {
             String listTitle = listTitles[random.nextInt(2)];
             taskListRepository.save(new TaskList(listTitle, null));
-            TaskList taskList = mDatabaseHelper.findLastTaskList();
 
             int amountTaskWhile = amountTasks;
 

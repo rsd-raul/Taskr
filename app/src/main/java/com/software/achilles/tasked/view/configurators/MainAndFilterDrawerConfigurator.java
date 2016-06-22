@@ -303,7 +303,7 @@ public class MainAndFilterDrawerConfigurator {
                         mActivity.setFragment(Constants.DASHBOARD);
 
                         // Calculate the position according to the Task List identifier.
-                        int index = DataManager.getInstance().getTaskListPositionById(identifier);
+                        int index = DataManager.getInstance().findTaskListPositionById(identifier);
 
                         // Set the view pager on the correct list if there is a correct list
                         if (index != -1)

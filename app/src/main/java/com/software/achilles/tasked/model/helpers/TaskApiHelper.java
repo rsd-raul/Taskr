@@ -1,4 +1,4 @@
 package com.software.achilles.tasked.model.helpers;
 
-public class TaskApiHelper {
+public abstract class TaskApiHelper {
 }
