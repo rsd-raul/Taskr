@@ -17,11 +17,13 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.model.managers.ThreadManager;
+import com.software.achilles.tasked.model.repositiories.TaskListRepository;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
@@ -31,6 +33,8 @@ import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.util.Constants;
+
+import javax.inject.Inject;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -46,9 +50,15 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Constructor -------------------------
 
+    @Inject
+    DataManager dataManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((App) getApplication()).component().inject(this);
+        Log.i("sasas", "onCreate: " + dataManager);
+
         setContentView(R.layout.activity_main);
 
         //TODO ONLY FOR DEVELOPMENT ******

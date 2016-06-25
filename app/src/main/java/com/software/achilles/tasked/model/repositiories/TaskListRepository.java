@@ -3,11 +3,18 @@ package com.software.achilles.tasked.model.repositiories;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
+
+import javax.inject.Inject;
+
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class TaskListRepository implements BaseRepository<TaskList> {
+
+    @Inject
+    public TaskListRepository() {
+    }
 
     // ---------------------------- Find -----------------------------
 

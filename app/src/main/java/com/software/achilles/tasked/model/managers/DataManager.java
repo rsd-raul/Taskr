@@ -1,6 +1,7 @@
 package com.software.achilles.tasked.model.managers;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
@@ -17,6 +18,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -25,6 +29,9 @@ public class DataManager {
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
+
+    @Inject
+    TaskListRepository taskListRepository;
 
     // -------------------------- Singleton --------------------------
 
@@ -45,32 +52,34 @@ public class DataManager {
     private static volatile DataManager instance;
 
     public static DataManager getInstance() {
-        DataManager result = instance;
-
-        // Only synchronize if the DataManager haven't been instantiated
-        if (result == null) {
-            synchronized (lock) {
-                result = instance;
-
-                // If no other threads have instantiated the DataManager while waiting for the lock.
-                if (result == null) {
-                    result = new DataManager();
-                    instance = result;
-                }
-            }
-        }
-        return result;
+//        DataManager result = instance;
+//
+//        // Only synchronize if the DataManager haven't been instantiated
+//        if (result == null) {
+//            synchronized (lock) {
+//                result = instance;
+//
+//                // If no other threads have instantiated the DataManager while waiting for the lock.
+//                if (result == null) {
+//                    result = new DataManager();
+//                    instance = result;
+//                }
+//            }
+//        }
+//        return result;
+        return instance;
     }
 
-    private DataManager() {
-
+    @Inject @Singleton
+    public DataManager() {
+//        this.taskListRepository = taskListRepository;
+        instance = this;
     }
 
     // ---------------------------- Find -----------------------------
 
     public RealmResults<TaskList> findAllTaskList(){
-        TaskListRepository taskListRepository = new TaskListRepository();
-
+        Log.i("AAA", "findAllTaskList: ");
         return taskListRepository.findAll();
     }
 
