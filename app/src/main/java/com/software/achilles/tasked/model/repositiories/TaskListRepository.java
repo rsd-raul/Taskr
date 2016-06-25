@@ -12,6 +12,8 @@ import io.realm.RealmResults;
 
 public class TaskListRepository implements BaseRepository<TaskList> {
 
+    // ------------------------ Constructor --------------------------
+
     @Inject
     public TaskListRepository() {
     }

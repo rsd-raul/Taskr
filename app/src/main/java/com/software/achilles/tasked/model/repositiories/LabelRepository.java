@@ -2,6 +2,9 @@ package com.software.achilles.tasked.model.repositiories;
 
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
+
+import javax.inject.Inject;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -10,6 +13,12 @@ public class LabelRepository implements BaseRepository<Label> {
 
     // REVIEW quitar URL cuando este listo completamente
     // http://mlsdev.com/en/blog/47-realm-practical-use-in-android
+
+    // ------------------------ Constructor --------------------------
+
+    @Inject
+    public LabelRepository() {
+    }
 
     // ---------------------------- Find -----------------------------
 

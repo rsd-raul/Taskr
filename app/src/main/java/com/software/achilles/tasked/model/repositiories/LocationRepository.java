@@ -2,10 +2,19 @@ package com.software.achilles.tasked.model.repositiories;
 
 import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
+
+import javax.inject.Inject;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class LocationRepository implements BaseRepository<Location> {
+
+    // ------------------------ Constructor --------------------------
+
+    @Inject
+    public LocationRepository() {
+    }
 
     // ---------------------------- Find -----------------------------
 

@@ -5,12 +5,20 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
 import com.software.achilles.tasked.util.Constants;
 
+import javax.inject.Inject;
+
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class TaskRepository implements BaseRepository<Task> {
+
+    // ------------------------ Constructor --------------------------
+
+    @Inject
+    public TaskRepository() {
+    }
 
     // ---------------------------- Find -----------------------------
 

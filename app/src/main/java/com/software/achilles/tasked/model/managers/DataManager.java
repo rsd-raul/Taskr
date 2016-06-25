@@ -21,6 +21,7 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import dagger.Lazy;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -31,92 +32,56 @@ public class DataManager {
     // ------------------------- Attributes --------------------------
 
     @Inject
+    LabelRepository labelRepository;
+    @Inject
+    LocationRepository locationRepository;
+    @Inject
     TaskListRepository taskListRepository;
+    @Inject
+    TaskRepository taskRepository;
 
-    // -------------------------- Singleton --------------------------
-
-//  Correct lazy initialization in Java - REVIEW - Test in case of better performance
-//
-//    // Nested classes are not loaded until they are referenced.
-//    private static class DataManagerHolder {
-//        public static final DataManager instance = new DataManager();
-//    }
-
-//
-//    public static DataManager getInstance() {
-//        return DataManagerHolder.instance;
-//    }
-
-//  Double-checked locking - Effective in Java 1.5 and later:
-    private static final Object lock = new Object();
-    private static volatile DataManager instance;
-
-    public static DataManager getInstance() {
-//        DataManager result = instance;
-//
-//        // Only synchronize if the DataManager haven't been instantiated
-//        if (result == null) {
-//            synchronized (lock) {
-//                result = instance;
-//
-//                // If no other threads have instantiated the DataManager while waiting for the lock.
-//                if (result == null) {
-//                    result = new DataManager();
-//                    instance = result;
-//                }
-//            }
-//        }
-//        return result;
-        return instance;
-    }
+    // ------------------------ Constructor --------------------------
 
     @Inject @Singleton
     public DataManager() {
-//        this.taskListRepository = taskListRepository;
         instance = this;
+    }
+
+    // FIXME - Apaño para migracion a Dagger
+    private static volatile DataManager instance;
+    public static DataManager getInstance() {
+        return instance;
     }
 
     // ---------------------------- Find -----------------------------
 
     public RealmResults<TaskList> findAllTaskList(){
-        Log.i("AAA", "findAllTaskList: ");
         return taskListRepository.findAll();
     }
 
     public RealmList<Task> findAllTasksByTaskListPosition(int position){
-        TaskRepository taskRepository = new TaskRepository();
-
         return taskRepository.findAllByTaskListPosition(position);
     }
 
     public TaskList findTaskListByPosition(int position){
-        TaskListRepository taskListRepository = new TaskListRepository();
-
         return taskListRepository.findByPosition(position);
     }
 
     public RealmResults<Label> findAllLabels(){
-        LabelRepository labelRepository = new LabelRepository();
-
         return labelRepository.findAll();
     }
 
     public RealmResults<Location> findAllLocations(){
-        LocationRepository locationRepository = new LocationRepository();
-
         return locationRepository.findAll();
     }
 
     public Label findLastLabel(){
-        LabelRepository labelRepository = new LabelRepository();
         RealmResults<Label> labels = labelRepository.findAll();
 
         return labels.get(labels.size() - 1);
     }
 
     public int findTaskListPositionById(int id){
-        TaskListRepository taskListRepository = new TaskListRepository();
-
         RealmResults<TaskList> taskLists = taskListRepository.findAll();
 
         // Gives you the position of a TaskList based on its id
@@ -130,22 +95,15 @@ public class DataManager {
     // ---------------------------- Save -----------------------------
 
     public void saveTask(int taskListPosition, Task task){
-        TaskRepository taskRepository = new TaskRepository();
-        TaskListRepository taskListRepository = new TaskListRepository();
-
         taskRepository.save(task);
         taskListRepository.addTaskToTaskList(taskListPosition, task);
     }
 
     public void saveTaskList(TaskList taskList){
-        TaskListRepository taskListRepository = new TaskListRepository();
-
         taskListRepository.save(taskList);
     }
 
     public void saveLabel(Label label){
-        LabelRepository labelRepository = new LabelRepository();
-
         labelRepository.save(label);
     }
 
@@ -179,7 +137,7 @@ public class DataManager {
     // -------------------------- Use Cases --------------------------
 
     public void dashTaskModifier(int uniqueParameterId, Task task){
-        new TaskRepository().taskModifier(uniqueParameterId, task);
+        taskRepository.taskModifier(uniqueParameterId, task);
     }
 
 
@@ -192,9 +150,6 @@ public class DataManager {
     int size = 0;
 
     public RealmResults<Task> filterByText(String query, Boolean searchDeep){
-
-        TaskRepository taskRepository = new TaskRepository();
-
         return taskRepository.findAllByTitle(query);
     }
 
@@ -263,11 +218,6 @@ public class DataManager {
         int amountTasks = 15;
 
         Log.d("POPULATION: ", "STARTED");
-
-        TaskRepository taskRepository = new TaskRepository();
-        LabelRepository labelRepository = new LabelRepository();
-        TaskListRepository taskListRepository = new TaskListRepository();
-        LocationRepository locationRepository = new LocationRepository();
 
         // Fields to switch and use randomly
         String[] titles = new String[]{"Unbelievable long task", "Short task"};

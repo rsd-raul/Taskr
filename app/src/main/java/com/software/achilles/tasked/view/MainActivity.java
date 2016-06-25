@@ -1,5 +1,6 @@
 package com.software.achilles.tasked.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -51,13 +52,16 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------- Constructor -------------------------
 
     @Inject
+    public MainActivity() {
+    }
+
+    @Inject
     DataManager dataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((App) getApplication()).component().inject(this);
-        Log.i("sasas", "onCreate: " + dataManager);
 
         setContentView(R.layout.activity_main);
 
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "- populating -", Toast.LENGTH_LONG).show();
 
             // Data population for testing and introduction
-            DataManager.getInstance().firstTimePopulation();
+            dataManager.firstTimePopulation();
         }
 
         // Set ActionBar
