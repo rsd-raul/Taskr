@@ -38,6 +38,9 @@ import com.software.achilles.tasked.view.fragments.DashboardFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import io.realm.RealmResults;
 
 public class MainAndFilterDrawerConfigurator {
@@ -65,7 +68,11 @@ public class MainAndFilterDrawerConfigurator {
 
     // ------------------------- Constructor -------------------------
 
-    public MainAndFilterDrawerConfigurator(MainActivity activity) {
+    @Inject
+    public MainAndFilterDrawerConfigurator() {
+    }
+
+    public void configure(MainActivity activity){
         this.mActivity = activity;
 
         // Set ActionBar

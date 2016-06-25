@@ -19,6 +19,8 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.extras.FloatingActionMenuBehavior;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 
+import javax.inject.Inject;
+
 public class FloatingActionMenuConfigurator {
 
     // --------------------------- Values ----------------------------
@@ -30,7 +32,11 @@ public class FloatingActionMenuConfigurator {
 
     // ------------------------- Constructor -------------------------
 
-    public FloatingActionMenuConfigurator(MainActivity activity) {
+    @Inject
+    public FloatingActionMenuConfigurator() {
+    }
+
+    public void configure(MainActivity activity){
         FloatingActionMenuConfigurator.activity = activity;
         fam = (FloatingActionMenu) activity.findViewById(R.id.menuFAB);
 

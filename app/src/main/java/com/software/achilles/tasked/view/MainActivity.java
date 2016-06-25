@@ -1,6 +1,5 @@
 package com.software.achilles.tasked.view;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -16,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
@@ -24,7 +22,6 @@ import com.software.achilles.tasked.model.helpers.PreferencesHelper;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.model.managers.ThreadManager;
-import com.software.achilles.tasked.model.repositiories.TaskListRepository;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
@@ -37,6 +34,7 @@ import com.software.achilles.tasked.util.Constants;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -46,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Attributes --------------------------
 
+    @Inject
     public FloatingActionMenuConfigurator mFamConfigurator;
+    @Inject
     public MainAndFilterDrawerConfigurator mDrawersConfigurator;
 
     // ------------------------- Constructor -------------------------
@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        //TODO ONLY FOR DEVELOPMENT ******
+        //REVIEW ****** ONLY FOR DEVELOPMENT ******
         // Simple BUG report, retrieves the last error and tries to send an email
         ErrorReporter errorReporter = ErrorReporter.getInstance();
         errorReporter.Init(this);
         errorReporter.CheckErrorAndSendMail(this);
-        //TODO ONLY FOR DEVELOPMENT ******
+        //REVIEW ****** ONLY FOR DEVELOPMENT ******
 
         // Set the RealmConfiguration for Realm usage
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             // return;
             Toast.makeText(this, "- populating -", Toast.LENGTH_LONG).show();
 
-            // Data population for testing and introduction
+            // Data population for testing and/or introduction
             dataManager.firstTimePopulation();
         }
 
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         // Configure the drawers, both main and filter
-        mDrawersConfigurator = new MainAndFilterDrawerConfigurator(this);
+        mDrawersConfigurator.configure(this);// = new MainAndFilterDrawerConfigurator(this);
 
         // Initialize the main Presenter
         MainPresenter.getInstance().attachView(this);
@@ -279,20 +279,15 @@ public class MainActivity extends AppCompatActivity {
                 DashboardFragment dashFragment = new DashboardFragment();
                 newOne = dashFragment;
 
+                // Configure the fab menu and its children.
+                mFamConfigurator.configure(this);
+
                 // Unblock filter and navigation drawers, show FAM
                 if(mFamConfigurator != null) {
                     mFamConfigurator.famVisibility(true);
                     mDrawersConfigurator.blockDrawers(false);
                     break;
                 }
-
-                // Configure the fab menu and its children. - NEW THREAD
-                final MainActivity aux = this;
-                ThreadManager.launchIfPossible(new Runnable() {
-                    public void run() {
-                        mFamConfigurator = new FloatingActionMenuConfigurator(aux);
-                    }
-                });
 
                 mDashboardPresenter = DashboardPresenter.getInstance().attachView(dashFragment);
                 TaskCreationPresenter.destroyPresenter();

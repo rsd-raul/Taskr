@@ -1,8 +1,6 @@
 package com.software.achilles.tasked.model.managers;
 
 import android.util.Log;
-import android.widget.Toast;
-
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Location;
@@ -12,16 +10,11 @@ import com.software.achilles.tasked.model.repositiories.LabelRepository;
 import com.software.achilles.tasked.model.repositiories.LocationRepository;
 import com.software.achilles.tasked.model.repositiories.TaskListRepository;
 import com.software.achilles.tasked.model.repositiories.TaskRepository;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import dagger.Lazy;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -75,11 +68,11 @@ public class DataManager {
         return locationRepository.findAll();
     }
 
-    public Label findLastLabel(){
-        RealmResults<Label> labels = labelRepository.findAll();
-
-        return labels.get(labels.size() - 1);
-    }
+//    public Label findLastLabel(){
+//        RealmResults<Label> labels = labelRepository.findAll();
+//
+//        return labels.get(labels.size() - 1);
+//    }
 
     public int findTaskListPositionById(int id){
         RealmResults<TaskList> taskLists = taskListRepository.findAll();
@@ -147,7 +140,7 @@ public class DataManager {
 
     // -------------------------- Filtering --------------------------
 
-    int size = 0;
+//    int size = 0;
 
     public RealmResults<Task> filterByText(String query, Boolean searchDeep){
         return taskRepository.findAllByTitle(query);
@@ -160,43 +153,43 @@ public class DataManager {
 //        return searchDeep ? deepSearch(result) : lightSearch(result);
 //    }
 
-    public ArrayList<Task> deepSearch(ArrayList<Task> tasks){
-        // Busqueda final, aprovecha lo que tienes
-        return new ArrayList<>();
-    }
+//    public ArrayList<Task> deepSearch(ArrayList<Task> tasks){
+//        // Busqueda final, aprovecha lo que tienes
+//        return new ArrayList<>();
+//    }
 
-    public ArrayList<Task> lightSearch(ArrayList<Task> tasks){
-        // Tengo que lanzar un hilo y cancelarlo si el usuario teclea otra letra, cosa que si estoy
-        // buscando "hola" no se tire 20 segundos en buscar todas las tareas que tienen una "h"
-        return new ArrayList<>();
-    }
+//    public ArrayList<Task> lightSearch(ArrayList<Task> tasks){
+//        // Tengo que lanzar un hilo y cancelarlo si el usuario teclea otra letra, cosa que si estoy
+//        // buscando "hola" no se tire 20 segundos en buscar todas las tareas que tienen una "h"
+//        return new ArrayList<>();
+//    }
 
-    public ArrayList<Task> filterByFilterDrawerMoreValues(){
+//    public ArrayList<Task> filterByFilterDrawerMoreValues(){
+//
+//        return getAllTasks();
+//    }
 
-        return getAllTasks();
-    }
+//    public ArrayList<Task> filterByFilterDrawerLessValues(){
+////        return mDatabaseHelper.filterTaskListBy(index, values);
+//        return new ArrayList<>();
+//    }
 
-    public ArrayList<Task> filterByFilterDrawerLessValues(){
-//        return mDatabaseHelper.filterTaskListBy(index, values);
-        return new ArrayList<>();
-    }
+//    public ArrayList<Task> filterByFilterDrawer(){
+//        return new ArrayList<>();
+//    }
 
-    public ArrayList<Task> filterByFilterDrawer(){
-        return new ArrayList<>();
-    }
+//    // Retrieve the current Tasks in the ViewPager (take advantage of a previous filter)
+//    public ArrayList<Task> getAllTasks(){
+////        return mDatabaseHelper.getAllTaskForTaskList(index);
+//        return new ArrayList<>();
+//    }
 
-    // Retrieve the current Tasks in the ViewPager (take advantage of a previous filter)
-    public ArrayList<Task> getAllTasks(){
-//        return mDatabaseHelper.getAllTaskForTaskList(index);
-        return new ArrayList<>();
-    }
-
-    // Get all tasks from the Database in order to filter again (filter less restrictive now)
-    public ArrayList<Task> getCurrentTasks(){
-//        ArrayList<Task> result = new ArrayList<>();
-//        result.addAll( mDashboardPresenter.getTasksInCurrentPage() );
-        return new ArrayList<>();
-    }
+//    // Get all tasks from the Database in order to filter again (filter less restrictive now)
+//    public ArrayList<Task> getCurrentTasks(){
+////        ArrayList<Task> result = new ArrayList<>();
+////        result.addAll( mDashboardPresenter.getTasksInCurrentPage() );
+//        return new ArrayList<>();
+//    }
 
     // ------------------------- View Holder -------------------------
     // -------------------------- Landscape --------------------------

@@ -1,9 +1,7 @@
 package com.software.achilles.tasked;
 
 import android.app.Application;
-
 import com.software.achilles.tasked.view.MainActivity;
-
 import javax.inject.Singleton;
 import dagger.Component;
 
