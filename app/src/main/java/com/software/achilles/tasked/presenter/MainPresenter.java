@@ -17,54 +17,67 @@ import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
 import java.util.Random;
 
-public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+public class MainPresenter implements Presenter<MainActivity> {
+
+    // FIXME temporal removed
+//    @Inject
+//    TaskCreationPresenter taskCreationPresenter;
+
+    // ------------------------- Constructor -------------------------
+
+    @Inject
+    public MainPresenter() {
+    }
 
     // ------------------------- Attributes --------------------------
 
     private MainActivity mActivity;
 
-    // -------------------------- Singleton --------------------------
-
-    private static final Object lock = new Object();
-    private static volatile MainPresenter instance;
-
-    //  Double-checked locking - Effective in Java 1.5 and later:
-    public static MainPresenter getInstance() {
-        MainPresenter result = instance;
-
-        // Only synchronize if the MainPresenter haven't been instantiated
-        if (result == null) {
-            synchronized (lock) {
-                result = instance;
-
-                // If no other threads have instantiated the MainPresenter while waiting for the lock.
-                if (result == null) {
-                    result = new MainPresenter();
-                    instance = result;
-                }
-            }
-        }
-        return result;
-    }
+//    // -------------------------- Singleton --------------------------
+//
+//    private static final Object lock = new Object();
+//    private static volatile MainPresenter instance;
+//
+//    //  Double-checked locking - Effective in Java 1.5 and later:
+//    public static MainPresenter getInstance() {
+//        MainPresenter result = instance;
+//
+//        // Only synchronize if the MainPresenter haven't been instantiated
+//        if (result == null) {
+//            synchronized (lock) {
+//                result = instance;
+//
+//                // If no other threads have instantiated the MainPresenter while waiting for the lock.
+//                if (result == null) {
+//                    result = new MainPresenter();
+//                    instance = result;
+//                }
+//            }
+//        }
+//        return result;
+//    }
 
     // ------------------------- Life Cycle --------------------------
 
     @Override
-    public MainPresenter attachView(MainActivity view) {
+    public void attachView(MainActivity view) {
         mActivity = view;
-        return instance;
+//        return instance;
     }
 
-    public static void destroyPresenter() {
-        if(instance == null)
-            return;
-
-        instance.mActivity = null;
-        instance = null;
-
-//      Un-subscribe from the thread?
-//        if (subscription != null) subscription.unsubscribe();
-    }
+//    public static void destroyPresenter() {
+//        if(instance == null)
+//            return;
+//
+//        instance.mActivity = null;
+//        instance = null;
+//
+////      Un-subscribe from the thread?
+////        if (subscription != null) subscription.unsubscribe();
+//    }
 
     /**
      * Closes the Add Task layout if there is no data present, if there is, it asks the user
@@ -72,11 +85,12 @@ public class MainPresenter implements Presenter<MainActivity, MainPresenter> {
      */
     public void backToBack(){
 
-        // If the user haven't typed anything, close the interface
-        if(!TaskCreationPresenter.getInstance().isDataPresent()){
-            mActivity.removeAddTask();
-            return;
-        }
+        // FIXME temporal removed
+//        // If the user haven't typed anything, close the interface
+//        if(!taskCreationPresenter.isDataPresent()){
+//            mActivity.removeAddTask();
+//            return;
+//        }
 
         // Else, ask for confirmation
         Dialog dialog = new AlertDialog.Builder(mActivity)

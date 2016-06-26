@@ -10,60 +10,72 @@ import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.realm.RealmResults;
 
 public class TaskCreationPresenter
-        implements Presenter<TaskCreationFragment, TaskCreationPresenter> {
+        implements Presenter<TaskCreationFragment> {
+
+    // ------------------------- Constructor -------------------------
+
+    @Inject
+    public TaskCreationPresenter() {
+    }
+
 
     // ------------------------- Attributes --------------------------
+
+    @Inject
+    MainPresenter mainPresenter;
 
     private TaskCreationFragment mFragment;
     private boolean desStatus = false, timStatus = false, locStatus = false,
             labStatus = false, favStatus = false;
 
-    // -------------------------- Singleton --------------------------
-
-    private static final Object lock = new Object();
-    private static volatile TaskCreationPresenter instance;
-
-    //  Double-checked locking - Effective in Java 1.5 and later:
-    public static TaskCreationPresenter getInstance() {
-        TaskCreationPresenter result = instance;
-
-        // Only synchronize if the TaskCreationPresenter haven't been instantiated
-        if (result == null) {
-            synchronized (lock) {
-                result = instance;
-
-                // If no other threads have instantiated the TaskCreationPresenter while waiting for the lock.
-                if (result == null) {
-                    result = new TaskCreationPresenter();
-                    instance = result;
-                }
-            }
-        }
-        return result;
-    }
+//    // -------------------------- Singleton --------------------------
+//
+//    private static final Object lock = new Object();
+//    private static volatile TaskCreationPresenter instance;
+//
+//    //  Double-checked locking - Effective in Java 1.5 and later:
+//    public static TaskCreationPresenter getInstance() {
+//        TaskCreationPresenter result = instance;
+//
+//        // Only synchronize if the TaskCreationPresenter haven't been instantiated
+//        if (result == null) {
+//            synchronized (lock) {
+//                result = instance;
+//
+//                // If no other threads have instantiated the TaskCreationPresenter while waiting for the lock.
+//                if (result == null) {
+//                    result = new TaskCreationPresenter();
+//                    instance = result;
+//                }
+//            }
+//        }
+//        return result;
+//    }
 
     // ------------------------- Life Cycle --------------------------
 
     @Override
-    public TaskCreationPresenter attachView(TaskCreationFragment view) {
+    public void attachView(TaskCreationFragment view) {
         mFragment = view;
-        return instance;
+//        return instance;
     }
 
-    public static void destroyPresenter() {
-        if(instance == null)
-            return;
-
-        instance.mFragment = null;
-        instance = null;
-
-//      Un-subscribe from the thread?
-//        if (subscription != null)
-//            subscription.unsubscribe();
-    }
+//    public static void destroyPresenter() {
+//        if(instance == null)
+//            return;
+//
+//        instance.mFragment = null;
+//        instance = null;
+//
+////      Un-subscribe from the thread?
+////        if (subscription != null)
+////            subscription.unsubscribe();
+//    }
 
     // ---------------------------- Layout ---------------------------
 
@@ -161,6 +173,6 @@ public class TaskCreationPresenter
         if(reset)
             mFragment.resetFields();
         else
-            MainPresenter.getInstance().backToBack();
+            mainPresenter.backToBack();
     }
 }

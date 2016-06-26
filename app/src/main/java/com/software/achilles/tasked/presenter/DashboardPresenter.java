@@ -10,56 +10,64 @@ import com.software.achilles.tasked.view.fragments.DashboardFragment;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import io.realm.RealmResults;
 
-public class DashboardPresenter implements Presenter<DashboardFragment, DashboardPresenter> {
+public class DashboardPresenter implements Presenter<DashboardFragment> {
+
+    // ------------------------- Constructor -------------------------
+
+    @Inject
+    public DashboardPresenter() {
+    }
 
     // ------------------------- Attributes --------------------------
 
     private DashboardFragment mFragment;
 
-    // -------------------------- Singleton --------------------------
-
-    private static final Object lock = new Object();
-    private static volatile DashboardPresenter instance;
-
-    //  Double-checked locking - Effective in Java 1.5 and later:
-    public static DashboardPresenter getInstance() {
-        DashboardPresenter result = instance;
-
-        // Only synchronize if the DashboardPresenter haven't been instantiated
-        if (result == null) {
-            synchronized (lock) {
-                result = instance;
-
-                // If no other threads have instantiated the DashboardPresenter while waiting for the lock.
-                if (result == null) {
-                    result = new DashboardPresenter();
-                    instance = result;
-                }
-            }
-        }
-        return result;
-    }
+//    // -------------------------- Singleton --------------------------
+//
+//    private static final Object lock = new Object();
+//    private static volatile DashboardPresenter instance;
+//
+//    //  Double-checked locking - Effective in Java 1.5 and later:
+//    public static DashboardPresenter getInstance() {
+//        DashboardPresenter result = instance;
+//
+//        // Only synchronize if the DashboardPresenter haven't been instantiated
+//        if (result == null) {
+//            synchronized (lock) {
+//                result = instance;
+//
+//                // If no other threads have instantiated the DashboardPresenter while waiting for the lock.
+//                if (result == null) {
+//                    result = new DashboardPresenter();
+//                    instance = result;
+//                }
+//            }
+//        }
+//        return result;
+//    }
 
     // ------------------------- Life Cycle --------------------------
 
     @Override
-    public DashboardPresenter attachView(DashboardFragment mFragment) {
+    public void attachView(DashboardFragment mFragment) {
         this.mFragment = mFragment;
-        return instance;
+//        return instance;
     }
 
-    public static void destroyPresenter() {
-        if(instance == null)
-            return;
-
-        instance.mFragment = null;
-        instance = null;
-
-//      Un-subscribe from the thread?
-//        if (subscription != null) subscription.unsubscribe();
-    }
+//    public static void destroyPresenter() {
+//        if(instance == null)
+//            return;
+//
+//        instance.mFragment = null;
+//        instance = null;
+//
+////      Un-subscribe from the thread?
+////        if (subscription != null) subscription.unsubscribe();
+//    }
 
     // ---------------------------- Layout ---------------------------
 

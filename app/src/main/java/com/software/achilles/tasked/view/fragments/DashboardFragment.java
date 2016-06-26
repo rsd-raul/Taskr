@@ -8,13 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.view.adapters.PagerAdapter;
 import com.software.achilles.tasked.model.domain.TaskList;
-import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.util.Constants;
+
+import javax.inject.Inject;
 
 import io.realm.RealmResults;
 
@@ -23,6 +25,9 @@ public class DashboardFragment extends Fragment {
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
+
+    @Inject
+    DashboardPresenter dashboardPresenter;
 
     public static ViewPager mViewPager;
 
@@ -37,22 +42,20 @@ public class DashboardFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        ((App) getActivity().getApplication()).component().inject(this);
+
         // Initialize presenter
-        DashboardPresenter.getInstance().attachView(this);
+        dashboardPresenter.attachView(this);
 
-        // Setup the fragment composing the ViewPager and the Tabs to control it - NEW THREAD
-        ThreadManager.launchIfPossible(new Runnable() {
-            public void run() {
-                DashboardPresenter.getInstance().setupLayout();
-            }
-        });
+        // Setup the fragment composing the ViewPager and the Tabs to control it
+        dashboardPresenter.setupLayout();
     }
 
-    @Override
-    public void onDestroy() {
-        DashboardPresenter.destroyPresenter();
-        super.onDestroy();
-    }
+    //    @Override
+//    public void onDestroy() {
+//        DashboardPresenter.destroyPresenter();
+//        super.onDestroy();
+//    }
 
     // -------------------------- View Pager -------------------------
 

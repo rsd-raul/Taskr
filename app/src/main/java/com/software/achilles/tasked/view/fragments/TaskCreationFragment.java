@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -26,11 +28,18 @@ import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class TaskCreationFragment extends Fragment {
 
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
+
+    @Inject
+    TaskCreationPresenter taskCreationPresenter;
+    @Inject
+    DataManager dataManager;
 
     private MainActivity mMainActivity;
 
@@ -50,11 +59,13 @@ public class TaskCreationFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        ((App) getActivity().getApplication()).component().inject(this);
+
         // Initialize MainActivity
         mMainActivity = ((MainActivity) getActivity());
 
         // Initialize presenter
-        TaskCreationPresenter.getInstance().attachView(this);
+        taskCreationPresenter.attachView(this);
 
         // Get the list the user is at if it's coming from Dashboard
         int listIndex = 0;
@@ -63,7 +74,7 @@ public class TaskCreationFragment extends Fragment {
         }catch (NullPointerException e){ /* Do nothing, 0 by default */ }
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
-        TaskCreationPresenter.getInstance().setupLayout(listIndex);
+        taskCreationPresenter.setupLayout(listIndex);
     }
 
     public void setupLayout(List<String> taskListNames, int listIndex){
@@ -153,7 +164,7 @@ public class TaskCreationFragment extends Fragment {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskCreationPresenter.getInstance().modifiersOnClick(v);
+                taskCreationPresenter.modifiersOnClick(v);
             }};
 
         mDescription.setOnClickListener(listener);
@@ -183,7 +194,7 @@ public class TaskCreationFragment extends Fragment {
                 public boolean onLongClick(View v) {
                     // Save and reset fields (except spinner)
                     Toast.makeText(mMainActivity, "Save and reset", Toast.LENGTH_SHORT).show();
-                    TaskCreationPresenter.getInstance().saveTask(true);
+                    taskCreationPresenter.saveTask(true);
                     return false;
                 }};
             clickListener = new View.OnClickListener() {
@@ -191,7 +202,7 @@ public class TaskCreationFragment extends Fragment {
                 public void onClick(View v) {
                     // Save and go back to the Dashboard/Glance
                     Toast.makeText(mMainActivity, "Save and go back", Toast.LENGTH_SHORT).show();
-                    TaskCreationPresenter.getInstance().saveTask(false);
+                    taskCreationPresenter.saveTask(false);
                 }};
 
         }else{
@@ -229,21 +240,21 @@ public class TaskCreationFragment extends Fragment {
      * @return      The temporal task once updated
      */
     public Task populateAndGetTemporal(){
-        Task result = DataManager.getInstance().getTemporalTask();
+        Task result = dataManager.getTemporalTask();
 
         result.setTitle(mTitle.getText().toString());
 //        result.setNotes(mNotes.toString());
 
-        DataManager.getInstance().setTemporalTaskListPosition(mSpinner.getSelectedItemPosition());
+        dataManager.setTemporalTaskListPosition(mSpinner.getSelectedItemPosition());
 
         return result;
     }
 
-    @Override
-    public void onDestroy() {
-        TaskCreationPresenter.destroyPresenter();
-        super.onDestroy();
-    }
+//    @Override
+//    public void onDestroy() {
+//        TaskCreationPresenter.destroyPresenter();
+//        super.onDestroy();
+//    }
 
     public boolean isDataPresent(){
         // FIXME si el usuario a introducido algun dato => TRUE, de lo contrario => FALSE
@@ -253,7 +264,7 @@ public class TaskCreationFragment extends Fragment {
     public void resetFields(){
         // FIXME Favourite needs to be set to unchecked
         if(DataManager.getInstance().getTemporalTask().isStarred())
-            TaskCreationPresenter.getInstance().modifiersOnClick(mFavourite);
+            taskCreationPresenter.modifiersOnClick(mFavourite);
 
         setupModifiersColors();
         mTitle.setText(R.string.blank);

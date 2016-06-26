@@ -49,6 +49,9 @@ public class MainAndFilterDrawerConfigurator {
 
     // ------------------------- Attributes --------------------------
 
+    @Inject
+    MainPresenter mainPresenter;
+
     private MainActivity mActivity;
 
     private Toolbar mToolbar;
@@ -214,7 +217,7 @@ public class MainAndFilterDrawerConfigurator {
                 .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
                     @Override
                     public boolean onNavigationClickListener(View clickedView) {
-                        MainPresenter.getInstance().backToBack();
+                        mainPresenter.backToBack();
                         return true;
                     }
                 })
@@ -287,7 +290,7 @@ public class MainAndFilterDrawerConfigurator {
                         mActivity.setFragment(identifier);
                         break;
                     case Constants.ADD_TASK_LIST:
-                        MainPresenter.getInstance().deployLayout(Constants.ADD_TASK_LIST);
+                        mainPresenter.deployLayout(Constants.ADD_TASK_LIST);
                         break;
 
                     case Constants.SETTINGS:

@@ -1,7 +1,13 @@
 package com.software.achilles.tasked;
 
 import android.app.Application;
+
+import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.fragments.DashboardFragment;
+import com.software.achilles.tasked.view.fragments.DashboardListFragment;
+import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+
 import javax.inject.Singleton;
 import dagger.Component;
 
@@ -13,7 +19,10 @@ public class App extends Application {
     @Component(modules = AppModule.class)
     public interface AppComponent {
         void inject(App application);
-        void inject(MainActivity homeActivity);
+        void inject(MainActivity mainActivity);
+        void inject(DashboardFragment dashboardFragment);
+        void inject(DashboardListFragment dashboardListFragment);
+        void inject(TaskCreationFragment taskCreationFragment);
     }
 
     @Override

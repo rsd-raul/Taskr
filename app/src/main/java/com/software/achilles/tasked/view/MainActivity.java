@@ -1,6 +1,7 @@
 package com.software.achilles.tasked.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -9,15 +10,20 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.domain.Label;
+import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -32,6 +38,8 @@ import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigu
 import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.util.Constants;
 
+import java.util.Random;
+
 import javax.inject.Inject;
 
 import dagger.Lazy;
@@ -45,32 +53,30 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------- Attributes --------------------------
 
     @Inject
-    public FloatingActionMenuConfigurator mFamConfigurator;
+    FloatingActionMenuConfigurator mFamConfigurator;
     @Inject
     public MainAndFilterDrawerConfigurator mDrawersConfigurator;
-
-    // ------------------------- Constructor -------------------------
-
-    @Inject
-    public MainActivity() {
-    }
-
     @Inject
     DataManager dataManager;
+    @Inject
+    MainPresenter mainPresenter;
+
+    // ------------------------- Constructor -------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((App) getApplication()).component().inject(this);
-
         setContentView(R.layout.activity_main);
 
-        //REVIEW ****** ONLY FOR DEVELOPMENT ******
+        // Dagger FTW - Inject dependencies
+        ((App) getApplication()).component().inject(this);
+
+//REVIEW        ****** ONLY FOR DEVELOPMENT ******
         // Simple BUG report, retrieves the last error and tries to send an email
         ErrorReporter errorReporter = ErrorReporter.getInstance();
         errorReporter.Init(this);
         errorReporter.CheckErrorAndSendMail(this);
-        //REVIEW ****** ONLY FOR DEVELOPMENT ******
+//REVIEW        ****** ONLY FOR DEVELOPMENT ******
 
         // Set the RealmConfiguration for Realm usage
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
@@ -95,17 +101,10 @@ public class MainActivity extends AppCompatActivity {
         mDrawersConfigurator.configure(this);// = new MainAndFilterDrawerConfigurator(this);
 
         // Initialize the main Presenter
-        MainPresenter.getInstance().attachView(this);
+        mainPresenter.attachView(this);
 
         // Initialize with Dashboard
         setFragment(Constants.DASHBOARD);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        DashboardPresenter.destroyPresenter();
     }
 
     // -------------------------- Landscape --------------------------
@@ -127,13 +126,13 @@ public class MainActivity extends AppCompatActivity {
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextChange(String query) {
-                        DashboardPresenter.getInstance().filterByText(query, false);
+                        dashboardPresenter.filterByText(query, false);
                         Log.i("onQueryTextChange1: ", query);
                         return true;
                     }
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        DashboardPresenter.getInstance().filterByText(query, true);
+                        dashboardPresenter.filterByText(query, true);
                         Log.i("onQueryTextChange2: ", query);
                         return true;
                     }
@@ -233,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         switch (currentFragmentKey){
             case Constants.ADD_TASK:
-                MainPresenter.getInstance().backToBack();
+                mainPresenter.backToBack();
                 return;
             case Constants.SNOOZED:
                 break;
@@ -264,8 +263,10 @@ public class MainActivity extends AppCompatActivity {
     // ------------------- Fragment and Presenter --------------------
 
     private int currentFragmentKey;
-    private DashboardPresenter mDashboardPresenter;
-    private TaskCreationPresenter mTaskCreationPresenter;
+    @Inject
+    DashboardPresenter dashboardPresenter;
+    @Inject
+    TaskCreationPresenter taskCreationPresenter;
 
     public void setFragment(int keyConstant) {
         if(keyConstant == currentFragmentKey)
@@ -289,8 +290,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
 
-                mDashboardPresenter = DashboardPresenter.getInstance().attachView(dashFragment);
-                TaskCreationPresenter.destroyPresenter();
+                dashboardPresenter.attachView(dashFragment);
+//                taskCreationPresenter.destroyPresenter();
 
                 break;
             case Constants.ADD_TASK:
@@ -303,8 +304,8 @@ public class MainActivity extends AppCompatActivity {
 
                 newOne = tasCreFrag;
 
-                mTaskCreationPresenter = TaskCreationPresenter.getInstance().attachView(tasCreFrag);
-                DashboardPresenter.destroyPresenter();
+                taskCreationPresenter.attachView(tasCreFrag);
+//                DashboardPresenter.destroyPresenter();
 
                 break;
         }
@@ -320,6 +321,84 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupViewPagerAndTabs(boolean goToEnd){
-        mDashboardPresenter.setupViewPagerAndTabs(goToEnd);
+        dashboardPresenter.setupViewPagerAndTabs(goToEnd);
     }
+
+//    public void deployLayout(int key){
+//        switch (key) {
+//            case Constants.ADD_TASK:
+//                deployAddTask();
+//                break;
+//            case Constants.ADD_LABEL:
+//                buildAndShowInputDialog(R.string.addLabel, R.color.colorAccent, key);
+//                break;
+//            case Constants.ADD_TASK_LIST:
+//                buildAndShowInputDialog(R.string.addList, R.color.colorPrimary, key);
+//                break;
+//        }
+//    }
+//
+//    /**
+//     * This method is responsible of the creation of a dialog, dialog that includes a text
+//     * input and it's responsible of adding a list or a label to the database, including the
+//     * update of the interface.
+//     *
+//     * @param titRes    The resource that represents the title for the dialog
+//     * @param uniqueId  If the type of Dialog we want (Add task list or add label)
+//     */
+//    private void buildAndShowInputDialog(int titRes, int titColRes, final int uniqueId) {
+//        new MaterialDialog.Builder(this)
+//                .cancelable(false)
+//
+//                // Dialog content
+//                .title(titRes)
+//                .content(R.string.ask_for_title)
+//                .positiveText(R.string.save)
+//                .negativeText(R.string.cancel)
+//
+//                // Colors
+//                .titleColorRes(titColRes)
+//                .negativeColorRes(titColRes)
+//                .positiveColorRes(titColRes)
+//                .widgetColorRes(titColRes)
+//
+//                // Input customization
+//                .inputRangeRes(1, 24, titColRes)
+//                .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_CLASS_TEXT)
+//                .input(R.string.title, R.string.blank, new MaterialDialog.InputCallback() {
+//                    @Override
+//                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+//
+//                        if (uniqueId == Constants.ADD_TASK_LIST) {
+//                            TaskList newTaskList = new TaskList(input.toString(), null);
+//
+//                            DataManager.getInstance().saveTaskList(newTaskList);
+//
+//                            // Update the Tabs
+//                            setupViewPagerAndTabs(true);
+//
+//                            // Update the filterDrawer and the MainDrawer
+//                            mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_TASK_LIST);
+//                        }
+//                        if (uniqueId == Constants.ADD_LABEL) {
+//                            int[] clr = new int[]{R.color.colorAccent, R.color.colorPrimary,
+//                                    R.color.tealLocation, R.color.amberDate, R.color.md_black_1000,
+//                                    R.color.md_orange_500};
+//
+//                            // FIXME manually pick the color for the Label instead of randomly
+//                            Label newLabel = new Label(input.toString(), clr[new Random().nextInt(5)]);
+//
+//                            // Save the label
+//                            DataManager.getInstance().saveLabel(newLabel);
+//
+//                            // If label list on filterDrawer is closed... Do nothing
+//                            if (!mDrawersConfigurator.mExpandedLabelListFilter)
+//                                return;
+//
+//                            // If label list is expanded update the lists (or wait for opening drawer?)
+//                            mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_LABEL_LIST);
+//                        }
+//                    }
+//                }).show();
+//    }
 }

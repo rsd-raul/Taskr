@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -27,7 +28,14 @@ import com.software.achilles.tasked.util.Constants;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class DashboardListFragment extends Fragment {
+
+    @Inject
+    DataManager dataManager;
+    @Inject
+    TaskRecyclerViewAdapter taskRecyclerViewAdapter;
 
     // ------------------------- Constructor -------------------------
 
@@ -36,14 +44,19 @@ public class DashboardListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState) {
         // Retrieve the TaskList index from the Activity and obtain its tasks
         int posOnPager = getArguments().getInt(Constants.TASK_LIST + "");
-        List<Task> tasks = DataManager.getInstance().findAllTasksByTaskListPosition(posOnPager);
+
+        ((App) getActivity().getApplication()).component().inject(this);
+
+        List<Task> tasks = dataManager.findAllTasksByTaskListPosition(posOnPager);
 
         // Setup the recycler view with the list of Tasks
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.fragment_dashboard_list, container, false);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        recyclerView.setAdapter(new TaskRecyclerViewAdapter(getActivity(), tasks));
+
+        taskRecyclerViewAdapter.setup(getActivity(), tasks);
+        recyclerView.setAdapter(taskRecyclerViewAdapter);
 
         return recyclerView;
     }
@@ -60,6 +73,9 @@ public class DashboardListFragment extends Fragment {
 
         // ------------------------- Attributes --------------------------
 
+        @Inject
+        DashboardPresenter dashboardPresenter;
+
         private final TypedValue mTypedValue = new TypedValue();
         private int mBackground;
         private List<Task> mListOfTasks;
@@ -67,7 +83,11 @@ public class DashboardListFragment extends Fragment {
 
         // ------------------------- Constructor -------------------------
 
-        public TaskRecyclerViewAdapter(Context context, List<Task> items) {
+        @Inject
+        public TaskRecyclerViewAdapter(){
+        }
+
+        public void setup (Context context, List<Task> items) {
             context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
             this.mContext = context;
             mBackground = mTypedValue.resourceId;
@@ -105,7 +125,7 @@ public class DashboardListFragment extends Fragment {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DashboardPresenter.getInstance().taskModifier(Constants.DASH_TASK, task);
+                    dashboardPresenter.taskModifier(Constants.DASH_TASK, task);
                 }
             });
 
@@ -120,7 +140,7 @@ public class DashboardListFragment extends Fragment {
             checkDone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DashboardPresenter.getInstance().taskModifier(Constants.DASH_DONE, task);
+                    dashboardPresenter.taskModifier(Constants.DASH_DONE, task);
                 }
             });
 
@@ -139,7 +159,7 @@ public class DashboardListFragment extends Fragment {
             checkStar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DashboardPresenter.getInstance().taskModifier(Constants.DASH_FAVE, task);
+                    dashboardPresenter.taskModifier(Constants.DASH_FAVE, task);
                 }
             });
 

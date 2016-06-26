@@ -30,6 +30,9 @@ public class FloatingActionMenuConfigurator {
     private static MainActivity activity;
     private static FloatingActionMenu fam;
 
+    @Inject
+    MainPresenter mainPresenter;
+
     // ------------------------- Constructor -------------------------
 
     @Inject
@@ -195,7 +198,7 @@ public class FloatingActionMenuConfigurator {
                 @Override
                 public void onClick(View view) {
                     fam.close(false);
-                    MainPresenter.getInstance().deployLayout(Constants.ADD_TASK);
+                    mainPresenter.deployLayout(Constants.ADD_TASK);
                 }
             });
 
@@ -205,7 +208,7 @@ public class FloatingActionMenuConfigurator {
                 @Override
                 public void onClick(View view) {
                     fam.close(true);
-                    MainPresenter.getInstance().deployLayout(Constants.ADD_TASK_LIST);
+                    mainPresenter.deployLayout(Constants.ADD_TASK_LIST);
                 }
             });
 
@@ -215,7 +218,7 @@ public class FloatingActionMenuConfigurator {
                 @Override
                 public void onClick(View view) {
                     fam.close(true);
-                    MainPresenter.getInstance().deployLayout(Constants.ADD_LABEL);
+                    mainPresenter.deployLayout(Constants.ADD_LABEL);
                 }
             });
     }
