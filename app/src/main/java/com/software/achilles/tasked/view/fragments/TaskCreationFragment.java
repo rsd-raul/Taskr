@@ -45,7 +45,7 @@ public class TaskCreationFragment extends Fragment {
 
     private Spinner mSpinner;
     private FloatingActionButton mFabSaveAndVoice;
-    private EditText mTitle;
+    private static EditText mTitle;
     private ImageButton mDescription, mReminder, mLocation, mLabels, mFavourite;
 
     // ------------------------- Constructor -------------------------
@@ -256,9 +256,12 @@ public class TaskCreationFragment extends Fragment {
 //        super.onDestroy();
 //    }
 
-    public boolean isDataPresent(){
-        // FIXME si el usuario a introducido algun dato => TRUE, de lo contrario => FALSE
-        return true;
+
+    // FIXME mTitle pasado a static para poder acceder desde MainPresenter
+    // si el usuario a introducido algun dato => TRUE, de lo contrario => FALSE
+    public static boolean isDataPresent(){
+
+        return !mTitle.getText().toString().equals("");
     }
 
     public void resetFields(){

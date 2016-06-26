@@ -15,14 +15,17 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+
 import java.util.Random;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+@Singleton
 public class MainPresenter implements Presenter<MainActivity> {
 
-    // FIXME temporal removed
+// REVIEW - was Dependency Cycle - TaskCreationFragment.isDataPresent() supplies functionality
 //    @Inject
 //    TaskCreationPresenter taskCreationPresenter;
 
@@ -85,38 +88,36 @@ public class MainPresenter implements Presenter<MainActivity> {
      */
     public void backToBack(){
 
-        // FIXME temporal removed
-//        // If the user haven't typed anything, close the interface
-//        if(!taskCreationPresenter.isDataPresent()){
-//            mActivity.removeAddTask();
-//            return;
-//        }
+        // If the user haven't typed anything, close the interface
+        if(!TaskCreationFragment.isDataPresent()){
+            mActivity.removeAddTask();
+        }else{
+            // Else, ask for confirmation
+            Dialog dialog = new AlertDialog.Builder(mActivity)
+                    // For simple dialogs we don't use a Title (Google Guidelines)
+                    .setMessage(mActivity.getString(R.string.discard_changes))
 
-        // Else, ask for confirmation
-        Dialog dialog = new AlertDialog.Builder(mActivity)
-                // For simple dialogs we don't use a Title (Google Guidelines)
-                .setMessage(mActivity.getString(R.string.discard_changes))
+                    // Only on discard the removeAddTask is triggered
+                    .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            mActivity.removeAddTask();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing
+                        }
+                    })
+                    .show();
 
-                // Only on discard the removeAddTask is triggered
-                .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        mActivity.removeAddTask();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing
-                    }
-                })
-                .show();
+            // Dialog width customization (BUG > LOLLIPOP)  REVIEW - light BUG with dialog size xD
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                return;
 
-        // Dialog width customization (BUG > LOLLIPOP)  REVIEW - light BUG with dialog size xD
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            return;
-
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.width = 850;
-        dialog.getWindow().setAttributes(lp);
+            WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+            lp.width = 850;
+            dialog.getWindow().setAttributes(lp);
+        }
     }
 
     public void deployLayout(int key){
