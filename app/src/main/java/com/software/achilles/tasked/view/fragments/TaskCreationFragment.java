@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +20,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.adapters.TaskDetailAdapter;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
 import java.util.List;
-
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 public class TaskCreationFragment extends Fragment {
 
@@ -47,6 +51,10 @@ public class TaskCreationFragment extends Fragment {
     TaskCreationPresenter taskCreationPresenter;
     @Inject
     DataManager dataManager;
+    @Inject
+    FastItemAdapter<TaskDetailAdapter> fastAdapter;
+    @Inject
+    Provider<TaskDetailAdapter> taskDetailAdapterProvider;
 
     // ------------------------- Constructor -------------------------
 
@@ -74,6 +82,19 @@ public class TaskCreationFragment extends Fragment {
         try {
             listIndex = getArguments().getInt("listIndex", 0);
         }catch (NullPointerException e){ /* Do nothing, 0 by default */ }
+
+        // Retrieve the recycler view and set the manager
+        RecyclerView recyclerView = (RecyclerView) mMainActivity.findViewById(R.id.recycler_task_creation);
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+
+
+        // Configure the FastAdapter and set it on the RecyclerView
+        fastAdapter.withSelectable(true);
+        recyclerView.setAdapter(fastAdapter);
+
+        // Populate our list
+        fastAdapter.add(taskDetailAdapterProvider.get());
+        // TODO AQUI ESTAMOS, toca popular los campos en funcion de la tarea
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
         taskCreationPresenter.setupLayout(listIndex);

@@ -2,6 +2,7 @@ package com.software.achilles.tasked;
 
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.view.adapters.TaskAdapter;
+import com.software.achilles.tasked.view.adapters.TaskDetailAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -11,6 +12,11 @@ public class AppModule {
 
     @Provides
     FastItemAdapter<TaskAdapter> fastItemAdapterTaskProvider(){
+        return new FastItemAdapter<>();
+    }
+
+    @Provides
+    FastItemAdapter<TaskDetailAdapter> fastItemAdapterTaskDetailProvider(){
         return new FastItemAdapter<>();
     }
 }
