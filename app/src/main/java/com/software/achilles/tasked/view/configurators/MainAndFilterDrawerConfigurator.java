@@ -49,9 +49,6 @@ public class MainAndFilterDrawerConfigurator {
 
     // ------------------------- Attributes --------------------------
 
-    @Inject
-    MainPresenter mainPresenter;
-
     private MainActivity mActivity;
 
     private Toolbar mToolbar;
@@ -68,11 +65,17 @@ public class MainAndFilterDrawerConfigurator {
     private PrimaryDrawerItem mTaskListCollapsibleMain, mTaskCollapsible, mLabelCollapsible,
             mLocationCollapsible, mOrderCollapsible;
 
+    // -------------------------- Injected ---------------------------
+
+    MainPresenter mainPresenter;
+    DataManager dataManager;
 
     // ------------------------- Constructor -------------------------
 
     @Inject
-    public MainAndFilterDrawerConfigurator() {
+    public MainAndFilterDrawerConfigurator(MainPresenter mainPresenter, DataManager dataManager) {
+        this.mainPresenter = mainPresenter;
+        this.dataManager = dataManager;
     }
 
     public void configure(MainActivity activity){
@@ -89,7 +92,7 @@ public class MainAndFilterDrawerConfigurator {
 
         // TODO esto esta puesto para quitar el null pointer exception, corregir
 
-        setupMainList(DataManager.getInstance().findAllTaskList());
+        setupMainList(dataManager.findAllTaskList());
 
         // Setup Filter Drawer and its behaviour
         setupFilterDrawer();
@@ -232,7 +235,7 @@ public class MainAndFilterDrawerConfigurator {
                         // If the opened one is filterDrawer and is the first time
                         if (drawerView.getWidth() < 800 && mFilterDrawer != null && firstTime) {
                             // We want the labels opened by default ONLY
-                            addLabelsToFilterDrawer(DataManager.getInstance().findAllLabels());
+                            addLabelsToFilterDrawer(dataManager.findAllLabels());
                             firstTime = false;
                             mLabelCollapsible.withBadgeStyle(mBadgeCollapse);
                             mFilterDrawer.updateItem(mLabelCollapsible);
@@ -313,7 +316,7 @@ public class MainAndFilterDrawerConfigurator {
                         mActivity.setFragment(Constants.DASHBOARD);
 
                         // Calculate the position according to the Task List identifier.
-                        int index = DataManager.getInstance().findTaskListPositionById(identifier);
+                        int index = dataManager.findTaskListPositionById(identifier);
 
                         // Set the view pager on the correct list if there is a correct list
                         if (index != -1)
@@ -387,7 +390,7 @@ public class MainAndFilterDrawerConfigurator {
             removeTaskListFromMainDrawer(mTaskListIds);
         } else{
             toggleTaskListExpandable(false);
-            addTaskListToMainDrawer(DataManager.getInstance().findAllTaskList(), true, 2);
+            addTaskListToMainDrawer(dataManager.findAllTaskList(), true, 2);
         }
     }
 
@@ -567,21 +570,21 @@ public class MainAndFilterDrawerConfigurator {
                 toToggleCollapsible = mTaskCollapsible;
                 mExpandedTaskListFilter = !expanded;        // if(expanded) ? False : True
                 if (!expanded)
-                    addTaskListToFilterDrawer(DataManager.getInstance().findAllTaskList());
+                    addTaskListToFilterDrawer(dataManager.findAllTaskList());
                 break;
             case Constants.COLLAPSIBLE_LABEL_LIST:
                 toRemoveItems = mLabelListIds;
                 toToggleCollapsible = mLabelCollapsible;
                 mExpandedLabelListFilter = !expanded;       // if(expanded) ? False : True
                 if (!expanded)
-                    addLabelsToFilterDrawer(DataManager.getInstance().findAllLabels());
+                    addLabelsToFilterDrawer(dataManager.findAllLabels());
                 break;
             case Constants.COLLAPSIBLE_LOCATION_LIST:
                 toRemoveItems = mLocationListIds;
                 toToggleCollapsible = mLocationCollapsible;
                 mExpandedLocationListFilter = !expanded;    // if(expanded) ? False : True
                 if (!expanded)
-                    addLocationsFilterToDrawer(DataManager.getInstance().findAllLocations());
+                    addLocationsFilterToDrawer(dataManager.findAllLocations());
                 break;
             case Constants.COLLAPSIBLE_ORDER_LIST:
                 toRemoveItems = mOrderListIds;

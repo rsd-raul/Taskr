@@ -18,32 +18,29 @@ import javax.inject.Singleton;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
+@Singleton
 public class DataManager {
 
     // --------------------------- Values ----------------------------
 
     // ------------------------- Attributes --------------------------
 
-    @Inject
+    // -------------------------- Injected ---------------------------
+
     LabelRepository labelRepository;
-    @Inject
     LocationRepository locationRepository;
-    @Inject
     TaskListRepository taskListRepository;
-    @Inject
     TaskRepository taskRepository;
 
     // ------------------------ Constructor --------------------------
 
-    @Inject @Singleton
-    public DataManager() {
-        instance = this;
-    }
-
-    // FIXME - Apaño para migracion a Dagger
-    private static volatile DataManager instance;
-    public static DataManager getInstance() {
-        return instance;
+    @Inject
+    public DataManager(LabelRepository labelRepository, LocationRepository locationRepository,
+                       TaskListRepository taskListRepository, TaskRepository taskRepository) {
+        this.labelRepository = labelRepository;
+        this.locationRepository = locationRepository;
+        this.taskListRepository = taskListRepository;
+        this.taskRepository = taskRepository;
     }
 
     // ---------------------------- Find -----------------------------

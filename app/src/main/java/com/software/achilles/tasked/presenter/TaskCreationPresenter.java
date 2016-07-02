@@ -17,10 +17,15 @@ import io.realm.RealmResults;
 public class TaskCreationPresenter
         implements Presenter<TaskCreationFragment> {
 
+    // -------------------------- Injected ---------------------------
+
+    private DataManager dataManager;
+
     // ------------------------- Constructor -------------------------
 
     @Inject
-    public TaskCreationPresenter() {
+    public TaskCreationPresenter(DataManager dataManager) {
+        this.dataManager = dataManager;
     }
 
 
@@ -83,14 +88,14 @@ public class TaskCreationPresenter
         List<String> taskListTitles = new ArrayList<>();
 
         // Get data for setting the ViewPager
-        RealmResults<TaskList> taskList = DataManager.getInstance().findAllTaskList();
+        RealmResults<TaskList> taskList = dataManager.findAllTaskList();
 
         // Format that data for the spinner
         for (int i = 0; i < taskList.size(); i++)
             taskListTitles.add(taskList.get(i).getTitle());
 
         // Setup a temporal task
-        DataManager.getInstance().getTemporalTask();
+        dataManager.getTemporalTask();
 
         // Setup the layout
         mFragment.setupLayout(taskListTitles, listIndex);
@@ -136,7 +141,7 @@ public class TaskCreationPresenter
                 favStatus = !favStatus;
 
                 // Save
-                DataManager.getInstance().getTemporalTask().setStarred(favStatus);
+                dataManager.getTemporalTask().setStarred(favStatus);
 
                 mFragment.colorModifierButton(id, favStatus);
                 break;
@@ -153,21 +158,21 @@ public class TaskCreationPresenter
 
 //        mFragment.populateAndGetTemporal();
         Task temporal = mFragment.populateAndGetTemporal();
-        int taskListPosition = DataManager.getInstance().getTemporalTaskListPosition();
-        DataManager.getInstance().saveTask(taskListPosition, temporal);
+        int taskListPosition = dataManager.getTemporalTaskListPosition();
+        dataManager.saveTask(taskListPosition, temporal);
 
         Log.d("TaskCreationPresenter", "" +
-                DataManager.getInstance().getTemporalTask().getTitle()
-                + " " + DataManager.getInstance().getTemporalTask().isStarred()
-                + " " + DataManager.getInstance().getTemporalTask().isCompleted()
-                + " " + DataManager.getInstance().getTemporalTask().getNotes()
-                + " " + DataManager.getInstance().getTemporalTask().getDue()
-                + " " + DataManager.getInstance().getTemporalTask().getLabels()
-                + " " + DataManager.getInstance().getTemporalTask().getLocation()
-                + " " + DataManager.getInstance().getTemporalTask().getId()
+                dataManager.getTemporalTask().getTitle()
+                + " " + dataManager.getTemporalTask().isStarred()
+                + " " + dataManager.getTemporalTask().isCompleted()
+                + " " + dataManager.getTemporalTask().getNotes()
+                + " " + dataManager.getTemporalTask().getDue()
+                + " " + dataManager.getTemporalTask().getLabels()
+                + " " + dataManager.getTemporalTask().getLocation()
+                + " " + dataManager.getTemporalTask().getId()
         );
 
-        DataManager.getInstance().destroyTemporalTask();
+        dataManager.destroyTemporalTask();
 
         // If long press, restart all fields, if short, back to Dashboard
         if(reset)

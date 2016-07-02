@@ -18,8 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -36,17 +34,19 @@ public class TaskCreationFragment extends Fragment {
 
     // ------------------------- Attributes --------------------------
 
-    @Inject
-    TaskCreationPresenter taskCreationPresenter;
-    @Inject
-    DataManager dataManager;
-
     private MainActivity mMainActivity;
 
     private Spinner mSpinner;
     private FloatingActionButton mFabSaveAndVoice;
     private static EditText mTitle;
     private ImageButton mDescription, mReminder, mLocation, mLabels, mFavourite;
+
+    // -------------------------- Injected ---------------------------
+
+    @Inject
+    TaskCreationPresenter taskCreationPresenter;
+    @Inject
+    DataManager dataManager;
 
     // ------------------------- Constructor -------------------------
 
@@ -268,7 +268,7 @@ public class TaskCreationFragment extends Fragment {
 
     public void resetFields(){
         // FIXME Favourite needs to be set to unchecked
-        if(DataManager.getInstance().getTemporalTask().isStarred())
+        if(dataManager.getTemporalTask().isStarred())
             taskCreationPresenter.modifiersOnClick(mFavourite);
 
         setupModifiersColors();

@@ -27,20 +27,26 @@ public class FloatingActionMenuConfigurator {
 
     // ------------------------- Attributes --------------------------
 
-    private static MainActivity activity;
-    private static FloatingActionMenu fam;
+    private MainActivity mainActivity;
+    private FloatingActionMenu fam;
 
-    @Inject
+    // -------------------------- Injected ---------------------------
+
     MainPresenter mainPresenter;
+    DataManager dataManager;
 
     // ------------------------- Constructor -------------------------
 
     @Inject
-    public FloatingActionMenuConfigurator() {
+    public FloatingActionMenuConfigurator(MainPresenter mainPresenter, DataManager dataManager) {
+        this.mainPresenter = mainPresenter;
+        this.dataManager = dataManager;
     }
 
+    // -------------------------- Use Cases --------------------------
+
     public void configure(MainActivity activity){
-        FloatingActionMenuConfigurator.activity = activity;
+        mainActivity = activity;
         fam = (FloatingActionMenu) activity.findViewById(R.id.menuFAB);
 
         configureMenu();
@@ -58,8 +64,8 @@ public class FloatingActionMenuConfigurator {
 
         // Change the background depending on the fabMenu Status
         fam.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
-            int fromColor = ContextCompat.getColor(activity, R.color.transparent);
-            int toColor = ContextCompat.getColor(activity, R.color.background);
+            int fromColor = ContextCompat.getColor(mainActivity, R.color.transparent);
+            int toColor = ContextCompat.getColor(mainActivity, R.color.background);
 
             // Creation of animator to transition between the transparent color and the other one
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(fam,
@@ -83,7 +89,7 @@ public class FloatingActionMenuConfigurator {
 //        fam.setOnLongClickListener(new FloatingActionMenu.OnLongClickListener() {
 //            @Override
 //            public boolean onLongClick(View v) {
-//                NestedScrollView scrollView = (NestedScrollView) activity.findViewById(R.id.scrollView);
+//                NestedScrollView scrollView = (NestedScrollView) mainActivity.findViewById(R.id.scrollView);
 //                Snackbar.make(scrollView, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 //
@@ -101,10 +107,10 @@ public class FloatingActionMenuConfigurator {
     public static void setMenuOnScrollReaction(){
 
 //        // prepare animations
-//        Animation fab_slide_down = AnimationUtils.loadAnimation(activity, R.anim.fab_slide_down);
+//        Animation fab_slide_down = AnimationUtils.loadAnimation(mainActivity, R.anim.fab_slide_down);
 //        fab_slide_down.setInterpolator(new AccelerateInterpolator());
 //
-//        Animation fab_slide_up = AnimationUtils.loadAnimation(activity, R.anim.fab_slide_up);
+//        Animation fab_slide_up = AnimationUtils.loadAnimation(mainActivity, R.anim.fab_slide_up);
 //        fab_slide_up.setInterpolator(new AccelerateInterpolator());
 //
 //        // Set animations
@@ -113,10 +119,10 @@ public class FloatingActionMenuConfigurator {
 
         // Control the behaviour when scrolling
 
-//        activity.getSupportActionBar().hide();
-//        activity.getSupportActionBar().show();
+//        mainActivity.getSupportActionBar().hide();
+//        mainActivity.getSupportActionBar().show();
 
-//        RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.recyclerview);
+//        RecyclerView recyclerView = (RecyclerView) mainActivity.findViewById(R.id.recyclerview);
 //        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
 //            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -134,7 +140,7 @@ public class FloatingActionMenuConfigurator {
 //            }
 //        });
 
-//        NestedScrollView scrollView = (NestedScrollView) activity.findViewById(R.id.scrollView);
+//        NestedScrollView scrollView = (NestedScrollView) mainActivity.findViewById(R.id.scrollView);
 //        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
 
         // ---------------------- Marshmallow Only -----------------------
@@ -144,7 +150,7 @@ public class FloatingActionMenuConfigurator {
 //        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
 //            return;
 //
-//        ViewPager viewPager = (ViewPager) activity.findViewById(R.id.viewpager);
+//        ViewPager viewPager = (ViewPager) mainActivity.findViewById(R.id.viewpager);
 //        viewPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
 //            @Override
 //            public void onScrollChange(View v, int scrollX, int scrollY,
@@ -168,31 +174,31 @@ public class FloatingActionMenuConfigurator {
 
     private void configureChildren(){
 
-        final FloatingActionButton share = (FloatingActionButton) activity.findViewById(R.id.shareListFAB);
+        final FloatingActionButton share = (FloatingActionButton) mainActivity.findViewById(R.id.shareListFAB);
         if(share !=null)
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // Retrieving the current Task and extract data for intent
                     int posOnPager = DashboardFragment.mViewPager.getCurrentItem();
-                    TaskList taskList = DataManager.getInstance().findTaskListByPosition(posOnPager);
-                    String title = activity.getString(R.string.shareList) +": "+taskList.getTitle();
+                    TaskList taskList = dataManager.findTaskListByPosition(posOnPager);
+                    String title = mainActivity.getString(R.string.shareList) +": "+taskList.getTitle();
 
                     // Create the Intent and put the info to share
                     Intent shareIntent = ShareCompat.IntentBuilder
-                            .from(activity)
+                            .from(mainActivity)
                             .setType("text/plain")          // Set the MIME type to filter the apps
-                            .setText(LocalizationHelper.TaskListToString(taskList, activity))   // Translate the TaskList to String
+                            .setText(LocalizationHelper.TaskListToString(taskList, mainActivity))   // Translate the TaskList to String
                             .setChooserTitle(title)         // Set a custom title for the chooser
                             .createChooserIntent();         // Build a custom dialog, not use defaults
 
                     // Avoid ActivityNotFoundException
-                    if(shareIntent.resolveActivity(activity.getPackageManager()) != null)
-                        activity.startActivity(shareIntent);
+                    if(shareIntent.resolveActivity(mainActivity.getPackageManager()) != null)
+                        mainActivity.startActivity(shareIntent);
                 }
             });
 
-        FloatingActionButton addTask = (FloatingActionButton) activity.findViewById(R.id.addTaskFAB);
+        FloatingActionButton addTask = (FloatingActionButton) mainActivity.findViewById(R.id.addTaskFAB);
         if(addTask != null)
             addTask.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -202,7 +208,7 @@ public class FloatingActionMenuConfigurator {
                 }
             });
 
-        FloatingActionButton addList = (FloatingActionButton) activity.findViewById(R.id.addListFAB);
+        FloatingActionButton addList = (FloatingActionButton) mainActivity.findViewById(R.id.addListFAB);
         if(addList != null)
             addList.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -212,7 +218,7 @@ public class FloatingActionMenuConfigurator {
                 }
             });
 
-        FloatingActionButton addLabel = (FloatingActionButton) activity.findViewById(R.id.addLabelFAB);
+        FloatingActionButton addLabel = (FloatingActionButton) mainActivity.findViewById(R.id.addLabelFAB);
         if(addLabel!=null)
             addLabel.setOnClickListener(new View.OnClickListener() {
                 @Override

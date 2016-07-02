@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------- Attributes --------------------------
 
+    // -------------------------- Injected ---------------------------
+
     @Inject
     FloatingActionMenuConfigurator mFamConfigurator;
     @Inject
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         // Configure the drawers, both main and filter
-        mDrawersConfigurator.configure(this);// = new MainAndFilterDrawerConfigurator(this);
+        mDrawersConfigurator.configure(this);
 
         // Initialize the main Presenter
         mainPresenter.attachView(this);

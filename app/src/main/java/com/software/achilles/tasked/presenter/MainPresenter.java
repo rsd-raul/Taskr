@@ -29,10 +29,15 @@ public class MainPresenter implements Presenter<MainActivity> {
 //    @Inject
 //    TaskCreationPresenter taskCreationPresenter;
 
+    // -------------------------- Injected ---------------------------
+
+    DataManager dataManager;
+    
     // ------------------------- Constructor -------------------------
 
     @Inject
-    public MainPresenter() {
+    public MainPresenter(DataManager dataManager) {
+        this.dataManager = dataManager;
     }
 
     // ------------------------- Attributes --------------------------
@@ -168,7 +173,7 @@ public class MainPresenter implements Presenter<MainActivity> {
                     if (uniqueId == Constants.ADD_TASK_LIST) {
                         TaskList newTaskList = new TaskList(input.toString(), null);
 
-                        DataManager.getInstance().saveTaskList(newTaskList);
+                        dataManager.saveTaskList(newTaskList);
 
                         // Update the Tabs
                         mActivity.setupViewPagerAndTabs(true);
@@ -185,7 +190,7 @@ public class MainPresenter implements Presenter<MainActivity> {
                         Label newLabel = new Label(input.toString(), clr[new Random().nextInt(5)]);
 
                         // Save the label
-                        DataManager.getInstance().saveLabel(newLabel);
+                        dataManager.saveLabel(newLabel);
 
                         // If label list on filterDrawer is closed... Do nothing
                         if (!mActivity.mDrawersConfigurator.mExpandedLabelListFilter)

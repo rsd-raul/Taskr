@@ -10,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.mikepenz.fastadapter.items.AbstractItem;
-import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
@@ -18,17 +17,28 @@ import com.software.achilles.tasked.util.Constants;
 import java.util.Date;
 import javax.inject.Inject;
 
-import dagger.Multibindings;
-
 public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolder> {
 
-    @Inject
+    // ------------------------- Attributes --------------------------
+
+    private Task task;
+
+    // -------------------------- Injected ---------------------------
+
     DashboardPresenter dashboardPresenter;
 
-    public Task task;
+    // ------------------------- Constructor -------------------------
 
     @Inject
-    public TaskAdapter() {
+    public TaskAdapter(DashboardPresenter dashboardPresenter) {
+        this.dashboardPresenter = dashboardPresenter;
+    }
+
+    // -------------------------- Use Cases --------------------------
+
+    public TaskAdapter withTask(Task task){
+        this.task = task;
+        return this;
     }
 
     //The unique ID for this type of item // TODO What?
@@ -37,7 +47,6 @@ public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolde
         return R.id.taskLinearLayout;
     }
 
-    //The layout to be used for this type of item
     @Override
     public int getLayoutRes() {
         return R.layout.list_task;
@@ -48,9 +57,6 @@ public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolde
     public void bindView(ViewHolder viewHolder) {
         //call super so the selection is already handled for you
         super.bindView(viewHolder);
-
-        // Get the context
-        Context context = viewHolder.itemView.getContext();
 
         // ------------------------ Check Control ------------------------
 
@@ -104,6 +110,9 @@ public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolde
 
         // ------------------------ Date Control -------------------------
 
+        // Get the context
+        Context context = viewHolder.itemView.getContext();
+
         Date dueDate = task.getDue();
         ImageButton alarm = viewHolder.alarmImage;
 
@@ -119,6 +128,7 @@ public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolde
         alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO Alarm Action
                 Snackbar.make(view, "Alarm clicked", Snackbar.LENGTH_LONG).show();
             }
         });
@@ -139,10 +149,5 @@ public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolde
             alarmImage = (ImageButton) view.findViewById(R.id.button_time);
             starCheck = (CheckBox) view.findViewById(R.id.checkbox_favourite);
         }
-    }
-
-    public TaskAdapter withTask(Task task){
-        this.task = task;
-        return this;
     }
 }

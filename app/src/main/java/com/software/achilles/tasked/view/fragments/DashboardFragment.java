@@ -25,13 +25,15 @@ public class DashboardFragment extends Fragment {
 
     // ------------------------- Attributes --------------------------
 
+    public static ViewPager mViewPager;
+
+    // -------------------------- Injected ---------------------------
+
     @Inject
     DashboardPresenter dashboardPresenter;
     @Inject
     Provider<DashboardListFragment> dashboardListFragmentProvider;
-
-    public static ViewPager mViewPager;
-
+    
     // ------------------------- Constructor -------------------------
 
     @Inject

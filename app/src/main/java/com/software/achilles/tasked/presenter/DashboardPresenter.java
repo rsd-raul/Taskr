@@ -16,10 +16,15 @@ import io.realm.RealmResults;
 
 public class DashboardPresenter implements Presenter<DashboardFragment> {
 
+    // -------------------------- Injected ---------------------------
+
+    private DataManager dataManager;
+
     // ------------------------- Constructor -------------------------
 
     @Inject
-    public DashboardPresenter() {
+    public DashboardPresenter(DataManager dataManager) {
+        this.dataManager = dataManager;
     }
 
     // ------------------------- Attributes --------------------------
@@ -88,7 +93,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
     // FIXME mFragment is null as Presenter has been destroyed before
     public void setupViewPagerAndTabs(boolean goToEnd){
         // Get data for setting the ViewPager
-        RealmResults<TaskList> taskList = DataManager.getInstance().findAllTaskList();
+        RealmResults<TaskList> taskList = dataManager.findAllTaskList();
 
         // Setup the viewpager
         mFragment.setupViewPager(taskList);
@@ -104,7 +109,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         if(query.isEmpty()) {
             // TODO volver a vacio, no dejar simplemente en el ultimo resultado
         }else {
-            RealmResults<Task> tasks = DataManager.getInstance().filterByText(query, searchDeep);
+            RealmResults<Task> tasks = dataManager.filterByText(query, searchDeep);
 
             for (Task aux : tasks) {
                 Log.i("Holaa", "filterByText: " + aux.getTitle());
@@ -120,7 +125,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
             // TODO Go to details
             return;
 
-        DataManager.getInstance().dashTaskModifier(uniqueParameterId, task);
+        dataManager.dashTaskModifier(uniqueParameterId, task);
     }
 
 }
