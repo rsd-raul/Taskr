@@ -58,6 +58,8 @@ dependencies {
     compile 'com.github.clans:fab:1.6.2'
     // https://github.com/mikepenz/MaterialDrawer
     compile('com.mikepenz:materialdrawer:4.6.4@aar') { transitive = true }
+    // https://github.com/mikepenz/FastAdapter
+    compile('com.mikepenz:fastadapter:1.5.5@aar') { transitive = true }
     // https://github.com/afollestad/material-dialogs
     compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') { transitive = true }
     // https://github.com/google/dagger

@@ -50,6 +50,10 @@ public class TaskCreationFragment extends Fragment {
 
     // ------------------------- Constructor -------------------------
 
+    @Inject
+    public TaskCreationFragment() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState){
         return inflater.inflate(R.layout.task_creation_fragment, container, false);
@@ -58,8 +62,6 @@ public class TaskCreationFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        ((App) getActivity().getApplication()).component().inject(this);
 
         // Initialize MainActivity
         mMainActivity = ((MainActivity) getActivity());

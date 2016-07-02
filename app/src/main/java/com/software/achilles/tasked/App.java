@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.adapters.TaskAdapter;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.DashboardListFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
@@ -20,9 +21,6 @@ public class App extends Application {
     public interface AppComponent {
         void inject(App application);
         void inject(MainActivity mainActivity);
-        void inject(DashboardFragment dashboardFragment);
-        void inject(DashboardListFragment dashboardListFragment);
-        void inject(TaskCreationFragment taskCreationFragment);
     }
 
     @Override

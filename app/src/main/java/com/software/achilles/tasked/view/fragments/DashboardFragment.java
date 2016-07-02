@@ -7,8 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
@@ -17,6 +15,7 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import io.realm.RealmResults;
 
@@ -28,10 +27,16 @@ public class DashboardFragment extends Fragment {
 
     @Inject
     DashboardPresenter dashboardPresenter;
+    @Inject
+    Provider<DashboardListFragment> dashboardListFragmentProvider;
 
     public static ViewPager mViewPager;
 
     // ------------------------- Constructor -------------------------
+
+    @Inject
+    public DashboardFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState){
@@ -41,8 +46,6 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        ((App) getActivity().getApplication()).component().inject(this);
 
         // Initialize presenter
         dashboardPresenter.attachView(this);
@@ -73,7 +76,7 @@ public class DashboardFragment extends Fragment {
         // Populate each of the pages of the ViewPager
         for (int index = 0 ; index < taskLists.size(); index++){
             // Pick the fragment the page is going to show
-            DashboardListFragment dashboardListFragment = new DashboardListFragment();
+            DashboardListFragment dashboardListFragment = dashboardListFragmentProvider.get();
 
             // Introduce the TaskList corresponding to that fragment
             Bundle bundle = new Bundle();

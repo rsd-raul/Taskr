@@ -1,7 +1,6 @@
 package com.software.achilles.tasked.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -10,24 +9,18 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.domain.Label;
-import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper;
 import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
-import com.software.achilles.tasked.model.managers.ThreadManager;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
@@ -37,11 +30,7 @@ import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.util.Constants;
-
-import java.util.Random;
-
 import javax.inject.Inject;
-
 import dagger.Lazy;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -60,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
     DataManager dataManager;
     @Inject
     MainPresenter mainPresenter;
+    @Inject
+    Lazy<DashboardFragment> dashboardFragmentLazy;
+    @Inject
+    Lazy<TaskCreationFragment> taskCreationFragmentLazy;
 
     // ------------------------- Constructor -------------------------
 
@@ -277,8 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (keyConstant) {
             case Constants.DASHBOARD:
-                DashboardFragment dashFragment = new DashboardFragment();
-                newOne = dashFragment;
+                newOne = dashboardFragmentLazy.get();
 
                 // Configure the fab menu and its children.
                 mFamConfigurator.configure(this);
@@ -290,21 +282,19 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
 
-                dashboardPresenter.attachView(dashFragment);
+                dashboardPresenter.attachView((DashboardFragment) newOne);
 //                taskCreationPresenter.destroyPresenter();
 
                 break;
             case Constants.ADD_TASK:
-                TaskCreationFragment tasCreFrag = new TaskCreationFragment();
+                newOne = taskCreationFragmentLazy.get();
 
                 // Send the list the user is on
                 Bundle bundle = new Bundle();
                 bundle.putInt("listIndex", DashboardFragment.mViewPager.getCurrentItem());
-                tasCreFrag.setArguments(bundle);
+                newOne.setArguments(bundle);
 
-                newOne = tasCreFrag;
-
-                taskCreationPresenter.attachView(tasCreFrag);
+                taskCreationPresenter.attachView((TaskCreationFragment) newOne);
 //                DashboardPresenter.destroyPresenter();
 
                 break;
