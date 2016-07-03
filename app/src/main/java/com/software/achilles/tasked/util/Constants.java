@@ -56,4 +56,12 @@ public abstract class Constants {
     public static final int DASH_DONE =                 22;
     public static final int DASH_FAVE =                 12;
     public static final int DASH_DATE =                 16;
+
+    // ------------------------ Task Creation ------------------------
+
+    public static final int DETAIL_DESCRIPTION =        27;
+    public static final int DETAIL_LOCATION =           28;
+    public static final int DETAIL_ALARM =              29;
+    public static final int DETAIL_LABELS =             30;
+
 }

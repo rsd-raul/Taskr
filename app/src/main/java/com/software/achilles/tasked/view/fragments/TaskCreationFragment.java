@@ -25,6 +25,7 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
+import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.adapters.TaskDetailAdapter;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
@@ -92,9 +93,19 @@ public class TaskCreationFragment extends Fragment {
         fastAdapter.withSelectable(true);
         recyclerView.setAdapter(fastAdapter);
 
-        // Populate our list
-        fastAdapter.add(taskDetailAdapterProvider.get());
+        // REVIEW We are removing before adding, maybe is better not to
+        fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
+
         // TODO AQUI ESTAMOS, toca popular los campos en funcion de la tarea
+        fastAdapter.add(taskDetailAdapterProvider.get()
+                .withConfigure(Constants.DETAIL_DESCRIPTION, "Random placeholder description"));
+        fastAdapter.add(taskDetailAdapterProvider.get()
+                .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork"));
+        fastAdapter.add(taskDetailAdapterProvider.get()
+                .withConfigure(Constants.DETAIL_LABELS, "Food - Persona - More Food"));
+        fastAdapter.add(taskDetailAdapterProvider.get()
+                .withConfigure(Constants.DETAIL_ALARM, "12:40 - Sunday 3, July"));
+
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
         taskCreationPresenter.setupLayout(listIndex);

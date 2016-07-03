@@ -10,7 +10,12 @@
     android:gravity="center_vertical">
 
     <LinearLayout
-        android:layout_margin="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_layout_mask"
@@ -27,14 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:padding="10dp"
             android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+            android:paddingLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
             android:baselineAlignBottom="false"
-            android:tint="@color/abc_secondary_text_material_light" />
+            android:tint="@color/app_body_text_2" />
 
         <TextView
             android:id="@+id/detail_title"
@@ -46,7 +50,7 @@
             android:ellipsize="end"
             android:layout_marginLeft="-2dp"
             android:layout_marginStart="-2dp"
-            android:textColor="@color/primaryText"/>
+            android:textColor="@color/primaryText" />
 
         <ImageButton
             android:id="@+id/expandButton"
@@ -62,7 +66,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
             android:clickable="true"
-            android:tint="@color/abc_secondary_text_material_light" />
+            android:tint="@color/app_body_text_2" />
 
     </LinearLayout>
 

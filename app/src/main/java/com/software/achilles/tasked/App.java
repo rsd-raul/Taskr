@@ -9,12 +9,15 @@ import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.DashboardListFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import dagger.Component;
 
 public class App extends Application {
 
     private AppComponent appComponent;
+
+    private static App instance;
 
     @Singleton
     @Component(modules = AppModule.class)
@@ -30,9 +33,16 @@ public class App extends Application {
                 .builder()
                 .build();
         appComponent.inject(this);
+
+        instance = this;
     }
 
     public AppComponent component() {
         return appComponent;
+    }
+
+    //REVIEW hack to access context related functionalities from TaskDetailAdapter
+    public static App getInstance(){
+        return instance;
     }
 }
