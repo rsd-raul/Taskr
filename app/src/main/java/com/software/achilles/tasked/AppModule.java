@@ -1,5 +1,7 @@
 package com.software.achilles.tasked;
 
+import android.content.Context;
+
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.view.adapters.TaskAdapter;
 import com.software.achilles.tasked.view.adapters.TaskDetailAdapter;
@@ -18,5 +20,10 @@ public class AppModule {
     @Provides
     FastItemAdapter<TaskDetailAdapter> fastItemAdapterTaskDetailProvider(){
         return new FastItemAdapter<>();
+    }
+
+    @Provides
+    Context contextProvider(){
+        return App.getInstance();
     }
 }

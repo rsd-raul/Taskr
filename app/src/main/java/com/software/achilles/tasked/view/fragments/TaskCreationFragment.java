@@ -88,7 +88,6 @@ public class TaskCreationFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) mMainActivity.findViewById(R.id.recycler_task_creation);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
 
-
         // Configure the FastAdapter and set it on the RecyclerView
         fastAdapter.withSelectable(true);
         recyclerView.setAdapter(fastAdapter);
@@ -98,7 +97,9 @@ public class TaskCreationFragment extends Fragment {
 
         // TODO AQUI ESTAMOS, toca popular los campos en funcion de la tarea
         fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(Constants.DETAIL_DESCRIPTION, "Random placeholder description"));
+                .withConfigure(Constants.DETAIL_DESCRIPTION, "Random placeholder description")
+                .addSubItem(taskDetailAdapterProvider.get()
+                        .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")));
         fastAdapter.add(taskDetailAdapterProvider.get()
                 .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork"));
         fastAdapter.add(taskDetailAdapterProvider.get()
