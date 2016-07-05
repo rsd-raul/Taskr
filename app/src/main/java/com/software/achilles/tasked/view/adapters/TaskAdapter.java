@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter.utils.ViewHolderFactory;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
@@ -149,5 +150,31 @@ public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolde
             alarmImage = (ImageButton) view.findViewById(R.id.button_time);
             starCheck = (CheckBox) view.findViewById(R.id.checkbox_favourite);
         }
+    }
+
+    // --------------------------- FACTORY ---------------------------
+
+    /**
+     *  the static ViewHolderFactory which will be used to generate the ViewHolder for this Item
+     */
+    private static final ViewHolderFactory<? extends ViewHolder> FACTORY = new ItemFactory();
+
+    /**
+     * our ItemFactory implementation which creates the ViewHolder for our adapter.
+     * It is highly recommended to implement a ViewHolderFactory as it is 0-1ms faster for ViewHolder creation,
+     * and it is also many many times more efficient if you define custom listeners on views within your item.
+     */
+    protected static class ItemFactory implements ViewHolderFactory<ViewHolder> {
+        public ViewHolder create(View v) {
+            return new ViewHolder(v);
+        }
+    }
+
+    /**
+     * return our ViewHolderFactory implementation here
+     */
+    @Override
+    public ViewHolderFactory<? extends ViewHolder> getFactory() {
+        return FACTORY;
     }
 }

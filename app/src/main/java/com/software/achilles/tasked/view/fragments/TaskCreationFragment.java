@@ -89,7 +89,6 @@ public class TaskCreationFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
 
         // Configure the FastAdapter and set it on the RecyclerView
-        fastAdapter.withSelectable(true);
         recyclerView.setAdapter(fastAdapter);
 
         // REVIEW We are removing before adding, maybe is better not to
@@ -101,7 +100,9 @@ public class TaskCreationFragment extends Fragment {
                 .addSubItem(taskDetailAdapterProvider.get()
                         .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")));
         fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork"));
+                .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")
+                .addSubItem(taskDetailAdapterProvider.get()
+                        .withConfigure(Constants.DETAIL_LABELS, "Food - Persona - More Food")));
         fastAdapter.add(taskDetailAdapterProvider.get()
                 .withConfigure(Constants.DETAIL_LABELS, "Food - Persona - More Food"));
         fastAdapter.add(taskDetailAdapterProvider.get()

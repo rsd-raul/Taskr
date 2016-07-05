@@ -1,6 +1,7 @@
 package com.software.achilles.tasked.model.helpers;
 
 import android.content.res.Resources;
+import android.text.format.Time;
 
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
@@ -8,8 +9,11 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.view.MainActivity;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.SimpleFormatter;
 
 public abstract class LocalizationHelper {
 
@@ -33,12 +37,16 @@ public abstract class LocalizationHelper {
     public static String  TaskToString(Task task, MainActivity activity){
         Resources resources = activity.getResources();
         return (task.isCompleted() ? resources.getString(R.string.task_done)+" - " : "") + task.getTitle()
-                + (task.getDue() == null ? "" : " - " + dateToText(task.getDue()));
+                + (task.getDue() == null ? "" : " - " + dateToDateString(task.getDue()));
     }
 
     // -------------------------- Properties -------------------------
 
-    public static String dateToText(Date date){
+    public static String dateToDateString(Date date){
         return DateFormat.getDateInstance().format(date);
+    }
+
+    public static String dateToTimeString(Date date){
+        return DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
     }
 }

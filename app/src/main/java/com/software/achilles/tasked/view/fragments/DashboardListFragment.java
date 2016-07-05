@@ -47,7 +47,6 @@ public class DashboardListFragment extends Fragment {
 
 
         // Configure the FastAdapter and set it on the RecyclerView
-        fastAdapter.withSelectable(true);
         recyclerView.setAdapter(fastAdapter);
 
         // Populate our list
