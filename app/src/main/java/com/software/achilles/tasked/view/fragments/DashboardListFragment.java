@@ -49,6 +49,9 @@ public class DashboardListFragment extends Fragment {
         // Configure the FastAdapter and set it on the RecyclerView
         recyclerView.setAdapter(fastAdapter);
 
+        // REVIEW Is this the proper way to restart the adapter to remove duplicates?
+        fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
+
         // Populate our list
         List<Task> tasks = dataManager.findAllTasksByTaskListPosition(posOnPager);
         for (int i = 0; i < tasks.size(); i++)

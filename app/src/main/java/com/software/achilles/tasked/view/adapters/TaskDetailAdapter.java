@@ -7,6 +7,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -109,6 +110,13 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
                 viewHolder.itemView.performClick();
             }
         });
+
+        viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "zccxv", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     boolean expandButton = false;
@@ -119,12 +127,14 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
         protected ImageButton detailIcon;
         protected TextView textView;
         protected ImageButton expandIcon;
+        protected LinearLayout mainLayout;
 
         public ViewHolder(View view) {
             super(view);
             detailIcon = (ImageButton) view.findViewById(R.id.detailIcon);
             textView = (TextView) view.findViewById(R.id.detail_title);
             expandIcon = (ImageButton) view.findViewById(R.id.expandButton);
+            mainLayout = (LinearLayout) view.findViewById(R.id.taskDetailLinearLayout);
         }
     }
 
@@ -164,6 +174,11 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
     public TaskDetailAdapter withIsExpanded(boolean expanded) {
         mExpanded = expanded;
         return this;
+    }
+
+    @Override
+    public boolean isAutoExpanding() {
+        return true;
     }
 
     //TODO Playing with expansion

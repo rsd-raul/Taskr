@@ -62,7 +62,7 @@ dependencies {
         exclude module: "fastadapter"
     }
     // https://github.com/mikepenz/FastAdapter
-    compile('com.mikepenz:fastadapter:1.5.5@aar') { transitive = true }
+    compile('com.mikepenz:fastadapter:1.6.0@aar') { transitive = true }
     // https://github.com/afollestad/material-dialogs
     compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') { transitive = true }
     // https://github.com/google/dagger

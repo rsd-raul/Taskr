@@ -86,16 +86,13 @@ public class FloatingActionMenuConfigurator {
 
 
         // FIXME onLongClick => Desplegar añadir tarea
-//        fam.setOnLongClickListener(new FloatingActionMenu.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                NestedScrollView scrollView = (NestedScrollView) mainActivity.findViewById(R.id.scrollView);
-//                Snackbar.make(scrollView, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//
-//                return true;
-//            }
-//        });
+        fam.setOnLongClickListener(new FloatingActionMenu.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mainPresenter.deployLayout(Constants.ADD_TASK);
+                return true;
+            }
+        });
     }
 
 //    public void closeFabMenu(){
