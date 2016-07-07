@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.view.adapters.TaskAdapter;
@@ -23,7 +25,7 @@ public class DashboardListFragment extends Fragment {
     @Inject
     DataManager dataManager;
     @Inject
-    FastItemAdapter<TaskAdapter> fastAdapter;
+    FastItemAdapter<IItem> fastAdapter;
     @Inject
     Provider<TaskAdapter> taskAdapterProvider;
 

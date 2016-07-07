@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +21,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
+import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -40,7 +45,7 @@ public class TaskCreationFragment extends Fragment {
     // ------------------------- Attributes --------------------------
 
     private MainActivity mMainActivity;
-
+    ClickListenerHelper<IItem> mClickListenerHelper;
     private Spinner mSpinner;
     private FloatingActionButton mFabSaveAndVoice;
     private static EditText mTitle;
@@ -53,7 +58,7 @@ public class TaskCreationFragment extends Fragment {
     @Inject
     DataManager dataManager;
     @Inject
-    FastItemAdapter<TaskDetailAdapter> fastAdapter;
+    FastItemAdapter<IItem> fastAdapter;
     @Inject
     Provider<TaskDetailAdapter> taskDetailAdapterProvider;
 
@@ -90,6 +95,39 @@ public class TaskCreationFragment extends Fragment {
 
         // Configure the FastAdapter and set it on the RecyclerView
         recyclerView.setAdapter(fastAdapter);
+
+        mClickListenerHelper = new ClickListenerHelper<>(fastAdapter);
+        fastAdapter.withOnCreateViewHolderListener(new FastAdapter.OnCreateViewHolderListener() {
+            @Override
+            public RecyclerView.ViewHolder onPreCreateViewHolder(ViewGroup parent, int viewType) {
+                return fastAdapter.getTypeInstance(viewType).getViewHolder(parent);
+            }
+
+            @Override
+            public RecyclerView.ViewHolder onPostCreateViewHolder(final RecyclerView.ViewHolder viewHolder) {
+                //we do this for our ImageItem.ViewHolder
+                if (viewHolder instanceof TaskDetailAdapter.ViewHolder) {
+                    //if we click on the imageLovedContainer
+                    mClickListenerHelper.listen(viewHolder, ((TaskDetailAdapter.ViewHolder) viewHolder).itemView, new ClickListenerHelper.OnClickListener<IItem>() {
+                        @Override
+                        public void onClick(View v, int position, IItem item) {
+//                            if (item instanceof TaskDetailAdapter) {
+//                                fastAdapter.toggleExpandable(position);
+//                                if (((TaskDetailAdapter) item).getSubItems() != null) {
+                                    if (!((TaskDetailAdapter) item).isExpanded()) {
+                                        ViewCompat.animate(v.findViewById(R.id.material_drawer_icon)).rotation(180).start();
+                                    } else {
+                                        ViewCompat.animate(v.findViewById(R.id.material_drawer_icon)).rotation(0).start();
+                                    }
+//                                }
+//                            }
+                        }
+                    });
+                }
+
+                return viewHolder;
+            }
+        });
 
         // REVIEW We are removing before adding, maybe is better not to
         fastAdapter.removeItemRange(0, fastAdapter.getItemCount());

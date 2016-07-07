@@ -122,11 +122,11 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
     boolean expandButton = false;
 
     //The viewHolder used for this item. This viewHolder is always reused by the RecyclerView so scrolling is blazing fast
-    protected static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         protected ImageButton detailIcon;
         protected TextView textView;
-        protected ImageButton expandIcon;
+        public ImageButton expandIcon;
         protected LinearLayout mainLayout;
 
         public ViewHolder(View view) {
@@ -178,7 +178,7 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
 
     @Override
     public boolean isAutoExpanding() {
-        return true;
+        return false;
     }
 
     //TODO Playing with expansion
@@ -208,35 +208,35 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
         return this;
     }
 
-    @Override
-    public FastAdapter.OnClickListener<TaskDetailAdapter> getOnItemClickListener() {
-        return new FastAdapter.OnClickListener<TaskDetailAdapter>() {
-            @Override
-            public boolean onClick(View v, IAdapter<TaskDetailAdapter> adapter, TaskDetailAdapter item, int pos) {
-
-                // If the detail has more info rotate the icon 180º
-                boolean moreInfo = false;
-                if (item.getSubItems() != null) {
-                    int rotation = item.isExpanded() ? 180 : 0;
-
-                    ViewCompat.animate(v.findViewById(R.id.expandButton)).rotation(rotation).start();
-
-                    moreInfo = true;
-                }
-
-                if(!isExpanded())
-                    item.expand(v);
-
-                if(expandButton) {
-                    Toast.makeText(context, "Testing", Toast.LENGTH_SHORT).show();
-                    expandButton = false;
-                }
-
-                // And if the item has a custom onClickListener call it
-                return mOnClickListener != null ? mOnClickListener.onClick(v, adapter, item, pos) : moreInfo;
-            }
-        };
-    }
+//    @Override
+//    public FastAdapter.OnClickListener<TaskDetailAdapter> getOnItemClickListener() {
+//        return new FastAdapter.OnClickListener<TaskDetailAdapter>() {
+//            @Override
+//            public boolean onClick(View v, IAdapter<TaskDetailAdapter> adapter, TaskDetailAdapter item, int pos) {
+//
+//                // If the detail has more info rotate the icon 180º
+//                boolean moreInfo = false;
+//                if (item.getSubItems() != null) {
+//                    int rotation = item.isExpanded() ? 180 : 0;
+//
+//                    ViewCompat.animate(v.findViewById(R.id.expandButton)).rotation(rotation).start();
+//
+//                    moreInfo = true;
+//                }
+//
+//                if(!isExpanded())
+//                    item.expand(v);
+//
+//                if(expandButton) {
+//                    Toast.makeText(context, "Testing", Toast.LENGTH_SHORT).show();
+//                    expandButton = false;
+//                }
+//
+//                // And if the item has a custom onClickListener call it
+//                return mOnClickListener != null ? mOnClickListener.onClick(v, adapter, item, pos) : moreInfo;
+//            }
+//        };
+//    }
 
 
 }
