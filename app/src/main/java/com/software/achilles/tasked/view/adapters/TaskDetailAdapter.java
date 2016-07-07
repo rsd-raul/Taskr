@@ -56,7 +56,7 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
     //The unique ID for this type of item // TODO What?
     @Override
     public int getType() {
-        return R.id.taskDetailLinearLayout;
+        return R.id.list_detail;
     }
 
     @Override
@@ -95,31 +95,24 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
                 break;
         }
 
-        viewHolder.detailIcon.setImageDrawable(ContextCompat.getDrawable(context, drawRes));
         int color = ContextCompat.getColor(context, colRes);
+        viewHolder.detailIcon.setImageDrawable(ContextCompat.getDrawable(context, drawRes));
         viewHolder.detailIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
         // Set the expansion icon and its listener
         viewHolder.expandIcon.clearAnimation();
         ViewCompat.setRotation(viewHolder.expandIcon, isExpanded() ? 180 : 0);
 
+        // Set the listeners for the views
+        viewHolder.detailIcon.setOnClickListener(itemListener);
+        viewHolder.textView.setOnClickListener(itemListener);
         viewHolder.expandIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expandButton = true;
                 viewHolder.itemView.performClick();
             }
         });
-
-        viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "zccxv", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
-
-    boolean expandButton = false;
 
     //The viewHolder used for this item. This viewHolder is always reused by the RecyclerView so scrolling is blazing fast
     protected static class ViewHolder extends RecyclerView.ViewHolder {
@@ -127,14 +120,12 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
         protected ImageButton detailIcon;
         protected TextView textView;
         protected ImageButton expandIcon;
-        protected LinearLayout mainLayout;
 
         public ViewHolder(View view) {
             super(view);
             detailIcon = (ImageButton) view.findViewById(R.id.detailIcon);
             textView = (TextView) view.findViewById(R.id.detail_title);
             expandIcon = (ImageButton) view.findViewById(R.id.expandButton);
-            mainLayout = (LinearLayout) view.findViewById(R.id.taskDetailLinearLayout);
         }
     }
 
@@ -182,7 +173,7 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
     }
 
     //TODO Playing with expansion
-    public void expand(View v){
+    public void expandTaskDetails(View v){
         ViewHolder viewHolder = getFactory().create(v);
 
         switch (detailType){
@@ -194,23 +185,20 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
                 break;
             case Constants.DETAIL_LOCATION:
 
-                viewHolder.textView.setText("Updated at " + LocalizationHelper.dateToTimeString(new Date()));
+                viewHolder.textView.setText(String.format("Updated at %s", LocalizationHelper.dateToTimeString(new Date())));
                 break;
         }
     }
 
     // --------------------------- ON CLICK --------------------------
 
-    private FastAdapter.OnClickListener<TaskDetailAdapter> mOnClickListener;
-
-    public TaskDetailAdapter withOnClickListener(FastAdapter.OnClickListener<TaskDetailAdapter> mOnClickListener) {
-        this.mOnClickListener = mOnClickListener;
-        return this;
-    }
-
     @Override
     public FastAdapter.OnClickListener<TaskDetailAdapter> getOnItemClickListener() {
-        return new FastAdapter.OnClickListener<TaskDetailAdapter>() {
+        return expansionListener;
+    }
+
+    private FastAdapter.OnClickListener<TaskDetailAdapter> expansionListener =
+        new FastAdapter.OnClickListener<TaskDetailAdapter>() {
             @Override
             public boolean onClick(View v, IAdapter<TaskDetailAdapter> adapter, TaskDetailAdapter item, int pos) {
 
@@ -225,18 +213,20 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
                 }
 
                 if(!isExpanded())
-                    item.expand(v);
-
-                if(expandButton) {
-                    Toast.makeText(context, "Testing", Toast.LENGTH_SHORT).show();
-                    expandButton = false;
-                }
+                    item.expandTaskDetails(v);
 
                 // And if the item has a custom onClickListener call it
-                return mOnClickListener != null ? mOnClickListener.onClick(v, adapter, item, pos) : moreInfo;
+//                return mOnClickListener != null ? mOnClickListener.onClick(v, adapter, item, pos) : moreInfo;
+                return moreInfo;
             }
         };
-    }
 
+    private View.OnClickListener itemListener =
+        new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Toast.makeText(context, "OnItemClick", Toast.LENGTH_SHORT).show();
+            }
+        };
 }
