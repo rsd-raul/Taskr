@@ -29,7 +29,7 @@ import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
-import com.software.achilles.tasked.view.adapters.TaskDetailAdapter;
+import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
 import java.util.List;
 import javax.inject.Inject;
@@ -57,7 +57,7 @@ public class TaskCreationFragment extends Fragment {
     @Inject
     FastItemAdapter<IItem> fastAdapter;
     @Inject
-    Provider<TaskDetailAdapter> taskDetailAdapterProvider;
+    Provider<TaskDetailFAItem> taskDetailAdapterProvider;
 
     // ------------------------- Constructor -------------------------
 
@@ -81,16 +81,11 @@ public class TaskCreationFragment extends Fragment {
         taskCreationPresenter.attachView(this);
 
         // Get the list the user is at if it's coming from Dashboard
-        int listIndex = 0;
-        try {
-            listIndex = getArguments().getInt("listIndex", 0);
-        }catch (NullPointerException e){ /* Do nothing, 0 by default */ }
+        int listIndex = getArguments().getInt("listIndex", 0);
 
-        // Retrieve the recycler view and set the manager
+        // Retrieve the recycler view, set the Manager and the FastAdapter
         RecyclerView recyclerView = (RecyclerView) mMainActivity.findViewById(R.id.recycler_task_creation);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-
-        // Configure the FastAdapter and set it on the RecyclerView
         recyclerView.setAdapter(fastAdapter);
 
         // REVIEW We are removing before adding, maybe is better not to

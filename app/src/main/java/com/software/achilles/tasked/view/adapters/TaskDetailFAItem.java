@@ -7,7 +7,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -24,8 +23,8 @@ import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 
-public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetailAdapter.ViewHolder>
-        implements IExpandable<TaskDetailAdapter, IItem> {
+public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailFAItem.ViewHolder>
+        implements IExpandable<TaskDetailFAItem, IItem> {
 
     // ------------------------- ATTRIBUTES --------------------------
 
@@ -40,20 +39,20 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
     // ------------------------- CONSTRUCTOR -------------------------
 
     @Inject
-    public TaskDetailAdapter(TaskCreationPresenter taskCreationPresenter, Context context) {
+    public TaskDetailFAItem(TaskCreationPresenter taskCreationPresenter, Context context) {
         this.taskCreationPresenter = taskCreationPresenter;
         this.context = context;
     }
 
     // -------------------------- USE CASES --------------------------
 
-    public TaskDetailAdapter withConfigure(int detailType, String textView){
+    public TaskDetailFAItem withConfigure(int detailType, String textView){
         this.detailType = detailType;
         this.textView = textView;
         return this;
     }
 
-    //The unique ID for this type of item // TODO What?
+    //The unique ID for this type of item //TODO What?
     @Override
     public int getType() {
         return R.id.list_detail;
@@ -61,10 +60,10 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
 
     @Override
     public int getLayoutRes() {
-        return R.layout.list_detail;
+        return R.layout.task_detail_fa_item;
     }
 
-    //The logic to bind your data to the view
+    //The logic to bind data to the view
     @Override
     public void bindView(final ViewHolder viewHolder) {
         //call super so the selection is already handled for you
@@ -94,7 +93,6 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
                 colRes = R.color.tealLocationDark;
                 break;
         }
-
         int color = ContextCompat.getColor(context, colRes);
         viewHolder.detailIcon.setImageDrawable(ContextCompat.getDrawable(context, drawRes));
         viewHolder.detailIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
@@ -139,12 +137,12 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
     }
 
     @Override
-    public TaskDetailAdapter withSubItems(List<IItem> subItems) {
+    public TaskDetailFAItem withSubItems(List<IItem> subItems) {
         this.mSubItems = subItems != null ? subItems : new ArrayList<IItem>();
         return this;
     }
 
-    public TaskDetailAdapter addSubItem (IItem item){
+    public TaskDetailFAItem addSubItem (IItem item){
         if(mSubItems == null)
             withSubItems(null);
 
@@ -162,7 +160,7 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
     }
 
     @Override
-    public TaskDetailAdapter withIsExpanded(boolean expanded) {
+    public TaskDetailFAItem withIsExpanded(boolean expanded) {
         mExpanded = expanded;
         return this;
     }
@@ -193,14 +191,10 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
     // --------------------------- ON CLICK --------------------------
 
     @Override
-    public FastAdapter.OnClickListener<TaskDetailAdapter> getOnItemClickListener() {
-        return expansionListener;
-    }
-
-    private FastAdapter.OnClickListener<TaskDetailAdapter> expansionListener =
-        new FastAdapter.OnClickListener<TaskDetailAdapter>() {
+    public FastAdapter.OnClickListener<TaskDetailFAItem> getOnItemClickListener() {
+        return new FastAdapter.OnClickListener<TaskDetailFAItem>() {
             @Override
-            public boolean onClick(View v, IAdapter<TaskDetailAdapter> adapter, TaskDetailAdapter item, int pos) {
+            public boolean onClick(View v, IAdapter<TaskDetailFAItem> adapter, TaskDetailFAItem item, int pos) {
 
                 // If the detail has more info rotate the icon 180º
                 boolean moreInfo = false;
@@ -212,7 +206,7 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
                     moreInfo = true;
                 }
 
-                if(!isExpanded())
+                if (!isExpanded())
                     item.expandTaskDetails(v);
 
                 // And if the item has a custom onClickListener call it
@@ -220,6 +214,7 @@ public class TaskDetailAdapter extends AbstractItem<TaskDetailAdapter, TaskDetai
                 return moreInfo;
             }
         };
+    }
 
     private View.OnClickListener itemListener =
         new View.OnClickListener() {

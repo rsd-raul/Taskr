@@ -18,7 +18,7 @@ import com.software.achilles.tasked.util.Constants;
 import java.util.Date;
 import javax.inject.Inject;
 
-public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolder> {
+public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> {
 
     // ------------------------- Attributes --------------------------
 
@@ -31,13 +31,13 @@ public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolde
     // ------------------------- Constructor -------------------------
 
     @Inject
-    public TaskAdapter(DashboardPresenter dashboardPresenter) {
+    public TaskFAItem(DashboardPresenter dashboardPresenter) {
         this.dashboardPresenter = dashboardPresenter;
     }
 
     // -------------------------- Use Cases --------------------------
 
-    public TaskAdapter withTask(Task task){
+    public TaskFAItem withTask(Task task){
         this.task = task;
         return this;
     }
@@ -50,7 +50,7 @@ public class TaskAdapter extends AbstractItem<TaskAdapter, TaskAdapter.ViewHolde
 
     @Override
     public int getLayoutRes() {
-        return R.layout.list_task;
+        return R.layout.task_fa_item;
     }
 
     //The logic to bind your data to the view

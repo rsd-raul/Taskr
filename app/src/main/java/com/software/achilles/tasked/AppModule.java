@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
-import com.software.achilles.tasked.view.adapters.TaskAdapter;
-import com.software.achilles.tasked.view.adapters.TaskDetailAdapter;
 
 import dagger.Module;
 import dagger.Provides;

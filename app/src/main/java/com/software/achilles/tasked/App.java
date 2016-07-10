@@ -2,14 +2,8 @@ package com.software.achilles.tasked;
 
 import android.app.Application;
 
-import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.view.MainActivity;
-import com.software.achilles.tasked.view.adapters.TaskAdapter;
-import com.software.achilles.tasked.view.fragments.DashboardFragment;
-import com.software.achilles.tasked.view.fragments.DashboardListFragment;
-import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import dagger.Component;
 
@@ -41,7 +35,7 @@ public class App extends Application {
         return appComponent;
     }
 
-    //REVIEW hack to access context related functionalities from TaskDetailAdapter
+    //REVIEW hack to access context related functionality from TaskDetailFAItem
     public static App getInstance(){
         return instance;
     }

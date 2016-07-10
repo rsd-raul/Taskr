@@ -12,10 +12,11 @@ import android.view.ViewGroup;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.view.adapters.TaskAdapter;
+import com.software.achilles.tasked.view.adapters.TaskFAItem;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
+
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -27,7 +28,7 @@ public class DashboardListFragment extends Fragment {
     @Inject
     FastItemAdapter<IItem> fastAdapter;
     @Inject
-    Provider<TaskAdapter> taskAdapterProvider;
+    Provider<TaskFAItem> taskAdapterProvider;
 
     // ------------------------- Constructor -------------------------
 
@@ -98,7 +99,7 @@ public class DashboardListFragment extends Fragment {
 //
 //            // We inflate the layout that will be each one of the Items (Tasks) on the recycler
 //            View view = LayoutInflater.from(parent.getContext())
-//                    .inflate(R.layout.list_task, parent, false);
+//                    .inflate(R.layout.task_fa_item, parent, false);
 //            view.setBackgroundResource(mBackground);
 //            return new ViewHolder(view);
 //        }
