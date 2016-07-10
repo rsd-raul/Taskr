@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -80,8 +81,9 @@ public class TaskCreationFragment extends Fragment {
         // Initialize presenter
         taskCreationPresenter.attachView(this);
 
-        // Get the list the user is at if it's coming from Dashboard
-        int listIndex = getArguments().getInt("listIndex", 0);
+        // Get the list the user is at, if it's coming from Dashboard
+        int listIndex;
+        try {listIndex = getArguments().getInt("listIndex", 0);} catch(Exception e) {listIndex = 0;}
 
         // Retrieve the recycler view, set the Manager and the FastAdapter
         RecyclerView recyclerView = (RecyclerView) mMainActivity.findViewById(R.id.recycler_task_creation);
@@ -94,12 +96,13 @@ public class TaskCreationFragment extends Fragment {
         // TODO AQUI ESTAMOS, toca popular los campos en funcion de la tarea
         fastAdapter.add(taskDetailAdapterProvider.get()
                 .withConfigure(Constants.DETAIL_DESCRIPTION, "Random placeholder description test testing")
-                .addSubItem(taskDetailAdapterProvider.get()
-                        .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")));
+                .withFragmentContext(getActivity()));
+//                .addSubItem(taskDetailAdapterProvider.get()
+//                        .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")));
         fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")
-                .addSubItem(taskDetailAdapterProvider.get()
-                        .withConfigure(Constants.DETAIL_LABELS, "Food - Persona - More Food")));
+                .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork"));
+//                .addSubItem(taskDetailAdapterProvider.get()
+//                        .withConfigure(Constants.DETAIL_LABELS, "Food - Persona - More Food")));
         fastAdapter.add(taskDetailAdapterProvider.get()
                 .withConfigure(Constants.DETAIL_LABELS, "Food - Persona - More Food"));
         fastAdapter.add(taskDetailAdapterProvider.get()

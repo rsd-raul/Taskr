@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
 //REVIEW        ****** ONLY FOR DEVELOPMENT ******
         // Simple BUG report, retrieves the last error and tries to send an email
-        ErrorReporter errorReporter = ErrorReporter.getInstance();
-        errorReporter.Init(this);
-        errorReporter.CheckErrorAndSendMail(this);
+//        ErrorReporter errorReporter = ErrorReporter.getInstance();
+//        errorReporter.Init(this);
+//        errorReporter.CheckErrorAndSendMail(this);
 //REVIEW        ****** ONLY FOR DEVELOPMENT ******
 
         // Set the RealmConfiguration for Realm usage

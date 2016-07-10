@@ -1,11 +1,17 @@
 package com.software.achilles.tasked.view.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,17 +20,21 @@ import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.IExpandable;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.helpers.LocalizationHelper;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.view.fragments.DashboardFragment;
+import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+import com.software.achilles.tasked.view.fragments.TestFragment;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 
-public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailFAItem.ViewHolder>
-        implements IExpandable<TaskDetailFAItem, IItem> {
+public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailFAItem.ViewHolder>{
 
     // ------------------------- ATTRIBUTES --------------------------
 
@@ -99,7 +109,7 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
 
         // Set the expansion icon and its listener
         viewHolder.expandIcon.clearAnimation();
-        ViewCompat.setRotation(viewHolder.expandIcon, isExpanded() ? 180 : 0);
+        ViewCompat.setRotation(viewHolder.expandIcon, mExpanded ? 180 : 0);
 
         // Set the listeners for the views
         viewHolder.detailIcon.setOnClickListener(itemListener);
@@ -129,66 +139,80 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
 
     // -------------------------- SUB ITEMS --------------------------
 
-    private List<IItem> mSubItems;
-
-    @Override
-    public List<IItem> getSubItems() {
-        return mSubItems;
-    }
-
-    @Override
-    public TaskDetailFAItem withSubItems(List<IItem> subItems) {
-        this.mSubItems = subItems != null ? subItems : new ArrayList<IItem>();
-        return this;
-    }
-
-    public TaskDetailFAItem addSubItem (IItem item){
-        if(mSubItems == null)
-            withSubItems(null);
-
-        mSubItems.add(item);
-        return this;
-    }
+//    private List<IItem> mSubItems;
+//
+//    @Override
+//    public List<IItem> getSubItems() {
+//        return mSubItems;
+//    }
+//
+//    @Override
+//    public TaskDetailFAItem withSubItems(List<IItem> subItems) {
+//        this.mSubItems = subItems != null ? subItems : new ArrayList<IItem>();
+//        return this;
+//    }
+//
+//    public TaskDetailFAItem addSubItem (IItem item){
+//        if(mSubItems == null)
+//            withSubItems(null);
+//
+//        mSubItems.add(item);
+//        return this;
+//    }
 
     // -------------------------- EXPANSION --------------------------
 
     private boolean mExpanded = false;
 
-    @Override
-    public boolean isExpanded() {
-        return mExpanded;
-    }
+//    @Override
+//    public boolean isExpanded() {
+//        return mExpanded;
+//    }
 
-    @Override
+//    @Override
     public TaskDetailFAItem withIsExpanded(boolean expanded) {
         mExpanded = expanded;
         return this;
     }
-
-    @Override
-    public boolean isAutoExpanding() {
-        return true;
-    }
+//
+//    @Override
+//    public boolean isAutoExpanding() {
+//        return true;
+//    }
 
     //TODO Playing with expansion
-    public void expandTaskDetails(View v){
-        ViewHolder viewHolder = getFactory().create(v);
+    public void expandTaskDetails(){
+//        ViewHolder viewHolder = getFactory().create(v);
+//        viewHolder.textView.setText(String.format("Updated at %s", LocalizationHelper.dateToTimeString(new Date())));
 
+        Fragment newOne = null;
         switch (detailType){
             case Constants.DETAIL_DESCRIPTION:
+                newOne = new TestFragment();
                 break;
             case Constants.DETAIL_ALARM:
+                newOne = new TestFragment();
                 break;
             case Constants.DETAIL_LABELS:
+                newOne = new TestFragment();
                 break;
             case Constants.DETAIL_LOCATION:
-
-                viewHolder.textView.setText(String.format("Updated at %s", LocalizationHelper.dateToTimeString(new Date())));
+                newOne = new TestFragment();
                 break;
         }
+
+        // Initialize the fragment change
+        FragmentTransaction fragmentTransaction = mFragmentActivity.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.detail_extra_frame_layout, newOne).commit();
     }
 
     // --------------------------- ON CLICK --------------------------
+    FragmentActivity mFragmentActivity;
+
+    public TaskDetailFAItem withFragmentContext(FragmentActivity fragmentActivity){
+        mFragmentActivity = fragmentActivity;
+        return this;
+    }
 
     @Override
     public FastAdapter.OnClickListener<TaskDetailFAItem> getOnItemClickListener() {
@@ -196,24 +220,51 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
             @Override
             public boolean onClick(View v, IAdapter<TaskDetailFAItem> adapter, TaskDetailFAItem item, int pos) {
 
-                // If the detail has more info rotate the icon 180º
-                boolean moreInfo = false;
-                if (item.getSubItems() != null) {
-                    int rotation = item.isExpanded() ? 180 : 0;
-
-                    ViewCompat.animate(v.findViewById(R.id.expandButton)).rotation(rotation).start();
-
-                    moreInfo = true;
+                int rotation, visibility;
+                if(mExpanded){
+                    rotation = 0;
+                    visibility = View.GONE;
+                }else{
+                    rotation = 180;
+                    visibility = View.VISIBLE;
+                    item.expandTaskDetails();
                 }
 
-                if (!isExpanded())
-                    item.expandTaskDetails(v);
+                // Change the expansion state
+                mExpanded = !mExpanded;
 
-                // And if the item has a custom onClickListener call it
-//                return mOnClickListener != null ? mOnClickListener.onClick(v, adapter, item, pos) : moreInfo;
-                return moreInfo;
+                // If the detail has more info rotate the icon 180º
+                ViewCompat.animate(v.findViewById(R.id.expandButton)).rotation(rotation).start();
+
+                // Set the visibility of the expansion area
+                v.findViewById(R.id.detail_extra_frame_layout).setVisibility(visibility);
+
+                return true;
             }
         };
+
+//        return new FastAdapter.OnClickListener<TaskDetailFAItem>() {
+//            @Override
+//            public boolean onClick(View v, IAdapter<TaskDetailFAItem> adapter, TaskDetailFAItem item, int pos) {
+//
+//                // If the detail has more info rotate the icon 180º
+//                boolean moreInfo = false;
+//                if (item.getSubItems() != null) {
+//                    int rotation = item.isExpanded() ? 180 : 0;
+//
+//                    ViewCompat.animate(v.findViewById(R.id.expandButton)).rotation(rotation).start();
+//
+//                    moreInfo = true;
+//                }
+//
+//                if (!isExpanded())
+//                    item.expandTaskDetails(v);
+//
+//                // And if the item has a custom onClickListener call it
+////                return mOnClickListener != null ? mOnClickListener.onClick(v, adapter, item, pos) : moreInfo;
+//                return moreInfo;
+//            }
+//        };
     }
 
     private View.OnClickListener itemListener =
