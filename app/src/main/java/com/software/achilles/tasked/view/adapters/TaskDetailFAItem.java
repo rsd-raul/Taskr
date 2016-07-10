@@ -60,7 +60,7 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
 
     @Override
     public int getLayoutRes() {
-        return R.layout.task_detail_fa_item;
+        return R.layout.task_detail_extra_fa_item;
     }
 
     //The logic to bind data to the view

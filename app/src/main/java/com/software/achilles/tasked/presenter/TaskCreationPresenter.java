@@ -99,6 +99,8 @@ public class TaskCreationPresenter
 
         // Setup the layout
         mFragment.setupLayout(taskListTitles, listIndex);
+
+        mFragment.setupSaveOrVoice(false);
     }
 
     // -------------------------- Listeners --------------------------

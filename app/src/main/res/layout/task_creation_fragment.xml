@@ -26,7 +26,7 @@
         <LinearLayout
             android:id="@+id/shadow"
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="4dp"
             android:background="@drawable/res_shadow_up"
             android:orientation="vertical"/>
 
@@ -160,6 +160,7 @@
         android:layout_margin = "@dimen/fab_margin"
         app:layout_anchor="@id/shadow"
         app:layout_anchorGravity="bottom|end"
-        app:fab_size="mini"/>
+        app:fab_size="mini"
+        android:onClick=""/>
 
 </android.support.design.widget.CoordinatorLayout>

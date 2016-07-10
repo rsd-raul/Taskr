@@ -212,7 +212,7 @@ public class TaskCreationFragment extends Fragment {
      *
      * @param save  Will set the FAB to Save if true, to Voice if not.
      */
-    private void setupSaveOrVoice(boolean save){
+    public void setupSaveOrVoice(boolean save){
         View.OnLongClickListener longClickListener;
         View.OnClickListener clickListener;
         int dra, col;
