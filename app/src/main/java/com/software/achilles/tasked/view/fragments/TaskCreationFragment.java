@@ -94,9 +94,8 @@ public class TaskCreationFragment extends Fragment {
         fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
 
         // TODO AQUI ESTAMOS, toca popular los campos en funcion de la tarea
-        fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(Constants.DETAIL_DESCRIPTION, "Random placeholder description test testing")
-                .withFragmentContext(getActivity()));
+        fastAdapter.add(taskDetailAdapterProvider.get()                .withConfigure(Constants.DETAIL_DESCRIPTION, "Random placeholder description test testing"));
+//                .withFragmentContext(getActivity()));
 //                .addSubItem(taskDetailAdapterProvider.get()
 //                        .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")));
         fastAdapter.add(taskDetailAdapterProvider.get()
@@ -361,5 +360,4 @@ public class TaskCreationFragment extends Fragment {
 //        }else
 //            taskTimeBT.setText(R.string.setDate);
 //    }
-
 }
