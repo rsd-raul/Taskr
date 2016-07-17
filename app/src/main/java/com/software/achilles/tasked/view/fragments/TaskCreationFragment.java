@@ -4,12 +4,16 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +26,12 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
+import com.software.achilles.tasked.model.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
@@ -42,7 +48,7 @@ public class TaskCreationFragment extends Fragment {
 
     // ------------------------- Attributes --------------------------
 
-    private MainActivity mMainActivity;
+    private FragmentActivity mMainActivity;
 
     private Spinner mSpinner;
     private FloatingActionButton mFabSaveAndVoice;
@@ -76,7 +82,7 @@ public class TaskCreationFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Initialize MainActivity
-        mMainActivity = ((MainActivity) getActivity());
+        mMainActivity = getActivity();
 
         // Initialize presenter
         taskCreationPresenter.attachView(this);
@@ -94,7 +100,8 @@ public class TaskCreationFragment extends Fragment {
         fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
 
         // TODO AQUI ESTAMOS, toca popular los campos en funcion de la tarea
-        fastAdapter.add(taskDetailAdapterProvider.get()                .withConfigure(Constants.DETAIL_DESCRIPTION, "Random placeholder description test testing"));
+        fastAdapter.add(taskDetailAdapterProvider.get()
+                .withConfigure(Constants.DETAIL_DESCRIPTION, "Random placeholder description test testing"));
 //                .withFragmentContext(getActivity()));
 //                .addSubItem(taskDetailAdapterProvider.get()
 //                        .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")));
@@ -110,6 +117,13 @@ public class TaskCreationFragment extends Fragment {
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
         taskCreationPresenter.setupLayout(listIndex);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        taskCreationPresenter.attachView(this);
     }
 
     public void setupLayout(List<String> taskListNames, int listIndex){

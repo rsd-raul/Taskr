@@ -11,9 +11,11 @@ import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.realm.RealmResults;
 
+@Singleton
 public class DashboardPresenter implements Presenter<DashboardFragment> {
 
     // -------------------------- Injected ---------------------------

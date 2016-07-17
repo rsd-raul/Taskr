@@ -1,19 +1,30 @@
 package com.software.achilles.tasked.presenter;
 
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
+import com.software.achilles.tasked.model.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.realm.RealmResults;
 
+@Singleton
 public class TaskCreationPresenter
         implements Presenter<TaskCreationFragment> {
 
@@ -27,7 +38,6 @@ public class TaskCreationPresenter
     public TaskCreationPresenter(DataManager dataManager) {
         this.dataManager = dataManager;
     }
-
 
     // ------------------------- Attributes --------------------------
 
@@ -181,5 +191,24 @@ public class TaskCreationPresenter
             mFragment.resetFields();
         else
             mainPresenter.backToBack();
+    }
+
+    public void detailOnClick(int detailType){
+
+        switch (detailType){
+            case Constants.DETAIL_DESCRIPTION:
+                DialogsHelper.buildDescriptionDialog(mFragment.getActivity());
+                break;
+            case Constants.DETAIL_ALARM:
+                break;
+            case Constants.DETAIL_LABELS:
+                break;
+            case Constants.DETAIL_LOCATION:
+                break;
+            default:
+                throw new UnsupportedOperationException();
+        }
+
+
     }
 }

@@ -14,7 +14,7 @@
     android:layout_marginRight="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginTop="8dp"
-    android:layout_marginBottom="0dp"
+    android:layout_marginBottom="-5dp"
 
     app:cardElevation="2dp"
     app:cardCornerRadius="3dp"
@@ -24,7 +24,7 @@
     <RelativeLayout
         android:id="@+id/list_detail"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="45dp">
         <!--android:background="@drawable/round_layout_mask"-->
 
         <ImageButton
