@@ -123,7 +123,6 @@ public class DataManager {
         this.temporalTaskListPosition = temporalTaskListPosition;
     }
 
-
     // -------------------------- Use Cases --------------------------
 
     public void dashTaskModifier(int uniqueParameterId, Task task){

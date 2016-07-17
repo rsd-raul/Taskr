@@ -14,6 +14,7 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import java.util.List;
@@ -36,7 +37,10 @@ public abstract class DialogsHelper {
                 .show();
     }
 
-    public static void buildDescriptionDialog(Activity activity){
+    public static void buildDescriptionDialog(String text, Activity activity, final TaskDetailFAItem item, final View view){
+        String hint = activity.getResources().getString(R.string.description);
+        String existent = text != null ? text : "";
+
         MaterialDialog dialog = new MaterialDialog.Builder(activity)
 
                 // Dialog content
@@ -52,11 +56,12 @@ public abstract class DialogsHelper {
 
                 // Input customization
 //                .inputRangeRes(1, 24, titColRes)
-                .inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
-                .input(R.string.description, R.string.blank, new MaterialDialog.InputCallback() {
+                .inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                        | InputType.TYPE_CLASS_TEXT)
+                .input(hint, existent, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-
+                        item.setText(input.toString(), view);
                     }
                 }).build();
 

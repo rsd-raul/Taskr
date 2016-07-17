@@ -1,5 +1,6 @@
 package com.software.achilles.tasked.presenter;
 
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import com.software.achilles.tasked.R;
@@ -8,6 +9,8 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
+import com.software.achilles.tasked.view.adapters.TaskFAItem;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +91,10 @@ public class TaskCreationPresenter
     // ---------------------------- Layout ---------------------------
 
     public void setupLayout(int listIndex){
+
+        // Destroy any existing temporal task
+        dataManager.destroyTemporalTask();
+
         // Setup a temporal task
         dataManager.getTemporalTask();
 
@@ -193,11 +200,12 @@ public class TaskCreationPresenter
             mainPresenter.backToBack();
     }
 
-    public void detailOnClick(int detailType){
+    public void detailOnClick(int detailType, TaskDetailFAItem item, View view){
 
         switch (detailType){
             case Constants.DETAIL_DESCRIPTION:
-                DialogsHelper.buildDescriptionDialog(mFragment.getActivity());
+                String text = dataManager.getTemporalTask().getNotes();
+                DialogsHelper.buildDescriptionDialog(text, mFragment.getActivity(), item, view);
                 break;
             case Constants.DETAIL_ALARM:
                 break;
@@ -208,7 +216,9 @@ public class TaskCreationPresenter
             default:
                 throw new UnsupportedOperationException();
         }
+    }
 
-
+    public void setDescription(String description){
+        dataManager.getTemporalTask().setNotes(description);
     }
 }

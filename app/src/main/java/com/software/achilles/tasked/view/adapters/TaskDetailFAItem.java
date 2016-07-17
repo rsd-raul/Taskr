@@ -96,7 +96,7 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
         onClickListener = new FastAdapter.OnClickListener<TaskDetailFAItem>(){
             @Override
             public boolean onClick(View v, IAdapter<TaskDetailFAItem> adapter, TaskDetailFAItem item, int position) {
-                taskCreationPresenter.detailOnClick(detailType);
+                taskCreationPresenter.detailOnClick(detailType, item, v);
                 return false;
             }
         };
@@ -121,5 +121,10 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
     @Override
     public FastAdapter.OnClickListener<TaskDetailFAItem> getOnItemClickListener() {
         return onClickListener;
+    }
+
+    public void setText(String text, View v){
+        mFactory.create(v).textView.setText(text);
+        taskCreationPresenter.setDescription(text);
     }
 }
