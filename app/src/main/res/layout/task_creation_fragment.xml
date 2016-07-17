@@ -139,18 +139,27 @@
                 android:layout_toEndOf="@+id/button_label"
                 android:layout_toRightOf="@+id/button_label" />
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:id="@+id/spinner_task_list"
+            <TextView
+                android:id="@+id/text_task_list"
 
-                android:layout_gravity="end"
-                android:spinnerMode="dialog"
-                android:layout_below="@+id/textInput"
-                android:layout_toEndOf="@+id/button_favourite"
-                android:layout_toRightOf="@+id/button_favourite"
+                android:textSize="18sp"
+                android:gravity="center_vertical|end"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingEnd="10dp"
+                android:paddingRight="10dp"
+
+                android:textColor="@color/spinner_text_color"
+
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+
+                android:layout_alignTop="@+id/button_favourite"
+                android:layout_alignBottom="@+id/button_favourite"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/button_favourite"
+                android:layout_toEndOf="@+id/button_favourite" />
 
         </RelativeLayout>
     </LinearLayout>

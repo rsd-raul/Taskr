@@ -4,38 +4,30 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
-import com.software.achilles.tasked.model.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
-import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
 import java.util.List;
@@ -50,7 +42,7 @@ public class TaskCreationFragment extends Fragment {
 
     private FragmentActivity mMainActivity;
 
-    private Spinner mSpinner;
+    private TextView mTaskList;
     private FloatingActionButton mFabSaveAndVoice;
     private static EditText mTitle;
     private ImageButton mDescription, mReminder, mLocation, mLabels, mFavourite;
@@ -119,16 +111,9 @@ public class TaskCreationFragment extends Fragment {
         taskCreationPresenter.setupLayout(listIndex);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-//        taskCreationPresenter.attachView(this);
-    }
-
-    public void setupLayout(List<String> taskListNames, int listIndex){
+    public void setupLayout(){
         mFabSaveAndVoice = (FloatingActionButton) mMainActivity.findViewById(R.id.saveAndVoiceFAB);
-        mSpinner = (Spinner) mMainActivity.findViewById(R.id.spinner_task_list);
+        mTaskList = (TextView) mMainActivity.findViewById(R.id.text_task_list);
         mDescription = (ImageButton) mMainActivity.findViewById(R.id.button_description);
         mReminder = (ImageButton) mMainActivity.findViewById(R.id.button_time);
         mLocation = (ImageButton) mMainActivity.findViewById(R.id.button_location);
@@ -155,12 +140,16 @@ public class TaskCreationFragment extends Fragment {
         mTitle.addTextChangedListener(new OnText_EditTextListener(positive, negative));
 
         // Populate Spinner
-        mSpinner.setAdapter(new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, taskListNames));
-        mSpinner.setSelection(listIndex);
+//        mSpinner.setAdapter(new ArrayAdapter<>(this.getContext(),
+//                android.R.layout.simple_list_item_1, taskListNames));
     }
 
-    private void setupModifiersColors(){
+    public void setTaskListTextView(String value, int index){
+        mTaskList.setText(value);
+        dataManager.setTemporalTaskListPosition(index);
+    }
+
+    private void setupModifiersColors() {
         PorterDuffColorFilter filter = getColorFilter(R.color.task_modifier_icons);
         mDescription.setColorFilter(filter);
         mReminder.setColorFilter(filter);
@@ -221,6 +210,7 @@ public class TaskCreationFragment extends Fragment {
         mLocation.setOnClickListener(listener);
         mLabels.setOnClickListener(listener);
         mFavourite.setOnClickListener(listener);
+        mTaskList.setOnClickListener(listener);
     }
 
     /**
@@ -294,7 +284,6 @@ public class TaskCreationFragment extends Fragment {
         result.setTitle(mTitle.getText().toString());
 //        result.setNotes(mNotes.toString());
 
-        dataManager.setTemporalTaskListPosition(mSpinner.getSelectedItemPosition());
 
         return result;
     }
@@ -323,29 +312,6 @@ public class TaskCreationFragment extends Fragment {
     }
 
     // ------------------------ Time & Date --------------------------
-
-    // TODO Show information back to the user and also persist that information
-    public void taskCustomization(View view){
-        switch (view.getId()){
-//            case R.id.button_close:
-//                ((MainActivity)getActivity()).removeAddTask();
-//                break;
-            case R.id.button_description:
-                // Deploy description
-                break;
-            case R.id.button_time:
-                // Show picker, then deploy result if any
-                break;
-            case R.id.button_location:
-                // Show picker, then deploy result if any
-                break;
-            case R.id.button_label:
-                // Show picker, then deploy result if any
-                break;
-            case R.id.checkbox_favourite:
-                break;
-        }
-    }
 
 //    private void showTimePickerDialog() {
 //

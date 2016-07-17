@@ -1,20 +1,13 @@
 package com.software.achilles.tasked.presenter;
 
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
-import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,20 +88,13 @@ public class TaskCreationPresenter
     // ---------------------------- Layout ---------------------------
 
     public void setupLayout(int listIndex){
-        List<String> taskListTitles = new ArrayList<>();
-
-        // Get data for setting the ViewPager
-        RealmResults<TaskList> taskList = dataManager.findAllTaskList();
-
-        // Format that data for the spinner
-        for (int i = 0; i < taskList.size(); i++)
-            taskListTitles.add(taskList.get(i).getTitle());
-
         // Setup a temporal task
         dataManager.getTemporalTask();
 
         // Setup the layout
-        mFragment.setupLayout(taskListTitles, listIndex);
+        String listTitle = dataManager.findAllTaskList().get(listIndex).getTitle();
+        mFragment.setupLayout();
+        mFragment.setTaskListTextView(listTitle, listIndex);
 
         mFragment.setupSaveOrVoice(false);
     }
@@ -117,7 +103,7 @@ public class TaskCreationPresenter
 
     public void modifiersOnClick(View v){
         int id = v.getId();
-        Log.d("AAAAAAAAAAAA", "modifiersOnClick: " + id);
+
         switch (id){
             case R.id.button_description:
                 // Show field
@@ -156,6 +142,20 @@ public class TaskCreationPresenter
                 dataManager.getTemporalTask().setStarred(favStatus);
 
                 mFragment.colorModifierButton(id, favStatus);
+                break;
+            case R.id.text_task_list:
+
+                List<String> taskListTitles = new ArrayList<>();
+
+                // Get data for setting the ViewPager
+                RealmResults<TaskList> taskList = dataManager.findAllTaskList();
+
+                // Format that data for the spinner
+                for (int i = 0; i < taskList.size(); i++)
+                    taskListTitles.add(taskList.get(i).getTitle());
+
+                DialogsHelper.buildChoiceFromList(taskListTitles, dataManager.getTemporalTaskListPosition() ,mFragment);
+
                 break;
         }
     }

@@ -1,8 +1,10 @@
 package com.software.achilles.tasked.model.helpers;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.text.InputType;
+import android.view.View;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -12,10 +14,27 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+
+import java.util.List;
 import java.util.Random;
+
 
 public abstract class DialogsHelper {
 
+    public static void buildChoiceFromList(List<String> items, int defaultList, final TaskCreationFragment fragment){
+        new MaterialDialog.Builder(fragment.getActivity())
+                .title(R.string.select_task_list)
+                .items(items)
+                .itemsCallbackSingleChoice(defaultList, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        fragment.setTaskListTextView(text.toString(), which);
+                        return true;
+                    }
+                })
+                .show();
+    }
 
     public static void buildDescriptionDialog(Activity activity){
         MaterialDialog dialog = new MaterialDialog.Builder(activity)
@@ -33,14 +52,11 @@ public abstract class DialogsHelper {
 
                 // Input customization
 //                .inputRangeRes(1, 24, titColRes)
-                .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
+                .inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
                 .input(R.string.description, R.string.blank, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
 
-//                        TaskList newTaskList = new TaskList(input.toString(), null);
-//
-//                        dataManager.saveTaskList(newTaskList);
                     }
                 }).build();
 
