@@ -30,6 +30,7 @@ public class Task extends RealmObject implements BasicType {
     // ------------------------- Constructor -------------------------
 
     public Task() {
+        this.labels = new RealmList<>();
     }
 
     // TODO no id in constructor

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.helpers.DialogsHelper;
@@ -18,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 @Singleton
@@ -200,16 +202,33 @@ public class TaskCreationPresenter
             mainPresenter.backToBack();
     }
 
-    public void detailOnClick(int detailType, TaskDetailFAItem item, View view){
+    public void detailOnClick(int detailType, TaskDetailFAItem item, final View view){
 
         switch (detailType){
             case Constants.DETAIL_DESCRIPTION:
-                String text = dataManager.getTemporalTask().getNotes();
-                DialogsHelper.buildDescriptionDialog(text, mFragment.getActivity(), item, view);
+
+                String description = dataManager.getTemporalTask().getNotes();
+                DialogsHelper.buildDescriptionDialog(description, item, mFragment.getActivity(), view);
                 break;
             case Constants.DETAIL_ALARM:
                 break;
             case Constants.DETAIL_LABELS:
+
+                // Get all labels and format them to be shown
+                RealmResults<Label> items = dataManager.findAllLabels();
+                List<String> labels = new ArrayList<>();
+                for (int i = 0; i < items.size(); i++)
+                    labels.add(items.get(i).getTitle());
+
+                // Get labels for the temporal object and format them to be selected
+                RealmList<Label> temporal = dataManager.getTemporalTask().getLabels();
+                Integer[] selected = new Integer[temporal.size()];
+                for (int i = 0; i < temporal.size(); i++)
+                    selected[i] = indexOf(items, temporal.get(i));
+
+
+
+                DialogsHelper.buildChoiceFromListMulti(labels, selected, item, mFragment.getActivity(), view);
                 break;
             case Constants.DETAIL_LOCATION:
                 break;
@@ -218,7 +237,28 @@ public class TaskCreationPresenter
         }
     }
 
+    private int indexOf(RealmResults<Label> items, Label temporal){
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).equals(temporal)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void setDescription(String description){
         dataManager.getTemporalTask().setNotes(description);
     }
+
+    public void setLabels(Integer[] labelIndexes){
+        RealmResults<Label> labels = dataManager.findAllLabels();
+        RealmList<Label> filtered = new RealmList<>();
+
+        for(Integer index : labelIndexes)
+                filtered.add(labels.get(index));
+
+        dataManager.getTemporalTask().setLabels(filtered);
+    }
+
+
 }

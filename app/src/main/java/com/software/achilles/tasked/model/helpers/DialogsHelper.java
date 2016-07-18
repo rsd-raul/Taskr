@@ -1,8 +1,8 @@
 package com.software.achilles.tasked.model.helpers;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -37,31 +37,44 @@ public abstract class DialogsHelper {
                 .show();
     }
 
-    public static void buildDescriptionDialog(String text, Activity activity, final TaskDetailFAItem item, final View view){
+    public static void buildChoiceFromListMulti(final List<String> all, Integer[] selected, final TaskDetailFAItem item, final FragmentActivity activity, final View view){
+        new MaterialDialog.Builder(activity)
+                .title(R.string.select_labels)
+                .items(all)
+                .itemsCallbackMultiChoice(selected, new MaterialDialog.ListCallbackMultiChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+
+                        // Build the string representation of the labels
+                        String labels = which.length > 0 ? "" : activity.getString(R.string.select_labels);
+                        for(int aux : which)
+                            labels += "#" + all.get(aux) + " ";
+
+                        item.setLabels(which, labels, view);
+                        return true;
+                    }
+                })
+                .positiveText(R.string.save)
+                .negativeText(R.string.cancel)
+                .show();
+    }
+
+    public static void buildDescriptionDialog(String text, final TaskDetailFAItem item, final Activity activity, final View view){
         String hint = activity.getResources().getString(R.string.description);
         String existent = text != null ? text : "";
 
         MaterialDialog dialog = new MaterialDialog.Builder(activity)
-
                 // Dialog content
                 .title(R.string.description)
                 .positiveText(R.string.save)
                 .negativeText(R.string.cancel)
                 .content(R.string.ask_for_description)
-                // Colors
-//                .titleColorRes(titColRes)
-//                .negativeColorRes(titColRes)
-//                .positiveColorRes(titColRes)
-//                .widgetColorRes(titColRes)
-
-                // Input customization
-//                .inputRangeRes(1, 24, titColRes)
                 .inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
                         | InputType.TYPE_CLASS_TEXT)
                 .input(hint, existent, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        item.setText(input.toString(), view);
+                        item.setDescription(input.toString(), view);
                     }
                 }).build();
 

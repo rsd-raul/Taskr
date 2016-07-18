@@ -10,10 +10,10 @@ import android.widget.TextView;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter.utils.ViewHolderFactory;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
-
 import javax.inject.Inject;
 
 public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailFAItem.ViewHolder>{
@@ -36,13 +36,28 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
         this.context = context;
     }
 
-    // -------------------------- USE CASES --------------------------
-
     public TaskDetailFAItem withConfigure(int detailType, String textView){
         this.detailType = detailType;
         this.textView = textView;
         return this;
     }
+
+    // --------------------------- SETTERS ---------------------------
+
+    public void setDescription(String description, View v){
+        taskCreationPresenter.setDescription(description);
+
+        String text = description.length() > 0 ? description : context.getString(R.string.ask_for_description);
+        getFactory().create(v).textView.setText(text);
+    }
+
+    public void setLabels(Integer[] labelsIndex, String labelsString, View v){
+        taskCreationPresenter.setLabels(labelsIndex);
+
+        getFactory().create(v).textView.setText(labelsString);
+    }
+
+    // ------------------------- VIEW HOLDER -------------------------
 
     //The unique ID for this type of item //TODO What?
     @Override
@@ -53,6 +68,17 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
     @Override
     public int getLayoutRes() {
         return R.layout.task_detail_fa_item;
+    }
+
+    @Override
+    public FastAdapter.OnClickListener<TaskDetailFAItem> getOnItemClickListener() {
+        return new FastAdapter.OnClickListener<TaskDetailFAItem>(){
+            @Override
+            public boolean onClick(View v, IAdapter<TaskDetailFAItem> adapter, TaskDetailFAItem item, int position) {
+                taskCreationPresenter.detailOnClick(detailType, item, v);
+                return false;
+            }
+        };
     }
 
     //The logic to bind data to the view
@@ -90,19 +116,8 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
         int color = ContextCompat.getColor(context, colRes);
         viewHolder.detailIcon.setImageDrawable(ContextCompat.getDrawable(context, drawRes));
         viewHolder.detailIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-
-
-        // Set the listeners for the views
-        onClickListener = new FastAdapter.OnClickListener<TaskDetailFAItem>(){
-            @Override
-            public boolean onClick(View v, IAdapter<TaskDetailFAItem> adapter, TaskDetailFAItem item, int position) {
-                taskCreationPresenter.detailOnClick(detailType, item, v);
-                return false;
-            }
-        };
     }
 
-    //The viewHolder used for this item. This viewHolder is always reused by the RecyclerView so scrolling is blazing fast
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         protected ImageButton detailIcon;
         protected TextView textView;
@@ -114,17 +129,18 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
         }
     }
 
-    FastAdapter.OnClickListener<TaskDetailFAItem> onClickListener;
+    // --------------------------- FACTORY ---------------------------
 
-    // --------------------------- ON CLICK --------------------------
+    private static final ViewHolderFactory<? extends ViewHolder> FACTORY = new ItemFactory();
 
-    @Override
-    public FastAdapter.OnClickListener<TaskDetailFAItem> getOnItemClickListener() {
-        return onClickListener;
+    protected static class ItemFactory implements ViewHolderFactory<ViewHolder> {
+        public ViewHolder create(View v) {
+            return new ViewHolder(v);
+        }
     }
 
-    public void setText(String text, View v){
-        mFactory.create(v).textView.setText(text);
-        taskCreationPresenter.setDescription(text);
+    @Override
+    public ViewHolderFactory<? extends ViewHolder> getFactory() {
+        return FACTORY;
     }
 }
