@@ -3,6 +3,8 @@ package com.software.achilles.tasked.presenter;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
@@ -110,6 +112,16 @@ public class TaskCreationPresenter
 
     // -------------------------- Listeners --------------------------
 
+    public void addOrEditItem(String text, int type){
+
+    }
+
+    public void modifiersColor(boolean color, int type){
+        // If it's OFF, turn ON and vice-versa
+        desStatus = color;
+        mFragment.colorModifierButton(R.id.button_description, desStatus);
+    }
+
     public void modifiersOnClick(View v){
         int id = v.getId();
 
@@ -117,9 +129,10 @@ public class TaskCreationPresenter
             case R.id.button_description:
                 // Show field
 
-                // If it's OFF, turn ON and vice-versa
-                desStatus = !desStatus;
-                mFragment.colorModifierButton(id, desStatus);
+                String description = dataManager.getTemporalTask().getNotes();
+//                DialogsHelper.buildDescriptionDialog(null, null, mFragment.getActivity(), v);
+                DialogsHelper.buildDescriptionDialog(description, mFragment.getActivity(), this);
+
                 break;
             case R.id.button_time:
                 // Show picker, then deploy result if any

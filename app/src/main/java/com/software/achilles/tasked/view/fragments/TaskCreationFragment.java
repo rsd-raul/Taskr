@@ -54,7 +54,7 @@ public class TaskCreationFragment extends Fragment {
     @Inject
     DataManager dataManager;
     @Inject
-    FastItemAdapter<IItem> fastAdapter;
+    public FastItemAdapter<IItem> fastAdapter;
     @Inject
     Provider<TaskDetailFAItem> taskDetailAdapterProvider;
 

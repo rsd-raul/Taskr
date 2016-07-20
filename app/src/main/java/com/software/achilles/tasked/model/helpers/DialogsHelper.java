@@ -1,6 +1,7 @@
 package com.software.achilles.tasked.model.helpers;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
@@ -12,6 +13,7 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
@@ -19,7 +21,6 @@ import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import java.util.List;
 import java.util.Random;
-
 
 public abstract class DialogsHelper {
 
@@ -57,6 +58,42 @@ public abstract class DialogsHelper {
                 .positiveText(R.string.save)
                 .negativeText(R.string.cancel)
                 .show();
+    }
+
+    public static void buildDescriptionDialog(String text, final Activity activity, final TaskCreationPresenter taskCreationPresenter){
+        String hint = activity.getResources().getString(R.string.description);
+        String existent = text != null ? text : "";
+
+        MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                // Dialog content
+                .title(R.string.description)
+                .positiveText(R.string.save)
+                .negativeText(R.string.cancel)
+                .content(R.string.ask_for_description)
+                .inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                        | InputType.TYPE_CLASS_TEXT)
+                .input(hint, existent, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        taskCreationPresenter.setDescription(input.toString());
+                        taskCreationPresenter.addOrEditItem(input.toString(), Constants.DETAIL_DESCRIPTION);
+
+                        taskCreationPresenter.modifiersColor(input.length() != 0, Constants.DETAIL_DESCRIPTION);
+//                        item.setDescription(input.toString(), view);
+                    }
+                })
+                .cancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        taskCreationPresenter.modifiersColor(false, Constants.DETAIL_DESCRIPTION);
+                    }
+                }).build();
+
+        EditText input = dialog.getInputEditText();
+        if(input != null)
+            input.setSingleLine(false);
+
+        dialog.show();
     }
 
     public static void buildDescriptionDialog(String text, final TaskDetailFAItem item, final Activity activity, final View view){

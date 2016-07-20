@@ -31,6 +31,8 @@ import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigu
 import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.util.Constants;
 import javax.inject.Inject;
+import javax.inject.Provider;
+
 import dagger.Lazy;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     Lazy<DashboardFragment> dashboardFragmentLazy;
     @Inject
-    Lazy<TaskCreationFragment> taskCreationFragmentLazy;
+    Provider<TaskCreationFragment> taskCreationFragmentProvider;
 
     // ------------------------- Constructor -------------------------
 
@@ -289,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             case Constants.ADD_TASK:
-                newOne = taskCreationFragmentLazy.get();
+                newOne = taskCreationFragmentProvider.get();
 
                 // Send the list the user is on
                 Bundle bundle = new Bundle();
