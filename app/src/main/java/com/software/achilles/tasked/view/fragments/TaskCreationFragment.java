@@ -93,18 +93,18 @@ public class TaskCreationFragment extends Fragment {
 
         // TODO AQUI ESTAMOS, toca popular los campos en funcion de la tarea
         fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(Constants.DETAIL_DESCRIPTION, "Random placeholder description test testing"));
+                .withConfigure(R.id.button_description, "Random placeholder description test testing"));
 //                .withFragmentContext(getActivity()));
 //                .addSubItem(taskDetailAdapterProvider.get()
 //                        .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")));
         fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork"));
+                .withConfigure(R.id.button_location, "Parchment Square 152A, Cork"));
 //                .addSubItem(taskDetailAdapterProvider.get()
 //                        .withConfigure(Constants.DETAIL_LABELS, "Food - Persona - More Food")));
         fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(Constants.DETAIL_LABELS, "Food - Persona - More Food"));
+                .withConfigure(R.id.button_label, "Food - Persona - More Food"));
         fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(Constants.DETAIL_ALARM, "12:40 - Sunday 3, July"));
+                .withConfigure(R.id.button_time, "12:40 - Sunday 3, July"));
 
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
@@ -202,7 +202,7 @@ public class TaskCreationFragment extends Fragment {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskCreationPresenter.modifiersOnClick(v);
+                taskCreationPresenter.iconOnClick(v);
             }};
 
         mDescription.setOnClickListener(listener);
@@ -305,7 +305,7 @@ public class TaskCreationFragment extends Fragment {
     public void resetFields(){
         // FIXME Favourite needs to be set to unchecked
         if(dataManager.getTemporalTask().isStarred())
-            taskCreationPresenter.modifiersOnClick(mFavourite);
+            taskCreationPresenter.iconOnClick(mFavourite);
 
         setupModifiersColors();
         mTitle.setText(R.string.blank);

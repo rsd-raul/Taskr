@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -45,14 +46,14 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
     // --------------------------- SETTERS ---------------------------
 
     public void setDescription(String description, View v){
-        taskCreationPresenter.setDescription(description);
+//        taskCreationPresenter.setDescription(description);
 
         String text = description.length() > 0 ? description : context.getString(R.string.ask_for_description);
         getFactory().create(v).textView.setText(text);
     }
 
     public void setLabels(Integer[] labelsIndex, String labelsString, View v){
-        taskCreationPresenter.setLabels(labelsIndex);
+//        taskCreationPresenter.setLabels(labelsIndex);
 
         getFactory().create(v).textView.setText(labelsString);
     }
@@ -75,7 +76,7 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
         return new FastAdapter.OnClickListener<TaskDetailFAItem>(){
             @Override
             public boolean onClick(View v, IAdapter<TaskDetailFAItem> adapter, TaskDetailFAItem item, int position) {
-                taskCreationPresenter.detailOnClick(detailType, item, v);
+                taskCreationPresenter.itemOnClick(detailType);
                 return false;
             }
         };
@@ -93,23 +94,24 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
         // Change icon and color depending on the type set
         int drawRes, colRes;
         switch (detailType){
-            case Constants.DETAIL_DESCRIPTION:
+            case R.id.button_description:
                 drawRes = R.drawable.ic_description;
                 colRes = R.color.md_black_1000;
                 break;
-            case Constants.DETAIL_ALARM:
+            case R.id.button_time:
                 drawRes = R.drawable.ic_time_alarm;
                 colRes = R.color.amberDateDark;
                 break;
-            case Constants.DETAIL_LABELS:
+            case R.id.button_label:
                 drawRes = R.drawable.ic_label_outline;
                 colRes = R.color.colorPrimaryDark;
                 break;
-            case Constants.DETAIL_LOCATION:
+            case R.id.button_location:
                 drawRes = R.drawable.ic_place;
                 colRes = R.color.tealLocationDark;
                 break;
             default:
+                Log.e("TaskDetailItem", "Unsupported item type: " + detailType);
                 throw new UnsupportedOperationException();
         }
 

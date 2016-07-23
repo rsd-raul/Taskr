@@ -19,8 +19,12 @@ import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 public abstract class DialogsHelper {
 
@@ -38,20 +42,29 @@ public abstract class DialogsHelper {
                 .show();
     }
 
-    public static void buildChoiceFromListMulti(final List<String> all, Integer[] selected, final TaskDetailFAItem item, final FragmentActivity activity, final View view){
+    public static void buildLabelDialogMulti(final RealmResults<Label> items, Integer[] selected, final Activity activity, final TaskCreationPresenter taskCreationPresenter){
+        final List<String> labels = new ArrayList<>();
+        for (int i = 0; i < items.size(); i++)
+            labels.add(items.get(i).getTitle());
+
         new MaterialDialog.Builder(activity)
                 .title(R.string.select_labels)
-                .items(all)
+                .items(labels)
                 .itemsCallbackMultiChoice(selected, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
 
                         // Build the string representation of the labels
-                        String labels = which.length > 0 ? "" : activity.getString(R.string.select_labels);
+                        String labelsStr = which.length > 0 ? "" : activity.getString(R.string.select_labels);
                         for(int aux : which)
-                            labels += "#" + all.get(aux) + " ";
+                            labelsStr += "#" + labels.get(aux) + " ";
 
-                        item.setLabels(which, labels, view);
+                        // From the list of labels, get the ones selected
+                        RealmList<Label> filtered = new RealmList<>();
+                        for(Integer index : which)
+                            filtered.add(items.get(index));
+
+                        taskCreationPresenter.setLabels(labelsStr, filtered);
                         return true;
                     }
                 })
@@ -66,7 +79,7 @@ public abstract class DialogsHelper {
 
         MaterialDialog dialog = new MaterialDialog.Builder(activity)
                 // Dialog content
-                .title(R.string.description)
+                .title(hint)
                 .positiveText(R.string.save)
                 .negativeText(R.string.cancel)
                 .content(R.string.ask_for_description)
@@ -76,18 +89,9 @@ public abstract class DialogsHelper {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         taskCreationPresenter.setDescription(input.toString());
-                        taskCreationPresenter.addOrEditItem(input.toString(), Constants.DETAIL_DESCRIPTION);
-
-                        taskCreationPresenter.modifiersColor(input.length() != 0, Constants.DETAIL_DESCRIPTION);
-//                        item.setDescription(input.toString(), view);
                     }
                 })
-                .cancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        taskCreationPresenter.modifiersColor(false, Constants.DETAIL_DESCRIPTION);
-                    }
-                }).build();
+                .build();
 
         EditText input = dialog.getInputEditText();
         if(input != null)
@@ -96,31 +100,31 @@ public abstract class DialogsHelper {
         dialog.show();
     }
 
-    public static void buildDescriptionDialog(String text, final TaskDetailFAItem item, final Activity activity, final View view){
-        String hint = activity.getResources().getString(R.string.description);
-        String existent = text != null ? text : "";
-
-        MaterialDialog dialog = new MaterialDialog.Builder(activity)
-                // Dialog content
-                .title(R.string.description)
-                .positiveText(R.string.save)
-                .negativeText(R.string.cancel)
-                .content(R.string.ask_for_description)
-                .inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
-                        | InputType.TYPE_CLASS_TEXT)
-                .input(hint, existent, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        item.setDescription(input.toString(), view);
-                    }
-                }).build();
-
-        EditText input = dialog.getInputEditText();
-        if(input != null)
-            input.setSingleLine(false);
-
-        dialog.show();
-    }
+//    public static void buildDescriptionDialog(String text, final Activity activity){
+//        String hint = activity.getResources().getString(R.string.description);
+//        String existent = text != null ? text : "";
+//
+//        MaterialDialog dialog = new MaterialDialog.Builder(activity)
+//                // Dialog content
+//                .title(hint)
+//                .positiveText(R.string.save)
+//                .negativeText(R.string.cancel)
+//                .content(R.string.ask_for_description)
+//                .inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+//                        | InputType.TYPE_CLASS_TEXT)
+//                .input(hint, existent, new MaterialDialog.InputCallback() {
+//                    @Override
+//                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+//                        item.setDescription(input.toString(), view);
+//                    }
+//                }).build();
+//
+//        EditText input = dialog.getInputEditText();
+//        if(input != null)
+//            input.setSingleLine(false);
+//
+//        dialog.show();
+//    }
 
 
     /**

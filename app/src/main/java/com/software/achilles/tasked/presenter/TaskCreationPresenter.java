@@ -1,5 +1,7 @@
 package com.software.achilles.tasked.presenter;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.adapters.TaskFAItem;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
@@ -112,75 +115,55 @@ public class TaskCreationPresenter
 
     // -------------------------- Listeners --------------------------
 
-    public void addOrEditItem(String text, int type){
-
+    public void setDescription(String description){
+        fromDialogSetItem(description, null, R.id.button_description);
     }
 
-    public void modifiersColor(boolean color, int type){
-        // If it's OFF, turn ON and vice-versa
-        desStatus = color;
-        mFragment.colorModifierButton(R.id.button_description, desStatus);
+    public void setLabels(String labels, RealmList<Label> filtered){
+        fromDialogSetItem(labels, filtered, R.id.button_label);
     }
 
-    public void modifiersOnClick(View v){
-        int id = v.getId();
+    private void fromDialogSetItem(String result, @Nullable RealmList<Label> filtered, int type){
+        boolean colorTrigger = false;
 
-        switch (id){
+        switch (type){
             case R.id.button_description:
-                // Show field
-
-                String description = dataManager.getTemporalTask().getNotes();
-//                DialogsHelper.buildDescriptionDialog(null, null, mFragment.getActivity(), v);
-                DialogsHelper.buildDescriptionDialog(description, mFragment.getActivity(), this);
-
+                if(Utils.notEmpty(result)){
+                    desStatus = true;
+                    colorTrigger = true;
+                }else{
+                    desStatus = false;
+                    result = null;          // If the user removes the description, save null
+                }
+                dataManager.getTemporalTask().setNotes(result);
                 break;
             case R.id.button_time:
-                // Show picker, then deploy result if any
-
-                // If it's OFF, turn ON and vice-versa
-                timStatus = !timStatus;
-                mFragment.colorModifierButton(id, timStatus);
                 break;
             case R.id.button_location:
-                // Show picker, then deploy result if any
-
-                // If it's OFF, turn ON and vice-versa
-                locStatus = !locStatus;
-                mFragment.colorModifierButton(id, locStatus);
                 break;
             case R.id.button_label:
-                // Show pop up?, then deploy result and color if any
+                if(Utils.notEmpty(filtered)){
+                    labStatus = true;
+                    colorTrigger = true;
+                }else{
+                    labStatus = false;
+                    filtered = null;
+                }
 
-                // If it's OFF, turn ON and vice-versa
-                labStatus = !labStatus;
-                mFragment.colorModifierButton(id, labStatus);
-                break;
-            case R.id.button_favourite:
-
-                // If it's OFF, turn ON and vice-versa
-                favStatus = !favStatus;
-
-                // Save
-                dataManager.getTemporalTask().setStarred(favStatus);
-
-                mFragment.colorModifierButton(id, favStatus);
+                dataManager.getTemporalTask().setLabels(filtered);
                 break;
             case R.id.text_task_list:
-
-                List<String> taskListTitles = new ArrayList<>();
-
-                // Get data for setting the ViewPager
-                RealmResults<TaskList> taskList = dataManager.findAllTaskList();
-
-                // Format that data for the spinner
-                for (int i = 0; i < taskList.size(); i++)
-                    taskListTitles.add(taskList.get(i).getTitle());
-
-                DialogsHelper.buildChoiceFromList(taskListTitles, dataManager.getTemporalTaskListPosition() ,mFragment);
-
                 break;
         }
+
+        mFragment.colorModifierButton(type, colorTrigger);
     }
+
+
+
+
+
+
 
     public boolean isDataPresent(){
         return mFragment.isDataPresent();
@@ -215,35 +198,76 @@ public class TaskCreationPresenter
             mainPresenter.backToBack();
     }
 
-    public void detailOnClick(int detailType, TaskDetailFAItem item, final View view){
+    public void iconOnClick(View v){
+        itemOnClick(v.getId());
+    }
+
+    public void itemOnClick(int detailType){
 
         switch (detailType){
-            case Constants.DETAIL_DESCRIPTION:
+            case R.id.button_description:
 
                 String description = dataManager.getTemporalTask().getNotes();
-                DialogsHelper.buildDescriptionDialog(description, item, mFragment.getActivity(), view);
+                DialogsHelper.buildDescriptionDialog(description, mFragment.getActivity(), this);
                 break;
-            case Constants.DETAIL_ALARM:
-                break;
-            case Constants.DETAIL_LABELS:
+            case R.id.button_time:
+                // Show picker, then deploy result if any
 
+                // If it's OFF, turn ON and vice-versa
+                timStatus = !timStatus;
+                mFragment.colorModifierButton(detailType, timStatus);
+                break;
+            case R.id.button_label:
                 // Get all labels and format them to be shown
                 RealmResults<Label> items = dataManager.findAllLabels();
-                List<String> labels = new ArrayList<>();
-                for (int i = 0; i < items.size(); i++)
-                    labels.add(items.get(i).getTitle());
 
                 // Get labels for the temporal object and format them to be selected
                 RealmList<Label> temporal = dataManager.getTemporalTask().getLabels();
-                Integer[] selected = new Integer[temporal.size()];
-                for (int i = 0; i < temporal.size(); i++)
-                    selected[i] = indexOf(items, temporal.get(i));
 
+                Integer[] selected = null;
+                if(temporal != null){
+                    selected = new Integer[temporal.size()];
 
-
-                DialogsHelper.buildChoiceFromListMulti(labels, selected, item, mFragment.getActivity(), view);
+                    int count = 0;
+                    for (int i = 0; i < items.size(); i++) {
+                        if (temporal.contains(items.get(i))) {
+                            selected[count] = i;
+                            count++;
+                        }
+                    }
+                }
+                DialogsHelper.buildLabelDialogMulti(items, selected, mFragment.getActivity(), this);
                 break;
-            case Constants.DETAIL_LOCATION:
+            case R.id.button_location:
+                // Show picker, then deploy result if any
+
+                // If it's OFF, turn ON and vice-versa
+                locStatus = !locStatus;
+                mFragment.colorModifierButton(detailType, locStatus);
+                break;
+            case R.id.button_favourite:
+
+                // If it's OFF, turn ON and vice-versa
+                favStatus = !favStatus;
+
+                // Save
+                dataManager.getTemporalTask().setStarred(favStatus);
+
+                mFragment.colorModifierButton(detailType, favStatus);
+                break;
+            case R.id.text_task_list:
+
+                List<String> taskListTitles = new ArrayList<>();
+
+                // Get data for setting the ViewPager
+                RealmResults<TaskList> taskList = dataManager.findAllTaskList();
+
+                // Format that data for the spinner
+                for (int i = 0; i < taskList.size(); i++)
+                    taskListTitles.add(taskList.get(i).getTitle());
+
+                DialogsHelper.buildChoiceFromList(taskListTitles, dataManager.getTemporalTaskListPosition() ,mFragment);
+
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -258,20 +282,4 @@ public class TaskCreationPresenter
         }
         return -1;
     }
-
-    public void setDescription(String description){
-        dataManager.getTemporalTask().setNotes(description);
-    }
-
-    public void setLabels(Integer[] labelIndexes){
-        RealmResults<Label> labels = dataManager.findAllLabels();
-        RealmList<Label> filtered = new RealmList<>();
-
-        for(Integer index : labelIndexes)
-                filtered.add(labels.get(index));
-
-        dataManager.getTemporalTask().setLabels(filtered);
-    }
-
-
 }
