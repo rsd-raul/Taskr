@@ -14,14 +14,12 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter.utils.ViewHolderFactory;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
-import com.software.achilles.tasked.util.Constants;
 import javax.inject.Inject;
 
 public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailFAItem.ViewHolder>{
 
     // ------------------------- ATTRIBUTES --------------------------
 
-    private int detailType;
     private String textView;
 
     // -------------------------- INJECTED ---------------------------
@@ -38,25 +36,25 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
     }
 
     public TaskDetailFAItem withConfigure(int detailType, String textView){
-        this.detailType = detailType;
+        this.mIdentifier = detailType;
         this.textView = textView;
         return this;
     }
 
     // --------------------------- SETTERS ---------------------------
 
-    public void setDescription(String description, View v){
-//        taskCreationPresenter.setDescription(description);
-
-        String text = description.length() > 0 ? description : context.getString(R.string.ask_for_description);
-        getFactory().create(v).textView.setText(text);
-    }
-
-    public void setLabels(Integer[] labelsIndex, String labelsString, View v){
-//        taskCreationPresenter.setLabels(labelsIndex);
-
-        getFactory().create(v).textView.setText(labelsString);
-    }
+//    public void setDescription(String description, View v){
+////        taskCreationPresenter.setDescription(description);
+//
+//        String text = description.length() > 0 ? description : context.getString(R.string.ask_for_description);
+//        getFactory().create(v).textView.setText(text);
+//    }
+//
+//    public void setLabels(Integer[] labelsIndex, String labelsString, View v){
+////        taskCreationPresenter.setLabels(labelsIndex);
+//
+//        getFactory().create(v).textView.setText(labelsString);
+//    }
 
     // ------------------------- VIEW HOLDER -------------------------
 
@@ -76,7 +74,7 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
         return new FastAdapter.OnClickListener<TaskDetailFAItem>(){
             @Override
             public boolean onClick(View v, IAdapter<TaskDetailFAItem> adapter, TaskDetailFAItem item, int position) {
-                taskCreationPresenter.itemOnClick(detailType);
+                taskCreationPresenter.itemOnClick(((int) mIdentifier));
                 return false;
             }
         };
@@ -93,7 +91,7 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
 
         // Change icon and color depending on the type set
         int drawRes, colRes;
-        switch (detailType){
+        switch (((int) mIdentifier)){
             case R.id.button_description:
                 drawRes = R.drawable.ic_description;
                 colRes = R.color.md_black_1000;
@@ -111,7 +109,7 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
                 colRes = R.color.tealLocationDark;
                 break;
             default:
-                Log.e("TaskDetailItem", "Unsupported item type: " + detailType);
+                Log.e("TaskDetailItem", "Unsupported item type: " + ((int) mIdentifier));
                 throw new UnsupportedOperationException();
         }
 

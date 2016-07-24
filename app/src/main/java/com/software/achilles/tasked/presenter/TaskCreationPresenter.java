@@ -1,29 +1,21 @@
 package com.software.achilles.tasked.presenter;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
+import com.mikepenz.fastadapter.IItem;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
-import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.util.Utils;
-import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
-import com.software.achilles.tasked.view.adapters.TaskFAItem;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -48,32 +40,7 @@ public class TaskCreationPresenter
     MainPresenter mainPresenter;
 
     private TaskCreationFragment mFragment;
-    private boolean desStatus = false, timStatus = false, locStatus = false,
-            labStatus = false, favStatus = false;
-
-//    // -------------------------- Singleton --------------------------
-//
-//    private static final Object lock = new Object();
-//    private static volatile TaskCreationPresenter instance;
-//
-//    //  Double-checked locking - Effective in Java 1.5 and later:
-//    public static TaskCreationPresenter getInstance() {
-//        TaskCreationPresenter result = instance;
-//
-//        // Only synchronize if the TaskCreationPresenter haven't been instantiated
-//        if (result == null) {
-//            synchronized (lock) {
-//                result = instance;
-//
-//                // If no other threads have instantiated the TaskCreationPresenter while waiting for the lock.
-//                if (result == null) {
-//                    result = new TaskCreationPresenter();
-//                    instance = result;
-//                }
-//            }
-//        }
-//        return result;
-//    }
+    private boolean timStatus = false, locStatus = false, favStatus = false;
 
     // ------------------------- Life Cycle --------------------------
 
@@ -123,47 +90,59 @@ public class TaskCreationPresenter
         fromDialogSetItem(labels, filtered, R.id.button_label);
     }
 
-    private void fromDialogSetItem(String result, @Nullable RealmList<Label> filtered, int type){
+    private void fromDialogSetItem(String result, @Nullable RealmList<Label> filtered, int detailType){
         boolean colorTrigger = false;
 
-        switch (type){
+        switch (detailType){
+
             case R.id.button_description:
-                if(Utils.notEmpty(result)){
-                    desStatus = true;
+                if(Utils.notEmpty(result))
                     colorTrigger = true;
-                }else{
-                    desStatus = false;
+                else
                     result = null;          // If the user removes the description, save null
-                }
+
                 dataManager.getTemporalTask().setNotes(result);
                 break;
+
             case R.id.button_time:
                 break;
+
             case R.id.button_location:
                 break;
+
             case R.id.button_label:
-                if(Utils.notEmpty(filtered)){
-                    labStatus = true;
+                if(Utils.notEmpty(filtered))
                     colorTrigger = true;
-                }else{
-                    labStatus = false;
+                else
                     filtered = null;
-                }
 
                 dataManager.getTemporalTask().setLabels(filtered);
                 break;
+
             case R.id.text_task_list:
                 break;
         }
+        // Set or remove the color from the buttons
+        mFragment.colorModifierButton(detailType, colorTrigger);
 
-        mFragment.colorModifierButton(type, colorTrigger);
+        // Select the desired action depending on the content and the item existence
+        int index = indexOf(detailType);
+        if(!colorTrigger && index != -1)
+            mFragment.deleteItem(index);
+        else
+            if(index == -1)
+                mFragment.createItem(detailType, result);
+            else
+                mFragment.editItem(index, detailType, result);
     }
 
-
-
-
-
-
+    private int indexOf(int detailType){
+        List<IItem> items = mFragment.fastAdapter.getAdapterItems();
+        for (int i = 0; i < items.size(); i++)
+            if(items.get(i).getIdentifier() == detailType)
+                return i;
+        return -1;
+    }
 
     public boolean isDataPresent(){
         return mFragment.isDataPresent();
@@ -272,14 +251,5 @@ public class TaskCreationPresenter
             default:
                 throw new UnsupportedOperationException();
         }
-    }
-
-    private int indexOf(RealmResults<Label> items, Label temporal){
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).equals(temporal)) {
-                return i;
-            }
-        }
-        return -1;
     }
 }

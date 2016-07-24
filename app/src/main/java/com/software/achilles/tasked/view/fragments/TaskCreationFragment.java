@@ -27,10 +27,8 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
-import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
-import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -91,24 +89,29 @@ public class TaskCreationFragment extends Fragment {
         // REVIEW We are removing before adding, maybe is better not to
         fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
 
-        // TODO AQUI ESTAMOS, toca popular los campos en funcion de la tarea
-        fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(R.id.button_description, "Random placeholder description test testing"));
-//                .withFragmentContext(getActivity()));
-//                .addSubItem(taskDetailAdapterProvider.get()
-//                        .withConfigure(Constants.DETAIL_LOCATION, "Parchment Square 152A, Cork")));
+        // TODO QUITAR cuando el CRUD implemented,¡.
         fastAdapter.add(taskDetailAdapterProvider.get()
                 .withConfigure(R.id.button_location, "Parchment Square 152A, Cork"));
-//                .addSubItem(taskDetailAdapterProvider.get()
-//                        .withConfigure(Constants.DETAIL_LABELS, "Food - Persona - More Food")));
-        fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(R.id.button_label, "Food - Persona - More Food"));
         fastAdapter.add(taskDetailAdapterProvider.get()
                 .withConfigure(R.id.button_time, "12:40 - Sunday 3, July"));
 
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
         taskCreationPresenter.setupLayout(listIndex);
+    }
+
+    public void deleteItem(int index){
+        fastAdapter.remove(index);
+    }
+
+    public void createItem(int detailType, String text){
+        fastAdapter.add(taskDetailAdapterProvider.get().withConfigure(detailType, text));
+    }
+
+    // REVIEW Las probabilidades de que esto sea una warrada son altas xD
+    public void editItem(int index, int detailType, String text){
+        fastAdapter.remove(index);
+        fastAdapter.add(index, taskDetailAdapterProvider.get().withConfigure(detailType, text));
     }
 
     public void setupLayout(){
