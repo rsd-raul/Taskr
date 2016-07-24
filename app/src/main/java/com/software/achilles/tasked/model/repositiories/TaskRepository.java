@@ -14,37 +14,34 @@ import io.realm.RealmResults;
 
 public class TaskRepository implements BaseRepository<Task> {
 
+    // -------------------------- Injected ---------------------------
+
+    Realm realm;
+
     // ------------------------ Constructor --------------------------
 
     @Inject
-    public TaskRepository() {
+    public TaskRepository(Realm realm) {
+        this.realm = realm;
     }
 
     // ---------------------------- Find -----------------------------
 
     @Override
     public Task findOne(long id) {
-        Realm realm = Realm.getDefaultInstance();
-
         return realm.where(Task.class).equalTo("id", id).findFirst();
     }
 
     @Override
     public RealmResults<Task> findAll() {
-        Realm realm = Realm.getDefaultInstance();
-
         return realm.where(Task.class).findAll();
     }
 
     public RealmList<Task> findAllByTaskListPosition(int position){
-        Realm realm = Realm.getDefaultInstance();
-
         return realm.where(TaskList.class).findAll().get(position).getTasks();
     }
 
     public RealmResults<Task> findAllByTitle(String query){
-        Realm realm = Realm.getDefaultInstance();
-
         return realm.where(Task.class).contains("title", query, Case.INSENSITIVE).findAll();
     }
 
@@ -52,11 +49,10 @@ public class TaskRepository implements BaseRepository<Task> {
 
     @Override
     public void save(final Task task) {
-        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 if (task.getId() == 0) {
-                    PrimaryKeyFactory.initialize(realm);
                     task.setId(PrimaryKeyFactory.nextKey());
                 }
 
@@ -69,7 +65,7 @@ public class TaskRepository implements BaseRepository<Task> {
 
     @Override
     public void deleteById(final long id) {
-        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 Task task = realm.where(Task.class).equalTo("id", id).findFirst();
@@ -80,7 +76,7 @@ public class TaskRepository implements BaseRepository<Task> {
 
     @Override
     public void deleteByPosition(final int position) {
-        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmResults results = realm.where(Task.class).findAll();
@@ -90,7 +86,7 @@ public class TaskRepository implements BaseRepository<Task> {
     }
 
     public void taskModifier(final int uniqueParameterId, final Task task){
-        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 switch (uniqueParameterId){
@@ -104,7 +100,7 @@ public class TaskRepository implements BaseRepository<Task> {
                         break;
 
                     case Constants.DASH_DATE:
-//                        Retrieve the date from SOME place (DataManager?) and save it
+//                     TODO   Retrieve the date from SOME place (DataManager?) and save it
                         break;
                 }
             }

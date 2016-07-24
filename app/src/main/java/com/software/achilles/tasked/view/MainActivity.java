@@ -75,9 +75,6 @@ public class MainActivity extends AppCompatActivity {
 //        errorReporter.CheckErrorAndSendMail(this);
 //REVIEW        ****** ONLY FOR DEVELOPMENT ******
 
-        // Set the RealmConfiguration for Realm usage
-        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
-
         // If first time, launch the introduction
         if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Defaults.FIRST_TIME, true)) {
             // Set the value to false

@@ -10,34 +10,34 @@ import io.realm.RealmResults;
 
 public class LocationRepository implements BaseRepository<Location> {
 
+    // -------------------------- Injected ---------------------------
+
+    Realm realm;
+
     // ------------------------ Constructor --------------------------
 
     @Inject
-    public LocationRepository() {
+    public LocationRepository(Realm realm) {
+        this.realm = realm;
     }
 
     // ---------------------------- Find -----------------------------
 
     public Location findOne(long id) {
-        Realm realm = Realm.getDefaultInstance();
-
         return realm.where(Location.class).equalTo("id", id).findFirst();
     }
 
     public RealmResults<Location> findAll() {
-        Realm realm = Realm.getDefaultInstance();
-
         return realm.where(Location.class).findAll();
     }
 
     // ----------------------------- Add -----------------------------
 
     public void save(final Location location) {
-        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 if (location.getId() == 0) {
-                    PrimaryKeyFactory.initialize(realm);
                     location.setId(PrimaryKeyFactory.nextKey());
                 }
 
@@ -49,7 +49,7 @@ public class LocationRepository implements BaseRepository<Location> {
     // --------------------------- Delete ----------------------------
 
     public void deleteById(final long id) {
-        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 Location location = realm.where(Location.class).equalTo("id", id).findFirst();
@@ -59,7 +59,7 @@ public class LocationRepository implements BaseRepository<Location> {
     }
 
     public void deleteByPosition(final int position) {
-        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmResults results = realm.where(Location.class).findAll();

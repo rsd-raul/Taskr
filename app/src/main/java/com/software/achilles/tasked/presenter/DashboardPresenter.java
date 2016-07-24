@@ -1,16 +1,24 @@
 package com.software.achilles.tasked.presenter;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
+import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import io.realm.RealmResults;
@@ -114,7 +122,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
             RealmResults<Task> tasks = dataManager.filterByText(query, searchDeep);
 
             for (Task aux : tasks) {
-                Log.i("Holaa", "filterByText: " + aux.getTitle());
+                Log.i("TEST", "filterByText: " + aux.getTitle());
             }
         }
 //        mFragment.updateViewPagerList(tasks);
@@ -122,11 +130,33 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
 
     // -------------------------- Use Cases --------------------------
 
-    public void taskModifier(int uniqueParameterId, Task task){
-        if(uniqueParameterId == Constants.DASH_TASK)
-            // TODO Go to details
-            return;
+//    @Inject
+//    Provider<TaskCreationFragment> taskCreationFragmentProvider;
+//    @Inject
+//    TaskCreationPresenter taskCreationPresenter;
+//    @Inject
+//    MainAndFilterDrawerConfigurator mainAndFilterDrawerConfigurator;
 
+    public void itemOnClick(long id){
+        Toast.makeText(mFragment.getContext(), "ItemOnClick", Toast.LENGTH_SHORT).show();
+//        Fragment newOne = taskCreationFragmentProvider.get();
+//
+//        // Send the list the user is on
+//        Bundle bundle = new Bundle();
+//        bundle.putInt("listIndex", DashboardFragment.mViewPager.getCurrentItem());
+//        bundle.putLong("itemId", id);
+//        newOne.setArguments(bundle);
+//
+//        taskCreationPresenter.attachView((TaskCreationFragment) newOne);
+//
+//        mainAndFilterDrawerConfigurator.customizeActionBar(Constants.ADD_TASK);
+//
+//        // Initialize the fragment change
+//        FragmentTransaction fragmentTransaction = mFragment.getActivity().getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.main_fragment_container, newOne).commit();
+    }
+
+    public void taskModifier(int uniqueParameterId, Task task){
         dataManager.dashTaskModifier(uniqueParameterId, task);
     }
 

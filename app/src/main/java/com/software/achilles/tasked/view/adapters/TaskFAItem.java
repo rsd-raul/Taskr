@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter.utils.ViewHolderFactory;
 import com.software.achilles.tasked.R;
@@ -39,6 +42,7 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> 
 
     public TaskFAItem withTask(Task task){
         this.task = task;
+        this.mIdentifier = task.getId();
         return this;
     }
 
@@ -53,7 +57,17 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> 
         return R.layout.task_fa_item;
     }
 
-    //The logic to bind your data to the view
+    @Override
+    public FastAdapter.OnClickListener<TaskFAItem> getOnItemClickListener() {
+        return new FastAdapter.OnClickListener<TaskFAItem>(){
+            @Override
+            public boolean onClick(View v, IAdapter<TaskFAItem> adapter, TaskFAItem item, int position) {
+                dashboardPresenter.itemOnClick(mIdentifier);
+                return false;
+            }
+        };
+    }
+
     @Override
     public void bindView(ViewHolder viewHolder) {
         //call super so the selection is already handled for you
@@ -78,12 +92,12 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> 
 
         // ------------------------ View Control -------------------------
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dashboardPresenter.taskModifier(Constants.DASH_TASK, task);
-            }
-        });
+//        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dashboardPresenter.taskModifier(Constants.DASH_TASK, task);
+//            }
+//        });
 
 //        // FIXME 1 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
 //        if (position == 0)

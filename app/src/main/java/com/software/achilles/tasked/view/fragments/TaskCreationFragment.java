@@ -79,17 +79,16 @@ public class TaskCreationFragment extends Fragment {
 
         // Get the list the user is at, if it's coming from Dashboard
         int listIndex;
+//        long taskId;
         try {listIndex = getArguments().getInt("listIndex", 0);} catch(Exception e) {listIndex = 0;}
+//        try {taskId = getArguments().getLong("taskId", -1);} catch(Exception e) {taskId = 0;}
 
         // Retrieve the recycler view, set the Manager and the FastAdapter
         RecyclerView recyclerView = (RecyclerView) mMainActivity.findViewById(R.id.recycler_task_creation);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         recyclerView.setAdapter(fastAdapter);
 
-        // REVIEW We are removing before adding, maybe is better not to
-        fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
-
-        // TODO QUITAR cuando el CRUD implemented,¡.
+        // TODO QUITAR cuando el CRUD implemented.
         fastAdapter.add(taskDetailAdapterProvider.get()
                 .withConfigure(R.id.button_location, "Parchment Square 152A, Cork"));
         fastAdapter.add(taskDetailAdapterProvider.get()
@@ -98,6 +97,7 @@ public class TaskCreationFragment extends Fragment {
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
         taskCreationPresenter.setupLayout(listIndex);
+//        taskCreationPresenter.setupLayout(taskId, listIndex);
     }
 
     public void deleteItem(int index){

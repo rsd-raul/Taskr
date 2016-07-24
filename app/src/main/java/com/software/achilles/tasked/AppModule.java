@@ -7,6 +7,7 @@ import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
 
 @Module
 public class AppModule {
@@ -19,5 +20,10 @@ public class AppModule {
     @Provides
     Context contextProvider(){
         return App.getInstance();
+    }
+
+    @Provides
+    Realm realmProvider(){
+        return Realm.getDefaultInstance();
     }
 }

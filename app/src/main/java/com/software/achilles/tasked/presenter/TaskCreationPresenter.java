@@ -64,6 +64,20 @@ public class TaskCreationPresenter
 
     // ---------------------------- Layout ---------------------------
 
+//    public void setupLayout(long taskId, int listIndex){
+//
+//        // Retrieve from the DB the task or create a new one
+//        dataManager.setTemporalTask( taskId != -1 ? dataManager.findTaskById(taskId) : new Task() );
+//
+//        // Setup the layout
+//        String listTitle = dataManager.findAllTaskList().get(listIndex).getTitle();
+//        mFragment.setupLayout();
+//        mFragment.setTaskListTextView(listTitle, listIndex);
+//
+//        // Save if we are editing, Voice if we are creating
+//        mFragment.setupSaveOrVoice(taskId != -1);
+//    }
+
     public void setupLayout(int listIndex){
 
         // Destroy any existing temporal task

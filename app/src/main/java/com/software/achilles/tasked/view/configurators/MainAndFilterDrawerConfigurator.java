@@ -40,9 +40,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.realm.RealmResults;
 
+@Singleton
 public class MainAndFilterDrawerConfigurator {
 
     // --------------------------- Values ----------------------------

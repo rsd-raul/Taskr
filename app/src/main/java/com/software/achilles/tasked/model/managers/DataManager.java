@@ -49,6 +49,11 @@ public class DataManager {
         return taskListRepository.findAll();
     }
 
+
+    public Task findTaskById(long id){
+        return taskRepository.findOne(id);
+    }
+
     public RealmList<Task> findAllTasksByTaskListPosition(int position){
         return taskRepository.findAllByTaskListPosition(position);
     }
@@ -109,6 +114,9 @@ public class DataManager {
     public Task getTemporalTask() {
         temporalTask = (temporalTask != null) ? temporalTask : new Task();
         return temporalTask;
+    }
+    public void setTemporalTask(Task temporalTask) {
+        this.temporalTask = temporalTask;
     }
 
     public void destroyTemporalTask() {

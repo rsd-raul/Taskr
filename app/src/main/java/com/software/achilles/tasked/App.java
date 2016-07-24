@@ -2,10 +2,13 @@ package com.software.achilles.tasked;
 
 import android.app.Application;
 
+import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
 import com.software.achilles.tasked.view.MainActivity;
 
 import javax.inject.Singleton;
 import dagger.Component;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class App extends Application {
 
@@ -28,6 +31,12 @@ public class App extends Application {
                 .build();
         appComponent.inject(this);
 
+
+        // Set the RealmConfiguration and PrimaryKeyFactory for Realm usage
+        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
+        PrimaryKeyFactory.initialize(Realm.getDefaultInstance());
+
+        // Hack to access context related functionality from TaskDetailFAItem
         instance = this;
     }
 
@@ -35,7 +44,7 @@ public class App extends Application {
         return appComponent;
     }
 
-    //REVIEW hack to access context related functionality from TaskDetailFAItem
+    //REVIEW Hack to access context related functionality from TaskDetailFAItem
     public static App getInstance(){
         return instance;
     }
