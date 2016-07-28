@@ -137,7 +137,11 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
 //    @Inject
 //    MainAndFilterDrawerConfigurator mainAndFilterDrawerConfigurator;
 
+    @Inject
+    MainPresenter mainPresenter;
+
     public void itemOnClick(long id){
+        mainPresenter.deployEditLayout(id);
         Toast.makeText(mFragment.getContext(), "ItemOnClick", Toast.LENGTH_SHORT).show();
 //        Fragment newOne = taskCreationFragmentProvider.get();
 //

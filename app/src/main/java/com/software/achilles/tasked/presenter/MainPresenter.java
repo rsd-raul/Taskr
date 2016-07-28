@@ -126,6 +126,14 @@ public class MainPresenter implements Presenter<MainActivity> {
         }
     }
 
+    public void deployEditLayout(long itemId){
+        mActivity.setEditItem(itemId);
+
+        // REVIEW Esto es warro no, lo siguiente
+        mActivity.mFamConfigurator.famVisibility(false);
+        deployLayout(Constants.ADD_TASK);
+    }
+
     public void deployLayout(int key){
         switch (key) {
             case Constants.ADD_TASK:

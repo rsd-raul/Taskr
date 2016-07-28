@@ -27,8 +27,12 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
+import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
+
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -79,9 +83,9 @@ public class TaskCreationFragment extends Fragment {
 
         // Get the list the user is at, if it's coming from Dashboard
         int listIndex;
-//        long taskId;
-        try {listIndex = getArguments().getInt("listIndex", 0);} catch(Exception e) {listIndex = 0;}
-//        try {taskId = getArguments().getLong("taskId", -1);} catch(Exception e) {taskId = 0;}
+        long taskId;
+        try {listIndex = getArguments().getInt(Constants.LIST_INDEX, 0);} catch(Exception e) {listIndex = 0;}
+        try {taskId = getArguments().getLong(Constants.TASK_ID, -1);} catch(Exception e) {taskId = -1;}
 
         // Retrieve the recycler view, set the Manager and the FastAdapter
         RecyclerView recyclerView = (RecyclerView) mMainActivity.findViewById(R.id.recycler_task_creation);
@@ -96,7 +100,7 @@ public class TaskCreationFragment extends Fragment {
 
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
-        taskCreationPresenter.setupLayout(listIndex);
+        taskCreationPresenter.setupLayout(taskId, listIndex);
 //        taskCreationPresenter.setupLayout(taskId, listIndex);
     }
 
@@ -114,7 +118,7 @@ public class TaskCreationFragment extends Fragment {
         fastAdapter.add(index, taskDetailAdapterProvider.get().withConfigure(detailType, text));
     }
 
-    public void setupLayout(){
+    public void setupLayout(boolean edit){
         mFabSaveAndVoice = (FloatingActionButton) mMainActivity.findViewById(R.id.saveAndVoiceFAB);
         mTaskList = (TextView) mMainActivity.findViewById(R.id.text_task_list);
         mDescription = (ImageButton) mMainActivity.findViewById(R.id.button_description);
@@ -123,9 +127,6 @@ public class TaskCreationFragment extends Fragment {
         mLabels = (ImageButton) mMainActivity.findViewById(R.id.button_label);
         mFavourite = (ImageButton) mMainActivity.findViewById(R.id.button_favourite);
         mTitle = (EditText) mMainActivity.findViewById(R.id.textInput);
-
-        setupModifiersColors();
-        setupModifiersListeners();
 
         // Setup the fab and its listeners
         Runnable positive = new Runnable() {
@@ -142,23 +143,32 @@ public class TaskCreationFragment extends Fragment {
         };
         mTitle.addTextChangedListener(new OnText_EditTextListener(positive, negative));
 
-        // Populate Spinner
-//        mSpinner.setAdapter(new ArrayAdapter<>(this.getContext(),
-//                android.R.layout.simple_list_item_1, taskListNames));
-    }
-
-    public void setTaskListTextView(String value, int index){
-        mTaskList.setText(value);
-        dataManager.setTemporalTaskListPosition(index);
+        if(!edit)
+            setupModifiersColors();
+        setupModifiersListeners();
     }
 
     private void setupModifiersColors() {
         PorterDuffColorFilter filter = getColorFilter(R.color.task_modifier_icons);
+
         mDescription.setColorFilter(filter);
         mReminder.setColorFilter(filter);
         mLocation.setColorFilter(filter);
         mLabels.setColorFilter(filter);
         mFavourite.setColorFilter(filter);
+    }
+
+    private void setupModifiersListeners(){
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { taskCreationPresenter.iconOnClick(v); }};
+
+        mDescription.setOnClickListener(listener);
+        mReminder.setOnClickListener(listener);
+        mLocation.setOnClickListener(listener);
+        mLabels.setOnClickListener(listener);
+        mFavourite.setOnClickListener(listener);
+        mTaskList.setOnClickListener(listener);
     }
 
     public void colorModifierButton(int modifierId, boolean active){
@@ -201,19 +211,9 @@ public class TaskCreationFragment extends Fragment {
         return new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY);
     }
 
-    private void setupModifiersListeners(){
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                taskCreationPresenter.iconOnClick(v);
-            }};
-
-        mDescription.setOnClickListener(listener);
-        mReminder.setOnClickListener(listener);
-        mLocation.setOnClickListener(listener);
-        mLabels.setOnClickListener(listener);
-        mFavourite.setOnClickListener(listener);
-        mTaskList.setOnClickListener(listener);
+    public void setTaskListTextView(String value, int index){
+        mTaskList.setText(value);
+        dataManager.setTemporalTaskListPosition(index);
     }
 
     /**

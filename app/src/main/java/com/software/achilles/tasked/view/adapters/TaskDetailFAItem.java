@@ -46,7 +46,8 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
 //    public void setDescription(String description, View v){
 ////        taskCreationPresenter.setDescription(description);
 //
-//        String text = description.length() > 0 ? description : context.getString(R.string.ask_for_description);
+//        String text = description.length() > 0 ? description :
+//                                              context.getString(R.string.ask_for_description);
 //        getFactory().create(v).textView.setText(text);
 //    }
 //

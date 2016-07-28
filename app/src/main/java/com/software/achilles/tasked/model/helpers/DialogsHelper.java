@@ -15,6 +15,7 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
@@ -55,9 +56,7 @@ public abstract class DialogsHelper {
                     public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
 
                         // Build the string representation of the labels
-                        String labelsStr = which.length > 0 ? "" : activity.getString(R.string.select_labels);
-                        for(int aux : which)
-                            labelsStr += "#" + labels.get(aux) + " ";
+                        String labelsStr = Utils.filterAndFormatLabels(items, which, false);
 
                         // From the list of labels, get the ones selected
                         RealmList<Label> filtered = new RealmList<>();

@@ -1,5 +1,7 @@
 package com.software.achilles.tasked.util;
 
+import com.software.achilles.tasked.view.fragments.DashboardFragment;
+
 public abstract class Constants {
 
     // --------------------------- Values ----------------------------
@@ -63,5 +65,8 @@ public abstract class Constants {
     public static final int DETAIL_LOCATION =           28;
     public static final int DETAIL_ALARM =              29;
     public static final int DETAIL_LABELS =             30;
+
+    public static final String LIST_INDEX =             "listIndex";
+    public static final String TASK_ID =                "taskId";
 
 }

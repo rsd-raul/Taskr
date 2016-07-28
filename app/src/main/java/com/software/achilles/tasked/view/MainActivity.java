@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     // -------------------------- Injected ---------------------------
 
     @Inject
-    FloatingActionMenuConfigurator mFamConfigurator;
+    public FloatingActionMenuConfigurator mFamConfigurator;
     @Inject
     public MainAndFilterDrawerConfigurator mDrawersConfigurator;
     @Inject
@@ -262,7 +262,15 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     TaskCreationPresenter taskCreationPresenter;
 
-    public void setFragment(int keyConstant) {
+    public void setFragment(int keyConstant){
+        setFragment(keyConstant, -1);
+    }
+
+    public void setEditItem(long itemId){
+        setFragment(Constants.ADD_TASK, itemId);
+    }
+
+    private void setFragment(int keyConstant, long itemId) {
         if(keyConstant == currentFragmentKey)
             return;
         currentFragmentKey = keyConstant;
@@ -292,7 +300,8 @@ public class MainActivity extends AppCompatActivity {
 
                 // Send the list the user is on
                 Bundle bundle = new Bundle();
-                bundle.putInt("listIndex", DashboardFragment.mViewPager.getCurrentItem());
+                bundle.putInt(Constants.LIST_INDEX, DashboardFragment.mViewPager.getCurrentItem());
+                bundle.putLong(Constants.TASK_ID, itemId);
                 newOne.setArguments(bundle);
 
                 taskCreationPresenter.attachView((TaskCreationFragment) newOne);

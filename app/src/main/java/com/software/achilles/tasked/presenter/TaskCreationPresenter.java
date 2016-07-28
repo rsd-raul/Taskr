@@ -64,47 +64,76 @@ public class TaskCreationPresenter
 
     // ---------------------------- Layout ---------------------------
 
-//    public void setupLayout(long taskId, int listIndex){
+    public void setupLayout(long taskId, int listIndex){
+        boolean edit = taskId != -1;
+
+        // Retrieve from the DB the task or create a new one
+        dataManager.setTemporalTask( edit ? dataManager.findTaskById(taskId) : new Task() );
+
+        // If we are editing, set the necessary items and don´t draw if not necessary
+        mFragment.setupLayout(edit);
+        if(edit){
+            Task task = dataManager.getTemporalTask();
+
+//            enabledFields = new boolean[6];
+//            enabledFields[0] = !task.getNotes().isEmpty();
+//            enabledFields[1] = task.getDue() != null;
+//            enabledFields[2] = task.getLocation() != null;
+//            enabledFields[3] = !task.getLabels().isEmpty();
+//            enabledFields[4] = task.isStarred();
+//            enabledFields[5] = task.isCompleted();
+
+            showDescription(task.getNotes());
+            String labelsString = Utils.filterAndFormatLabels(task.getLabels(), null, true);
+            showLabels(labelsString, task.getLabels());
+
+            // TODO popular los campos
+        }
+
+        // Populate the list field
+        String listTitle = dataManager.findAllTaskList().get(listIndex).getTitle();
+        mFragment.setTaskListTextView(listTitle, listIndex);
+
+        // FIXME si estas editando necesitas un boton para marcar como completado
+        // Save if we are editing, Voice if we are creating
+        mFragment.setupSaveOrVoice(edit);
+    }
+
+//    public void setupLayout(int listIndex, long itemId){
 //
-//        // Retrieve from the DB the task or create a new one
-//        dataManager.setTemporalTask( taskId != -1 ? dataManager.findTaskById(taskId) : new Task() );
+//        // Destroy any existing temporal task
+//        dataManager.destroyTemporalTask();
+//
+//        // Setup a temporal task
+//        dataManager.getTemporalTask();
 //
 //        // Setup the layout
 //        String listTitle = dataManager.findAllTaskList().get(listIndex).getTitle();
 //        mFragment.setupLayout();
 //        mFragment.setTaskListTextView(listTitle, listIndex);
 //
-//        // Save if we are editing, Voice if we are creating
-//        mFragment.setupSaveOrVoice(taskId != -1);
+//        mFragment.setupSaveOrVoice(false);
 //    }
-
-    public void setupLayout(int listIndex){
-
-        // Destroy any existing temporal task
-        dataManager.destroyTemporalTask();
-
-        // Setup a temporal task
-        dataManager.getTemporalTask();
-
-        // Setup the layout
-        String listTitle = dataManager.findAllTaskList().get(listIndex).getTitle();
-        mFragment.setupLayout();
-        mFragment.setTaskListTextView(listTitle, listIndex);
-
-        mFragment.setupSaveOrVoice(false);
-    }
 
     // -------------------------- Listeners --------------------------
 
     public void setDescription(String description){
-        fromDialogSetItem(description, null, R.id.button_description);
+        fromDialogSetItem(description, null, R.id.button_description, false);
     }
 
     public void setLabels(String labels, RealmList<Label> filtered){
-        fromDialogSetItem(labels, filtered, R.id.button_label);
+        fromDialogSetItem(labels, filtered, R.id.button_label, false);
     }
 
-    private void fromDialogSetItem(String result, @Nullable RealmList<Label> filtered, int detailType){
+    public void showDescription(String description){
+        fromDialogSetItem(description, null, R.id.button_description, true);
+    }
+
+    public void showLabels(String labels, RealmList<Label> filtered){
+        fromDialogSetItem(labels, filtered, R.id.button_label, true);
+    }
+
+    private void fromDialogSetItem(String result, @Nullable RealmList<Label> filtered, int detailType, boolean onlyShow){
         boolean colorTrigger = false;
 
         switch (detailType){
@@ -115,7 +144,8 @@ public class TaskCreationPresenter
                 else
                     result = null;          // If the user removes the description, save null
 
-                dataManager.getTemporalTask().setNotes(result);
+                if(!onlyShow)
+                    dataManager.getTemporalTask().setNotes(result);
                 break;
 
             case R.id.button_time:
@@ -130,7 +160,8 @@ public class TaskCreationPresenter
                 else
                     filtered = null;
 
-                dataManager.getTemporalTask().setLabels(filtered);
+                if(!onlyShow)
+                    dataManager.getTemporalTask().setLabels(filtered);
                 break;
 
             case R.id.text_task_list:
