@@ -3,12 +3,16 @@ package com.software.achilles.tasked.presenter;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
 import com.mikepenz.fastadapter.IItem;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
+import com.software.achilles.tasked.model.helpers.DatabaseHelper;
 import com.software.achilles.tasked.model.helpers.DialogsHelper;
+import com.software.achilles.tasked.model.helpers.LocalizationHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
@@ -67,28 +71,25 @@ public class TaskCreationPresenter
     public void setupLayout(long taskId, int listIndex){
         boolean edit = taskId != -1;
 
-        // Retrieve from the DB the task or create a new one
-        dataManager.setTemporalTask( edit ? dataManager.findTaskById(taskId) : new Task() );
-
-        // If we are editing, set the necessary items and don´t draw if not necessary
+        // Setup the basic layout
         mFragment.setupLayout(edit);
-        if(edit){
-            Task task = dataManager.getTemporalTask();
 
-//            enabledFields = new boolean[6];
-//            enabledFields[0] = !task.getNotes().isEmpty();
-//            enabledFields[1] = task.getDue() != null;
-//            enabledFields[2] = task.getLocation() != null;
-//            enabledFields[3] = !task.getLabels().isEmpty();
-//            enabledFields[4] = task.isStarred();
-//            enabledFields[5] = task.isCompleted();
+        // Create a new task or retrieve it from the DB
+        Task temporal;
+        if(!edit) {
+            temporal = new Task();
+        } else {
+            // Remove the direct connection with Realm so you can edit it
+            temporal = DatabaseHelper.removeRealmFromTask(dataManager.findTaskById(taskId));
 
-            showDescription(task.getNotes());
-            String labelsString = Utils.filterAndFormatLabels(task.getLabels(), null, true);
-            showLabels(labelsString, task.getLabels());
+            // Set the necessary items and don´t draw if not necessary
+            showDescription(temporal.getNotes());
+            String labels = LocalizationHelper.filterAndFormatLabels(temporal.getLabels(), null, true);
+            showLabels(labels, temporal.getLabels());
 
             // TODO popular los campos
         }
+        dataManager.setTemporalTask(temporal);
 
         // Populate the list field
         String listTitle = dataManager.findAllTaskList().get(listIndex).getTitle();

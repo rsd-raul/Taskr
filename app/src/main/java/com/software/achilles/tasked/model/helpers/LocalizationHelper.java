@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.text.format.Time;
 
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.view.MainActivity;
@@ -48,5 +49,19 @@ public abstract class LocalizationHelper {
 
     public static String dateToTimeString(Date date){
         return DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
+    }
+
+
+    public static String filterAndFormatLabels(List<Label> labels, Integer[] which, boolean all){
+        String labelsStr =  "";
+
+        if(all)
+            for(Label aux : labels)
+                labelsStr += "#" + aux.getTitle() + " ";
+        else
+            for(int aux : which)
+                labelsStr += "#" + labels.get(aux).getTitle() + " ";
+
+        return labelsStr;
     }
 }

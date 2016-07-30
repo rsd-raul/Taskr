@@ -14,16 +14,4 @@ public abstract class Utils {
         return array != null && array.size() > 0;
     }
 
-    public static String filterAndFormatLabels(List<Label> labels, Integer[] which, boolean all){
-        String labelsStr =  "";
-
-        if(all)
-            for(Label aux : labels)
-                labelsStr += "#" + aux.getTitle() + " ";
-        else
-            for(int aux : which)
-                labelsStr += "#" + labels.get(aux).getTitle() + " ";
-
-        return labelsStr;
-    }
 }

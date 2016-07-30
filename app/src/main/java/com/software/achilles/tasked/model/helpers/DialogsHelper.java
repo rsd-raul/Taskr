@@ -56,7 +56,7 @@ public abstract class DialogsHelper {
                     public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
 
                         // Build the string representation of the labels
-                        String labelsStr = Utils.filterAndFormatLabels(items, which, false);
+                        String labelsStr = LocalizationHelper.filterAndFormatLabels(items, which, false);
 
                         // From the list of labels, get the ones selected
                         RealmList<Label> filtered = new RealmList<>();
