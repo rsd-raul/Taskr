@@ -56,11 +56,23 @@ public class TaskListRepository implements BaseRepository<TaskList> {
         });
     }
 
-    public void addTaskToTaskList(final int taskListPosition, final Task task) {
+    public void addTaskToTaskList(final Task task) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                findByPosition(taskListPosition).getTasks().add(task);
+                task.getTaskList().getTasks().add(task);
+            }
+        });
+    }
+
+    public void removeTaskFromTaskList(final long oldTaskListId, final long taskId) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmList<Task> tasks = findOne(oldTaskListId).getTasks();
+                for (int i = 0; i < tasks.size(); i++)
+                    if(tasks.get(i).getId() == taskId)
+                        tasks.remove(i);
             }
         });
     }

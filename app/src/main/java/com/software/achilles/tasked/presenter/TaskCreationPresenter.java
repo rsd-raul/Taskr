@@ -3,7 +3,6 @@ package com.software.achilles.tasked.presenter;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.mikepenz.fastadapter.IItem;
 import com.software.achilles.tasked.R;
@@ -76,26 +75,36 @@ public class TaskCreationPresenter
 
         // Create a new task or retrieve it from the DB
         Task temporal;
+        TaskList oldTaskList;
         if(!edit) {
             temporal = new Task();
+            oldTaskList = null;
         } else {
             // Remove the direct connection with Realm so you can edit it
             temporal = DatabaseHelper.removeRealmFromTask(dataManager.findTaskById(taskId));
+            oldTaskList = temporal.getTaskList();
 
             // Set the necessary items and don´t draw if not necessary
             showDescription(temporal.getNotes());
+
             String labels = LocalizationHelper.filterAndFormatLabels(temporal.getLabels(), null, true);
             showLabels(labels, temporal.getLabels());
 
+            showStarred(temporal.isStarred());
+
+            showTitle(temporal.getTitle());
             // TODO popular los campos
+
+            // TODO si estas editando necesitas un boton para marcar como completado
         }
         dataManager.setTemporalTask(temporal);
+        dataManager.setOldTaskList(oldTaskList);
 
         // Populate the list field
         String listTitle = dataManager.findAllTaskList().get(listIndex).getTitle();
         mFragment.setTaskListTextView(listTitle, listIndex);
 
-        // FIXME si estas editando necesitas un boton para marcar como completado
+
         // Save if we are editing, Voice if we are creating
         mFragment.setupSaveOrVoice(edit);
     }
@@ -126,6 +135,14 @@ public class TaskCreationPresenter
         fromDialogSetItem(labels, filtered, R.id.button_label, false);
     }
 
+    public void showStarred(boolean starred){
+        mFragment.colorModifierButton(R.id.button_favourite, starred);
+    }
+
+    public void showTitle(String title){
+        mFragment.setTaskNameTextView(title);
+    }
+
     public void showDescription(String description){
         fromDialogSetItem(description, null, R.id.button_description, true);
     }
@@ -149,12 +166,6 @@ public class TaskCreationPresenter
                     dataManager.getTemporalTask().setNotes(result);
                 break;
 
-            case R.id.button_time:
-                break;
-
-            case R.id.button_location:
-                break;
-
             case R.id.button_label:
                 if(Utils.notEmpty(filtered))
                     colorTrigger = true;
@@ -165,7 +176,10 @@ public class TaskCreationPresenter
                     dataManager.getTemporalTask().setLabels(filtered);
                 break;
 
-            case R.id.text_task_list:
+            case R.id.button_time:
+                break;
+
+            case R.id.button_location:
                 break;
         }
         // Set or remove the color from the buttons
@@ -175,7 +189,7 @@ public class TaskCreationPresenter
         int index = indexOf(detailType);
         if(!colorTrigger && index != -1)
             mFragment.deleteItem(index);
-        else
+        if(colorTrigger)
             if(index == -1)
                 mFragment.createItem(detailType, result);
             else
@@ -201,7 +215,8 @@ public class TaskCreationPresenter
 //        mFragment.populateAndGetTemporal();
         Task temporal = mFragment.populateAndGetTemporal();
         int taskListPosition = dataManager.getTemporalTaskListPosition();
-        dataManager.saveTask(taskListPosition, temporal);
+        temporal.setTaskList(dataManager.findTaskListByPosition(taskListPosition));
+        dataManager.saveTask(temporal);
 
         Log.d("TaskCreationPresenter", "" +
                 dataManager.getTemporalTask().getTitle()

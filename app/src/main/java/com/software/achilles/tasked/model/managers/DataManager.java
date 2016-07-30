@@ -73,12 +73,6 @@ public class DataManager {
         return locationRepository.findAll();
     }
 
-//    public Label findLastLabel(){
-//        RealmResults<Label> labels = labelRepository.findAll();
-//
-//        return labels.get(labels.size() - 1);
-//    }
-
     public int findTaskListPositionById(int id){
         RealmResults<TaskList> taskLists = taskListRepository.findAll();
 
@@ -92,9 +86,20 @@ public class DataManager {
 
     // ---------------------------- Save -----------------------------
 
-    public void saveTask(int taskListPosition, Task task){
+    public void saveTask(Task task){
         taskRepository.save(task);
-        taskListRepository.addTaskToTaskList(taskListPosition, task);
+
+        // If Create, save on the new list
+        if(oldTaskList == null){
+            taskListRepository.addTaskToTaskList(task);
+            return;
+        }
+
+        // If Edit and the list is different, remove from one, add to the other
+        if(task.getTaskList().getId() != oldTaskList.getId()){
+            taskListRepository.addTaskToTaskList(task);
+            taskListRepository.removeTaskFromTaskList(oldTaskList.getId(), task.getId());
+        }
     }
 
     public void saveTaskList(TaskList taskList){
@@ -113,6 +118,7 @@ public class DataManager {
 
     private Task temporalTask;
     private int temporalTaskListPosition;
+    private TaskList oldTaskList;
 
     public Task getTemporalTask() {
         temporalTask = (temporalTask != null) ? temporalTask : new Task();
@@ -129,9 +135,12 @@ public class DataManager {
     public int getTemporalTaskListPosition(){
         return temporalTaskListPosition;
     }
-
     public void setTemporalTaskListPosition(int temporalTaskListPosition){
         this.temporalTaskListPosition = temporalTaskListPosition;
+    }
+
+    public void setOldTaskList(TaskList oldTaskList) {
+        this.oldTaskList = oldTaskList;
     }
 
     // -------------------------- Use Cases --------------------------
@@ -249,6 +258,8 @@ public class DataManager {
         while (amountList > 0) {
             String listTitle = listTitles[random.nextInt(2)];
             taskListRepository.save(new TaskList(listTitle, null));
+            TaskList realmList = taskListRepository.findByPosition(5-amountList);
+
 
             int amountTaskWhile = amountTasks;
 
@@ -273,10 +284,8 @@ public class DataManager {
                     auxLabels.add(labels.get(index));
                 }
 
-                Task task = new Task(title, finished, starred, description, dueDate, location, auxLabels);
-                taskRepository.save(task);
-
-                taskListRepository.addTaskToTaskList(5-amountList, task);
+                Task task = new Task(title, realmList, finished, starred, description, dueDate, location, auxLabels);
+                saveTask(task);
 
                 amountTaskWhile--;
             }

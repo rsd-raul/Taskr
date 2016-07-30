@@ -15,6 +15,7 @@ public abstract class DatabaseHelper {
         result.setId(task.getId());
         result.setLocation(task.getLocation());
         result.setDue(task.getDue());
+        result.setTaskList(task.getTaskList());
 
         return result;
     }

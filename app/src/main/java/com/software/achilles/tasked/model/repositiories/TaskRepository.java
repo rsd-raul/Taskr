@@ -52,9 +52,8 @@ public class TaskRepository implements BaseRepository<Task> {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                if (task.getId() == 0) {
+                if (task.getId() == 0)
                     task.setId(PrimaryKeyFactory.nextKey());
-                }
 
                 realm.copyToRealmOrUpdate(task);
             }

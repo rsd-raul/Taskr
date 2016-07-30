@@ -26,6 +26,7 @@ public class Task extends RealmObject implements BasicType {
     private Date due;
     private Location location;
     private RealmList<Label> labels;
+    private TaskList taskList;
 
     // ------------------------- Constructor -------------------------
 
@@ -34,8 +35,9 @@ public class Task extends RealmObject implements BasicType {
     }
 
     // TODO no id in constructor
-    public Task(@NonNull String title, boolean completed, boolean starred, String notes,
-                Date due, Location location, RealmList<Label> labels) {
+    public Task(@NonNull String title, @NonNull TaskList taskList, boolean completed,
+                boolean starred, String notes, Date due, Location location,
+                RealmList<Label> labels) {
         this.completed = completed;
         this.starred = starred;
         this.title = title;
@@ -43,6 +45,7 @@ public class Task extends RealmObject implements BasicType {
         this.due = due;
         this.location = location;
         this.labels = labels;
+        this.taskList = taskList;
     }
 
     // ---------------------- Getters & Setters ----------------------
@@ -101,6 +104,13 @@ public class Task extends RealmObject implements BasicType {
     }
     public void setStarred(boolean starred) {
         this.starred = starred;
+    }
+
+    public TaskList getTaskList() {
+        return taskList;
+    }
+    public void setTaskList(TaskList taskList) {
+        this.taskList = taskList;
     }
 
     // -------------------------- To String --------------------------

@@ -216,6 +216,10 @@ public class TaskCreationFragment extends Fragment {
         dataManager.setTemporalTaskListPosition(index);
     }
 
+    public void setTaskNameTextView(String value){
+        mTitle.setText(value);
+    }
+    
     /**
      * This method will toggle the characteristics of the FAB between Save and Voice input
      *

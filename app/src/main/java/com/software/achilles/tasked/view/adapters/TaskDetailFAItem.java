@@ -111,7 +111,7 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
                 break;
             default:
                 Log.e("TaskDetailItem", "Unsupported item type: " + ((int) mIdentifier));
-                throw new UnsupportedOperationException();
+                throw new UnsupportedOperationException("No such button");
         }
 
         int color = ContextCompat.getColor(context, colRes);
