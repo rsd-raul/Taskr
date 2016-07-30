@@ -10,8 +10,11 @@ import com.software.achilles.tasked.model.repositiories.LabelRepository;
 import com.software.achilles.tasked.model.repositiories.LocationRepository;
 import com.software.achilles.tasked.model.repositiories.TaskListRepository;
 import com.software.achilles.tasked.model.repositiories.TaskRepository;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -259,8 +262,16 @@ public class DataManager {
                 Integer labelQuantity = labelQuantities[random.nextInt(4)];
                 Location location = locations.get(random.nextInt(3));
 
-                for (int i = 0; i < labelQuantity; i++)
-                    auxLabels.add(labels.get(random.nextInt(4)));
+                // Add random labels to the task we are creating - No duplicates
+                List<Integer> usedLabels = new ArrayList<>();
+                for (int i = 0; i < labelQuantity; i++) {
+                    Integer index;
+                    do{
+                        index = random.nextInt(4);
+                    }while (usedLabels.contains(index));
+                    usedLabels.add(index);
+                    auxLabels.add(labels.get(index));
+                }
 
                 Task task = new Task(title, finished, starred, description, dueDate, location, auxLabels);
                 taskRepository.save(task);
