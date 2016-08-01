@@ -31,8 +31,6 @@ import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.listeners.OnText_EditTextListener;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
 

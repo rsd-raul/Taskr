@@ -1,11 +1,8 @@
 package com.software.achilles.tasked.presenter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
-
-import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
-import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
-import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 import com.mikepenz.fastadapter.IItem;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
@@ -17,9 +14,8 @@ import com.software.achilles.tasked.util.helpers.LocalizationHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
-import com.software.achilles.tasked.view.pickers.SublimePickerFragment.SublimeCallback;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,22 +30,24 @@ public class TaskCreationPresenter
 
     private DataManager dataManager;
 
-    // ------------------------- Constructor -------------------------
+    // ------------------------- CONSTRUCTOR -------------------------
 
     @Inject
     public TaskCreationPresenter(DataManager dataManager) {
         this.dataManager = dataManager;
     }
 
-    // ------------------------- Attributes --------------------------
+    // -------------------------- INJECTED ---------------------------
 
     @Inject
     MainPresenter mainPresenter;
 
-    private TaskCreationFragment mFragment;
-    private boolean timStatus = false, locStatus = false, favStatus = false;
+    // ------------------------- ATTRIBUTES --------------------------
 
-    // ------------------------- Life Cycle --------------------------
+    private TaskCreationFragment mFragment;
+    private boolean locStatus = false, favStatus = false;
+
+    // ------------------------- LIFE CYCLE --------------------------
 
     @Override
     public void attachView(TaskCreationFragment view) {
@@ -69,7 +67,7 @@ public class TaskCreationPresenter
 ////            subscription.unsubscribe();
 //    }
 
-    // ---------------------------- Layout ---------------------------
+    // ---------------------------- LAYOUT ---------------------------
 
     public void setupLayout(long taskId, int listIndex){
         boolean edit = taskId != -1;
@@ -83,20 +81,27 @@ public class TaskCreationPresenter
         if(!edit) {
             temporal = new Task();
             oldTaskList = null;
+
         } else {
             // Remove the direct connection with Realm so you can edit it
             temporal = DatabaseHelper.removeRealmFromTask(dataManager.findTaskById(taskId));
             oldTaskList = temporal.getTaskList();
 
+            Log.e("TaskCreationPresenter", "setupLayout: " + temporal.getDue());
+
             // Set the necessary items and don´t draw if not necessary
+            showStarred(temporal.isStarred());
+
+            showTitle(temporal.getTitle());
+
             showDescription(temporal.getNotes());
 
             String labels = LocalizationHelper.filterAndFormatLabels(temporal.getLabels(), null, true);
             showLabels(labels, temporal.getLabels());
 
-            showStarred(temporal.isStarred());
+            if(temporal.getDue() != null)
+                showDueDate(LocalizationHelper.dateToDateTimeString(temporal.getDue()));
 
-            showTitle(temporal.getTitle());
             // TODO popular los campos
 
             // TODO si estas editando necesitas un boton para marcar como completado
@@ -116,11 +121,24 @@ public class TaskCreationPresenter
     // -------------------------- Listeners --------------------------
 
     public void setDescription(String description){
-        fromDialogSetItem(description, null, R.id.button_description, false);
+        fromDialogSetItem(description, null, null, R.id.button_description, false);
+    }
+    public void showDescription(String description){
+        fromDialogSetItem(description, null, null, R.id.button_description, true);
     }
 
     public void setLabels(String labels, RealmList<Label> filtered){
-        fromDialogSetItem(labels, filtered, R.id.button_label, false);
+        fromDialogSetItem(labels, filtered, null, R.id.button_label, false);
+    }
+    public void showLabels(String labels, RealmList<Label> filtered){
+        fromDialogSetItem(labels, filtered, null, R.id.button_label, true);
+    }
+
+    public void setDueDate(String date, Date dueDate){
+        fromDialogSetItem(date, null, dueDate, R.id.button_time, false);
+    }
+    public void showDueDate(String date){
+        fromDialogSetItem(date, null, null, R.id.button_time, true);
     }
 
     public void showStarred(boolean starred){
@@ -131,15 +149,9 @@ public class TaskCreationPresenter
         mFragment.setTaskNameTextView(title);
     }
 
-    public void showDescription(String description){
-        fromDialogSetItem(description, null, R.id.button_description, true);
-    }
 
-    public void showLabels(String labels, RealmList<Label> filtered){
-        fromDialogSetItem(labels, filtered, R.id.button_label, true);
-    }
-
-    private void fromDialogSetItem(String result, @Nullable RealmList<Label> filtered, int detailType, boolean onlyShow){
+    private void fromDialogSetItem(String result, @Nullable RealmList<Label> filtered, Date date,
+                                   int detailType, boolean onlyShow){
         boolean colorTrigger = false;
 
         switch (detailType){
@@ -165,6 +177,14 @@ public class TaskCreationPresenter
                 break;
 
             case R.id.button_time:
+
+                if(Utils.notEmpty(result))
+                    colorTrigger = true;
+                else
+                    date = null;
+
+                if(!onlyShow)
+                    dataManager.getTemporalTask().setDue(date);
                 break;
 
             case R.id.button_location:
@@ -219,10 +239,12 @@ public class TaskCreationPresenter
 
     public void itemOnClick(int detailType){
 
+        Task temporal = dataManager.getTemporalTask();
+
         switch (detailType){
 
             case R.id.button_description:
-                String description = dataManager.getTemporalTask().getNotes();
+                String description = temporal.getNotes();
                 DialogsHelper.buildDescriptionDialog(description, mFragment.getActivity(), this);
                 break;
 
@@ -231,15 +253,15 @@ public class TaskCreationPresenter
                 RealmResults<Label> items = dataManager.findAllLabels();
 
                 // Get labels for the temporal object and format them to be selected
-                RealmList<Label> temporal = dataManager.getTemporalTask().getLabels();
+                RealmList<Label> temporalLabels = temporal.getLabels();
 
                 Integer[] selected = null;
-                if(temporal != null){
-                    selected = new Integer[temporal.size()];
+                if(temporalLabels != null){
+                    selected = new Integer[temporalLabels.size()];
 
                     int count = 0;
                     for (int i = 0; i < items.size(); i++) {
-                        if (temporal.contains(items.get(i))) {
+                        if (temporalLabels.contains(items.get(i))) {
                             selected[count] = i;
                             count++;
                         }
@@ -249,25 +271,10 @@ public class TaskCreationPresenter
                 break;
 
             case R.id.button_time:
-                SublimeOptions options = DialogsHelper.getFullPicker(SublimeOptions.Picker.TIME_PICKER);
 
-                SublimeCallback callback = new SublimeCallback() {
-                    @Override
-                    public void onCancelled() {
+                // Build sublimePicker customized DateTune
+                DialogsHelper.buildDateTimePicker(mFragment, temporal.getDue(), this);
 
-                    }
-
-                    @Override
-                    public void onDateTimeRecurrenceSet(SelectedDate selectedDate, int hourOfDay, int minute, SublimeRecurrencePicker.RecurrenceOption recurrenceOption, String recurrenceRule) {
-
-                    }
-                };
-
-                DialogsHelper.buildSublimePicker(mFragment.getFragmentManager(),callback ,options);
-
-                // If it's OFF, turn ON and vice-versa
-                timStatus = !timStatus;
-                mFragment.colorModifierButton(detailType, timStatus);
                 break;
 
             case R.id.button_location:

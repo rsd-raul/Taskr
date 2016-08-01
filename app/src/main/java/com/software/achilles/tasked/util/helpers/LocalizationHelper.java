@@ -1,5 +1,6 @@
 package com.software.achilles.tasked.util.helpers;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import com.software.achilles.tasked.R;
@@ -47,6 +48,10 @@ public abstract class LocalizationHelper {
         return DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
     }
 
+    public static String dateToDateTimeString(Date date){
+        return dateToTimeString(date) + " - " + dateToDateString(date);
+    }
+
 
     public static String filterAndFormatLabels(List<Label> labels, Integer[] which, boolean all){
         String labelsStr =  "";
@@ -59,5 +64,9 @@ public abstract class LocalizationHelper {
                 labelsStr += "#" + labels.get(aux).getTitle() + " ";
 
         return labelsStr;
+    }
+
+    public static boolean is24HourFormat(Context context){
+        return android.text.format.DateFormat.is24HourFormat(context);
     }
 }

@@ -26,46 +26,22 @@ import io.realm.RealmResults;
 @Singleton
 public class DashboardPresenter implements Presenter<DashboardFragment> {
 
-    // -------------------------- Injected ---------------------------
+    // -------------------------- INJECTED ---------------------------
 
     private DataManager dataManager;
 
-    // ------------------------- Constructor -------------------------
+    // ------------------------- CONSTRUCTOR -------------------------
 
     @Inject
     public DashboardPresenter(DataManager dataManager) {
         this.dataManager = dataManager;
     }
 
-    // ------------------------- Attributes --------------------------
+    // ------------------------- ATTRIBUTES --------------------------
 
     private DashboardFragment mFragment;
 
-//    // -------------------------- Singleton --------------------------
-//
-//    private static final Object lock = new Object();
-//    private static volatile DashboardPresenter instance;
-//
-//    //  Double-checked locking - Effective in Java 1.5 and later:
-//    public static DashboardPresenter getInstance() {
-//        DashboardPresenter result = instance;
-//
-//        // Only synchronize if the DashboardPresenter haven't been instantiated
-//        if (result == null) {
-//            synchronized (lock) {
-//                result = instance;
-//
-//                // If no other threads have instantiated the DashboardPresenter while waiting for the lock.
-//                if (result == null) {
-//                    result = new DashboardPresenter();
-//                    instance = result;
-//                }
-//            }
-//        }
-//        return result;
-//    }
-
-    // ------------------------- Life Cycle --------------------------
+    // ------------------------- LIFE CYCLE --------------------------
 
     @Override
     public void attachView(DashboardFragment mFragment) {
@@ -84,7 +60,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
 ////        if (subscription != null) subscription.unsubscribe();
 //    }
 
-    // ---------------------------- Layout ---------------------------
+    // ---------------------------- LAYOUT ---------------------------
 
     /**
      * Main method to setup the Dashboard interface, mainly the TabLayout and the ViewPager
@@ -113,7 +89,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
             DashboardFragment.mViewPager.setCurrentItem(taskList.size()-1, true);
     }
 
-    // ---------------------------- Menu -----------------------------
+    // ---------------------------- MENU -----------------------------
 
     public void filterByText(String query, Boolean searchDeep){
         if(query.isEmpty()) {
@@ -128,36 +104,13 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
 //        mFragment.updateViewPagerList(tasks);
     }
 
-    // -------------------------- Use Cases --------------------------
-
-//    @Inject
-//    Provider<TaskCreationFragment> taskCreationFragmentProvider;
-//    @Inject
-//    TaskCreationPresenter taskCreationPresenter;
-//    @Inject
-//    MainAndFilterDrawerConfigurator mainAndFilterDrawerConfigurator;
+    // -------------------------- USE CASES --------------------------
 
     @Inject
     MainPresenter mainPresenter;
 
     public void itemOnClick(long id){
         mainPresenter.deployEditLayout(id);
-        Toast.makeText(mFragment.getContext(), "ItemOnClick", Toast.LENGTH_SHORT).show();
-//        Fragment newOne = taskCreationFragmentProvider.get();
-//
-//        // Send the list the user is on
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("listIndex", DashboardFragment.mViewPager.getCurrentItem());
-//        bundle.putLong("itemId", id);
-//        newOne.setArguments(bundle);
-//
-//        taskCreationPresenter.attachView((TaskCreationFragment) newOne);
-//
-//        mainAndFilterDrawerConfigurator.customizeActionBar(Constants.ADD_TASK);
-//
-//        // Initialize the fragment change
-//        FragmentTransaction fragmentTransaction = mFragment.getActivity().getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.replace(R.id.main_fragment_container, newOne).commit();
     }
 
     public void taskModifier(int uniqueParameterId, Task task){

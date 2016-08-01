@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.TaskList;
@@ -22,8 +24,11 @@ import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions.Picker;
 import com.software.achilles.tasked.view.pickers.SublimePickerFragment;
 import com.software.achilles.tasked.view.pickers.SublimePickerFragment.SublimeCallback;
+import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker.RecurrenceOption;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -188,23 +193,27 @@ public abstract class DialogsHelper {
             }).show();
     }
 
-    // --------------------------- PICKERS ---------------------------
+    // ----------------------- SUBLIME PICKER ------------------------
 
-    public static SublimeOptions getFullPicker(Picker picker){
-        return getBaseOptionsSublime(picker, true, true, true, true);
+//    private static SublimeOptions getFullPicker(Picker picker){
+//        return getBaseOptionsSublime(picker, true, true, true, true);
+//    }
+//
+//    private static SublimeOptions getTimePicker(){
+//        return getBaseOptionsSublime(Constants.TIME_PICKER, false, true, false, false);
+//    }
+//
+//    private static SublimeOptions getDatePicker(boolean allowRange){
+//        return getBaseOptionsSublime(Constants.DATE_PICKER, true, false, false, allowRange);
+//    }
+
+    private static SublimeOptions getDateTimePicker(Picker picker, boolean allowRange){
+        return getBaseOptionsSublime(picker, true, true, false, allowRange);
     }
 
-    public static SublimeOptions getTimePicker(){
-        return getBaseOptionsSublime(Constants.TIME_PICKER, false, true, false, false);
-    }
-
-    public static SublimeOptions getDatePicker(boolean allowRange){
-        return getBaseOptionsSublime(Constants.DATE_PICKER, true, false, false, allowRange);
-    }
-
-    public static SublimeOptions getRecurrenceOptions(){
-        return getBaseOptionsSublime(Constants.REPEAT_PICKER, false, false, true, false);
-    }
+//    private static SublimeOptions getRecurrenceOptions(){
+//        return getBaseOptionsSublime(Constants.REPEAT_PICKER, false, false, true, false);
+//    }
 
     private static SublimeOptions getBaseOptionsSublime(Picker picker,
                                                         boolean date, boolean time,
@@ -234,8 +243,7 @@ public abstract class DialogsHelper {
         return options;
     }
 
-    // REVIEW Useful?
-    public static SublimeOptions customizeOptionsSublime(SublimeOptions options){
+    private static SublimeOptions customizeOptionsSublime(SublimeOptions options, Date date, boolean is24){
         // Example for setting date range:
         // Note that you can pass a date range as the initial date params
         // even if you have date-range selection disabled. In this case,
@@ -247,10 +255,20 @@ public abstract class DialogsHelper {
         Calendar endCal = Calendar.getInstance();
         endCal.set(2016, 2, 17);
         options.setDateParams(startCal, endCal);*/
+
+        // Initialize the calendar and if the task is valid, set the calendar to that value
+        Calendar cal = Calendar.getInstance();
+        if(date != null)
+            cal.setTime(date);
+
+        // Set the default or the selected date
+        options.setDateParams(cal);
+        options.setTimeParams(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), is24);
+
         return options;
     }
 
-    public static void buildSublimePicker(FragmentManager fragmentManager,
+    private static void buildSublimePicker(FragmentManager fragmentManager,
                                            SublimeCallback callback,
                                            SublimeOptions options){
 
@@ -263,5 +281,45 @@ public abstract class DialogsHelper {
 
         pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         pickerFrag.show(fragmentManager, Constants.SUBLIME_PICKER);
+    }
+
+    public static void buildDateTimePicker(Fragment fragment, Date date,
+                                           final TaskCreationPresenter taskCreationPresenter){
+
+        // Get a Date & Time picker starting in time and without range
+        SublimeOptions options = getDateTimePicker(Picker.TIME_PICKER, false);
+
+        // Based on the user Locale, get the format
+        boolean is24 = LocalizationHelper.is24HourFormat(fragment.getContext());
+
+        // Set the date if any, or default
+        options = DialogsHelper.customizeOptionsSublime(options, date, is24);
+
+        SublimeCallback callback = new SublimeCallback() {
+            @Override
+            public void onCancelled() {
+
+            }
+
+            @Override
+            public void onDateTimeRecurrenceSet(SelectedDate selectedDate,
+                                                int hourOfDay, int minute,
+                                                RecurrenceOption recurrenceOption,
+                                                String recurrenceRule) {
+                Calendar cal = selectedDate.getFirstDate();
+                cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                cal.set(Calendar.MINUTE, hourOfDay);
+
+                Date date = cal.getTime();
+
+                String result = LocalizationHelper.dateToDateTimeString(date);
+
+                taskCreationPresenter.setDueDate(result, date);
+            }
+        };
+
+
+        // Build the final picker
+        DialogsHelper.buildSublimePicker(fragment.getFragmentManager(),callback ,options);
     }
 }
