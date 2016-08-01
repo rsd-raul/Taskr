@@ -1,5 +1,7 @@
 package com.software.achilles.tasked.util;
 
+import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
+import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions.Picker;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 
 public abstract class Constants {
@@ -69,4 +71,11 @@ public abstract class Constants {
     public static final String LIST_INDEX =             "listIndex";
     public static final String TASK_ID =                "taskId";
 
+    // ----------------------- Sublime Picker ------------------------
+
+    public static final Picker TIME_PICKER =            Picker.TIME_PICKER;
+    public static final Picker DATE_PICKER =            Picker.DATE_PICKER;
+    public static final Picker REPEAT_PICKER =          Picker.REPEAT_OPTION_PICKER;
+    public static final String SUBLIME_OPTIONS =        "SUBLIME_OPTIONS";
+    public static final String SUBLIME_PICKER =         "SUBLIME_PICKER";
 }

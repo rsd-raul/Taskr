@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.model.helpers;
+package com.software.achilles.tasked.util.helpers;
 
 import com.software.achilles.tasked.model.domain.Task;
 

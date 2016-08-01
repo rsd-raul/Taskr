@@ -9,7 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.software.achilles.tasked.model.helpers.LocalizationHelper;
+import com.software.achilles.tasked.util.helpers.LocalizationHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.util.Constants;

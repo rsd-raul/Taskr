@@ -18,13 +18,12 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.helpers.PreferencesHelper;
-import com.software.achilles.tasked.model.helpers.PreferencesHelper.*;
+import com.software.achilles.tasked.util.helpers.PreferencesHelper;
+import com.software.achilles.tasked.util.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
-import com.software.achilles.tasked.util.extras.ErrorReporter;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
@@ -34,8 +33,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import dagger.Lazy;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity {
 

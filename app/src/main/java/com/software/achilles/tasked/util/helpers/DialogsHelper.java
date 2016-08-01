@@ -1,9 +1,10 @@
-package com.software.achilles.tasked.model.helpers;
+package com.software.achilles.tasked.util.helpers;
 
 import android.app.Activity;
-import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -15,10 +16,12 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
-import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.view.MainActivity;
-import com.software.achilles.tasked.view.adapters.TaskDetailFAItem;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
+import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions.Picker;
+import com.software.achilles.tasked.view.pickers.SublimePickerFragment;
+import com.software.achilles.tasked.view.pickers.SublimePickerFragment.SublimeCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,8 @@ import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public abstract class DialogsHelper {
+
+    // ---------------------------- SELECT ---------------------------
 
     public static void buildChoiceFromList(List<String> items, int defaultList, final TaskCreationFragment fragment){
         new MaterialDialog.Builder(fragment.getActivity())
@@ -72,6 +77,8 @@ public abstract class DialogsHelper {
                 .show();
     }
 
+    // ---------------------------- INPUT ----------------------------
+
     public static void buildDescriptionDialog(String text, final Activity activity, final TaskCreationPresenter taskCreationPresenter){
         String hint = activity.getResources().getString(R.string.description);
         String existent = text != null ? text : "";
@@ -98,33 +105,6 @@ public abstract class DialogsHelper {
 
         dialog.show();
     }
-
-//    public static void buildDescriptionDialog(String text, final Activity activity){
-//        String hint = activity.getResources().getString(R.string.description);
-//        String existent = text != null ? text : "";
-//
-//        MaterialDialog dialog = new MaterialDialog.Builder(activity)
-//                // Dialog content
-//                .title(hint)
-//                .positiveText(R.string.save)
-//                .negativeText(R.string.cancel)
-//                .content(R.string.ask_for_description)
-//                .inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
-//                        | InputType.TYPE_CLASS_TEXT)
-//                .input(hint, existent, new MaterialDialog.InputCallback() {
-//                    @Override
-//                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-//                        item.setDescription(input.toString(), view);
-//                    }
-//                }).build();
-//
-//        EditText input = dialog.getInputEditText();
-//        if(input != null)
-//            input.setSingleLine(false);
-//
-//        dialog.show();
-//    }
-
 
     /**
      * This method is responsible of the creation of a dialog, dialog that includes a text
@@ -170,36 +150,118 @@ public abstract class DialogsHelper {
                 @Override
                 public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
 
-                    if (uniqueId == Constants.ADD_TASK_LIST) {
-                        TaskList newTaskList = new TaskList(input.toString(), null);
+                    switch (uniqueId){
 
-                        dataManager.saveTaskList(newTaskList);
+                        case Constants.ADD_TASK_LIST:
+                            TaskList newTaskList = new TaskList(input.toString(), null);
 
-                        // Update the Tabs
-                        activity.setupViewPagerAndTabs(true);
+                            dataManager.saveTaskList(newTaskList);
 
-                        // Update the filterDrawer and the MainDrawer
-                        activity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_TASK_LIST);
-                    }
-                    if (uniqueId == Constants.ADD_LABEL) {
-                        int[] clr = new int[]{R.color.colorAccent, R.color.colorPrimary,
-                                R.color.tealLocation, R.color.amberDate, R.color.md_black_1000,
-                                R.color.md_orange_500};
+                            // Update the Tabs
+                            activity.setupViewPagerAndTabs(true);
 
-                        // FIXME manually pick the color for the Label instead of randomly
-                        Label newLabel = new Label(input.toString(), clr[new Random().nextInt(5)]);
+                            // Update the filterDrawer and the MainDrawer
+                            activity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_TASK_LIST);
+                            break;
 
-                        // Save the label
-                        dataManager.saveLabel(newLabel);
+                        case Constants.ADD_LABEL:
+                            int[] clr = new int[]{R.color.colorAccent, R.color.colorPrimary,
+                                    R.color.tealLocation, R.color.amberDate, R.color.md_black_1000,
+                                    R.color.md_orange_500};
 
-                        // If label list on filterDrawer is closed... Do nothing
-                        if (!activity.mDrawersConfigurator.mExpandedLabelListFilter)
-                            return;
+                            // TODO manually pick the color for the Label instead of randomly
+                            Label newLabel = new Label(input.toString(), clr[new Random().nextInt(5)]);
 
-                        // If label list is expanded update the lists (or wait for opening drawer?)
-                        activity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_LABEL_LIST);
+                            // Save the label
+                            dataManager.saveLabel(newLabel);
+
+                            // If label list on filterDrawer is closed... Do nothing
+                            if (!activity.mDrawersConfigurator.mExpandedLabelListFilter)
+                                return;
+
+                            // If label list is expanded update the lists (or wait for opening drawer?)
+                            activity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_LABEL_LIST);
+                            break;
+
                     }
                 }
             }).show();
+    }
+
+    // --------------------------- PICKERS ---------------------------
+
+    public static SublimeOptions getFullPicker(Picker picker){
+        return getBaseOptionsSublime(picker, true, true, true, true);
+    }
+
+    public static SublimeOptions getTimePicker(){
+        return getBaseOptionsSublime(Constants.TIME_PICKER, false, true, false, false);
+    }
+
+    public static SublimeOptions getDatePicker(boolean allowRange){
+        return getBaseOptionsSublime(Constants.DATE_PICKER, true, false, false, allowRange);
+    }
+
+    public static SublimeOptions getRecurrenceOptions(){
+        return getBaseOptionsSublime(Constants.REPEAT_PICKER, false, false, true, false);
+    }
+
+    private static SublimeOptions getBaseOptionsSublime(Picker picker,
+                                                        boolean date, boolean time,
+                                                        boolean repeat, boolean range){
+
+        SublimeOptions options = new SublimeOptions();
+
+        // Select the start screen
+        options.setPickerToShow(picker);
+
+        // Select the extras that will be available
+        int displayOptions = 0;
+        if (date)
+            displayOptions |= SublimeOptions.ACTIVATE_DATE_PICKER;
+        if (time)
+            displayOptions |= SublimeOptions.ACTIVATE_TIME_PICKER;
+        if (repeat)
+            displayOptions |= SublimeOptions.ACTIVATE_RECURRENCE_PICKER;
+        options.setCanPickDateRange(range);
+
+        options.setDisplayOptions(displayOptions);
+
+        // If 'displayOptions' is zero, the chosen options are not valid
+        if(displayOptions == 0)
+            throw new UnsupportedOperationException("Display options empty");
+
+        return options;
+    }
+
+    // REVIEW Useful?
+    public static SublimeOptions customizeOptionsSublime(SublimeOptions options){
+        // Example for setting date range:
+        // Note that you can pass a date range as the initial date params
+        // even if you have date-range selection disabled. In this case,
+        // the user WILL be able to change date-range using the header
+        // TextViews, but not using long-press.
+
+        /*Calendar startCal = Calendar.getInstance();
+        startCal.set(2016, 2, 4);
+        Calendar endCal = Calendar.getInstance();
+        endCal.set(2016, 2, 17);
+        options.setDateParams(startCal, endCal);*/
+        return options;
+    }
+
+    public static void buildSublimePicker(FragmentManager fragmentManager,
+                                           SublimeCallback callback,
+                                           SublimeOptions options){
+
+        SublimePickerFragment pickerFrag = new SublimePickerFragment().withCallback(callback);
+
+        // Valid options
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.SUBLIME_OPTIONS, options);
+        pickerFrag.setArguments(bundle);
+
+        pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        pickerFrag.show(fragmentManager, Constants.SUBLIME_PICKER);
     }
 }

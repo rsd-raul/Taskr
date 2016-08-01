@@ -1,7 +1,6 @@
-package com.software.achilles.tasked.model.helpers;
+package com.software.achilles.tasked.util.helpers;
 
 import android.content.res.Resources;
-import android.text.format.Time;
 
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
@@ -10,11 +9,8 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.view.MainActivity;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.SimpleFormatter;
 
 public abstract class LocalizationHelper {
 

@@ -66,4 +66,11 @@
     <!-- Miscellaneous -->
     <color name="end_value_shadow">#33333333</color>
     <color name="spinner_text_color">#212121</color>
+
+    <!-- SUBLIME PICKER -->
+
+    <color name="c_accent">@color/colorAccent</color>
+    <color name="c_primary">@color/colorPrimary</color>
+    <color name="c_primary_dark">@color/colorPrimaryDark</color>
+
 </resources>

@@ -4,31 +4,39 @@
     <PreferenceCategory
         android:title="@string/appearance" >
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="adaptColor"
             android:title="@string/adaptableColors"
             android:summaryOff="@string/adaptableColorsOff"
             android:summaryOn="@string/adaptableColorsOn"
             android:defaultValue="true"/>
 
+        <!--REVIEW Checkboxes if lower than lollipop-->
+        <!--<CheckBoxPreference-->
+            <!--android:key="adaptColor"-->
+            <!--android:title="@string/adaptableColors"-->
+            <!--android:summaryOff="@string/adaptableColorsOff"-->
+            <!--android:summaryOn="@string/adaptableColorsOn"-->
+            <!--android:defaultValue="true"/>-->
+
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/notifications" >
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="notificationTone"
             android:title="@string/notificationSound"
             android:summaryOff="@string/notificationSoundOff"
             android:summaryOn="@string/notificationSoundOn"
             android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="notificationVibration"
             android:title="@string/notificationVibration"
             android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="notificationLed"
             android:title="@string/notificationLed"
             android:defaultValue="true"/>

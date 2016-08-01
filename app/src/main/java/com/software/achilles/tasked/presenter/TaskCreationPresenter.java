@@ -1,20 +1,24 @@
 package com.software.achilles.tasked.presenter;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
+import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
+import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
+import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 import com.mikepenz.fastadapter.IItem;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
-import com.software.achilles.tasked.model.helpers.DatabaseHelper;
-import com.software.achilles.tasked.model.helpers.DialogsHelper;
-import com.software.achilles.tasked.model.helpers.LocalizationHelper;
+import com.software.achilles.tasked.util.helpers.DatabaseHelper;
+import com.software.achilles.tasked.util.helpers.DialogsHelper;
+import com.software.achilles.tasked.util.helpers.LocalizationHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+import com.software.achilles.tasked.view.pickers.SublimePickerFragment.SublimeCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -109,22 +113,6 @@ public class TaskCreationPresenter
         mFragment.setupSaveOrVoice(edit);
     }
 
-//    public void setupLayout(int listIndex, long itemId){
-//
-//        // Destroy any existing temporal task
-//        dataManager.destroyTemporalTask();
-//
-//        // Setup a temporal task
-//        dataManager.getTemporalTask();
-//
-//        // Setup the layout
-//        String listTitle = dataManager.findAllTaskList().get(listIndex).getTitle();
-//        mFragment.setupLayout();
-//        mFragment.setTaskListTextView(listTitle, listIndex);
-//
-//        mFragment.setupSaveOrVoice(false);
-//    }
-
     // -------------------------- Listeners --------------------------
 
     public void setDescription(String description){
@@ -218,19 +206,6 @@ public class TaskCreationPresenter
         temporal.setTaskList(dataManager.findTaskListByPosition(taskListPosition));
         dataManager.saveTask(temporal);
 
-        Log.d("TaskCreationPresenter", "" +
-                dataManager.getTemporalTask().getTitle()
-                + " " + dataManager.getTemporalTask().isStarred()
-                + " " + dataManager.getTemporalTask().isCompleted()
-                + " " + dataManager.getTemporalTask().getNotes()
-                + " " + dataManager.getTemporalTask().getDue()
-                + " " + dataManager.getTemporalTask().getLabels()
-                + " " + dataManager.getTemporalTask().getLocation()
-                + " " + dataManager.getTemporalTask().getId()
-        );
-
-        dataManager.destroyTemporalTask();
-
         // If long press, restart all fields, if short, back to Dashboard
         if(reset)
             mFragment.resetFields();
@@ -245,18 +220,12 @@ public class TaskCreationPresenter
     public void itemOnClick(int detailType){
 
         switch (detailType){
-            case R.id.button_description:
 
+            case R.id.button_description:
                 String description = dataManager.getTemporalTask().getNotes();
                 DialogsHelper.buildDescriptionDialog(description, mFragment.getActivity(), this);
                 break;
-            case R.id.button_time:
-                // Show picker, then deploy result if any
 
-                // If it's OFF, turn ON and vice-versa
-                timStatus = !timStatus;
-                mFragment.colorModifierButton(detailType, timStatus);
-                break;
             case R.id.button_label:
                 // Get all labels and format them to be shown
                 RealmResults<Label> items = dataManager.findAllLabels();
@@ -278,6 +247,29 @@ public class TaskCreationPresenter
                 }
                 DialogsHelper.buildLabelDialogMulti(items, selected, mFragment.getActivity(), this);
                 break;
+
+            case R.id.button_time:
+                SublimeOptions options = DialogsHelper.getFullPicker(SublimeOptions.Picker.TIME_PICKER);
+
+                SublimeCallback callback = new SublimeCallback() {
+                    @Override
+                    public void onCancelled() {
+
+                    }
+
+                    @Override
+                    public void onDateTimeRecurrenceSet(SelectedDate selectedDate, int hourOfDay, int minute, SublimeRecurrencePicker.RecurrenceOption recurrenceOption, String recurrenceRule) {
+
+                    }
+                };
+
+                DialogsHelper.buildSublimePicker(mFragment.getFragmentManager(),callback ,options);
+
+                // If it's OFF, turn ON and vice-versa
+                timStatus = !timStatus;
+                mFragment.colorModifierButton(detailType, timStatus);
+                break;
+
             case R.id.button_location:
                 // Show picker, then deploy result if any
 

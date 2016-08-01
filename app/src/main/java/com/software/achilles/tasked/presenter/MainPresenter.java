@@ -3,22 +3,15 @@ package com.software.achilles.tasked.presenter;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.text.InputType;
 import android.view.WindowManager;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.domain.Label;
-import com.software.achilles.tasked.model.domain.TaskList;
-import com.software.achilles.tasked.model.helpers.DialogsHelper;
+import com.software.achilles.tasked.util.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
-
-import java.util.Random;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

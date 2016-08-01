@@ -317,34 +317,4 @@ public class TaskCreationFragment extends Fragment {
         setupModifiersColors();
         mTitle.setText(R.string.blank);
     }
-
-    // ------------------------ Time & Date --------------------------
-
-//    private void showTimePickerDialog() {
-//
-//        // Creation of the timePicker
-//        DialogFragment newFragment =  new TimePickerFragment();
-//
-//        if(TaskController.taskDate != null) {
-//            // Saving the time in a bundle
-//            Bundle bundle = new Bundle();
-//            bundle.putSerializable("date", TaskController.taskDate);
-//
-//            // Sending the bundle to the fragment
-//            newFragment.setArguments(bundle);
-//        }
-//
-//        // Showing the picker
-//        newFragment.show(getFragmentManager(), "timePicker");
-//    }
-
-//    public static void dateToButton(Activity activity){
-//        Button taskTimeBT = (Button) activity.findViewById(R.id.time);
-//        Date dueDate = TaskController.taskDate;
-//
-//        if(dueDate!=null) {
-//            taskTimeBT.setText(Task.dateToText(dueDate));
-//        }else
-//            taskTimeBT.setText(R.string.setDate);
-//    }
 }
