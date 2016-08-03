@@ -13,7 +13,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
-public abstract class LocalizationHelper {
+public abstract class LocalisationHelper {
 
     // -------------------------- To String --------------------------
 

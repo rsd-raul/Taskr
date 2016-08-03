@@ -66,7 +66,7 @@ public abstract class DialogsHelper {
                     public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
 
                         // Build the string representation of the labels
-                        String labelsStr = LocalizationHelper.filterAndFormatLabels(items, which, false);
+                        String labelsStr = LocalisationHelper.filterAndFormatLabels(items, which, false);
 
                         // From the list of labels, get the ones selected
                         RealmList<Label> filtered = new RealmList<>();
@@ -290,7 +290,7 @@ public abstract class DialogsHelper {
         SublimeOptions options = getDateTimePicker(Picker.TIME_PICKER, false);
 
         // Based on the user Locale, get the format
-        boolean is24 = LocalizationHelper.is24HourFormat(fragment.getContext());
+        boolean is24 = LocalisationHelper.is24HourFormat(fragment.getContext());
 
         // Set the date if any, or default
         options = DialogsHelper.customizeOptionsSublime(options, date, is24);
@@ -312,7 +312,7 @@ public abstract class DialogsHelper {
 
                 Date date = cal.getTime();
 
-                String result = LocalizationHelper.dateToDateTimeString(date);
+                String result = LocalisationHelper.dateToDateTimeString(date);
 
                 taskCreationPresenter.setDueDate(result, date);
             }

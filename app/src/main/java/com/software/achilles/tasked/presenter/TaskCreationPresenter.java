@@ -10,7 +10,7 @@ import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.helpers.DatabaseHelper;
 import com.software.achilles.tasked.util.helpers.DialogsHelper;
-import com.software.achilles.tasked.util.helpers.LocalizationHelper;
+import com.software.achilles.tasked.util.helpers.LocalisationHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
@@ -96,11 +96,11 @@ public class TaskCreationPresenter
 
             showDescription(temporal.getNotes());
 
-            String labels = LocalizationHelper.filterAndFormatLabels(temporal.getLabels(), null, true);
+            String labels = LocalisationHelper.filterAndFormatLabels(temporal.getLabels(), null, true);
             showLabels(labels, temporal.getLabels());
 
             if(temporal.getDue() != null)
-                showDueDate(LocalizationHelper.dateToDateTimeString(temporal.getDue()));
+                showDueDate(LocalisationHelper.dateToDateTimeString(temporal.getDue()));
 
             // TODO popular los campos
 

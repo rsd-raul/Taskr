@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.model.repositiories;
+package com.software.achilles.tasked.model.repositories;
 
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
@@ -6,7 +6,6 @@ import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
 import javax.inject.Inject;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 public class LabelRepository implements BaseRepository<Label> {

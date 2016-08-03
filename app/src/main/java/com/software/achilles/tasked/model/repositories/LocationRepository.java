@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.model.repositiories;
+package com.software.achilles.tasked.model.repositories;
 
 import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;

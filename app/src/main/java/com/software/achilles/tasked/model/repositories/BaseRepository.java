@@ -1,4 +1,4 @@
-package com.software.achilles.tasked.model.repositiories;
+package com.software.achilles.tasked.model.repositories;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;

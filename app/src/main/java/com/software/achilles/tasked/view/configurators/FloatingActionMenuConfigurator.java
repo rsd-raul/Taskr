@@ -9,7 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.software.achilles.tasked.util.helpers.LocalizationHelper;
+import com.software.achilles.tasked.util.helpers.LocalisationHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.util.Constants;
@@ -185,7 +185,7 @@ public class FloatingActionMenuConfigurator {
                     Intent shareIntent = ShareCompat.IntentBuilder
                             .from(mainActivity)
                             .setType("text/plain")          // Set the MIME type to filter the apps
-                            .setText(LocalizationHelper.TaskListToString(taskList, mainActivity))   // Translate the TaskList to String
+                            .setText(LocalisationHelper.TaskListToString(taskList, mainActivity))   // Translate the TaskList to String
                             .setChooserTitle(title)         // Set a custom title for the chooser
                             .createChooserIntent();         // Build a custom dialog, not use defaults
 

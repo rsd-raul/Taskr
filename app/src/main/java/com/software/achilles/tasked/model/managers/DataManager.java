@@ -6,10 +6,10 @@ import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
-import com.software.achilles.tasked.model.repositiories.LabelRepository;
-import com.software.achilles.tasked.model.repositiories.LocationRepository;
-import com.software.achilles.tasked.model.repositiories.TaskListRepository;
-import com.software.achilles.tasked.model.repositiories.TaskRepository;
+import com.software.achilles.tasked.model.repositories.LabelRepository;
+import com.software.achilles.tasked.model.repositories.LocationRepository;
+import com.software.achilles.tasked.model.repositories.TaskListRepository;
+import com.software.achilles.tasked.model.repositories.TaskRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
