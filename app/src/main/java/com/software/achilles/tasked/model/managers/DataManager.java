@@ -145,8 +145,8 @@ public class DataManager {
 
     // -------------------------- Use Cases --------------------------
 
-    public void dashTaskModifier(int uniqueParameterId, Task task){
-        taskRepository.taskModifier(uniqueParameterId, task);
+    public void dashTaskModifier(int uniqueParameterId, Task task, Date date){
+        taskRepository.taskModifier(uniqueParameterId, task, date);
     }
 
 

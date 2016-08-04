@@ -57,10 +57,23 @@ public class DashboardListFragment extends Fragment {
 
         // Populate our list
         List<Task> tasks = dataManager.findAllTasksByTaskListPosition(posOnPager);
-        for (int i = 0; i < tasks.size(); i++)
-            fastAdapter.add(taskAdapterProvider.get().withTask(tasks.get(i)));
+        for (int i = 0; i < tasks.size(); i++) {
+            TaskFAItem item = taskAdapterProvider.get().withTask(tasks.get(i));
+
+            // Control the extra margins
+            if(i == 0)
+                item.withFirstOrLast(Constants.FIRST);
+            else if(i == tasks.size()-1)
+                item.withFirstOrLast(Constants.LAST);
+
+            fastAdapter.add(item);
+        }
 
         return recyclerView;
+    }
+
+    public void notifyChange(){
+        fastAdapter.notifyAdapterDataSetChanged();
     }
 
 //    // ---------------------- Internal Adapter -----------------------

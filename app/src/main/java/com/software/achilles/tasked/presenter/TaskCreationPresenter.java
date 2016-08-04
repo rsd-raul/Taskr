@@ -272,7 +272,7 @@ public class TaskCreationPresenter
 
             case R.id.button_time:
 
-                // Build sublimePicker customized DateTune
+                // Build sublimePicker customized DateTime
                 DialogsHelper.buildDateTimePicker(mFragment, temporal.getDue(), this);
 
                 break;

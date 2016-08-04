@@ -62,14 +62,21 @@ public class DashboardFragment extends Fragment {
 //        super.onDestroy();
 //    }
 
+    public void notifyItemChange(){
+        ((DashboardListFragment) adapter.getItem(mViewPager.getCurrentItem())).notifyChange();
+    }
+
+
+//        Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
+    PagerAdapter adapter;
+
     // -------------------------- View Pager -------------------------
 
     public void setupViewPager(RealmResults<TaskList> taskLists) {
         MainActivity mMainActivity = ((MainActivity) getActivity());
         mViewPager = (ViewPager) mMainActivity.findViewById(R.id.viewpager);
 
-//        Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
-        PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
+        adapter = new PagerAdapter(getChildFragmentManager());
 
         // FIXME 1 de 2 - Quick jump to the desired list if too many lists present (necessary?)
 //        if(taskLists.size() > 5)

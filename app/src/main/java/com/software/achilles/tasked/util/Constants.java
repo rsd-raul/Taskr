@@ -78,4 +78,8 @@ public abstract class Constants {
     public static final Picker REPEAT_PICKER =          Picker.REPEAT_OPTION_PICKER;
     public static final String SUBLIME_OPTIONS =        "SUBLIME_OPTIONS";
     public static final String SUBLIME_PICKER =         "SUBLIME_PICKER";
+
+    public static final int FIRST =                     31;
+    public static final int LAST =                      32;
+
 }

@@ -16,6 +16,7 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
@@ -58,6 +59,8 @@ public abstract class DialogsHelper {
         for (int i = 0; i < items.size(); i++)
             labels.add(items.get(i).getTitle());
 
+        int titColRes = R.color.colorPrimary;
+
         new MaterialDialog.Builder(activity)
                 .title(R.string.select_labels)
                 .items(labels)
@@ -79,6 +82,11 @@ public abstract class DialogsHelper {
                 })
                 .positiveText(R.string.save)
                 .negativeText(R.string.cancel)
+
+                .titleColorRes(titColRes)
+                .negativeColorRes(titColRes)
+                .positiveColorRes(titColRes)
+                .widgetColorRes(titColRes)
                 .show();
     }
 
@@ -87,6 +95,8 @@ public abstract class DialogsHelper {
     public static void buildDescriptionDialog(String text, final Activity activity, final TaskCreationPresenter taskCreationPresenter){
         String hint = activity.getResources().getString(R.string.description);
         String existent = text != null ? text : "";
+
+        int titColRes = R.color.md_black_1000;
 
         MaterialDialog dialog = new MaterialDialog.Builder(activity)
                 // Dialog content
@@ -102,6 +112,11 @@ public abstract class DialogsHelper {
                         taskCreationPresenter.setDescription(input.toString());
                     }
                 })
+
+                .titleColorRes(titColRes)
+                .negativeColorRes(titColRes)
+                .positiveColorRes(titColRes)
+                .widgetColorRes(titColRes)
                 .build();
 
         EditText input = dialog.getInputEditText();
@@ -283,8 +298,21 @@ public abstract class DialogsHelper {
         pickerFrag.show(fragmentManager, Constants.SUBLIME_PICKER);
     }
 
+    public static void buildDateTimePicker(final long id, Date date,
+                                           final DashboardPresenter dashboardPresenter){
+        dateTimePickerFactory(id, date, dashboardPresenter.getView(), null, dashboardPresenter);
+    }
+
     public static void buildDateTimePicker(Fragment fragment, Date date,
                                            final TaskCreationPresenter taskCreationPresenter){
+        dateTimePickerFactory(-1, date, fragment, taskCreationPresenter, null);
+    }
+
+    private static void dateTimePickerFactory(final long id, Date date, Fragment fragment,
+                                            final TaskCreationPresenter taskCreationPresenter,
+                                            final DashboardPresenter dashboardPresenter){
+        final boolean dashboard = dashboardPresenter != null;
+        final boolean taskCreation = taskCreationPresenter != null;
 
         // Get a Date & Time picker starting in time and without range
         SublimeOptions options = getDateTimePicker(Picker.TIME_PICKER, false);
@@ -308,16 +336,19 @@ public abstract class DialogsHelper {
                                                 String recurrenceRule) {
                 Calendar cal = selectedDate.getFirstDate();
                 cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                cal.set(Calendar.MINUTE, hourOfDay);
+                cal.set(Calendar.MINUTE, minute);
 
                 Date date = cal.getTime();
 
-                String result = LocalisationHelper.dateToDateTimeString(date);
-
-                taskCreationPresenter.setDueDate(result, date);
+                if(taskCreation) {
+                    String result = LocalisationHelper.dateToDateTimeString(date);
+                    taskCreationPresenter.setDueDate(result, date);
+                }else if (dashboard){
+                    dashboardPresenter.setDueDate(id, date);
+                    dashboardPresenter.notifyItemChange();
+                }
             }
         };
-
 
         // Build the final picker
         DialogsHelper.buildSublimePicker(fragment.getFragmentManager(),callback ,options);

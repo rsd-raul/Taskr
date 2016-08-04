@@ -5,6 +5,8 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
 import com.software.achilles.tasked.util.Constants;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import io.realm.Case;
@@ -84,7 +86,7 @@ public class TaskRepository implements BaseRepository<Task> {
         });
     }
 
-    public void taskModifier(final int uniqueParameterId, final Task task){
+    public void taskModifier(final int uniqueParameterId, final Task task, final Date date){
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -99,7 +101,7 @@ public class TaskRepository implements BaseRepository<Task> {
                         break;
 
                     case Constants.DASH_DATE:
-//                     TODO   Retrieve the date from SOME place (DataManager?) and save it
+                        task.setDue(date);
                         break;
                 }
             }

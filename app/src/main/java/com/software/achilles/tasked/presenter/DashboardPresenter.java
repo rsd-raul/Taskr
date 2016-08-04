@@ -16,6 +16,7 @@ import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -46,8 +47,12 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
     @Override
     public void attachView(DashboardFragment mFragment) {
         this.mFragment = mFragment;
-//        return instance;
     }
+
+    public DashboardFragment getView() {
+        return mFragment;
+    }
+
 
 //    public static void destroyPresenter() {
 //        if(instance == null)
@@ -114,7 +119,15 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
     }
 
     public void taskModifier(int uniqueParameterId, Task task){
-        dataManager.dashTaskModifier(uniqueParameterId, task);
+        dataManager.dashTaskModifier(uniqueParameterId, task, null);
     }
 
+    public void setDueDate(long id, Date date){
+        Task task = dataManager.findTaskById(id);
+        dataManager.dashTaskModifier(Constants.DASH_DATE, task, date);
+    }
+
+    public void notifyItemChange(){
+        mFragment.notifyItemChange();
+    }
 }

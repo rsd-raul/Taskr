@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.util.helpers.DialogsHelper;
+
 import java.util.Date;
 import javax.inject.Inject;
 
@@ -46,6 +49,20 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> 
         return this;
     }
 
+    private int firstOrLast = 0;
+
+    public void withFirstOrLast(int firstOrLast){
+        this.firstOrLast = firstOrLast;
+    }
+
+    private boolean isFirst(){
+        return firstOrLast == Constants.FIRST;
+    }
+    private boolean isLast(){
+        return firstOrLast == Constants.LAST;
+    }
+
+
     //The unique ID for this type of item // TODO What?
     @Override
     public int getType() {
@@ -73,6 +90,12 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> 
         //call super so the selection is already handled for you
         super.bindView(viewHolder);
 
+        // --------------------------- Margin ----------------------------
+
+        // If the item is at the bottom or/and at the end, add some margin
+        int top = isFirst() ? 24 : 0, bottom = isLast() ? 24 : 0;
+        ((MarginLayoutParams) viewHolder.itemView.getLayoutParams()).setMargins(0, top, 0, bottom);
+
         // ------------------------ Check Control ------------------------
 
         // Checked if task is done
@@ -90,26 +113,6 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> 
 
         viewHolder.textView.setText(task.getTitle());
 
-        // ------------------------ View Control -------------------------
-
-//        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dashboardPresenter.taskModifier(Constants.DASH_TASK, task);
-//            }
-//        });
-
-//        // FIXME 1 of 3 - This adds the 8dp margin to the top of the list... But it's not properly done
-//        if (position == 0)
-//            ((ViewGroup.MarginLayoutParams) viewHolder.mLinear.getLayoutParams()).setMargins(0, 24, 0, 0);
-//        else if (position == (mListOfTasks.size() - 1))
-//            ((ViewGroup.MarginLayoutParams) viewHolder.mLinear.getLayoutParams()).setMargins(0, 0, 0, 24);
-//        else
-//            ((ViewGroup.MarginLayoutParams) viewHolder.mLinear.getLayoutParams()).setMargins(0, 0, 0, 0);
-//
-//        final Task task = mListOfTasks.get(position);
-//        viewHolder.mBoundString = task.getTitle();
-
         // ------------------------ Star Control -------------------------
 
         // Checked if task is favourite
@@ -126,9 +129,9 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> 
         // ------------------------ Date Control -------------------------
 
         // Get the context
-        Context context = viewHolder.itemView.getContext();
+        final Context context = viewHolder.itemView.getContext();
 
-        Date dueDate = task.getDue();
+        final Date dueDate = task.getDue();
         ImageButton alarm = viewHolder.alarmImage;
 
         // Change icon and color if an alarm is set
@@ -143,10 +146,11 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> 
         alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Alarm Action
-                Snackbar.make(view, "Alarm clicked", Snackbar.LENGTH_LONG).show();
+                DialogsHelper.buildDateTimePicker(mIdentifier, dueDate, dashboardPresenter);
             }
         });
+
+
     }
 
     //The viewHolder used for this item. This viewHolder is always reused by the RecyclerView so scrolling is blazing fast
