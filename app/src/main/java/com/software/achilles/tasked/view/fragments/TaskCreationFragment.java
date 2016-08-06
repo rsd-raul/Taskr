@@ -1,7 +1,5 @@
 package com.software.achilles.tasked.view.fragments;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -12,7 +10,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
@@ -96,16 +89,8 @@ public class TaskCreationFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         recyclerView.setAdapter(fastAdapter);
 
-        // TODO QUITAR cuando el CRUD implemented.
-        fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(R.id.button_location, "Parchment Square 152A, Cork"));
-        fastAdapter.add(taskDetailAdapterProvider.get()
-                .withConfigure(R.id.button_time, "12:40 - Sunday 3, July"));
-
-
         // Setup the fragment composing the ViewPager and the Tabs to control it
         taskCreationPresenter.setupLayout(taskId, listIndex);
-//        taskCreationPresenter.setupLayout(taskId, listIndex);
     }
 
     public void deleteItem(int index){

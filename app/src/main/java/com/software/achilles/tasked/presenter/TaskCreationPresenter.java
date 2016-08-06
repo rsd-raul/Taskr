@@ -2,7 +2,6 @@ package com.software.achilles.tasked.presenter;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -94,8 +93,6 @@ public class TaskCreationPresenter
             temporal = DatabaseHelper.removeRealmFromTask(dataManager.findTaskById(taskId));
             oldTaskList = temporal.getTaskList();
 
-            Log.e("TaskCreationPresenter", "setupLayout: " + temporal.getDue());
-
             // Set the necessary items and don´t draw if not necessary
             showStarred(temporal.isStarred());
 
@@ -109,9 +106,8 @@ public class TaskCreationPresenter
             if(temporal.getDue() != null)
                 showDueDate(LocalisationHelper.dateToDateTimeString(temporal.getDue()));
 
-            // TODO popular los campos
-
-            // TODO si estas editando necesitas un boton para marcar como completado
+            if(temporal.getLocation() != null)
+                showLocation(temporal.getLocation().getTitle());
         }
         dataManager.setTemporalTask(temporal);
         dataManager.setOldTaskList(oldTaskList);
@@ -128,24 +124,31 @@ public class TaskCreationPresenter
     // -------------------------- Listeners --------------------------
 
     public void setDescription(String description){
-        fromDialogSetItem(description, null, null, R.id.button_description, false);
+        fromDialogSetItem(description, null, null, null, R.id.button_description, false);
     }
     public void showDescription(String description){
-        fromDialogSetItem(description, null, null, R.id.button_description, true);
+        fromDialogSetItem(description, null, null, null, R.id.button_description, true);
     }
 
     public void setLabels(String labels, RealmList<Label> filtered){
-        fromDialogSetItem(labels, filtered, null, R.id.button_label, false);
+        fromDialogSetItem(labels, filtered, null, null, R.id.button_label, false);
     }
     public void showLabels(String labels, RealmList<Label> filtered){
-        fromDialogSetItem(labels, filtered, null, R.id.button_label, true);
+        fromDialogSetItem(labels, filtered, null, null, R.id.button_label, true);
     }
 
     public void setDueDate(String date, Date dueDate){
-        fromDialogSetItem(date, null, dueDate, R.id.button_time, false);
+        fromDialogSetItem(date, null, dueDate, null, R.id.button_time, false);
     }
     public void showDueDate(String date){
-        fromDialogSetItem(date, null, null, R.id.button_time, true);
+        fromDialogSetItem(date, null, null, null, R.id.button_time, true);
+    }
+
+    public void setLocation(String locationStr, Location location){
+        fromDialogSetItem(locationStr, null, null, location, R.id.button_location, false);
+    }
+    public void showLocation(String location){
+        fromDialogSetItem(location, null, null, null, R.id.button_location, true);
     }
 
     public void showStarred(boolean starred){
@@ -158,7 +161,7 @@ public class TaskCreationPresenter
 
 
     private void fromDialogSetItem(String result, @Nullable RealmList<Label> filtered, Date date,
-                                   int detailType, boolean onlyShow){
+                                    Location location, int detailType, boolean onlyShow){
         boolean colorTrigger = false;
 
         switch (detailType){
@@ -195,6 +198,13 @@ public class TaskCreationPresenter
                 break;
 
             case R.id.button_location:
+                if(Utils.notEmpty(result))
+                    colorTrigger = true;
+                else
+                    location = null;
+
+                if(!onlyShow)
+                    dataManager.getTemporalTask().setLocation(location);
                 break;
         }
         // Set or remove the color from the buttons
@@ -279,10 +289,7 @@ public class TaskCreationPresenter
 
             case R.id.button_location:
                 Location location = temporal.getLocation();
-                double[] bounds = null;
-
-                if(location != null)
-                    bounds = location.getBounds();
+                double[] bounds = location != null ? location.getBounds() : null;
 
                 DialogsHelper.buildPlacePicker(mFragment.getActivity(), bounds);
                 break;
@@ -297,7 +304,6 @@ public class TaskCreationPresenter
                 break;
 
             case R.id.text_task_list:
-
                 List<String> taskListTitles = new ArrayList<>();
 
                 // Get data for setting the ViewPager
@@ -317,10 +323,6 @@ public class TaskCreationPresenter
 
     public void processPlacePicker(Intent data){
         Place place = PlacePicker.getPlace(mFragment.getActivity(), data);
-
-        String toastMsg = String.format("Place: %s", place.getName());
-        Toast.makeText(mFragment.getActivity(), toastMsg, Toast.LENGTH_LONG).show();
-
         if(place.getViewport() == null)
             return;
 
@@ -331,8 +333,7 @@ public class TaskCreationPresenter
         double[] bounds = new double[]{ viewport.southwest.latitude, viewport.southwest.longitude,
                     viewport.northeast.latitude, viewport.northeast.longitude };
 
-        Location location = new Location(name, address, lat, lon, bounds, false);
-        dataManager.getTemporalTask().setLocation(location);
-
+        // Set the item and save the location in the temporal task
+        setLocation(name, new Location(name, address, lat, lon, bounds, false));
     }
 }
