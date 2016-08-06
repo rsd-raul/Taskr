@@ -70,4 +70,6 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.2'
     // https://github.com/vikramkakkar/SublimePicker
     compile 'com.appeaser.sublimepickerlibrary:sublimepickerlibrary:2.1.1'
+    // https://developers.google.com/places/android-api/placepicker?hl=en
+    compile 'com.google.android.gms:play-services-places:9.4.0'
 }

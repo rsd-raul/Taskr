@@ -97,6 +97,7 @@
     <string name="expand">Expand</string>
 
     <!-- Error report -->
+
     <string name="error_report_tasked">Error report - Tasked</string>
     <string name="error_report_taken">Error report taken:</string>
     <string name="error_report_send">Send error report?</string>
@@ -107,7 +108,10 @@
     <string name="error_cause">Cause : \n</string>
     <string name="error_report_end">****  End of current Report ***</string>
 
+    <!-- Place Picker -->
 
+    <string name="PlacePickerFailed">Google Place Picker Failed\nTell Dev to Upgrade Plan\nFrom the Application Drawer</string>
+    <string name="GooglePlayServicesUnavailable">Google Play Services - Not Available</string>
 
     <string name="blank"/>
 

@@ -1,17 +1,26 @@
 package com.software.achilles.tasked.util.helpers;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.TaskList;
@@ -206,6 +215,37 @@ public abstract class DialogsHelper {
                     }
                 }
             }).show();
+    }
+
+    // ------------------------ PLACE PICKER -------------------------
+
+    public static void buildPlacePicker(FragmentActivity activity, double[] bounds){
+
+        // TODO If you are offline, launch a basic dialog
+        // Location should have a method called "hasPlace" that checks if you have the coordinates,
+        // not only if the task has a location <- it might contain only a name.
+
+        try{
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+            if(bounds != null) {
+                LatLng first = new LatLng(bounds[0], bounds[1]);
+                LatLng last = new LatLng(bounds[2], bounds[3]);
+                builder.setLatLngBounds(new LatLngBounds(first, last));
+            }
+
+            Intent intent = builder.build(activity);
+            activity.startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
+
+        } catch (GooglePlayServicesNotAvailableException e1){
+            Log.e("DialogHelper", "launchPlacePicker exception", e1);
+            Toast.makeText(activity, R.string.GooglePlayServicesUnavailable, Toast.LENGTH_SHORT).show();
+            //TODO What if we make a dialog available to only introduce text?? what if we put an option to disable place picker (3rd world countries?)
+        } catch (GooglePlayServicesRepairableException e2){
+            Log.e("DialogHelper", "launchPlacePicker exception", e2);
+            Toast.makeText(activity, R.string.PlacePickerFailed, Toast.LENGTH_SHORT).show();
+            //TODO What if we make a dialog available to only introduce text?? what if we put an option to disable place picker (3rd world countries?)
+        }
     }
 
     // ----------------------- SUBLIME PICKER ------------------------

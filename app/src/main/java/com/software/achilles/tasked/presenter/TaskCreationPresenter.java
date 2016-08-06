@@ -1,11 +1,18 @@
 package com.software.achilles.tasked.presenter;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.mikepenz.fastadapter.IItem;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
+import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.helpers.DatabaseHelper;
@@ -233,10 +240,6 @@ public class TaskCreationPresenter
             mainPresenter.backToBack();
     }
 
-    public void iconOnClick(View v){
-        itemOnClick(v.getId());
-    }
-
     public void itemOnClick(int detailType){
 
         Task temporal = dataManager.getTemporalTask();
@@ -271,22 +274,20 @@ public class TaskCreationPresenter
                 break;
 
             case R.id.button_time:
-
-                // Build sublimePicker customized DateTime
                 DialogsHelper.buildDateTimePicker(mFragment, temporal.getDue(), this);
-
                 break;
 
             case R.id.button_location:
-                // Show picker, then deploy result if any
+                Location location = temporal.getLocation();
+                double[] bounds = null;
 
-                // If it's OFF, turn ON and vice-versa
-                locStatus = !locStatus;
-                mFragment.colorModifierButton(detailType, locStatus);
+                if(location != null)
+                    bounds = location.getBounds();
+
+                DialogsHelper.buildPlacePicker(mFragment.getActivity(), bounds);
                 break;
-            case R.id.button_favourite:
 
-                // If it's OFF, turn ON and vice-versa
+            case R.id.button_favourite:
                 favStatus = !favStatus;
 
                 // Save
@@ -294,6 +295,7 @@ public class TaskCreationPresenter
 
                 mFragment.colorModifierButton(detailType, favStatus);
                 break;
+
             case R.id.text_task_list:
 
                 List<String> taskListTitles = new ArrayList<>();
@@ -311,5 +313,26 @@ public class TaskCreationPresenter
             default:
                 throw new UnsupportedOperationException();
         }
+    }
+
+    public void processPlacePicker(Intent data){
+        Place place = PlacePicker.getPlace(mFragment.getActivity(), data);
+
+        String toastMsg = String.format("Place: %s", place.getName());
+        Toast.makeText(mFragment.getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+
+        if(place.getViewport() == null)
+            return;
+
+        // Extract the information to populate our Location model
+        LatLngBounds viewport = place.getViewport();
+        String name = place.getName().toString(), address = place.getAddress().toString();
+        double lat = place.getLatLng().latitude, lon = place.getLatLng().longitude;
+        double[] bounds = new double[]{ viewport.southwest.latitude, viewport.southwest.longitude,
+                    viewport.northeast.latitude, viewport.northeast.longitude };
+
+        Location location = new Location(name, address, lat, lon, bounds, false);
+        dataManager.getTemporalTask().setLocation(location);
+
     }
 }

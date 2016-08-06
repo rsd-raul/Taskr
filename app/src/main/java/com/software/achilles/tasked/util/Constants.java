@@ -82,4 +82,8 @@ public abstract class Constants {
     public static final int FIRST =                     31;
     public static final int LAST =                      32;
 
+    // ------------------------ Place Picker -------------------------
+
+    public static final int PLACE_PICKER_REQUEST =      1;
+
 }

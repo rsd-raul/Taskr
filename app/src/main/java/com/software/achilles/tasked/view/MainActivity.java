@@ -1,5 +1,7 @@
 package com.software.achilles.tasked.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -16,8 +18,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -319,5 +324,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupViewPagerAndTabs(boolean goToEnd){
         dashboardPresenter.setupViewPagerAndTabs(goToEnd);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.PLACE_PICKER_REQUEST && resultCode == Activity.RESULT_OK)
+            taskCreationPresenter.processPlacePicker(data);
     }
 }

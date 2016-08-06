@@ -128,10 +128,6 @@ public class DataManager {
         this.temporalTask = temporalTask;
     }
 
-    public void destroyTemporalTask() {
-        temporalTask = null;
-    }
-
     public int getTemporalTaskListPosition(){
         return temporalTaskListPosition;
     }
@@ -243,7 +239,7 @@ public class DataManager {
         Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
 
         for (int i = 0; i < locationTitles.length; i++)
-            locationRepository.save(new Location(locationTitles[i], "", i, -i, true));
+            locationRepository.save(new Location(locationTitles[i], "", i, -i, null, true));
         RealmResults<Location> locations = locationRepository.findAll();
 
         Log.d("LOCATIONS: ", locationRepository.findAll() + "");

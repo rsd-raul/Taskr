@@ -1,5 +1,7 @@
 package com.software.achilles.tasked.view.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +24,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
@@ -159,7 +165,7 @@ public class TaskCreationFragment extends Fragment {
     private void setupModifiersListeners(){
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
-            public void onClick(View v) { taskCreationPresenter.iconOnClick(v); }};
+            public void onClick(View v) { taskCreationPresenter.itemOnClick(v.getId()); }};
 
         mDescription.setOnClickListener(listener);
         mReminder.setOnClickListener(listener);
@@ -310,7 +316,7 @@ public class TaskCreationFragment extends Fragment {
     public void resetFields(){
         // FIXME Favourite needs to be set to unchecked
         if(dataManager.getTemporalTask().isStarred())
-            taskCreationPresenter.iconOnClick(mFavourite);
+            taskCreationPresenter.itemOnClick(mFavourite.getId());
 
         setupModifiersColors();
         mTitle.setText(R.string.blank);

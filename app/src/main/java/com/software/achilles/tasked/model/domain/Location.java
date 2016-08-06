@@ -20,6 +20,7 @@ public class Location extends RealmObject implements BasicType{
     private String address;
     private double latitude;
     private double longitude;
+    private Double southwest_lat, southwest_lon, northeast_lat, northeast_lon;
     private boolean favourite;
 
     // ------------------------- Constructor -------------------------
@@ -27,12 +28,13 @@ public class Location extends RealmObject implements BasicType{
     public Location() {
     }
 
-    public Location(@NonNull String tit, String add, double lat, double lon, boolean fav){
+    public Location(@NonNull String tit, String add, double lat, double lon, double[] bounds, boolean fav){
         this.title = tit;
         this.address = add;
         this.latitude = lat;
         this.longitude = lon;
         this.favourite = fav;
+        setBounds(bounds);
     }
 
     // ---------------------- Getters & Setters ----------------------
@@ -70,6 +72,25 @@ public class Location extends RealmObject implements BasicType{
     }
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public double[] getBounds() {
+        if(southwest_lat == null)
+            return null;
+        return new double[]{southwest_lat, southwest_lon, northeast_lat, northeast_lon};
+    }
+    public void setBounds(double[] bounds) {
+        if(bounds != null) {
+            this.southwest_lat = bounds[0];
+            this.southwest_lon = bounds[1];
+            this.northeast_lat = bounds[2];
+            this.northeast_lon = bounds[3];
+        }else{
+            this.southwest_lat = null;
+            this.southwest_lon = null;
+            this.northeast_lat = null;
+            this.northeast_lon = null;
+        }
     }
 
     public boolean isFavourite() {

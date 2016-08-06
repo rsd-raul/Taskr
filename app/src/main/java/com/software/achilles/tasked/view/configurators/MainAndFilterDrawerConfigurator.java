@@ -694,21 +694,19 @@ public class MainAndFilterDrawerConfigurator {
 
         // Retrieve the color only once, or use the default
         int color = R.color.secondaryText;
-        switch (identifier){
-            case Constants.COLLAPSIBLE_LOCATION_LIST:
-                color = R.color.tealLocation;
-                break;
-            case Constants.COLLAPSIBLE_TASK_LIST:
-                color = main ? R.color.secondaryText : R.color.colorPrimary;
-                break;
-        }
+        if (identifier == Constants.COLLAPSIBLE_LOCATION_LIST)
+            color = R.color.tealLocation;
+        else if(identifier == Constants.COLLAPSIBLE_TASK_LIST && main)
+            color = R.color.colorPrimary;
+
+        boolean isLabel = identifier == Constants.COLLAPSIBLE_LABEL_LIST;
 
         // Add the Task Lists to the drawer by order at the right position
         for (int i = 0; i < itemLists.size(); i++) {
 
             // In case of a Label we customize the color according to each label
-            if (identifier == Constants.COLLAPSIBLE_LABEL_LIST)
-                    color = ((Label) itemLists.get(i)).getColorRes();
+            if (isLabel)
+                color = ((Label) itemLists.get(i)).getColorRes();
 
             // Construct the Item to add on the Drawer
             IDrawerItem itemToAdd = new SecondaryDrawerItem()
