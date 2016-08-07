@@ -42,6 +42,7 @@
 
     <string name="search">Search</string>
     <string name="filter">Filter</string>
+    <string name="search_tasks">Search tasks</string>
 
     <!-- Generic -->
 
@@ -95,6 +96,7 @@
     <string name="favourite">Favourite</string>
 
     <string name="expand">Expand</string>
+    <string name="addLocation">Add location</string>
 
     <!-- Error report -->
 
@@ -110,9 +112,19 @@
 
     <!-- Place Picker -->
 
+    <string name="launching_place_picker">Launching Place Picker</string>
     <string name="PlacePickerFailed">Google Place Picker Failed\nTell Dev to Upgrade Plan\nFrom the Application Drawer</string>
     <string name="GooglePlayServicesUnavailable">Google Play Services - Not Available</string>
 
     <string name="blank"/>
+
+    <!-- Location Pickers -->
+
+    <string name="set_location">Set location</string>
+    <string name="as_place">As place</string>
+    <string name="as_note">As note</string>
+    <string name="ask_for_location">Introduce the location</string>
+
+
 
 </resources>

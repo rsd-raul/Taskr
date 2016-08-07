@@ -2,6 +2,7 @@ package com.software.achilles.tasked.util.helpers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
 import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -135,6 +138,75 @@ public abstract class DialogsHelper {
         dialog.show();
     }
 
+    public static void buildLocationTypeDialog(final FragmentActivity activity,
+                                               final String location,
+                                               final TaskCreationPresenter presenter,
+                                               final double[] bounds){
+        final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(activity);
+        adapter.add(new MaterialSimpleListItem.Builder(activity)
+                .content(R.string.as_note)
+                .icon(R.drawable.person_image_empty)
+                .backgroundColor(Color.WHITE)
+                .build());
+        adapter.add(new MaterialSimpleListItem.Builder(activity)
+                .content(R.string.as_place)
+                .icon(R.drawable.person_image_empty)
+                .backgroundColor(Color.WHITE)
+                .build());
+
+        new MaterialDialog.Builder(activity)
+                .title(R.string.set_location)
+                .autoDismiss(true)
+                .adapter(adapter, new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+
+                        switch (which){
+                            case 0:
+                                buildLocatioInputDialog(location, activity, presenter);
+                                dialog.dismiss();
+                                break;
+                            case 1:
+                                buildPlacePicker(activity, bounds);
+                                dialog.dismiss();
+                                break;
+                        }
+                    }
+                }).show();
+    }
+
+    public static void buildLocatioInputDialog(final String currentLocation,
+                                                final FragmentActivity activity,
+                                                final TaskCreationPresenter presenter){
+        int titRes = R.string.addLocation;
+        int titColRes = R.color.tealLocation;
+        String title = activity.getResources().getString(R.string.location);
+
+        new MaterialDialog.Builder(activity)
+
+                // Dialog content
+                .title(titRes)
+                .content(R.string.ask_for_location)
+                .positiveText(R.string.save)
+                .negativeText(R.string.cancel)
+
+                // Colors
+                .titleColorRes(titColRes)
+                .negativeColorRes(titColRes)
+                .positiveColorRes(titColRes)
+                .widgetColorRes(titColRes)
+
+                // Input customization
+                .inputRangeRes(1, 60, titColRes)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(title, currentLocation, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        presenter.processNoteAsLocation(input.toString());
+                    }
+                }).show();
+    }
+
     /**
      * This method is responsible of the creation of a dialog, dialog that includes a text
      * input and it's responsible of adding a list or a label to the database, including the
@@ -143,7 +215,7 @@ public abstract class DialogsHelper {
      * @param uniqueId  If the type of Dialog we want (Add task list or add label)
      */
     public static void buildAndShowInputDialog(final int uniqueId, final MainActivity activity, final DataManager dataManager) {
-        int titRes, titColRes ;
+        int titRes, titColRes;
 
         switch (uniqueId){
             case Constants.ADD_LABEL:
@@ -211,7 +283,6 @@ public abstract class DialogsHelper {
                             // If label list is expanded update the lists (or wait for opening drawer?)
                             activity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_LABEL_LIST);
                             break;
-
                     }
                 }
             }).show();
@@ -220,6 +291,8 @@ public abstract class DialogsHelper {
     // ------------------------ PLACE PICKER -------------------------
 
     public static void buildPlacePicker(FragmentActivity activity, double[] bounds){
+
+        Toast.makeText(activity, R.string.launching_place_picker, Toast.LENGTH_SHORT).show();
 
         // TODO If you are offline, launch a basic dialog
         // Location should have a method called "hasPlace" that checks if you have the coordinates,

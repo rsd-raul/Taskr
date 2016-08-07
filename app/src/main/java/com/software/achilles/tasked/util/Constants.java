@@ -71,6 +71,8 @@ public abstract class Constants {
     public static final String LIST_INDEX =             "listIndex";
     public static final String TASK_ID =                "taskId";
 
+    public static final int ADD_LOCATION =              33;
+
     // ----------------------- Sublime Picker ------------------------
 
     public static final Picker TIME_PICKER =            Picker.TIME_PICKER;

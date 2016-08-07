@@ -64,7 +64,8 @@ dependencies {
     // https://github.com/mikepenz/FastAdapter
     compile('com.mikepenz:fastadapter:1.6.0@aar') { transitive = true }
     // https://github.com/afollestad/material-dialogs
-    compile('com.github.afollestad.material-dialogs:core:0.8.6.1')
+//    compile 'com.github.afollestad.material-dialogs:core:0.8.6.2'
+    compile 'com.afollestad.material-dialogs:commons:0.8.6.2'
     // https://github.com/google/dagger
     compile 'com.google.dagger:dagger:2.2'
     apt 'com.google.dagger:dagger-compiler:2.2'

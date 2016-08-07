@@ -103,11 +103,9 @@ public class TaskCreationPresenter
             String labels = LocalisationHelper.filterAndFormatLabels(temporal.getLabels(), null, true);
             showLabels(labels, temporal.getLabels());
 
-            if(temporal.getDue() != null)
-                showDueDate(LocalisationHelper.dateToDateTimeString(temporal.getDue()));
+            showDueDate(temporal.getDue());
 
-            if(temporal.getLocation() != null)
-                showLocation(temporal.getLocation().getTitle());
+            showLocation(temporal.getLocation());
         }
         dataManager.setTemporalTask(temporal);
         dataManager.setOldTaskList(oldTaskList);
@@ -140,15 +138,17 @@ public class TaskCreationPresenter
     public void setDueDate(String date, Date dueDate){
         fromDialogSetItem(date, null, dueDate, null, R.id.button_time, false);
     }
-    public void showDueDate(String date){
-        fromDialogSetItem(date, null, null, null, R.id.button_time, true);
+    public void showDueDate(Date date){
+        String dateStr = date != null ? LocalisationHelper.dateToDateTimeString(date) : null;
+        fromDialogSetItem(dateStr, null, null, null, R.id.button_time, true);
     }
 
     public void setLocation(String locationStr, Location location){
         fromDialogSetItem(locationStr, null, null, location, R.id.button_location, false);
     }
-    public void showLocation(String location){
-        fromDialogSetItem(location, null, null, null, R.id.button_location, true);
+    public void showLocation(Location location){
+        String locationStr = location != null ? location.getTitle() : null;
+        fromDialogSetItem(locationStr, null, null, null, R.id.button_location, true);
     }
 
     public void showStarred(boolean starred){
@@ -290,8 +290,9 @@ public class TaskCreationPresenter
             case R.id.button_location:
                 Location location = temporal.getLocation();
                 double[] bounds = location != null ? location.getBounds() : null;
-
-                DialogsHelper.buildPlacePicker(mFragment.getActivity(), bounds);
+                String title = location != null ? location.getTitle() : null;
+                DialogsHelper.buildLocationTypeDialog(mFragment.getActivity(), title, this, bounds);
+//                DialogsHelper.buildPlacePicker(mFragment.getActivity(), bounds);
                 break;
 
             case R.id.button_favourite:
@@ -323,17 +324,26 @@ public class TaskCreationPresenter
 
     public void processPlacePicker(Intent data){
         Place place = PlacePicker.getPlace(mFragment.getActivity(), data);
-        if(place.getViewport() == null)
-            return;
+        LatLngBounds viewport = place.getViewport();
+        double[] bounds = null;
 
         // Extract the information to populate our Location model
-        LatLngBounds viewport = place.getViewport();
         String name = place.getName().toString(), address = place.getAddress().toString();
         double lat = place.getLatLng().latitude, lon = place.getLatLng().longitude;
-        double[] bounds = new double[]{ viewport.southwest.latitude, viewport.southwest.longitude,
+
+        //FIXME Si seleccionas coordenadas no tienes viewport, cosa chunga porque no puedes
+        // centrar el mapa sin las bounds
+        if(viewport != null)
+            bounds = new double[]{ viewport.southwest.latitude, viewport.southwest.longitude,
                     viewport.northeast.latitude, viewport.northeast.longitude };
 
         // Set the item and save the location in the temporal task
         setLocation(name, new Location(name, address, lat, lon, bounds, false));
+    }
+
+    public void processNoteAsLocation(String locationStr){
+        Location location = new Location();
+        location.setTitle(locationStr);
+        setLocation(locationStr, location);
     }
 }
