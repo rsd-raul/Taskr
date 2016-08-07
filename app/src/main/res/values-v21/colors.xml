@@ -3,4 +3,6 @@
 
     <color name="colorPrimaryDark">#FF31277C</color>
 
+    <color name="popup_background_color">#ffffff</color>
+
 </resources>

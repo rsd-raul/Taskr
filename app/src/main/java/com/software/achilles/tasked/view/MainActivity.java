@@ -1,13 +1,14 @@
 package com.software.achilles.tasked.view;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -18,11 +19,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.domain.Location;
+import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 //REVIEW        ****** ONLY FOR DEVELOPMENT ******
 
         // If first time, launch the introduction
-        if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Defaults.FIRST_TIME, true)) {
+        if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Stock.FIRST_TIME, true)) {
             // Set the value to false
             PreferencesHelper.setShaPrefBoolean(this, Keys.FIRST_TIME, false, true);
             // launchIntro();
@@ -106,7 +105,13 @@ public class MainActivity extends AppCompatActivity {
     // -------------------------- Landscape --------------------------
 
     // ------------------------ Actionbar Menu -----------------------
-
+    @Override
+    public boolean onSearchRequested() {
+        Bundle appData = new Bundle();
+        appData.putBoolean(Constants.LIST_INDEX, true);
+        startSearch(null, false, appData, false);
+        return true;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -115,24 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
             case Constants.DASHBOARD:
                 getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-
-                // Set the filtering by text
-                MenuItem searchItem = menu.findItem(R.id.action_search);
-                SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextChange(String query) {
-                        dashboardPresenter.filterByText(query, false);
-                        Log.i("onQueryTextChange1: ", query);
-                        return true;
-                    }
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        dashboardPresenter.filterByText(query, true);
-                        Log.i("onQueryTextChange2: ", query);
-                        return true;
-                    }
-                });
+                configureSearch(menu);
                 break;
 
             case Constants.ADD_TASK:
@@ -326,9 +314,42 @@ public class MainActivity extends AppCompatActivity {
         dashboardPresenter.setupViewPagerAndTabs(goToEnd);
     }
 
+    // ------------------- Fragment and Presenter --------------------
+    // ------------------------ PLACE PICKER -------------------------
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.PLACE_PICKER_REQUEST && resultCode == Activity.RESULT_OK)
             taskCreationPresenter.processPlacePicker(data);
+    }
+
+    // --------------------------- SEARCH ----------------------------
+
+    private void configureSearch(Menu menu){
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Toast.makeText(this, "Searching by: "+ query, Toast.LENGTH_SHORT).show();
+
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String uri = intent.getDataString().replace("/","");
+
+            long id;
+            try { id = Long.parseLong(uri); }
+            catch (NumberFormatException ex){ id = -1; }
+
+            if(id != -1)
+                dashboardPresenter.itemOnClick(id);
+            else
+                Toast.makeText(MainActivity.this, R.string.warning_item_access, Toast.LENGTH_SHORT).show();
+        }
     }
 }

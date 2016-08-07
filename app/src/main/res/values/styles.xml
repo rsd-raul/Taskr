@@ -21,6 +21,10 @@
 
         <!--<item name="sublimePickerStyle">@style/customSublimePicker</item>-->
         <item name="sublimePickerStyle">@style/customSublimePickerStyle</item>
+
+        <!-- Search styling -->
+        <item name="autoCompleteTextViewStyle">@style/myAutoCompleteTextViewStyle</item>
+        <item name="textAppearanceSearchResultTitle">@style/mySearchResult</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -149,6 +153,18 @@
         <item name="colorAccent">@color/amberDateDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+
+
+    <!-- SEARCH DROPDOWN AUTOCOMPLETE -->
+
+    <style name="myAutoCompleteTextViewStyle" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:popupBackground">@color/popup_background_color</item>
+    </style>
+
+    <style name="mySearchResult" parent="TextAppearance.AppCompat.SearchResult.Title">
+        <item name="android:textColor">@color/app_body_text_2</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle</item>
     </style>
 
 </resources>

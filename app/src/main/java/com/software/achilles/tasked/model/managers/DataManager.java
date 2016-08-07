@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Random;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import dagger.Module;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -51,7 +53,6 @@ public class DataManager {
     public RealmResults<TaskList> findAllTaskList(){
         return taskListRepository.findAll();
     }
-
 
     public Task findTaskById(long id){
         return taskRepository.findOne(id);

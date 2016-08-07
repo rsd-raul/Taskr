@@ -22,7 +22,7 @@ public abstract class PreferencesHelper {
         // App settings
         public static final String FIRST_TIME = "first_time";
     }
-    public abstract static class Defaults{
+    public abstract static class Stock{
         public static final String MAIN = "Dashboard";
         public static final boolean ADAPT_COLOR = true;
         public static final boolean NOTIFICATION_SOUND = true;

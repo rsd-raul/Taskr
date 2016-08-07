@@ -145,12 +145,14 @@ public abstract class DialogsHelper {
         final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(activity);
         adapter.add(new MaterialSimpleListItem.Builder(activity)
                 .content(R.string.as_note)
-                .icon(R.drawable.person_image_empty)
+                .icon(R.drawable.ic_description)
+                .iconPaddingDp(6)
                 .backgroundColor(Color.WHITE)
                 .build());
         adapter.add(new MaterialSimpleListItem.Builder(activity)
                 .content(R.string.as_place)
-                .icon(R.drawable.person_image_empty)
+                .icon(R.drawable.ic_place)
+                .iconPaddingDp(6)
                 .backgroundColor(Color.WHITE)
                 .build());
 
@@ -163,7 +165,7 @@ public abstract class DialogsHelper {
 
                         switch (which){
                             case 0:
-                                buildLocatioInputDialog(location, activity, presenter);
+                                buildLocationInputDialog(location, activity, presenter);
                                 dialog.dismiss();
                                 break;
                             case 1:
@@ -175,7 +177,7 @@ public abstract class DialogsHelper {
                 }).show();
     }
 
-    public static void buildLocatioInputDialog(final String currentLocation,
+    public static void buildLocationInputDialog(final String currentLocation,
                                                 final FragmentActivity activity,
                                                 final TaskCreationPresenter presenter){
         int titRes = R.string.addLocation;

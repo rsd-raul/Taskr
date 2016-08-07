@@ -125,6 +125,9 @@
     <string name="as_note">As note</string>
     <string name="ask_for_location">Introduce the location</string>
 
+    <!-- Dashboard -->
+
+    <string name="warning_item_access">Problems accessing item</string>
 
 
 </resources>
