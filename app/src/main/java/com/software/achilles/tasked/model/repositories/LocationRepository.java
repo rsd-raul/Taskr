@@ -53,7 +53,7 @@ public class LocationRepository implements BaseRepository<Location> {
             @Override
             public void execute(Realm realm) {
                 Location location = realm.where(Location.class).equalTo("id", id).findFirst();
-                location.removeFromRealm();
+                location.deleteFromRealm();
             }
         });
     }

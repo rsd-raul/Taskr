@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -37,6 +35,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import dagger.Lazy;
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Set the menu depending on the fragment
-        switch (currentFragmentKey){
+        switch (mCurrentFragmentKey){
 
             case Constants.DASHBOARD:
                 getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -214,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        switch (currentFragmentKey){
+        switch (mCurrentFragmentKey){
             case Constants.ADD_TASK:
                 mainPresenter.backToBack();
                 return;
@@ -246,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------- Fragment and Presenter --------------------
 
-    private int currentFragmentKey;
+    private int mCurrentFragmentKey;
     @Inject
     DashboardPresenter dashboardPresenter;
     @Inject
@@ -261,15 +260,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFragment(int keyConstant, long itemId) {
-        if(keyConstant == currentFragmentKey)
+        if(keyConstant == mCurrentFragmentKey)
             return;
-        currentFragmentKey = keyConstant;
 
-        Fragment newOne = null;
+        int animIn = R.anim.slide_in_left, animOut = R.anim.slide_out_right;
+//        int animIn = android.R.anim.fade_in, animOut = android.R.anim.fade_out;
+
+        Fragment newFragment = null;
 
         switch (keyConstant) {
             case Constants.DASHBOARD:
-                newOne = dashboardFragmentLazy.get();
+                newFragment = dashboardFragmentLazy.get();
 
                 // Configure the fab menu and its children.
                 mFamConfigurator.configure(this);
@@ -280,34 +281,42 @@ public class MainActivity extends AppCompatActivity {
                     mDrawersConfigurator.blockDrawers(false);
                     break;
                 }
-
-                dashboardPresenter.attachView((DashboardFragment) newOne);
+                dashboardPresenter.attachView((DashboardFragment) newFragment);
 //                taskCreationPresenter.destroyPresenter();
-
                 break;
+
             case Constants.ADD_TASK:
-                newOne = taskCreationFragmentProvider.get();
+                newFragment = taskCreationFragmentProvider.get();
 
                 // Send the list the user is on
                 Bundle bundle = new Bundle();
                 bundle.putInt(Constants.LIST_INDEX, DashboardFragment.mViewPager.getCurrentItem());
                 bundle.putLong(Constants.TASK_ID, itemId);
-                newOne.setArguments(bundle);
+                newFragment.setArguments(bundle);
 
-                taskCreationPresenter.attachView((TaskCreationFragment) newOne);
+                taskCreationPresenter.attachView((TaskCreationFragment) newFragment);
 //                DashboardPresenter.destroyPresenter();
-
+                //FIXME
+                if(mCurrentFragmentKey == Constants.DASHBOARD) {
+                    animIn = android.R.anim.fade_in;
+                    animOut = android.R.anim.fade_out;
+                }
                 break;
         }
 
         mDrawersConfigurator.customizeActionBar(keyConstant);
+        mCurrentFragmentKey = keyConstant;
 
-        if(newOne == null)
+        if(newFragment == null)
             return;
 
         // Initialize the fragment change
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_fragment_container, newOne).commit();
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.main_fragment_container, newFragment).commit();
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(animIn, animOut);
+        ft.replace(R.id.main_fragment_container, newFragment).commit();
     }
 
     public void setupViewPagerAndTabs(boolean goToEnd){
@@ -351,5 +360,13 @@ public class MainActivity extends AppCompatActivity {
             else
                 Toast.makeText(MainActivity.this, R.string.warning_item_access, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Close the Realm instance.
+        Realm.getDefaultInstance().close();
     }
 }

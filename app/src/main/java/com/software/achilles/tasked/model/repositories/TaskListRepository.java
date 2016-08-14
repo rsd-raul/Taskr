@@ -85,7 +85,7 @@ public class TaskListRepository implements BaseRepository<TaskList> {
             @Override
             public void execute(Realm realm) {
                 TaskList taskList = realm.where(TaskList.class).equalTo("id", id).findFirst();
-                taskList.removeFromRealm();
+                taskList.deleteFromRealm();
             }
         });
     }

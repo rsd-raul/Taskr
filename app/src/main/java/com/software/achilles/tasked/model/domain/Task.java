@@ -22,6 +22,7 @@ public class Task extends RealmObject implements BasicType {
     @Required
     private String title;
     private boolean completed, starred;
+    @Index
     private String notes;
     private Date due;
     private Location location;

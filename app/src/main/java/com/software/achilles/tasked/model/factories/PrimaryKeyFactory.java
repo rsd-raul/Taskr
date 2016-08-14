@@ -3,6 +3,7 @@ package com.software.achilles.tasked.model.factories;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import io.realm.Realm;
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 
 public abstract class PrimaryKeyFactory {
@@ -18,7 +19,7 @@ public abstract class PrimaryKeyFactory {
         unique = new AtomicLong(1);
 
         // Retrieve the model
-        Set<Class<? extends RealmObject>> model = realm.getConfiguration().getRealmObjectClasses();
+        Set<Class<? extends RealmModel>> model = realm.getConfiguration().getRealmObjectClasses();
 
         // Loop through all classes and determine the global maximum value
         for (Class clazz : model) {

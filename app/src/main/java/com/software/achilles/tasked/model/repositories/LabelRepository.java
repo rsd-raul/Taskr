@@ -59,7 +59,7 @@ public class LabelRepository implements BaseRepository<Label> {
             @Override
             public void execute(Realm realm) {
                 Label label = realm.where(Label.class).equalTo("id", Id).findFirst();
-                label.removeFromRealm();
+                label.deleteFromRealm();
             }
         });
     }
@@ -68,8 +68,8 @@ public class LabelRepository implements BaseRepository<Label> {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults results = realm.where(Label.class).findAll();
-                results.remove(position);
+                RealmResults<Label> results = realm.where(Label.class).findAll();
+                results.get(position).deleteFromRealm();
             }
         });
     }
