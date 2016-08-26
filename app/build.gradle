@@ -57,13 +57,13 @@ dependencies {
     // https://github.com/Clans/FloatingActionButton
     compile 'com.github.clans:fab:1.6.2'
     // https://github.com/mikepenz/MaterialDrawer
-    compile('com.mikepenz:materialdrawer:4.6.4@aar') {
+    compile('com.mikepenz:materialdrawer:5.1.7@aar') {
         transitive = true
         exclude module: "fastadapter"
 //        exclude module: "iconics-core"
     }
     // https://github.com/mikepenz/FastAdapter
-    compile('com.mikepenz:fastadapter:1.6.0@aar') {
+    compile('com.mikepenz:fastadapter:1.4.0@aar') {
         transitive = true
 //        exclude module: "iconics-core"
     }

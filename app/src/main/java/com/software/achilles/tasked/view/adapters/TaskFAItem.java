@@ -2,7 +2,6 @@ package com.software.achilles.tasked.view.adapters;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,6 +21,8 @@ import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.util.helpers.DialogsHelper;
 
 import java.util.Date;
+import java.util.List;
+
 import javax.inject.Inject;
 
 public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> {

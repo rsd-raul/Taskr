@@ -191,12 +191,12 @@ public class MainAndFilterDrawerConfigurator {
                 .withIconTintingEnabled(true);
 
         // Create the footer items
-        SecondaryDrawerItem settings = new SecondaryDrawerItem().withIdentifier(Constants.SETTINGS)
+        PrimaryDrawerItem settings = new PrimaryDrawerItem().withIdentifier(Constants.SETTINGS)
                 .withName(R.string.settings)
                 .withIcon(R.drawable.ic_settings)
                 .withIconTintingEnabled(true)
                 .withSelectable(false);
-        SecondaryDrawerItem contact = new SecondaryDrawerItem().withIdentifier(Constants.CONTACT)
+        PrimaryDrawerItem contact = new PrimaryDrawerItem().withIdentifier(Constants.CONTACT)
                 .withName(R.string.contact)
                 .withIcon(R.drawable.ic_email)
                 .withIconTintingEnabled(true)
@@ -277,7 +277,7 @@ public class MainAndFilterDrawerConfigurator {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
-                int identifier = drawerItem.getIdentifier();
+                int identifier = (int) drawerItem.getIdentifier();
                 switch (identifier) {
                     case Constants.DASHBOARD:
                         mActivity.setFragment(identifier);
@@ -523,7 +523,8 @@ public class MainAndFilterDrawerConfigurator {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
-                switch (drawerItem.getIdentifier()) {
+                int identifier = (int) drawerItem.getIdentifier();
+                switch (identifier) {
 
                     case Constants.CLEAR_FILTER:
                         break;
