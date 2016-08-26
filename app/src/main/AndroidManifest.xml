@@ -51,8 +51,8 @@
             android:value="AIzaSyAH_vw0fozTGHKHgnYmsf2whRzxICWoNiM"/>
 
         <provider
-            android:name=".TasksSuggestionProvider"
-            android:authorities="com.software.achilles.tasked.TasksSuggestionProvider"
+            android:name=".util.providers.TasksSearchProvider"
+            android:authorities="com.software.achilles.tasked.util.providers.TasksSearchProvider"
             android:enabled="true"
             android:exported="false"/>
     </application>

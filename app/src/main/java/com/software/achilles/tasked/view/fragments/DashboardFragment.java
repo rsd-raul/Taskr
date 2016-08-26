@@ -17,6 +17,7 @@ import com.software.achilles.tasked.util.Constants;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import dagger.Lazy;
 import io.realm.RealmResults;
 
 public class DashboardFragment extends Fragment {
@@ -49,7 +50,7 @@ public class DashboardFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Initialize presenter
+        // Initialize presenter     // FIXME Testing lazy to solve the null pointer
         dashboardPresenter.attachView(this);
 
         // Setup the fragment composing the ViewPager and the Tabs to control it

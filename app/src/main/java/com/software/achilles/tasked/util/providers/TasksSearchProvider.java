@@ -1,4 +1,4 @@
-package com.software.achilles.tasked;
+package com.software.achilles.tasked.util.providers;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;
@@ -14,7 +14,7 @@ import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class TasksSuggestionProvider extends ContentProvider {
+public class TasksSearchProvider extends ContentProvider {
 
 
 

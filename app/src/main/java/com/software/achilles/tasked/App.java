@@ -3,12 +3,15 @@ package com.software.achilles.tasked;
 import android.app.Application;
 
 import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
+import com.software.achilles.tasked.util.helpers.MigrationHelper;
 import com.software.achilles.tasked.view.MainActivity;
 
 import javax.inject.Singleton;
 import dagger.Component;
+import io.realm.DynamicRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmMigration;
 
 public class App extends Application {
 
@@ -33,7 +36,11 @@ public class App extends Application {
 
 
         // Set the RealmConfiguration and PrimaryKeyFactory for Realm usage
-        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
+        Realm.setDefaultConfiguration(
+                new RealmConfiguration.Builder(this)
+                        .schemaVersion(0)
+                        .migration(new MigrationHelper())
+                        .build());
         PrimaryKeyFactory.initialize(Realm.getDefaultInstance());
 
         // Hack to access context related functionality from TaskDetailFAItem

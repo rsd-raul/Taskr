@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.util.extras.ErrorReporter;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -70,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
 //REVIEW        ****** ONLY FOR DEVELOPMENT ******
         // Simple BUG report, retrieves the last error and tries to send an email
-//        ErrorReporter errorReporter = ErrorReporter.getInstance();
-//        errorReporter.Init(this);
-//        errorReporter.CheckErrorAndSendMail(this);
+        ErrorReporter errorReporter = ErrorReporter.getInstance();
+        errorReporter.Init(this);
+        errorReporter.CheckErrorAndSendMail(this);
+        Toast.makeText(MainActivity.this, "Email Reporter Active", Toast.LENGTH_SHORT).show();
 //REVIEW        ****** ONLY FOR DEVELOPMENT ******
 
         // If first time, launch the introduction
