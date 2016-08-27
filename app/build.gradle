@@ -21,11 +21,11 @@ android {
 
     defaultConfig {
         applicationId "com.software.achilles.tasked"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-        renderscriptTargetApi 16
+        renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
     }
     buildTypes {
@@ -55,15 +55,15 @@ dependencies {
 // External libraries -----------------------------------------------------------------------------
 
     // https://github.com/Clans/FloatingActionButton
-    compile 'com.github.clans:fab:1.6.2'
+    compile 'com.github.clans:fab:1.6.4'
     // https://github.com/mikepenz/MaterialDrawer
-    compile('com.mikepenz:materialdrawer:5.1.7@aar') {
+    compile('com.mikepenz:materialdrawer:5.4.0@aar') {
         transitive = true
         exclude module: "fastadapter"
 //        exclude module: "iconics-core"
     }
     // https://github.com/mikepenz/FastAdapter
-    compile('com.mikepenz:fastadapter:1.4.0@aar') {
+    compile('com.mikepenz:fastadapter:1.6.0@aar') {
         transitive = true
 //        exclude module: "iconics-core"
     }

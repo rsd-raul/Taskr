@@ -67,6 +67,12 @@ public class DashboardFragment extends Fragment {
         ((DashboardListFragment) adapter.getItem(mViewPager.getCurrentItem())).notifyChange();
     }
 
+    public void reorderLists(int identifier){
+        int size = adapter.getCount();
+
+        for (int i = 0; i < size; i++)
+            ((DashboardListFragment) adapter.getItem(i)).changeSortMode(identifier, true);
+    }
 
 //        Adapter adapter = new Adapter(getActivity().getSupportFragmentManager());
     PagerAdapter adapter;

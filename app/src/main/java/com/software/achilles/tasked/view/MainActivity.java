@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 //REVIEW        ****** ONLY FOR DEVELOPMENT ******
 
         // If first time, launch the introduction
-        if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Stock.FIRST_TIME, true)) {
+        if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Value.FIRST_TIME, true)) {
             // Set the value to false
             PreferencesHelper.setShaPrefBoolean(this, Keys.FIRST_TIME, false, true);
             // launchIntro();

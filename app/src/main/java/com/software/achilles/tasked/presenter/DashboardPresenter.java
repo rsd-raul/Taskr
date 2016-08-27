@@ -130,4 +130,17 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
     public void notifyItemChange(){
         mFragment.notifyItemChange();
     }
+
+
+    public void reorderLists(int identifier){
+        mFragment.reorderLists(identifier);
+    }
+
+    public void filterByMain(int identifier){
+
+    }
+
+    public void filterByGrouped(int identifier){
+
+    }
 }

@@ -11,6 +11,7 @@ import com.software.achilles.tasked.util.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.fragments.DashboardListFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import javax.inject.Inject;
@@ -37,30 +38,6 @@ public class MainPresenter implements Presenter<MainActivity> {
     // ------------------------- Attributes --------------------------
 
     private MainActivity mActivity;
-
-//    // -------------------------- Singleton --------------------------
-//
-//    private static final Object lock = new Object();
-//    private static volatile MainPresenter instance;
-//
-//    //  Double-checked locking - Effective in Java 1.5 and later:
-//    public static MainPresenter getInstance() {
-//        MainPresenter result = instance;
-//
-//        // Only synchronize if the MainPresenter haven't been instantiated
-//        if (result == null) {
-//            synchronized (lock) {
-//                result = instance;
-//
-//                // If no other threads have instantiated the MainPresenter while waiting for the lock.
-//                if (result == null) {
-//                    result = new MainPresenter();
-//                    instance = result;
-//                }
-//            }
-//        }
-//        return result;
-//    }
 
     // ------------------------- Life Cycle --------------------------
 
@@ -133,75 +110,9 @@ public class MainPresenter implements Presenter<MainActivity> {
                 mActivity.deployAddTask();
                 break;
             case Constants.ADD_LABEL:
-                DialogsHelper.buildAndShowInputDialog(key, mActivity, dataManager);
-                break;
             case Constants.ADD_TASK_LIST:
                 DialogsHelper.buildAndShowInputDialog(key, mActivity, dataManager);
                 break;
         }
     }
-
-//    /**
-//     * This method is responsible of the creation of a dialog, dialog that includes a text
-//     * input and it's responsible of adding a list or a label to the database, including the
-//     * update of the interface.
-//     *
-//     * @param titRes    The resource that represents the title for the dialog
-//     * @param uniqueId  If the type of Dialog we want (Add task list or add label)
-//     */
-//    private void buildAndShowInputDialog(int titRes, int titColRes, final int uniqueId) {
-//        new MaterialDialog.Builder(mActivity)
-//            .cancelable(false)
-//
-//            // Dialog content
-//            .title(titRes)
-//            .content(R.string.ask_for_title)
-//            .positiveText(R.string.save)
-//            .negativeText(R.string.cancel)
-//
-//            // Colors
-//            .titleColorRes(titColRes)
-//            .negativeColorRes(titColRes)
-//            .positiveColorRes(titColRes)
-//            .widgetColorRes(titColRes)
-//
-//            // Input customization
-//            .inputRangeRes(1, 24, titColRes)
-//            .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_CLASS_TEXT)
-//            .input(R.string.title, R.string.blank, new MaterialDialog.InputCallback() {
-//                @Override
-//                public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-//
-//                    if (uniqueId == Constants.ADD_TASK_LIST) {
-//                        TaskList newTaskList = new TaskList(input.toString(), null);
-//
-//                        dataManager.saveTaskList(newTaskList);
-//
-//                        // Update the Tabs
-//                        mActivity.setupViewPagerAndTabs(true);
-//
-//                        // Update the filterDrawer and the MainDrawer
-//                        mActivity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_TASK_LIST);
-//                    }
-//                    if (uniqueId == Constants.ADD_LABEL) {
-//                        int[] clr = new int[]{R.color.colorAccent, R.color.colorPrimary,
-//                                R.color.tealLocation, R.color.amberDate, R.color.md_black_1000,
-//                                R.color.md_orange_500};
-//
-//                        // FIXME manually pick the color for the Label instead of randomly
-//                        Label newLabel = new Label(input.toString(), clr[new Random().nextInt(5)]);
-//
-//                        // Save the label
-//                        dataManager.saveLabel(newLabel);
-//
-//                        // If label list on filterDrawer is closed... Do nothing
-//                        if (!mActivity.mDrawersConfigurator.mExpandedLabelListFilter)
-//                            return;
-//
-//                        // If label list is expanded update the lists (or wait for opening drawer?)
-//                        mActivity.mDrawersConfigurator.includeTheNew(Constants.COLLAPSIBLE_LABEL_LIST);
-//                    }
-//                }
-//            }).show();
-//    }
 }

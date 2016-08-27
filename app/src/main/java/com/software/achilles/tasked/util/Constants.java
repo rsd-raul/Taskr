@@ -45,6 +45,7 @@ public abstract class Constants {
     public static final int ALPHABETICAL =              18;
     public static final int DUE_DATE =                  19;
     public static final int CUSTOM_ORDER =              20;
+    public static final int NONE =                      -1;
 
     public static final int LIST_SEPARATOR =            23;
     public static final int CLEAR_FILTER =              24;

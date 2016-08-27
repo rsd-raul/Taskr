@@ -12,6 +12,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
+
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -25,6 +27,7 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.Preferences;
@@ -71,13 +74,15 @@ public class MainAndFilterDrawerConfigurator {
 
     MainPresenter mainPresenter;
     DataManager dataManager;
+    DashboardPresenter dashboardPresenter;
 
     // ------------------------- Constructor -------------------------
 
     @Inject
-    public MainAndFilterDrawerConfigurator(MainPresenter mainPresenter, DataManager dataManager) {
+    public MainAndFilterDrawerConfigurator(MainPresenter mainPresenter, DataManager dataManager, DashboardPresenter dashboardPresenter) {
         this.mainPresenter = mainPresenter;
         this.dataManager = dataManager;
+        this.dashboardPresenter = dashboardPresenter;
     }
 
     public void configure(MainActivity activity){
@@ -191,12 +196,12 @@ public class MainAndFilterDrawerConfigurator {
                 .withIconTintingEnabled(true);
 
         // Create the footer items
-        PrimaryDrawerItem settings = new PrimaryDrawerItem().withIdentifier(Constants.SETTINGS)
+        PrimaryDrawerItem settings = new SecondaryDrawerItem().withIdentifier(Constants.SETTINGS)
                 .withName(R.string.settings)
                 .withIcon(R.drawable.ic_settings)
                 .withIconTintingEnabled(true)
                 .withSelectable(false);
-        PrimaryDrawerItem contact = new PrimaryDrawerItem().withIdentifier(Constants.CONTACT)
+        PrimaryDrawerItem contact = new SecondaryDrawerItem().withIdentifier(Constants.CONTACT)
                 .withName(R.string.contact)
                 .withIcon(R.drawable.ic_email)
                 .withIconTintingEnabled(true)
@@ -280,20 +285,13 @@ public class MainAndFilterDrawerConfigurator {
                 int identifier = (int) drawerItem.getIdentifier();
                 switch (identifier) {
                     case Constants.DASHBOARD:
-                        mActivity.setFragment(identifier);
-                        break;
                     case Constants.SNOOZED:
-                        mActivity.setFragment(identifier);
-                        break;
                     case Constants.COMPLETED:
-                        mActivity.setFragment(identifier);
-                        break;
                     case Constants.GLANCE:
-                        mActivity.setFragment(identifier);
-                        break;
                     case Constants.PLANNER:
                         mActivity.setFragment(identifier);
                         break;
+
                     case Constants.ADD_TASK_LIST:
                         mainPresenter.deployLayout(Constants.ADD_TASK_LIST);
                         break;
@@ -314,15 +312,7 @@ public class MainAndFilterDrawerConfigurator {
                         break;
 
                     default:
-                        // Redirect to Dashboard in case the user is in other place
-                        mActivity.setFragment(Constants.DASHBOARD);
-
-                        // Calculate the position according to the Task List identifier.
-                        int index = dataManager.findTaskListPositionById(identifier);
-
-                        // Set the view pager on the correct list if there is a correct list
-                        if (index != -1)
-                            DashboardFragment.mViewPager.setCurrentItem(index, true);
+                        viewPagerToList(identifier);
                         break;
                 }
                 // Do not close the drawer at Task List Expandable click
@@ -333,17 +323,20 @@ public class MainAndFilterDrawerConfigurator {
         });
     }
 
+    private void viewPagerToList(int identifier){
+        // Redirect to Dashboard in case the user is in other place
+        mActivity.setFragment(Constants.DASHBOARD);
+
+        // Calculate the position according to the Task List identifier.
+        int index = dataManager.findTaskListPositionById(identifier);
+
+        // Set the view pager on the correct list if there is a correct list
+        if (index != -1)
+            DashboardFragment.mViewPager.setCurrentItem(index, true);
+    }
+
     private void contactByEmail(){
         Resources resources= mActivity.getResources();
-
-        // ShareCompat not viable, shows more than just email clients
-//        Intent intentEmail = ShareCompat.IntentBuilder
-//                .from(mActivity)
-//                .setType("text/html")          // Set the MIME type to filter the apps
-//                .addEmailTo(resources.getString(R.string.developer_email))
-//                .setSubject(resources.getString(R.string.subject_email))
-//                .setChooserTitle(resources.getString(R.string.send_email))
-//                .createChooserIntent();         // Build a custom dialog, not use defaults
 
         // Create a custom intent for Emails    ShareCompat.IntentBuilder not utilisable
         Intent intentEmail = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",
@@ -357,7 +350,6 @@ public class MainAndFilterDrawerConfigurator {
         if (intentEmail.resolveActivity(mActivity.getPackageManager()) != null)
             mActivity.startActivity(Intent.createChooser(intentEmail,
                     resources.getString(R.string.send_email)));
-//          mActivity.startActivity(intentEmail);
     }
 
     private void setupMainList(RealmResults<TaskList> taskLists){
@@ -412,10 +404,10 @@ public class MainAndFilterDrawerConfigurator {
                 .withName(R.string.clear_filter)
                 .withIcon(R.drawable.ic_cancel)
                 .withIconTintingEnabled(true)
-                .withSelectedIconColorRes(R.color.transparent)
-                .withSelectedTextColorRes(color)
+                .withIconColorRes(R.color.transparent)
+                .withTextColorRes(color)
                 .withIdentifier(Constants.CLEAR_FILTER)
-                .withSelectable(true);
+                .withSelectable(false);
 
         // Create main items
         color = R.color.colorAccent;
@@ -427,7 +419,7 @@ public class MainAndFilterDrawerConfigurator {
 //                .withSelectedIconColorRes(color)
 //                .withSelectedTextColorRes(color)
                 .withIdentifier(Constants.STARRED)
-                .withSelectable(false);
+                .withSelectable(true);
         color = R.color.amberDate;
         PrimaryDrawerItem today = new PrimaryDrawerItem()
                 .withName(R.string.dueToday)
@@ -437,7 +429,7 @@ public class MainAndFilterDrawerConfigurator {
 //                .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_TODAY)
-                .withSelectable(false);
+                .withSelectable(true);
         color = R.color.colorPrimary;
         PrimaryDrawerItem thisWeek = new PrimaryDrawerItem()
                 .withName(R.string.dueThisWeek)
@@ -447,17 +439,9 @@ public class MainAndFilterDrawerConfigurator {
 //                .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_THIS_WEEK)
-                .withSelectable(false);
+                .withSelectable(true);
 
         // Create expandable and collapsible items
-        mTaskCollapsible = new PrimaryDrawerItem()
-                .withName(R.string.by_task_list)
-                .withIcon(R.drawable.ic_list_bullet)
-                .withIconTintingEnabled(true)
-                .withIdentifier(Constants.COLLAPSIBLE_TASK_LIST)
-                .withSelectable(false)
-                .withBadge("")
-                .withBadgeStyle(mBadgeExpand);
         mLabelCollapsible = new PrimaryDrawerItem()
                 .withName(R.string.by_label)
                 .withIcon(R.drawable.ic_label_outline)
@@ -471,6 +455,14 @@ public class MainAndFilterDrawerConfigurator {
                 .withIcon(R.drawable.ic_map)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.COLLAPSIBLE_LOCATION_LIST)
+                .withSelectable(false)
+                .withBadge("")
+                .withBadgeStyle(mBadgeExpand);
+        mTaskCollapsible = new PrimaryDrawerItem()
+                .withName(R.string.by_task_list)
+                .withIcon(R.drawable.ic_list_bullet)
+                .withIconTintingEnabled(true)
+                .withIdentifier(Constants.COLLAPSIBLE_TASK_LIST)
                 .withSelectable(false)
                 .withBadge("")
                 .withBadgeStyle(mBadgeExpand);
@@ -503,8 +495,10 @@ public class MainAndFilterDrawerConfigurator {
                 .addStickyDrawerItems(
                         mOrderCollapsible
                 )
+                .withSelectedItem(Constants.CUSTOM_ORDER)
                 .withDrawerWidthRes(R.dimen.filter_drawer_width)
                 .withDrawerGravity(Gravity.END)
+                .withMultiSelect(true)
                 .append(mMainDrawer);
 
 //      REVIEW 2 de 2 - descomentando esto tienes drawer solo en el click y puedes cerrarlo a mano :D
@@ -529,10 +523,9 @@ public class MainAndFilterDrawerConfigurator {
                     case Constants.CLEAR_FILTER:
                         break;
                     case Constants.STARRED:
-                        break;
                     case Constants.DUE_TODAY:
-                        break;
                     case Constants.DUE_THIS_WEEK:
+                        dashboardPresenter.filterByMain(identifier);
                         break;
 
                     case Constants.COLLAPSIBLE_TASK_LIST:
@@ -552,7 +545,16 @@ public class MainAndFilterDrawerConfigurator {
                                 mExpandedOrderListFilter, true);
                         break;
 
+                    case Constants.CUSTOM_ORDER:
+                    case Constants.ALPHABETICAL:
+                    case Constants.DUE_DATE:
+                        dashboardPresenter.reorderLists(identifier);
+                        break;
+
                     default:
+                        Toast.makeText(mActivity, identifier + "<", Toast.LENGTH_SHORT).show();
+
+                        dashboardPresenter.filterByGrouped(identifier);
 //                        int index = TaskController.getTaskListPositionById(identifier);
 //                        if (index != -1)
 //                            mViewPager.setCurrentItem(index, true);
@@ -709,6 +711,9 @@ public class MainAndFilterDrawerConfigurator {
             if (isLabel)
                 color = ((Label) itemLists.get(i)).getColorRes();
 
+            // Dynamic items on main are not selectable
+            boolean selectable = !main;
+
             // Construct the Item to add on the Drawer
             IDrawerItem itemToAdd = new SecondaryDrawerItem()
                     .withIdentifier((int) itemLists.get(i).getId())
@@ -717,7 +722,7 @@ public class MainAndFilterDrawerConfigurator {
                     .withIcon(iconRes)
                     .withIconColorRes(color)
                     .withIconTintingEnabled(true)
-                    .withSelectable(false);
+                    .withSelectable(selectable);
             drawer.addItemAtPosition(itemToAdd, position);
 
             // Move the pointer for an ordered insertion and save the id for posterior deletion

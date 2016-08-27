@@ -21,8 +21,9 @@ public abstract class PreferencesHelper {
 
         // App settings
         public static final String FIRST_TIME = "first_time";
+        public static final String ORDER = "order";
     }
-    public abstract static class Stock{
+    public abstract static class Value{
         public static final String MAIN = "Dashboard";
         public static final boolean ADAPT_COLOR = true;
         public static final boolean NOTIFICATION_SOUND = true;
@@ -33,6 +34,7 @@ public abstract class PreferencesHelper {
 
         // App settings
         public static final boolean FIRST_TIME = true;
+        public static final int ORDER = -1;
     }
 
     public static class Files{

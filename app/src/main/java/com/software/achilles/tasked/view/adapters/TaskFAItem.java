@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
+import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter.utils.ViewHolderFactory;
 import com.software.achilles.tasked.R;
@@ -25,7 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> {
+public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder>{
 
     // ------------------------- Attributes --------------------------
 
@@ -43,6 +44,14 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder> 
     }
 
     // -------------------------- Use Cases --------------------------
+
+    public String getTitle(){
+        return task.getTitle();
+    }
+    public Date getSortDueDate(){
+        Date due = task.getDue();
+        return due == null ? new Date() : due;
+    }
 
     public TaskFAItem withTask(Task task){
         this.task = task;
