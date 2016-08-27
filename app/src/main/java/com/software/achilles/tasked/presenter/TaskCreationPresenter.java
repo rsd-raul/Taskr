@@ -2,8 +2,6 @@ package com.software.achilles.tasked.presenter;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -14,17 +12,21 @@ import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
+import com.software.achilles.tasked.model.factories.PrimaryKeyFactory;
+import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.util.helpers.DatabaseHelper;
 import com.software.achilles.tasked.util.helpers.DialogsHelper;
 import com.software.achilles.tasked.util.helpers.LocalisationHelper;
-import com.software.achilles.tasked.model.managers.DataManager;
-import com.software.achilles.tasked.util.Utils;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -338,7 +340,9 @@ public class TaskCreationPresenter
                     viewport.northeast.latitude, viewport.northeast.longitude };
 
         // Set the item and save the location in the temporal task
-        setLocation(name, new Location(name, address, lat, lon, bounds, false));
+        Location location = new Location(name, address, lat, lon, bounds, false);
+        location.setId(PrimaryKeyFactory.nextKey());
+        setLocation(name, location);
     }
 
     public void processNoteAsLocation(String locationStr){

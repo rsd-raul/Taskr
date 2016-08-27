@@ -1,6 +1,7 @@
 package com.software.achilles.tasked.model.managers;
 
 import android.util.Log;
+
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Location;
@@ -16,10 +17,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import dagger.Module;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 

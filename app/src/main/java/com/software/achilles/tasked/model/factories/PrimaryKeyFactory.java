@@ -2,9 +2,9 @@ package com.software.achilles.tasked.model.factories;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+
 import io.realm.Realm;
 import io.realm.RealmModel;
-import io.realm.RealmObject;
 
 public abstract class PrimaryKeyFactory {
 

@@ -7,8 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class PagerAdapter extends FragmentPagerAdapter {
 //public class Adapter extends FragmentStatePagerAdapter {   // More efficient if multiple tabs
 

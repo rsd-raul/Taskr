@@ -2,8 +2,6 @@ package com.software.achilles.tasked.model.domain;
 
 import android.support.annotation.NonNull;
 
-import java.io.Serializable;
-
 public interface BasicType{
 
     // --------------------------- Values ----------------------------

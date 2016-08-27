@@ -7,11 +7,10 @@ import android.support.v7.app.AlertDialog;
 import android.view.WindowManager;
 
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.util.helpers.DialogsHelper;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.util.helpers.DialogsHelper;
 import com.software.achilles.tasked.view.MainActivity;
-import com.software.achilles.tasked.view.fragments.DashboardListFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import javax.inject.Inject;

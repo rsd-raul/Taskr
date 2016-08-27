@@ -1,12 +1,7 @@
 package com.software.achilles.tasked.presenter;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Label;
 import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Task;
@@ -14,20 +9,15 @@ import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.util.helpers.DateHelper;
-import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
-import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -101,21 +91,6 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
             DashboardFragment.mViewPager.setCurrentItem(taskList.size()-1, true);
     }
 
-    // ---------------------------- MENU -----------------------------
-
-    public void filterByText(String query, Boolean searchDeep){
-        if(query.isEmpty()) {
-            // TODO volver a vacio, no dejar simplemente en el ultimo resultado
-        }else {
-            RealmResults<Task> tasks = dataManager.filterByText(query, searchDeep);
-
-            for (Task aux : tasks) {
-                Log.i("TEST", "filterByText: " + aux.getTitle());
-            }
-        }
-//        mFragment.updateViewPagerList(tasks);
-    }
-
     // -------------------------- USE CASES --------------------------
 
     @Inject
@@ -145,12 +120,10 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
 
     // ---------------------------- FILTER ---------------------------
 
-    List<Integer> activeMainFilter = new ArrayList<>();
-    List<Label> activeLabelFilter = new ArrayList<>();
-    List<Location> activeLocationFilter = new ArrayList<>();
-    List<TaskList> activeTaskListFilter = new ArrayList<>();
-
-
+    private List<Integer> activeMainFilter = new ArrayList<>();
+    private List<Label> activeLabelFilter = new ArrayList<>();
+    private List<Location> activeLocationFilter = new ArrayList<>();
+    private List<TaskList> activeTaskListFilter = new ArrayList<>();
 
     public void clearFilter(){
         boolean reset = false;
@@ -173,7 +146,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         }
 
         if(reset)
-            filterAllLists();
+            mFragment.filterAllLists();
     }
 
     public void clearGroupFilter(int identifier){
@@ -201,7 +174,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         }
 
         if(reset)
-            filterAllLists();
+            mFragment.filterAllLists();
     }
 
     public void filterByMain(int identifier){
@@ -211,7 +184,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         else
             activeMainFilter.add(identifier);
 
-        filterAllLists();
+        mFragment.filterAllLists();
     }
 
     public void filterByGrouped(int identifier){
@@ -259,15 +232,6 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
                 Log.e("DashboardPresenter", "filterByGrouped: " + "Item not recognized, thus, not filtered");
                 return;
         }
-
-        filterAllLists();
-    }
-
-    private void filterAllLists(){
-        Log.e("AA", "General: " + activeMainFilter.size());
-        Log.e("AA", "TaskList: " + activeTaskListFilter.size());
-        Log.e("AA", "Location: " + activeLocationFilter.size());
-        Log.e("AA", "Label: " + activeLabelFilter.size());
 
         mFragment.filterAllLists();
     }

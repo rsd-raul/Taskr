@@ -1,8 +1,6 @@
 package com.software.achilles.tasked.util;
 
-import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions.Picker;
-import com.software.achilles.tasked.view.fragments.DashboardFragment;
 
 public abstract class Constants {
 

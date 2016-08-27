@@ -9,7 +9,9 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.software.achilles.tasked.model.domain.Task;
+
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;

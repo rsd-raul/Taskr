@@ -7,11 +7,10 @@ import com.software.achilles.tasked.util.helpers.MigrationHelper;
 import com.software.achilles.tasked.view.MainActivity;
 
 import javax.inject.Singleton;
+
 import dagger.Component;
-import io.realm.DynamicRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmMigration;
 
 public class App extends Application {
 

@@ -17,21 +17,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.util.extras.ErrorReporter;
-import com.software.achilles.tasked.util.helpers.PreferencesHelper;
-import com.software.achilles.tasked.util.helpers.PreferencesHelper.*;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
-import com.software.achilles.tasked.view.fragments.DashboardFragment;
-import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.util.extras.ErrorReporter;
+import com.software.achilles.tasked.util.helpers.PreferencesHelper;
+import com.software.achilles.tasked.util.helpers.PreferencesHelper.Keys;
+import com.software.achilles.tasked.util.helpers.PreferencesHelper.Value;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
-import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.view.fragments.DashboardFragment;
+import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 

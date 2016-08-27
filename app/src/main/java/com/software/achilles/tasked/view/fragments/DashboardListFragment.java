@@ -14,18 +14,19 @@ import android.view.ViewGroup;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.presenter.DashboardPresenter;
-import com.software.achilles.tasked.util.helpers.PreferencesHelper;
-import com.software.achilles.tasked.view.adapters.TaskFAItem;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.managers.DataManager;
+import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.util.helpers.PreferencesHelper;
+import com.software.achilles.tasked.view.adapters.TaskFAItem;
 
 import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Comparator;
 import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 

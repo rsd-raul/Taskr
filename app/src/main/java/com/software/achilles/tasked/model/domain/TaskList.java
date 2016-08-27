@@ -1,6 +1,7 @@
 package com.software.achilles.tasked.model.domain;
 
 import android.support.annotation.NonNull;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

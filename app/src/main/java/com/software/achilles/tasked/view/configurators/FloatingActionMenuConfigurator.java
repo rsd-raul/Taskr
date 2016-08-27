@@ -7,16 +7,17 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.software.achilles.tasked.util.helpers.LocalisationHelper;
+import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.util.Constants;
-import com.software.achilles.tasked.view.MainActivity;
-import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.extras.FloatingActionMenuBehavior;
+import com.software.achilles.tasked.util.helpers.LocalisationHelper;
+import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 
 import javax.inject.Inject;

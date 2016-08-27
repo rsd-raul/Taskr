@@ -1,8 +1,5 @@
 package com.software.achilles.tasked.util;
 
-import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.model.domain.Label;
-
 import java.util.List;
 
 public abstract class Utils {

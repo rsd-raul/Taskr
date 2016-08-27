@@ -7,14 +7,17 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.software.achilles.tasked.presenter.DashboardPresenter;
-import com.software.achilles.tasked.view.MainActivity;
+
 import com.software.achilles.tasked.R;
-import com.software.achilles.tasked.view.adapters.PagerAdapter;
 import com.software.achilles.tasked.model.domain.TaskList;
+import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.adapters.PagerAdapter;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
+
 import io.realm.RealmResults;
 
 public class DashboardFragment extends Fragment {
