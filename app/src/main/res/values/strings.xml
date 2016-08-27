@@ -43,6 +43,8 @@
     <string name="search">Search</string>
     <string name="filter">Filter</string>
     <string name="search_tasks">Search tasks</string>
+    <string name="complete">Complete</string>
+    <string name="delete">Delete</string>
 
     <!-- Generic -->
 
@@ -128,6 +130,7 @@
     <!-- Dashboard -->
 
     <string name="warning_item_access">Problems accessing item</string>
+    <string name="task_not_saved">Task not saved</string>
 
 
 </resources>

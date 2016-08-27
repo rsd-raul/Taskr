@@ -104,6 +104,10 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         dataManager.dashTaskModifier(uniqueParameterId, task, null);
     }
 
+    public void deleteTemporalTaskFromRealm(long taskId){
+        dataManager.deleteTask(taskId);
+    }
+
     public void setDueDate(long id, Date date){
         Task task = dataManager.findTaskById(id);
         dataManager.dashTaskModifier(Constants.DASH_DATE, task, date);

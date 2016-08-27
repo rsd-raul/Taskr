@@ -134,6 +134,10 @@ public class DataManager {
 
     // --------------------------- Delete ----------------------------
 
+    public void deleteTask(long taskId){
+        taskRepository.deleteById(taskId);
+    }
+
     // ----------------------------- Get -----------------------------
 
     // ------------------------ Temporal Task ------------------------

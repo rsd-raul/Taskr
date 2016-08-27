@@ -140,9 +140,27 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
+        int identifier = item.getItemId();
+        switch (identifier) {
             case R.id.action_filter:
                 mDrawersConfigurator.mFilterDrawer.openDrawer();
+                break;
+
+            case R.id.action_complete:
+            case R.id.action_delete:
+                long id = dataManager.getTemporalTask().getId();
+
+                if(id < 1) {
+                    Toast.makeText(MainActivity.this, R.string.task_not_saved, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+                if(identifier == R.id.action_complete)
+                    dashboardPresenter.taskModifier(Constants.DASH_DONE, dataManager.findTaskById(id));
+                else
+                    dashboardPresenter.deleteTemporalTaskFromRealm(id);
+
+                removeAddTask();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -269,7 +287,6 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         int animIn = R.anim.slide_in_left, animOut = R.anim.slide_out_right;
-//        int animIn = android.R.anim.fade_in, animOut = android.R.anim.fade_out;
 
         Fragment newFragment = null;
 
