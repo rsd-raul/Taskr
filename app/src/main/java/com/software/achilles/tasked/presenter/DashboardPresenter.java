@@ -13,6 +13,7 @@ import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.util.helpers.DateHelper;
 import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
@@ -171,10 +172,8 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
             reset = true;
         }
 
-        if(reset) {
+        if(reset)
             filterAllLists();
-            //TODO desceleccionar todos los items del configurator
-        }
     }
 
     public void clearGroupFilter(int identifier){
@@ -274,44 +273,30 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
     }
 
     public List<Task> getFilteredTasksByTaskListPosition(int position){
-
-
         RealmQuery<Task> main = dataManager.findAllTasksByTaskListPosition(position).where();
 
-        if(activeMainFilter.contains(Constants.STARRED)) {
+        if(activeMainFilter.contains(Constants.STARRED))
             main.equalTo("starred", true);
-        } if(activeMainFilter.contains(Constants.DUE_TODAY)) {
-            Calendar dateFrom = Calendar.getInstance();
-            dateFrom.set(Calendar.HOUR_OF_DAY, 0);
-            dateFrom.set(Calendar.MINUTE, 0);
-            dateFrom.set(Calendar.SECOND, 0);
-            Calendar dateTo = Calendar.getInstance();
-            dateTo.set(Calendar.HOUR_OF_DAY, 23);
-            dateTo.set(Calendar.MINUTE, 59);
-            dateTo.set(Calendar.SECOND, 59);
-            main.between("due", dateFrom.getTime(), dateTo.getTime());
-        } if(activeMainFilter.contains(Constants.DUE_THIS_WEEK)) {
-            Calendar dateFrom = Calendar.getInstance();
-            Calendar dateTo = Calendar.getInstance();
-            dateTo.add(Calendar.DATE, 7);
-            main.between("due", dateFrom.getTime(), dateTo.getTime());
-        }
+        if(activeMainFilter.contains(Constants.DUE_TODAY))
+            main.between("due", DateHelper.getStartOfDay(null), DateHelper.getEndOfDay(null));
+        if(activeMainFilter.contains(Constants.DUE_THIS_WEEK))
+            main.between("due", DateHelper.getStartOfDay(null), DateHelper.getNextWeek(null));
 
         List<Task> result = new ArrayList<>();
         for (Task task : main.findAll())
-            if(isNotFiltered(task))
+            if(isAllowedByFilter(task))
                 result.add(task);
 
         return result;
     }
 
-    private boolean isNotFiltered(Task task){
+    private boolean isAllowedByFilter(Task task){
         for(Label label : activeLabelFilter)
-            if(task.getLabels().contains(label))
+            if (!task.getLabels().contains(label))
                 return false;
 
         for(Location location : activeLocationFilter)
-            if(task.getLocation().getId() == location.getId())
+            if(task.getLocation().getId() != location.getId())
                 return false;
 
         return true;

@@ -521,6 +521,7 @@ public class MainAndFilterDrawerConfigurator {
 
                     case Constants.CLEAR_FILTER:
                         dashboardPresenter.clearFilter();
+                        mFilterDrawer.deselect();
                         break;
                     case Constants.STARRED:
                     case Constants.DUE_TODAY:
