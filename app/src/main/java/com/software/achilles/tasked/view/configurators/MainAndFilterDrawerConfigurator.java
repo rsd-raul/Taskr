@@ -521,24 +521,32 @@ public class MainAndFilterDrawerConfigurator {
                 switch (identifier) {
 
                     case Constants.CLEAR_FILTER:
+                        dashboardPresenter.clearFilter();
                         break;
                     case Constants.STARRED:
                     case Constants.DUE_TODAY:
                     case Constants.DUE_THIS_WEEK:
+                        Toast.makeText(mActivity, identifier + "<", Toast.LENGTH_SHORT).show();
                         dashboardPresenter.filterByMain(identifier);
                         break;
 
                     case Constants.COLLAPSIBLE_TASK_LIST:
                         toggleExpandableFilters(Constants.COLLAPSIBLE_TASK_LIST,
                                 mExpandedTaskListFilter, false);
+
+                        dashboardPresenter.clearGroupFilter(identifier);
                         break;
                     case Constants.COLLAPSIBLE_LABEL_LIST:
                         toggleExpandableFilters(Constants.COLLAPSIBLE_LABEL_LIST,
                                 mExpandedLabelListFilter, false);
+
+                        dashboardPresenter.clearGroupFilter(identifier);
                         break;
                     case Constants.COLLAPSIBLE_LOCATION_LIST:
                         toggleExpandableFilters(Constants.COLLAPSIBLE_LOCATION_LIST,
                                 mExpandedLocationListFilter, false);
+
+                        dashboardPresenter.clearGroupFilter(identifier);
                         break;
                     case Constants.COLLAPSIBLE_ORDER_LIST:
                         toggleExpandableFilters(Constants.COLLAPSIBLE_ORDER_LIST,
@@ -553,11 +561,7 @@ public class MainAndFilterDrawerConfigurator {
 
                     default:
                         Toast.makeText(mActivity, identifier + "<", Toast.LENGTH_SHORT).show();
-
                         dashboardPresenter.filterByGrouped(identifier);
-//                        int index = TaskController.getTaskListPositionById(identifier);
-//                        if (index != -1)
-//                            mViewPager.setCurrentItem(index, true);
                         break;
                 }
                 return true;

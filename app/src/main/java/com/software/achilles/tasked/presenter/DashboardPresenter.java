@@ -7,6 +7,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.model.domain.Label;
+import com.software.achilles.tasked.model.domain.Location;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.model.managers.DataManager;
@@ -17,11 +19,13 @@ import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 @Singleton
@@ -136,11 +140,134 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         mFragment.reorderLists(identifier);
     }
 
-    public void filterByMain(int identifier){
+    // ---------------------------- FILTER ---------------------------
 
+    List<Integer> activeMainFilter = new ArrayList<>();
+    List<Label> activeLabelFilter = new ArrayList<>();
+    List<Location> activeLocationFilter = new ArrayList<>();
+    List<TaskList> activeTaskListFilter = new ArrayList<>();
+
+
+
+    public void clearFilter(){
+        boolean reset = false;
+
+        if(activeMainFilter.size() > 0) {
+            activeMainFilter.clear();
+            reset = true;
+        }
+        if(activeLabelFilter.size() > 0) {
+            activeLabelFilter.clear();
+            reset = true;
+        }
+        if(activeLocationFilter.size() > 0) {
+            activeLocationFilter.clear();
+            reset = true;
+        }
+        if(activeTaskListFilter.size() > 0) {
+            activeTaskListFilter.clear();
+            reset = true;
+        }
+
+        if(reset) {
+            filterAllLists();
+            //TODO desceleccionar todos los items del configurator
+        }
+    }
+
+    public void clearGroupFilter(int identifier){
+        boolean reset = false;
+
+        switch (identifier){
+            case Constants.COLLAPSIBLE_TASK_LIST:
+                if(activeTaskListFilter.size() > 0) {
+                    activeTaskListFilter.clear();
+                    reset = true;
+                }
+                break;
+            case Constants.COLLAPSIBLE_LABEL_LIST:
+                if(activeLabelFilter.size() > 0) {
+                    activeLabelFilter.clear();
+                    reset = true;
+                }
+                break;
+            case Constants.COLLAPSIBLE_LOCATION_LIST:
+                if(activeLocationFilter.size() > 0) {
+                    activeLocationFilter.clear();
+                    reset = true;
+                }
+                break;
+        }
+
+        if(reset)
+            filterAllLists();
+    }
+
+    public void filterByMain(int identifier){
+        if(activeMainFilter.contains(identifier))
+            activeMainFilter.remove(identifier);
+        else
+            activeMainFilter.add(identifier);
+
+        filterAllLists();
     }
 
     public void filterByGrouped(int identifier){
+        Label label;
+        Location location = null;
+        TaskList taskList = null;
+        int which = Constants.NONE;
 
+        label = dataManager.findLabelById(identifier);
+        if(label == null) {
+            location = dataManager.findLocationById(identifier);
+            if(location == null){
+                taskList = dataManager.findTaskListById(identifier);
+                if(taskList != null)
+                    which = Constants.TASK_LIST;
+            }else
+                which = Constants.LOCATION;
+        }else
+            which = Constants.LABEL;
+
+        switch (which){
+            case Constants.TASK_LIST:
+                if(activeTaskListFilter.contains(taskList))
+                    activeTaskListFilter.remove(taskList);
+                else
+                    activeTaskListFilter.add(taskList);
+                break;
+
+            case Constants.LOCATION:
+                if(activeLocationFilter.contains(location))
+                    activeLocationFilter.remove(location);
+                else
+                    activeLocationFilter.add(location);
+                break;
+
+            case Constants.LABEL:
+                if(activeLabelFilter.contains(label))
+                    activeLabelFilter.remove(label);
+                else
+                    activeLabelFilter.add(label);
+                break;
+            case Constants.NONE:
+                Log.e("DashboardPresenter", "filterByGrouped: " + "Item not recognized, thus, not filtered");
+                return;
+        }
+
+        filterAllLists();
+    }
+
+    private void filterAllLists(){
+        Log.e("AA", "General: " + activeMainFilter.size());
+        Log.e("AA", "TaskList: " + activeTaskListFilter.size());
+        Log.e("AA", "Location: " + activeLocationFilter.size());
+        Log.e("AA", "Label: " + activeLabelFilter.size());
+
+        mFragment.filterAllLists(activeMainFilter,
+                                activeLabelFilter,
+                                activeLocationFilter,
+                                activeTaskListFilter);
     }
 }

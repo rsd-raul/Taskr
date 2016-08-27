@@ -13,6 +13,8 @@ public abstract class Constants {
     public static final long MINUTE_IN_MILLISECOND =    60000L;     // UNUSED
 
     public static final int TASK_LIST =                 1;
+    public static final int LOCATION =                  9;
+    public static final int LABEL =                     10;
 
     // ---------------------- Navigation Drawer ----------------------
 

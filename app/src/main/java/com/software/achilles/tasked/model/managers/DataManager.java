@@ -50,28 +50,18 @@ public class DataManager {
 
     // ---------------------------- Find -----------------------------
 
+    // TaskList
+
     public RealmResults<TaskList> findAllTaskList(){
         return taskListRepository.findAll();
     }
 
-    public Task findTaskById(long id){
-        return taskRepository.findOne(id);
-    }
-
-    public RealmList<Task> findAllTasksByTaskListPosition(int position){
-        return taskRepository.findAllByTaskListPosition(position);
+    public TaskList findTaskListById(long id){
+        return taskListRepository.findOne(id);
     }
 
     public TaskList findTaskListByPosition(int position){
         return taskListRepository.findByPosition(position);
-    }
-
-    public RealmResults<Label> findAllLabels(){
-        return labelRepository.findAll();
-    }
-
-    public RealmResults<Location> findAllLocations(){
-        return locationRepository.findAll();
     }
 
     public int findTaskListPositionById(int id){
@@ -83,6 +73,36 @@ public class DataManager {
                 return position;
 
         return -1;
+    }
+
+    // Task
+
+    public Task findTaskById(long id){
+        return taskRepository.findOne(id);
+    }
+
+    public RealmList<Task> findAllTasksByTaskListPosition(int position){
+        return taskRepository.findAllByTaskListPosition(position);
+    }
+
+    // Label
+
+    public RealmResults<Label> findAllLabels(){
+        return labelRepository.findAll();
+    }
+
+    public Label findLabelById(long id){
+        return labelRepository.findOne(id);
+    }
+
+    // Location
+
+    public RealmResults<Location> findAllLocations(){
+        return locationRepository.findAll();
+    }
+
+    public Location findLocationById(long id){
+        return locationRepository.findOne(id);
     }
 
     // ---------------------------- Save -----------------------------

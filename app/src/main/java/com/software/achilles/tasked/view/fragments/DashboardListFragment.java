@@ -59,15 +59,20 @@ public class DashboardListFragment extends Fragment {
         // Configure the FastAdapter and set it on the RecyclerView
         recyclerView.setAdapter(fastAdapter);
 
-        // REVIEW Is this the proper way to restart the adapter to remove duplicates?
-        fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
-
-        // We sort the list //FIXME siempre que se cambia de pagina, se ordena por defecto, no mola
-//        changeSortMode(Constants.NONE, false);
+        // Sort the list based on user preference
         changeSortMode(PreferencesHelper.getShaPrefInt(this.getContext(), PreferencesHelper.Keys.ORDER, PreferencesHelper.Value.ORDER, true), false);
 
         // Populate our list
         List<Task> tasks = dataManager.findAllTasksByTaskListPosition(posOnPager);
+
+        populateAdapter(tasks);
+
+        return recyclerView;
+    }
+
+    public void populateAdapter(List<Task> tasks){
+        // REVIEW Is this the proper way to restart the adapter to remove duplicates?
+        fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
 
         int size = tasks.size();
         for (int i = 0; i < size; i++) {
@@ -81,8 +86,6 @@ public class DashboardListFragment extends Fragment {
 
             fastAdapter.add(item);
         }
-
-        return recyclerView;
     }
 
     // -------------------------- USE CASE ---------------------------
