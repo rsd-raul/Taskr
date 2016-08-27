@@ -63,8 +63,8 @@ public class DashboardListFragment extends Fragment {
         fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
 
         // We sort the list //FIXME siempre que se cambia de pagina, se ordena por defecto, no mola
-        changeSortMode(Constants.NONE, false);
-//        changeSortMode(PreferencesHelper.getShaPrefInt(this.getContext(), PreferencesHelper.Keys.ORDER, PreferencesHelper.Value.ORDER, true);, false);
+//        changeSortMode(Constants.NONE, false);
+        changeSortMode(PreferencesHelper.getShaPrefInt(this.getContext(), PreferencesHelper.Keys.ORDER, PreferencesHelper.Value.ORDER, true), false);
 
         // Populate our list
         List<Task> tasks = dataManager.findAllTasksByTaskListPosition(posOnPager);
@@ -96,10 +96,10 @@ public class DashboardListFragment extends Fragment {
     private @SortingStrategy int sortingStrategy;
 
     public void changeSortMode(int sortingStrategy, boolean sortNow){
-        if(sortingStrategy == this.sortingStrategy)
-            return;
 
-
+        try{
+            PreferencesHelper.setShaPrefInteger(this.getContext(), PreferencesHelper.Keys.ORDER, sortingStrategy, true);
+        }catch (Exception e){ /* Nothing to see here */ }
 
         this.sortingStrategy = sortingStrategy;
         fastAdapter.getItemAdapter().withComparator(getComparator(), sortNow);
@@ -142,6 +142,5 @@ public class DashboardListFragment extends Fragment {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({Constants.CUSTOM_ORDER, Constants.ALPHABETICAL, Constants.DUE_DATE})
-    public @interface SortingStrategy {
-    }
+    public @interface SortingStrategy { }
 }

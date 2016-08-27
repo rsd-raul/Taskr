@@ -1,7 +1,10 @@
 package com.software.achilles.tasked.util.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.software.achilles.tasked.util.Constants;
 
 // REVIEW - Remove and Clean
 @SuppressWarnings("unused")
@@ -34,7 +37,7 @@ public abstract class PreferencesHelper {
 
         // App settings
         public static final boolean FIRST_TIME = true;
-        public static final int ORDER = -1;
+        public static final int ORDER = Constants.NONE;
     }
 
     public static class Files{
