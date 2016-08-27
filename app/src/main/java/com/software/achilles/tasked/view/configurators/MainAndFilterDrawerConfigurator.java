@@ -516,7 +516,6 @@ public class MainAndFilterDrawerConfigurator {
         mFilterDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-
                 int identifier = (int) drawerItem.getIdentifier();
                 switch (identifier) {
 
@@ -526,7 +525,6 @@ public class MainAndFilterDrawerConfigurator {
                     case Constants.STARRED:
                     case Constants.DUE_TODAY:
                     case Constants.DUE_THIS_WEEK:
-                        Toast.makeText(mActivity, identifier + "<", Toast.LENGTH_SHORT).show();
                         dashboardPresenter.filterByMain(identifier);
                         break;
 
@@ -560,7 +558,6 @@ public class MainAndFilterDrawerConfigurator {
                         break;
 
                     default:
-                        Toast.makeText(mActivity, identifier + "<", Toast.LENGTH_SHORT).show();
                         dashboardPresenter.filterByGrouped(identifier);
                         break;
                 }

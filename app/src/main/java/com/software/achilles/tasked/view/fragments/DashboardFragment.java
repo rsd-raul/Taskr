@@ -4,30 +4,17 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.gms.tasks.Tasks;
-import com.software.achilles.tasked.model.domain.Label;
-import com.software.achilles.tasked.model.domain.Location;
-import com.software.achilles.tasked.model.domain.Task;
-import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.view.MainActivity;
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.view.adapters.PagerAdapter;
 import com.software.achilles.tasked.model.domain.TaskList;
 import com.software.achilles.tasked.util.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
-
-import dagger.Lazy;
 import io.realm.RealmResults;
 
 public class DashboardFragment extends Fragment {
@@ -136,17 +123,12 @@ public class DashboardFragment extends Fragment {
 
     // --------------------------- FILTERING -------------------------
 
-    @Inject
-    DataManager dataManager;
-
-    public void filterAllLists(List<Integer> activeMainFilter,
-                                List<Label> activeLabelFilter,
-                                List<Location> activeLocationFilter,
-                                List<TaskList> activeTaskListFilter){
-
+    public void filterAllLists(){
         int position = mViewPager.getCurrentItem();
-
-        List<Task> tasks = dataManager.findAllTasksByTaskListPosition(position).where().contains("title", "Short").findAll();
-        ((DashboardListFragment) adapter.getItem(position)).populateAdapter(tasks);
+        ((DashboardListFragment) adapter.getItem(position)).notifyFilter(position);
+        if(position > 0)
+            ((DashboardListFragment) adapter.getItem(position - 1)).notifyFilter(position);
+        if(position < adapter.getCount()-1)
+            ((DashboardListFragment) adapter.getItem(position + 1)).notifyFilter(position);
     }
 }

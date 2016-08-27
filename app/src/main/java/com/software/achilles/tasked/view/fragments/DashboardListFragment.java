@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.software.achilles.tasked.R;
+import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper;
 import com.software.achilles.tasked.view.adapters.TaskFAItem;
 import com.software.achilles.tasked.model.domain.Task;
@@ -36,6 +37,8 @@ public class DashboardListFragment extends Fragment {
     FastItemAdapter<IItem> fastAdapter;
     @Inject
     Provider<TaskFAItem> taskAdapterProvider;
+    @Inject
+    DashboardPresenter dashboardPresenter;
 
     // ------------------------- Constructor -------------------------
 
@@ -63,9 +66,7 @@ public class DashboardListFragment extends Fragment {
         changeSortMode(PreferencesHelper.getShaPrefInt(this.getContext(), PreferencesHelper.Keys.ORDER, PreferencesHelper.Value.ORDER, true), false);
 
         // Populate our list
-        List<Task> tasks = dataManager.findAllTasksByTaskListPosition(posOnPager);
-
-        populateAdapter(tasks);
+        populateAdapter(dashboardPresenter.getFilteredTasksByTaskListPosition(posOnPager));
 
         return recyclerView;
     }
@@ -92,6 +93,10 @@ public class DashboardListFragment extends Fragment {
 
     public void notifyChange(){
         fastAdapter.notifyAdapterDataSetChanged();
+    }
+
+    public void notifyFilter(int position){
+        populateAdapter(dashboardPresenter.getFilteredTasksByTaskListPosition(position));
     }
 
     // --------------------------- SORTING ---------------------------

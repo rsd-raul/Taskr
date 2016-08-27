@@ -18,6 +18,7 @@ import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import io.realm.RealmList;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 @Singleton
@@ -204,8 +206,9 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
     }
 
     public void filterByMain(int identifier){
-        if(activeMainFilter.contains(identifier))
-            activeMainFilter.remove(identifier);
+        int index = activeMainFilter.indexOf(identifier);
+        if(index != -1)
+            activeMainFilter.remove(index);
         else
             activeMainFilter.add(identifier);
 
@@ -218,6 +221,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         TaskList taskList = null;
         int which = Constants.NONE;
 
+        // Get the type of the element and retrieve that element
         label = dataManager.findLabelById(identifier);
         if(label == null) {
             location = dataManager.findLocationById(identifier);
@@ -230,6 +234,7 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         }else
             which = Constants.LABEL;
 
+        // React to the element by types
         switch (which){
             case Constants.TASK_LIST:
                 if(activeTaskListFilter.contains(taskList))
@@ -265,9 +270,50 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         Log.e("AA", "Location: " + activeLocationFilter.size());
         Log.e("AA", "Label: " + activeLabelFilter.size());
 
-        mFragment.filterAllLists(activeMainFilter,
-                                activeLabelFilter,
-                                activeLocationFilter,
-                                activeTaskListFilter);
+        mFragment.filterAllLists();
+    }
+
+    public List<Task> getFilteredTasksByTaskListPosition(int position){
+
+
+        RealmQuery<Task> main = dataManager.findAllTasksByTaskListPosition(position).where();
+
+        if(activeMainFilter.contains(Constants.STARRED)) {
+            main.equalTo("starred", true);
+        } if(activeMainFilter.contains(Constants.DUE_TODAY)) {
+            Calendar dateFrom = Calendar.getInstance();
+            dateFrom.set(Calendar.HOUR_OF_DAY, 0);
+            dateFrom.set(Calendar.MINUTE, 0);
+            dateFrom.set(Calendar.SECOND, 0);
+            Calendar dateTo = Calendar.getInstance();
+            dateTo.set(Calendar.HOUR_OF_DAY, 23);
+            dateTo.set(Calendar.MINUTE, 59);
+            dateTo.set(Calendar.SECOND, 59);
+            main.between("due", dateFrom.getTime(), dateTo.getTime());
+        } if(activeMainFilter.contains(Constants.DUE_THIS_WEEK)) {
+            Calendar dateFrom = Calendar.getInstance();
+            Calendar dateTo = Calendar.getInstance();
+            dateTo.add(Calendar.DATE, 7);
+            main.between("due", dateFrom.getTime(), dateTo.getTime());
+        }
+
+        List<Task> result = new ArrayList<>();
+        for (Task task : main.findAll())
+            if(isNotFiltered(task))
+                result.add(task);
+
+        return result;
+    }
+
+    private boolean isNotFiltered(Task task){
+        for(Label label : activeLabelFilter)
+            if(task.getLabels().contains(label))
+                return false;
+
+        for(Location location : activeLocationFilter)
+            if(task.getLocation().getId() == location.getId())
+                return false;
+
+        return true;
     }
 }
