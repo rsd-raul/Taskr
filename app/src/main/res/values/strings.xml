@@ -133,6 +133,7 @@
     <string name="task_not_saved">Task not saved</string>
     <string name="nothing_found">Nothing found</string>
     <string name="please_connect_internet">Please Connect to Internet</string>
+    <string name="task_due">"Tasks due: "</string>
 
 
 </resources>

@@ -1,5 +1,6 @@
 package com.software.achilles.tasked.view.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -66,10 +67,22 @@ public class DashboardListFragment extends Fragment {
         // Retrieve the TaskList index from the Activity and obtain its tasks
         int posOnPager = getArguments().getInt(Constants.TASK_LIST + "");
 
+        needsChild = (posOnPager == Constants.COMPLETED_FILTER ||
+                posOnPager == Constants.SNOOZED_FILTER);
+        dashboardPresenter.attachChildView(needsChild ? this : null);
+
         // Populate our list
         populateAdapter(dashboardPresenter.getFilteredTasksByTaskListPosition(posOnPager));
 
         return recyclerView;
+    }
+
+    public static boolean needsChild;
+
+    @Override
+    public void onAttach(Context context) {
+
+        super.onAttach(context);
     }
 
     public void populateAdapter(List<Task> tasks){

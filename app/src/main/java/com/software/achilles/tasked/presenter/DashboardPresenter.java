@@ -10,6 +10,7 @@ import com.software.achilles.tasked.model.managers.DataManager;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.util.helpers.DateHelper;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
+import com.software.achilles.tasked.view.fragments.DashboardListFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,11 +46,17 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
     public void attachView(DashboardFragment mFragment) {
         this.mFragment = mFragment;
     }
-
     public DashboardFragment getView() {
         return mFragment;
     }
 
+    private DashboardListFragment mListFragment;
+    public void attachChildView(DashboardListFragment mListFragment) {
+        this.mListFragment = mListFragment;
+    }
+    public DashboardListFragment getChildView() {
+        return mListFragment;
+    }
 
 //    public static void destroyPresenter() {
 //        if(instance == null)
@@ -117,6 +124,9 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         mFragment.notifyItemChange();
     }
 
+    public void notifyItemChangeChild(){
+        mListFragment.notifyChange();
+    }
 
     public void reorderLists(int identifier){
         mFragment.reorderLists(identifier);

@@ -1,6 +1,7 @@
 package com.software.achilles.tasked.util.helpers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
 import com.software.achilles.tasked.view.MainActivity;
+import com.software.achilles.tasked.view.fragments.DashboardListFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 import com.software.achilles.tasked.view.pickers.SublimePickerFragment;
 import com.software.achilles.tasked.view.pickers.SublimePickerFragment.SublimeCallback;
@@ -414,18 +416,26 @@ public abstract class DialogsHelper {
     }
 
     public static void buildDateTimePicker(final long id, Date date,
+                                   final DashboardPresenter dashboardPresenter, Context context){
+        Fragment fragment = dashboardPresenter.getView();
+        if(fragment == null || fragment.getFragmentManager() == null)
+            fragment = dashboardPresenter.getChildView();
+        dateTimePickerFactory(id, date, fragment, null, dashboardPresenter, context);
+    }
+
+    public static void buildDateTimePicker(final long id, Date date,
                                            final DashboardPresenter dashboardPresenter){
-        dateTimePickerFactory(id, date, dashboardPresenter.getView(), null, dashboardPresenter);
+        dateTimePickerFactory(id, date, dashboardPresenter.getView(), null, dashboardPresenter, null);
     }
 
     public static void buildDateTimePicker(Fragment fragment, Date date,
                                            final TaskCreationPresenter taskCreationPresenter){
-        dateTimePickerFactory(-1, date, fragment, taskCreationPresenter, null);
+        dateTimePickerFactory(-1, date, fragment, taskCreationPresenter, null, null);
     }
 
     private static void dateTimePickerFactory(final long id, Date date, Fragment fragment,
-                                            final TaskCreationPresenter taskCreationPresenter,
-                                            final DashboardPresenter dashboardPresenter){
+                                              final TaskCreationPresenter taskCreationPresenter,
+                                              final DashboardPresenter dashboardPresenter, Context context){
         final boolean dashboard = dashboardPresenter != null;
         final boolean taskCreation = taskCreationPresenter != null;
 
@@ -433,7 +443,10 @@ public abstract class DialogsHelper {
         SublimeOptions options = getDateTimePicker(Picker.TIME_PICKER, false);
 
         // Based on the user Locale, get the format
-        boolean is24 = LocalisationHelper.is24HourFormat(fragment.getContext());
+        Context cntxt = fragment.getContext();
+        if (cntxt == null)
+            cntxt = context;
+        boolean is24 = LocalisationHelper.is24HourFormat(cntxt);
 
         // Set the date if any, or default
         options = DialogsHelper.customizeOptionsSublime(options, date, is24);
@@ -460,7 +473,10 @@ public abstract class DialogsHelper {
                     taskCreationPresenter.setDueDate(result, date);
                 }else if (dashboard){
                     dashboardPresenter.setDueDate(id, date);
-                    dashboardPresenter.notifyItemChange();
+                    if(DashboardListFragment.needsChild)
+                        dashboardPresenter.notifyItemChangeChild();
+                    else
+                        dashboardPresenter.notifyItemChange();
                 }
             }
         };

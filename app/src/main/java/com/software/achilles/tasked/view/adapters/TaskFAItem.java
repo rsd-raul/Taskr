@@ -154,7 +154,7 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder>{
         alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogsHelper.buildDateTimePicker(mIdentifier, dueDate, dashboardPresenter);
+                DialogsHelper.buildDateTimePicker(mIdentifier, dueDate, dashboardPresenter, context);
             }
         });
 

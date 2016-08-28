@@ -55,6 +55,8 @@
             android:authorities="com.software.achilles.tasked.util.providers.TasksSearchProvider"
             android:enabled="true"
             android:exported="false"/>
+
+        <service android:name=".view.services.AndroidTimerService"/>
     </application>
 
 </manifest>

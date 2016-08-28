@@ -1,11 +1,9 @@
 package com.software.achilles.tasked.view;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
@@ -14,11 +12,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -40,6 +36,7 @@ import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfig
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
 import com.software.achilles.tasked.view.fragments.DashboardListFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
+import com.software.achilles.tasked.view.services.AndroidTimerService;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -110,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize with Dashboard
         setFragment(Constants.DASHBOARD);
+
+        // Start the Timer service for notifications
+        startService(new Intent(this, AndroidTimerService.class));
     }
 
     // -------------------------- Landscape --------------------------
