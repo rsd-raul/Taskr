@@ -1,5 +1,6 @@
 package com.software.achilles.tasked.view.fragments;
 
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -132,6 +134,14 @@ public class TaskCreationFragment extends Fragment {
             }
         };
         mTitle.addTextChangedListener(new OnText_EditTextListener(positive, negative));
+
+        // Show keyboard
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm != null)
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+        mTitle.requestFocus();
+
+
 
         if(!edit)
             setupModifiersColors();

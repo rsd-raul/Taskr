@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -219,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void removeAddTask(){
-        // TODO volver a Dashboard o a Glance
         setFragment(Constants.DASHBOARD);
 
         // Show the FAM
@@ -230,6 +231,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Restore @string/appbar_scrolling_view_behavior
         bestBehaviour_drake(false);
+
+        // Hide Keyboard
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     // --------------------------- Details ---------------------------
