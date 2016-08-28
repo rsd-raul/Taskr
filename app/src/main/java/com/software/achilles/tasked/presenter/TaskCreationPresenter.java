@@ -1,7 +1,9 @@
 package com.software.achilles.tasked.presenter;
 
 import android.content.Intent;
+import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -343,6 +345,12 @@ public class TaskCreationPresenter
         Location location = new Location(name, address, lat, lon, bounds, false);
         location.setId(PrimaryKeyFactory.nextKey());
         setLocation(name, location);
+    }
+
+    public void processVoiceRecognition(Intent data){
+        ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        if(!text.isEmpty())
+            mFragment.setTaskNameTextView(text.get(0));
     }
 
     public void processNoteAsLocation(String locationStr){

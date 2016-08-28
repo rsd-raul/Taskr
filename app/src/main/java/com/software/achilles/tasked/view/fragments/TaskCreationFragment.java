@@ -1,10 +1,14 @@
 package com.software.achilles.tasked.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -135,10 +139,7 @@ public class TaskCreationFragment extends Fragment {
         };
         mTitle.addTextChangedListener(new OnText_EditTextListener(positive, negative));
 
-        // Show keyboard
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm != null)
-            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+        // Focus keyboard o the title
         mTitle.requestFocus();
 
 
@@ -260,9 +261,14 @@ public class TaskCreationFragment extends Fragment {
             clickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Launch the microphone and write in the title field
-                    Toast.makeText(mMainActivity, "Micro to title", Toast.LENGTH_SHORT).show();
-                }};
+                    if(isConnected()){
+                        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                        getActivity().startActivityForResult(intent, Constants.VOICE_RECOGNITION_REQUEST);
+                    }else
+                        Toast.makeText(mMainActivity, R.string.please_connect_internet, Toast.LENGTH_LONG).show();
+            }};
         }
 
         mFabSaveAndVoice.setImageDrawable(ContextCompat.getDrawable(mMainActivity, dra));
@@ -277,6 +283,12 @@ public class TaskCreationFragment extends Fragment {
         expandAnimation.setInterpolator(new AccelerateInterpolator());
 
         mFabSaveAndVoice.startAnimation(expandAnimation);
+    }
+
+    public  boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager) mMainActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo net = cm.getActiveNetworkInfo();
+        return net!=null && net.isAvailable() && net.isConnected();
     }
 
     /**

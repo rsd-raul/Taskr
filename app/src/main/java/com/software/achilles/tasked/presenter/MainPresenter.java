@@ -65,7 +65,7 @@ public class MainPresenter implements Presenter<MainActivity> {
 
         // If the user haven't typed anything, close the interface
         if(!TaskCreationFragment.isDataPresent()){
-            mActivity.removeAddTask();
+            mActivity.deployOrRemoveTaskCreation(false);
         }else{
             // Else, ask for confirmation
             Dialog dialog = new AlertDialog.Builder(mActivity)
@@ -75,7 +75,7 @@ public class MainPresenter implements Presenter<MainActivity> {
                     // Only on discard the removeAddTask is triggered
                     .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            mActivity.removeAddTask();
+                            mActivity.deployOrRemoveTaskCreation(false);
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -106,7 +106,7 @@ public class MainPresenter implements Presenter<MainActivity> {
     public void deployLayout(int key){
         switch (key) {
             case Constants.ADD_TASK:
-                mActivity.deployAddTask();
+                mActivity.deployOrRemoveTaskCreation(true);
                 break;
             case Constants.ADD_LABEL:
             case Constants.ADD_TASK_LIST:

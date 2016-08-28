@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 else
                     dashboardPresenter.deleteTemporalTaskFromRealm(id);
 
-                removeAddTask();
+                deployOrRemoveTaskCreation(false);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -186,19 +188,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
-    public void deployAddTask() {
-        // Remove the behaviour
-        bestBehaviour_drake(true);
 
-        // Deploy the layout
-        setFragment(Constants.ADD_TASK);
-
-        // Hide the fam
-        mFamConfigurator.famVisibility(false);
-
-        // Block filter and navigation drawers
-        mDrawersConfigurator.blockDrawers(true);
-    }
 
     // TODO esto deberia hacer que la ActionBar volviera - NO LO HACE
 
@@ -220,24 +210,27 @@ public class MainActivity extends AppCompatActivity {
         fl.requestLayout();
     }
 
-    public void removeAddTask(){
-        setFragment(Constants.DASHBOARD);
+    public void deployOrRemoveTaskCreation(boolean toStatus){
+        // Deploy the layout
+        setFragment(toStatus ? Constants.ADD_TASK : Constants.DASHBOARD);
 
-        // Show the FAM
-        mFamConfigurator.famVisibility(true);
+        // Hide or show the fam
+        mFamConfigurator.famVisibility(!toStatus);
 
-        // Unblock filter and navigation drawers
-        mDrawersConfigurator.blockDrawers(false);
+        // Block or unblock filter and navigation drawers
+        mDrawersConfigurator.blockDrawers(toStatus);
 
-        // Restore @string/appbar_scrolling_view_behavior
-        bestBehaviour_drake(false);
+        // Remove or restore the behaviour
+        bestBehaviour_drake(toStatus);
 
-        // Hide Keyboard
+        // Show or Hide the keyboard
         View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if(toStatus && imm != null)
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+        if(!toStatus && view != null && imm != null)
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
     // --------------------------- Details ---------------------------
@@ -358,15 +351,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.PLACE_PICKER_REQUEST && resultCode == Activity.RESULT_OK)
+        if (requestCode == Constants.PLACE_PICKER_REQUEST && resultCode == RESULT_OK)
             taskCreationPresenter.processPlacePicker(data);
+        if (requestCode == Constants.VOICE_RECOGNITION_REQUEST && resultCode == RESULT_OK)
+            taskCreationPresenter.processVoiceRecognition(data);
     }
 
     // --------------------------- SEARCH ----------------------------
 
     private void configureSearch(Menu menu){
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
     }
@@ -375,9 +369,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Toast.makeText(this, "Searching by: "+ query, Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(this, R.string.nothing_found, Toast.LENGTH_SHORT).show();
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             String uri = intent.getDataString().replace("/","");
 

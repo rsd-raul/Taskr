@@ -131,6 +131,8 @@
 
     <string name="warning_item_access">Problems accessing item</string>
     <string name="task_not_saved">Task not saved</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="please_connect_internet">Please Connect to Internet</string>
 
 
 </resources>
