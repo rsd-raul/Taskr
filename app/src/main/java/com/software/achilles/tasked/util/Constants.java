@@ -90,4 +90,7 @@ public abstract class Constants {
     public static final int PLACE_PICKER_REQUEST =      1;
     public static final int VOICE_RECOGNITION_REQUEST = 2;
 
+    public static final int SNOOZED_FILTER =            -2;
+    public static final int COMPLETED_FILTER =          -3;
+
 }

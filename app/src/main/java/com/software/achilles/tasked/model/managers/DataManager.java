@@ -86,6 +86,14 @@ public class DataManager {
         return taskRepository.findAllByTaskListPosition(position);
     }
 
+    public RealmResults<Task> findAllCompletedTasks(){
+        return taskRepository.findAll().where().equalTo("completed", true).findAll();
+    }
+
+    public RealmResults<Task> findAllSnoozedTasks(){
+        return taskRepository.findAll().where().isNotNull("due").findAll();
+    }
+
     // Label
 
     public RealmResults<Label> findAllLabels(){

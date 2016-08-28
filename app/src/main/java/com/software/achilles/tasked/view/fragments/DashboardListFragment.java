@@ -51,9 +51,6 @@ public class DashboardListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstState) {
 
-        // Retrieve the TaskList index from the Activity and obtain its tasks
-        int posOnPager = getArguments().getInt(Constants.TASK_LIST + "");
-
         // Retrieve the recycler view and set the manager
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.fragment_dashboard_list, container, false);
@@ -65,6 +62,9 @@ public class DashboardListFragment extends Fragment {
 
         // Sort the list based on user preference
         changeSortMode(PreferencesHelper.getShaPrefInt(this.getContext(), PreferencesHelper.Keys.ORDER, PreferencesHelper.Value.ORDER, true), false);
+
+        // Retrieve the TaskList index from the Activity and obtain its tasks
+        int posOnPager = getArguments().getInt(Constants.TASK_LIST + "");
 
         // Populate our list
         populateAdapter(dashboardPresenter.getFilteredTasksByTaskListPosition(posOnPager));

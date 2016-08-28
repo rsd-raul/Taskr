@@ -241,6 +241,14 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
     }
 
     public List<Task> getFilteredTasksByTaskListPosition(int position){
+        if(position == Constants.COMPLETED_FILTER)
+            return  dataManager.findAllCompletedTasks();
+        if(position == Constants.SNOOZED_FILTER)
+            return  dataManager.findAllSnoozedTasks();
+
+
+
+
         RealmQuery<Task> main = dataManager.findAllTasksByTaskListPosition(position).where();
 
         if(activeMainFilter.contains(Constants.STARRED))

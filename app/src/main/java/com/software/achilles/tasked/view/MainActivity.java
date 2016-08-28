@@ -37,6 +37,7 @@ import com.software.achilles.tasked.util.helpers.PreferencesHelper.Value;
 import com.software.achilles.tasked.view.configurators.FloatingActionMenuConfigurator;
 import com.software.achilles.tasked.view.configurators.MainAndFilterDrawerConfigurator;
 import com.software.achilles.tasked.view.fragments.DashboardFragment;
+import com.software.achilles.tasked.view.fragments.DashboardListFragment;
 import com.software.achilles.tasked.view.fragments.TaskCreationFragment;
 
 import javax.inject.Inject;
@@ -274,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
     DashboardPresenter dashboardPresenter;
     @Inject
     TaskCreationPresenter taskCreationPresenter;
+    @Inject
+    Provider<DashboardListFragment> dashboardListFragmentProvider;
 
     public void setFragment(int keyConstant){
         setFragment(keyConstant, -1);
@@ -324,6 +327,18 @@ public class MainActivity extends AppCompatActivity {
                     animIn = android.R.anim.fade_in;
                     animOut = android.R.anim.fade_out;
                 }
+                break;
+            case Constants.SNOOZED:
+            case Constants.COMPLETED:
+                newFragment = dashboardListFragmentProvider.get();
+
+                int filter = keyConstant == Constants.SNOOZED ? Constants.SNOOZED_FILTER
+                                                            : Constants.COMPLETED_FILTER;
+
+                // Set the type of filter
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt(Constants.TASK_LIST+"", filter);
+                newFragment.setArguments(bundle2);
                 break;
         }
 
