@@ -162,7 +162,7 @@ public class MainAndFilterDrawerConfigurator {
 
         // Create main items
         int color = R.color.colorPrimary;
-        PrimaryDrawerItem dashboard = new PrimaryDrawerItem().withIdentifier(Constants.DASHBOARD)
+        final PrimaryDrawerItem dashboard = new PrimaryDrawerItem().withIdentifier(Constants.DASHBOARD)
                 .withIcon(R.drawable.ic_dashboard)
                 .withName(R.string.dashboard)
                 .withIconColorRes(color)
@@ -233,6 +233,8 @@ public class MainAndFilterDrawerConfigurator {
                 .withOnDrawerListener(new Drawer.OnDrawerListener() {
                     @Override
                     public void onDrawerOpened(View drawerView) {
+                        if(mActivity.mCurrentFragmentKey == Constants.DASHBOARD)
+                            mMainDrawer.setSelection(dashboard, false);
 
                         // drawerViews.getWidth():
                         // MainDrawer = 912
@@ -810,6 +812,10 @@ public class MainAndFilterDrawerConfigurator {
 
         mFilterDrawer.getDrawerLayout().setDrawerLockMode(mode);
         mMainDrawer.getDrawerLayout().setDrawerLockMode(mode);
+    }
+
+    public void blockFilterDrawer(){
+        mFilterDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     public void customizeActionBar(int drawer_item_id) {

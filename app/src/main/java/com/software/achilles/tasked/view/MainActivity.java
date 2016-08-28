@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -270,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------- Fragment and Presenter --------------------
 
-    private int mCurrentFragmentKey;
+    public int mCurrentFragmentKey;
     @Inject
     DashboardPresenter dashboardPresenter;
     @Inject
@@ -307,6 +308,9 @@ public class MainActivity extends AppCompatActivity {
                     mDrawersConfigurator.blockDrawers(false);
                     break;
                 }
+
+                mDrawersConfigurator.mMainDrawer.setSelectionAtPosition(1, false);
+
                 dashboardPresenter.attachView((DashboardFragment) newFragment);
 //                taskCreationPresenter.destroyPresenter();
                 break;
@@ -322,12 +326,11 @@ public class MainActivity extends AppCompatActivity {
 
                 taskCreationPresenter.attachView((TaskCreationFragment) newFragment);
 //                DashboardPresenter.destroyPresenter();
-                //FIXME
-                if(mCurrentFragmentKey == Constants.DASHBOARD) {
-                    animIn = android.R.anim.fade_in;
-                    animOut = android.R.anim.fade_out;
-                }
+
+                animIn = android.R.anim.fade_in;
+                animOut = android.R.anim.fade_out;
                 break;
+
             case Constants.SNOOZED:
             case Constants.COMPLETED:
                 newFragment = dashboardListFragmentProvider.get();
@@ -339,6 +342,12 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt(Constants.TASK_LIST+"", filter);
                 newFragment.setArguments(bundle2);
+
+                // Block or unblock filter and navigation drawers
+                mDrawersConfigurator.blockFilterDrawer();
+
+                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+                tabLayout.setVisibility(View.GONE);
                 break;
         }
 
