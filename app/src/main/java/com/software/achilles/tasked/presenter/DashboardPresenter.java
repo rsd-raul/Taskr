@@ -256,17 +256,18 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         if(position == Constants.SNOOZED_FILTER)
             return  dataManager.findAllSnoozedTasks();
 
-
-
-
         RealmQuery<Task> main = dataManager.findAllTasksByTaskListPosition(position).where();
 
         if(activeMainFilter.contains(Constants.STARRED))
             main.equalTo("starred", true);
         if(activeMainFilter.contains(Constants.DUE_TODAY))
-            main.between("due", DateHelper.getStartOfDay(null), DateHelper.getEndOfDay(null));
+            main.between("due", DateHelper.getStartOfDay(), DateHelper.getEndOfDay());
         if(activeMainFilter.contains(Constants.DUE_THIS_WEEK))
-            main.between("due", DateHelper.getStartOfDay(null), DateHelper.getNextWeek(null));
+            main.between("due", DateHelper.getStartOfDay(), DateHelper.getNextWeek());
+        if(activeLocationFilter.size() > 0)
+            main.isNotNull("location");
+        if(activeLocationFilter.size() > 0)
+            main.isNotEmpty("labels");
 
         List<Task> result = new ArrayList<>();
         for (Task task : main.findAll())

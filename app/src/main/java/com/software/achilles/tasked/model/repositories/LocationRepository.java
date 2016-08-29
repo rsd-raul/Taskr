@@ -62,8 +62,8 @@ public class LocationRepository implements BaseRepository<Location> {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults results = realm.where(Location.class).findAll();
-                results.remove(position);
+                RealmResults<Location> results = realm.where(Location.class).findAll();
+                results.get(position).deleteFromRealm();
 
                 realm.commitTransaction();
             }

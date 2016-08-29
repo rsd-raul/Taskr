@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         ErrorReporter errorReporter = ErrorReporter.getInstance();
         errorReporter.Init(this);
         errorReporter.CheckErrorAndSendMail(this);
-        Toast.makeText(MainActivity.this, "Email Reporter Active", Toast.LENGTH_SHORT).show();
 //REVIEW        ****** ONLY FOR DEVELOPMENT ******
 
         // If first time, launch the introduction
