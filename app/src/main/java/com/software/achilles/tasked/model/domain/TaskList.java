@@ -9,8 +9,6 @@ import io.realm.annotations.Required;
 
 public class TaskList extends RealmObject implements BasicType{
 
-    // --------------------------- Values ----------------------------
-
     // ------------------------- Attributes --------------------------
 
     @PrimaryKey
@@ -51,6 +49,4 @@ public class TaskList extends RealmObject implements BasicType{
     public void setTasks(RealmList<Task> tasks) {
         this.tasks = tasks;
     }
-
-    // ------------------------ Other methods ------------------------
 }

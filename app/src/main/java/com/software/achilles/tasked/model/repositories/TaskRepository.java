@@ -43,10 +43,6 @@ public class TaskRepository implements BaseRepository<Task> {
         return realm.where(TaskList.class).findAll().get(position).getTasks();
     }
 
-    public RealmResults<Task> findAllByTitle(String query){
-        return realm.where(Task.class).contains("title", query, Case.INSENSITIVE).findAll();
-    }
-
     // ----------------------------- Add -----------------------------
 
     @Override
@@ -71,17 +67,6 @@ public class TaskRepository implements BaseRepository<Task> {
             public void execute(Realm realm) {
                 Task task = realm.where(Task.class).equalTo("id", id).findFirst();
                 task.deleteFromRealm();
-            }
-        });
-    }
-
-    @Override
-    public void deleteByPosition(final int position) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                RealmResults<Task> results = realm.where(Task.class).findAll();
-                results.get(position).deleteFromRealm();
             }
         });
     }

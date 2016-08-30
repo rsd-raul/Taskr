@@ -10,8 +10,6 @@ import io.realm.annotations.Required;
 
 public class Label extends RealmObject implements BasicType {
 
-    // --------------------------- Values ----------------------------
-
     // ------------------------- Attributes --------------------------
 
     @PrimaryKey
@@ -28,6 +26,7 @@ public class Label extends RealmObject implements BasicType {
 
     public Label(@NonNull String title, int colorRes) {
         this.title = title;
+
         // If the user doesn't select a color, the label will be "colorAccent"
         this.colorRes = colorRes == -1 ? R.color.colorAccent : colorRes;
     }
@@ -50,9 +49,6 @@ public class Label extends RealmObject implements BasicType {
 
     public int getColorRes() {
         return colorRes;
-    }
-    public void setColorRes(int colorRes) {
-        this.colorRes = colorRes;
     }
 
 // -------------------------- To String --------------------------

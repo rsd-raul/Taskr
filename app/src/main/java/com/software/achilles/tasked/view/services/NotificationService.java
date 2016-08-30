@@ -51,6 +51,7 @@ public class NotificationService {
 
         // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(responseActivity);
+
         // Adds the Intent that starts the Activity on click
         stackBuilder.addNextIntent(resultIntent);
 

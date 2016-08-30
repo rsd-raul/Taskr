@@ -12,8 +12,6 @@ import io.realm.annotations.Required;
 
 public class Task extends RealmObject implements BasicType {
 
-    // --------------------------- Values ----------------------------
-
     // ------------------------- Attributes --------------------------
 
     @PrimaryKey
@@ -35,7 +33,6 @@ public class Task extends RealmObject implements BasicType {
         this.labels = new RealmList<>();
     }
 
-    // TODO no id in constructor
     public Task(@NonNull String title, @NonNull TaskList taskList, boolean completed,
                 boolean starred, String notes, Date due, Location location,
                 RealmList<Label> labels) {
@@ -113,15 +110,4 @@ public class Task extends RealmObject implements BasicType {
     public void setTaskList(TaskList taskList) {
         this.taskList = taskList;
     }
-
-    // -------------------------- To String --------------------------
-
-//    @Override
-//    public String toString() {
-//        // Access resources from Android in order to translate at sharing
-//        Resources resources = FloatingActionMenuConfigurator.activity.getResources();
-//        return (completed ? resources.getString(R.string.task_done) : "") + getTitle() +
-//                (due == null ? "" : " - " + dateToText(due));
-//    }
-
 }

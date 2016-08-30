@@ -5,5 +5,4 @@
             android:key="first_time"
             android:defaultValue="true"/>
 
-
 </PreferenceScreen>

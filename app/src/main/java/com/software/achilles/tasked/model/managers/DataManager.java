@@ -28,10 +28,6 @@ import io.realm.RealmResults;
 @Singleton
 public class DataManager {
 
-    // --------------------------- Values ----------------------------
-
-    // ------------------------- Attributes --------------------------
-
     // -------------------------- Injected ---------------------------
 
     LabelRepository labelRepository;
@@ -147,8 +143,6 @@ public class DataManager {
         taskRepository.deleteById(taskId);
     }
 
-    // ----------------------------- Get -----------------------------
-
     // ------------------------ Temporal Task ------------------------
 
     private Task temporalTask;
@@ -180,79 +174,7 @@ public class DataManager {
         taskRepository.taskModifier(uniqueParameterId, task, date);
     }
 
-
-
-
-// ------------------------ NOT TESTED ------------------------ NOT TESTED ------------------------
-
-    // -------------------------- Filtering --------------------------
-
-//    int size = 0;
-
-    public RealmResults<Task> filterByText(String query, Boolean searchDeep){
-        return taskRepository.findAllByTitle(query);
-    }
-
-//    public ArrayList<Task> filterByText(String query, Boolean searchDeep){
-//        ArrayList<Task> result = size < query.length() ? getCurrentTasks() : getAllTasks();
-//        size = query.length();
-//
-//        return searchDeep ? deepSearch(result) : lightSearch(result);
-//    }
-
-//    public ArrayList<Task> deepSearch(ArrayList<Task> tasks){
-//        // Busqueda final, aprovecha lo que tienes
-//        return new ArrayList<>();
-//    }
-
-//    public ArrayList<Task> lightSearch(ArrayList<Task> tasks){
-//        // Tengo que lanzar un hilo y cancelarlo si el usuario teclea otra letra, cosa que si estoy
-//        // buscando "hola" no se tire 20 segundos en buscar todas las tareas que tienen una "h"
-//        return new ArrayList<>();
-//    }
-
-//    public ArrayList<Task> filterByFilterDrawerMoreValues(){
-//
-//        return getAllTasks();
-//    }
-
-//    public ArrayList<Task> filterByFilterDrawerLessValues(){
-////        return mDatabaseHelper.filterTaskListBy(index, values);
-//        return new ArrayList<>();
-//    }
-
-//    public ArrayList<Task> filterByFilterDrawer(){
-//        return new ArrayList<>();
-//    }
-
-//    // Retrieve the current Tasks in the ViewPager (take advantage of a previous filter)
-//    public ArrayList<Task> getAllTasks(){
-////        return mDatabaseHelper.getAllTaskForTaskList(index);
-//        return new ArrayList<>();
-//    }
-
-//    // Get all tasks from the Database in order to filter again (filter less restrictive now)
-//    public ArrayList<Task> getCurrentTasks(){
-////        ArrayList<Task> result = new ArrayList<>();
-////        result.addAll( mDashboardPresenter.getTasksInCurrentPage() );
-//        return new ArrayList<>();
-//    }
-
-    // ------------------------- View Holder -------------------------
-    // -------------------------- Landscape --------------------------
-    // ---------------------------- Menu -----------------------------
-    // -------------------------- Use Cases --------------------------
-    // -------------------------- Interface --------------------------
-    // --------------------- Add Task Interface ----------------------
-    // --------------------------- Details ---------------------------
-    // ------------------------ Notifications ------------------------
-    // ------------------------- Preferences -------------------------
-    // -------------------------- FAB child --------------------------
-    // -------------------------- FAB menu ---------------------------
-
-    // REVIEW - Helper - Remove everything and include "tips and tricks" tasks
-    // If the user doesn't have any labels, add 3/4 by default
-    // If user doesn't have locations, add "Home" and "Work" by default and ask to initialize.
+    // TODO - Poblar la base de datos para el/los revisores
     public void firstTimePopulation(){
         int amountList = 5;
         int amountTasks = 15;

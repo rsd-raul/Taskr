@@ -5,8 +5,6 @@ import android.text.TextWatcher;
 
 public class OnText_EditTextListener implements TextWatcher{
 
-    // --------------------------- Values ----------------------------
-
     // ------------------------- Attributes --------------------------
 
     private boolean active = false;
@@ -40,5 +38,4 @@ public class OnText_EditTextListener implements TextWatcher{
             active = false;
         }
     }
-
 }

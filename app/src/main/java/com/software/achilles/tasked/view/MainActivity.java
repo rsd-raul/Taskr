@@ -74,12 +74,10 @@ public class MainActivity extends AppCompatActivity {
         // Dagger FTW - Inject dependencies
         ((App) getApplication()).component().inject(this);
 
-//REVIEW        ****** ONLY FOR DEVELOPMENT ******
-        // Simple BUG report, retrieves the last error and tries to send an email
+        // Simple BUG report, retrieves the last error and prompts to send an email
         ErrorReporter errorReporter = ErrorReporter.getInstance();
         errorReporter.Init(this);
         errorReporter.CheckErrorAndSendMail(this);
-//REVIEW        ****** ONLY FOR DEVELOPMENT ******
 
         // If first time, launch the introduction
         if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Value.FIRST_TIME, true)) {
@@ -173,24 +171,6 @@ public class MainActivity extends AppCompatActivity {
     // -------------------------- Use Cases --------------------------
 
     // --------------------- Add Task Interface ----------------------
-
-    public void onClickTaskCustomization(View view){
-//        switch (view.getId()){
-//            // Close interface
-////            case R.id.button_close:       // DEPRECATED no more close button
-////                dialogForTaskRemoval();
-////                break;
-//            // Task customization buttons
-//            default:
-//                mTaskCreationFragment.taskCustomization(view);
-//                break;
-//
-//        }
-    }
-
-
-
-    // TODO esto deberia hacer que la ActionBar volviera - NO LO HACE
 
     /**
      * This method will make sure the behavior that hides the action bar is disabled
@@ -310,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
                 mDrawersConfigurator.mMainDrawer.setSelectionAtPosition(1, false);
 
                 dashboardPresenter.attachView((DashboardFragment) newFragment);
-//                taskCreationPresenter.destroyPresenter();
                 break;
 
             case Constants.ADD_TASK:
@@ -323,7 +302,6 @@ public class MainActivity extends AppCompatActivity {
                 newFragment.setArguments(bundle);
 
                 taskCreationPresenter.attachView((TaskCreationFragment) newFragment);
-//                DashboardPresenter.destroyPresenter();
 
                 animIn = android.R.anim.fade_in;
                 animOut = android.R.anim.fade_out;
@@ -355,10 +333,6 @@ public class MainActivity extends AppCompatActivity {
         if(newFragment == null)
             return;
 
-        // Initialize the fragment change
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.replace(R.id.main_fragment_container, newFragment).commit();
-
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(animIn, animOut);
         ft.replace(R.id.main_fragment_container, newFragment).commit();
@@ -368,7 +342,6 @@ public class MainActivity extends AppCompatActivity {
         dashboardPresenter.setupViewPagerAndTabs(goToEnd);
     }
 
-    // ------------------- Fragment and Presenter --------------------
     // ------------------------ PLACE PICKER -------------------------
 
     @Override

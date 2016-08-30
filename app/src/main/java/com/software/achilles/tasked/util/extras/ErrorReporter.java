@@ -21,8 +21,6 @@ import java.io.Writer;
 import java.util.Date;
 import java.util.Random;
 
-
-// REVIEW - ONLY FOR DEVELOPMENT
 public class ErrorReporter implements Thread.UncaughtExceptionHandler {
     String VersionName;
     String PackageName;
@@ -45,8 +43,8 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler {
     String User;
 
     private Thread.UncaughtExceptionHandler PreviousHandler;
-    private static ErrorReporter    S_mInstance;
-    private Context       CurContext;
+    private static ErrorReporter  S_mInstance;
+    private Context CurContext;
 
     public void Init( Context context ) {
         PreviousHandler = Thread.getDefaultUncaughtExceptionHandler();

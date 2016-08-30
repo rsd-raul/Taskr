@@ -8,13 +8,10 @@ import io.realm.annotations.Required;
 
 public class Location extends RealmObject implements BasicType{
 
-    // --------------------------- Values ----------------------------
-
     // ------------------------- Attributes --------------------------
 
     @PrimaryKey
     private long id;
-//    @Index        // REVIEW Para lugares favoritos?
     @Required
     private String title;
     private String address;
@@ -53,27 +50,6 @@ public class Location extends RealmObject implements BasicType{
         this.title = title;
     }
 
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
     public double[] getBounds() {
         if(southwest_lat == null)
             return null;
@@ -92,13 +68,4 @@ public class Location extends RealmObject implements BasicType{
             this.northeast_lon = null;
         }
     }
-
-    public boolean isFavourite() {
-        return favourite;
-    }
-    public void setFavourite(boolean isFavourite) {
-        this.favourite = isFavourite;
-    }
-
-    // -------------------------- To String --------------------------
 }

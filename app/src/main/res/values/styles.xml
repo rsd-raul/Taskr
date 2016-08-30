@@ -10,12 +10,6 @@
         <!-- Change the normal style of unchecked checkboxes, etc -->
         <item name="colorControlNormal">#bdbdbd</item>
 
-        <!-- Override colorAccent on activated/checked UI controls -->
-        <!--<item name="colorControlActivated">#FFF</item>-->
-
-        <!-- Controls the ripple coloring -->
-        <!--<item name="colorControlHighlight">@color/colorPrimary</item>-->
-
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
@@ -49,8 +43,6 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">?attr/colorPrimary</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <!--TODO FIXME this is inactive as it makes every bar scrollable (eg: the task creation one-->
-        <!--<item name="layout_scrollFlags">scroll|enterAlways</item>-->
     </style>
 
     <!-- Layouts -->
@@ -146,7 +138,6 @@
         <item name="android:layout_margin">@dimen/fab_margin</item>
     </style>
 
-
     <!-- SUBLIME PICKER -->
 
     <style name="customSublimePickerStyle" parent="SublimePickerStyleLight">
@@ -154,7 +145,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
-
 
     <!-- SEARCH DROPDOWN AUTOCOMPLETE -->
 

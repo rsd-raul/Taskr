@@ -96,8 +96,6 @@ public class MainAndFilterDrawerConfigurator {
         setupMainDrawer();
         setupMainDrawerListener();
 
-        // TODO esto esta puesto para quitar el null pointer exception, corregir
-
         setupMainList(dataManager.findAllTaskList());
 
         // Setup Filter Drawer and its behaviour
@@ -129,32 +127,10 @@ public class MainAndFilterDrawerConfigurator {
                 .withHeaderBackground(R.drawable.header_background_default)
                 .addProfiles(
                         new ProfileDrawerItem()
-                                .withName("John Doe")
-                                .withEmail("jonnydoe@gmail.com")
-                                .withIcon(R.drawable.person_image_empty),
-                        new ProfileDrawerItem()
-                                .withName("John Doe Work")
-                                .withEmail("jonnydoework@gmail.com")
-                                .withIcon(R.drawable.person_image_empty)
-                        // TODO Add y Manage profiles - Añade lag?
-//                        new ProfileSettingDrawerItem()
-//                                .withIdentifier(Constants.ADD_ACCOUNT)
-//                                .withName("Add Account")
-//                                .withIcon(R.drawable.ic_add)
-//                                .withIconTinted(true),
-//                        new ProfileSettingDrawerItem()
-//                                .withIdentifier(Constants.SETTINGS_ACCOUNTS)
-//                                .withName("Manage Account")
-//                                .withIcon(R.drawable.ic_settings_nut)
-//                                .withIconTinted(true)
+                                .withName("Taskr Beta Tester")
+                                .withEmail("tester@gmail.com")
+                                .withIcon(R.drawable.ic_done_all)
                 )
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        // TODO Account handling
-                        return true;
-                    }
-                })
                 .build();
     }
 
@@ -184,22 +160,7 @@ public class MainAndFilterDrawerConfigurator {
                 .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true);
 
-        // Create secondary items
-        PrimaryDrawerItem glance = new PrimaryDrawerItem().withIdentifier(Constants.GLANCE)
-                .withName(R.string.glance)
-                .withIcon(R.drawable.ic_calendar_list)
-                .withIconTintingEnabled(true);
-        PrimaryDrawerItem planner = new PrimaryDrawerItem().withIdentifier(Constants.PLANNER)
-                .withName(R.string.planner)
-                .withIcon(R.drawable.ic_view_carousel)
-                .withIconTintingEnabled(true);
-
         // Create the footer items
-        PrimaryDrawerItem settings = new SecondaryDrawerItem().withIdentifier(Constants.SETTINGS)
-                .withName(R.string.settings)
-                .withIcon(R.drawable.ic_settings)
-                .withIconTintingEnabled(true)
-                .withSelectable(false);
         PrimaryDrawerItem contact = new SecondaryDrawerItem().withIdentifier(Constants.CONTACT)
                 .withName(R.string.contact)
                 .withIcon(R.drawable.ic_email)
@@ -215,13 +176,10 @@ public class MainAndFilterDrawerConfigurator {
                 .withActionBarDrawerToggleAnimated(true)
                 .addDrawerItems(
                         dashboard, snoozed, completed,
-                        new DividerDrawerItem(),
-                        glance, planner,
                         new DividerDrawerItem().withIdentifier(Constants.LIST_SEPARATOR)
-//                        , mTaskListCollapsibleMain
                 )
                 .addStickyDrawerItems(
-                        settings, contact
+                        contact
                 )
                 .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
                     @Override
@@ -262,18 +220,6 @@ public class MainAndFilterDrawerConfigurator {
                     }
                 })
                 .build();
-//      REVIEW 1 de 2 - Descomentando esto tienes filterDrawer solo en el click y puedes cerrarlo a mano :D
-//                    @Override
-//                    public void onDrawerOpened(View drawerView) {
-//                        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
-//                                DrawerLayout.LOCK_MODE_UNLOCKED);
-//                    }
-//
-//                    @Override
-//                    public void onDrawerClosed(View drawerView) {
-//                        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
-//                                DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
-//                    }
     }
 
     private void setupMainDrawerListener(){
@@ -417,8 +363,6 @@ public class MainAndFilterDrawerConfigurator {
                 .withIcon(R.drawable.ic_flag)
                 .withIconTintingEnabled(true)
                 .withIconColorRes(color)
-//                .withSelectedIconColorRes(color)
-//                .withSelectedTextColorRes(color)
                 .withIdentifier(Constants.STARRED)
                 .withSelectable(true);
         color = R.color.amberDate;
@@ -426,8 +370,6 @@ public class MainAndFilterDrawerConfigurator {
                 .withName(R.string.dueToday)
                 .withIcon(R.drawable.ic_calendar_today)
                 .withIconColorRes(color)
-//                .withSelectedIconColorRes(color)
-//                .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_TODAY)
                 .withSelectable(true);
@@ -436,8 +378,6 @@ public class MainAndFilterDrawerConfigurator {
                 .withName(R.string.dueThisWeek)
                 .withIcon(R.drawable.ic_calendar_list)
                 .withIconColorRes(color)
-//                .withSelectedIconColorRes(color)
-//                .withSelectedTextColorRes(color)
                 .withIconTintingEnabled(true)
                 .withIdentifier(Constants.DUE_THIS_WEEK)
                 .withSelectable(true);
@@ -489,9 +429,6 @@ public class MainAndFilterDrawerConfigurator {
                         starred, today, thisWeek,
                         new SectionDrawerItem().withName(R.string.list_filters),
                         mLabelCollapsible, mLocationCollapsible
-                        , mTaskCollapsible
-                        // TODO si filtras sobre la lista es redundante, eso o lo que haces es llevar
-                        // a el usuario a la lista y activar el resto de filtros... Pueeeeede ser util
                 )
                 .addStickyDrawerItems(
                         mOrderCollapsible
@@ -502,13 +439,6 @@ public class MainAndFilterDrawerConfigurator {
                 .withMultiSelect(true)
                 .append(mMainDrawer);
 
-//      REVIEW 2 de 2 - descomentando esto tienes drawer solo en el click y puedes cerrarlo a mano :D
-//        mFilterDrawer.getDrawerLayout().setDrawerLockMode(
-//                DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
-
-//        // We want the labels opened by default
-//        addLabelsToFilterDrawer(TaskController.sLabels);
-//        mExpandedLabelListFilter = true;
     }
 
     private void setupFilterDrawerListener(){
@@ -576,7 +506,7 @@ public class MainAndFilterDrawerConfigurator {
             case Constants.COLLAPSIBLE_TASK_LIST:
                 toRemoveItems = mTaskListIds;
                 toToggleCollapsible = mTaskCollapsible;
-                mExpandedTaskListFilter = !expanded;        // if(expanded) ? False : True
+                mExpandedTaskListFilter = !expanded;
                 if (!expanded)
                     addTaskListToFilterDrawer(dataManager.findAllTaskList());
                 break;
@@ -756,13 +686,6 @@ public class MainAndFilterDrawerConfigurator {
                 mLocationListIds = addedIds;
                 break;
         }
-
-        // TODO OnClick in "expandable" scroll to the header of the list
-//        drawer.getRecyclerView().scrollToPosition(6);
-//        drawer.getRecyclerView().getLayoutManager().scrollToPosition(identifier);    //   ESTO DABA EL APAÑO, pero no funciona para By task list
-//        drawer.getRecyclerView().getChildAdapterPosition(mLabelCollapsible.generateView(getApplication()));
-//        drawer.getRecyclerView().
-//        drawer.getRecyclerView().getLayoutManager().sc
     }
 
     private void addOrderFilterToDrawer() {
@@ -847,21 +770,14 @@ public class MainAndFilterDrawerConfigurator {
 
                 break;
             case Constants.SNOOZED:
-
                 title = R.string.snoozed;
                 break;
             case Constants.COMPLETED:
-
                 title = R.string.completed;
                 break;
             case Constants.GLANCE:
-
                 title = R.string.glance;
                 break;
-//            case Constants.PLANNER:       // Planner es completamente diferente
-//
-//                title = R.string.planner;
-//                break;
         }
         actionBar.invalidateOptionsMenu();
         actionBar.setTitle(title);

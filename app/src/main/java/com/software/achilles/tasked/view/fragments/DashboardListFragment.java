@@ -86,7 +86,6 @@ public class DashboardListFragment extends Fragment {
     }
 
     public void populateAdapter(List<Task> tasks){
-        // REVIEW Is this the proper way to restart the adapter to remove duplicates?
         fastAdapter.removeItemRange(0, fastAdapter.getItemCount());
 
         int size = tasks.size();

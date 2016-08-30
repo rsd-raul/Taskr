@@ -89,16 +89,4 @@ public class TaskListRepository implements BaseRepository<TaskList> {
             }
         });
     }
-
-    @Override
-    public void deleteByPosition(final int position) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                RealmResults results = realm.where(TaskList.class).findAll();
-                results.remove(position);
-
-            }
-        });
-    }
 }

@@ -51,10 +51,8 @@ public class FloatingActionMenuConfigurator {
         fam = (FloatingActionMenu) activity.findViewById(R.id.menuFAB);
 
         configureMenu();
-//        setMenuOnScrollReaction();
         menuCustomizeBehaviour();
         configureChildren();
-        setMenuOnScrollReaction();
     }
 
     // -------------------------- Use Cases --------------------------
@@ -83,82 +81,6 @@ public class FloatingActionMenuConfigurator {
 
         // On click outside close the menu
         fam.setClosedOnTouchOutside(true);
-
-
-
-        // FIXME onLongClick => Desplegar añadir tarea
-        fam.setOnLongClickListener(new FloatingActionMenu.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                mainPresenter.deployLayout(Constants.ADD_TASK);
-                return true;
-            }
-        });
-    }
-
-//    public void closeFabMenu(){
-//        fam.close(true);
-//    }
-
-    // FIXME 1/2 Controlar el FAM y la barra cuando se detecta scroll
-    // FIXME 2/2 Si no escondes FAM tienes que dar extra padding/margin a el viewpager (o el boton tapa las acciones)
-    public static void setMenuOnScrollReaction(){
-
-//        // prepare animations
-//        Animation fab_slide_down = AnimationUtils.loadAnimation(mainActivity, R.anim.fab_slide_down);
-//        fab_slide_down.setInterpolator(new AccelerateInterpolator());
-//
-//        Animation fab_slide_up = AnimationUtils.loadAnimation(mainActivity, R.anim.fab_slide_up);
-//        fab_slide_up.setInterpolator(new AccelerateInterpolator());
-//
-//        // Set animations
-//        fam.setMenuButtonHideAnimation(fab_slide_down);
-//        fam.setMenuButtonShowAnimation(fab_slide_up);
-
-        // Control the behaviour when scrolling
-
-//        mainActivity.getSupportActionBar().hide();
-//        mainActivity.getSupportActionBar().show();
-
-//        RecyclerView recyclerView = (RecyclerView) mainActivity.findViewById(R.id.recyclerview);
-//        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                if (dy > 0 && fam.getVisibility() == View.VISIBLE)
-//                    // User scrolled down and the FAB is currently visible -> hide the FAB
-//                    fam.hideMenu(true);
-//                 else if (dy < 0 && fam.getVisibility() != View.VISIBLE)
-//                    // User scrolled up and the FAB is currently not visible -> show the FAB
-//                    fam.showMenu(true);
-//                super.onScrolled(recyclerView, dx, dy);
-//            }
-//        });
-
-//        NestedScrollView scrollView = (NestedScrollView) mainActivity.findViewById(R.id.scrollView);
-//        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-
-        // ---------------------- Marshmallow Only -----------------------
-
-        //FIXME - NOT WORKING on MARSHMALLOW -> BUG
-
-//        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-//            return;
-//
-//        ViewPager viewPager = (ViewPager) mainActivity.findViewById(R.id.viewpager);
-//        viewPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(View v, int scrollX, int scrollY,
-//                                       int oldScrollX, int oldScrollY) {
-//                if (scrollY - oldScrollY > 0)
-//                    fam.hideMenu(true);
-//                else
-//                    fam.showMenu(true);
-//            }
-//        });
     }
 
     // Make the menu react to external stimuli such as a Snackbar
@@ -230,10 +152,6 @@ public class FloatingActionMenuConfigurator {
     // -------------------------- Use Cases --------------------------
 
     public void famVisibility(boolean toggle){
-//        if(toggle)                // Fails to show the menu properly
-//            fam.showMenu(true);
-//        else
-//            fam.hideMenu(true);
         fam.setVisibility( toggle ? View.VISIBLE : View.GONE );
     }
 }

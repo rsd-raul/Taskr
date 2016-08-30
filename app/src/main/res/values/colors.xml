@@ -10,19 +10,10 @@
 
     <!-- Custom Palette -->
 
-    <!--<color name="colorPrimaryDark">#FF31277C</color>   EN colors.xml v21-->
     <color name="colorPrimaryDark">#3B2F93</color>
     <color name="colorPrimary">#3B2F93</color>
     <color name="colorAccentDark">#FF1F48</color>
     <color name="colorAccent">#FF4A6B</color>
-
-    <!-- Material Default -->
-
-    <!--<color name="colorPrimaryDark">#303F9F</color>-->
-    <!--<color name="colorPrimary">#3F51B5</color>-->
-    <!--<color name="colorAccentDark">#D32F2F</color>-->
-    <!--<color name="colorAccent">#E53935</color> INBOX-->
-    <!--<color name="colorAccent">#FF5252</color> DEFAULT-->
 
     <!-- Status -->
 

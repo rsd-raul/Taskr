@@ -6,10 +6,6 @@ public abstract class Constants {
 
     // --------------------------- Values ----------------------------
 
-    public static final long WEEK_IN_MILLISECOND =      604800000L; // UNUSED
-    public static final long DAY_IN_MILLISECOND =       86400000L;  // UNUSED
-    public static final long MINUTE_IN_MILLISECOND =    60000L;     // UNUSED
-
     public static final int TASK_LIST =                 1;
     public static final int LOCATION =                  9;
     public static final int LABEL =                     10;
@@ -24,9 +20,6 @@ public abstract class Constants {
 
     public static final int SETTINGS =                  7;
     public static final int CONTACT =                   8;
-
-    public static final int SETTINGS_ACCOUNTS =         9;          // UNUSED
-    public static final int ADD_ACCOUNT =               10;         // UNUSED
 
     public static final int ADD_TASK_LIST =             11;
 
@@ -57,28 +50,17 @@ public abstract class Constants {
 
     // -------------------------- Dashboard --------------------------
 
-    public static final int DASH_TASK =                 21;
     public static final int DASH_DONE =                 22;
     public static final int DASH_FAVE =                 12;
     public static final int DASH_DATE =                 16;
 
     // ------------------------ Task Creation ------------------------
 
-    public static final int DETAIL_DESCRIPTION =        27;
-    public static final int DETAIL_LOCATION =           28;
-    public static final int DETAIL_ALARM =              29;
-    public static final int DETAIL_LABELS =             30;
-
     public static final String LIST_INDEX =             "listIndex";
     public static final String TASK_ID =                "taskId";
 
-    public static final int ADD_LOCATION =              33;
-
     // ----------------------- Sublime Picker ------------------------
 
-    public static final Picker TIME_PICKER =            Picker.TIME_PICKER;
-    public static final Picker DATE_PICKER =            Picker.DATE_PICKER;
-    public static final Picker REPEAT_PICKER =          Picker.REPEAT_OPTION_PICKER;
     public static final String SUBLIME_OPTIONS =        "SUBLIME_OPTIONS";
     public static final String SUBLIME_PICKER =         "SUBLIME_PICKER";
 
@@ -92,5 +74,4 @@ public abstract class Constants {
 
     public static final int SNOOZED_FILTER =            -2;
     public static final int COMPLETED_FILTER =          -3;
-
 }

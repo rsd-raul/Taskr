@@ -64,13 +64,6 @@
 
     <string name="task_list_quick_access">Task list quick access</string>
 
-    <!--<string name="navigation_drawer_default_image_description">Primary color with app icon</string>-->
-    <!--<string name="navigation_drawer_user_image_description">Google Account cover image</string>-->
-    <!--<string name="navigation_drawer_expand_image_description">Expand to switch accounts</string>-->
-    <!--<string name="placeholder_email_address" translatable="false">-->
-        <!--really_long_email_address_string_to_ensure_proper_overflow_formatting@gmail.com-->
-    <!--</string>-->
-
     <!--TaskList toString-->
 
     <string name="listName">List name:</string>

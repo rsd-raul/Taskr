@@ -71,7 +71,6 @@
                 android:paddingBottom="10dp"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:onClick="onClickTaskCustomization"
 
                 android:layout_below="@+id/textInput"/>
 
@@ -120,8 +119,7 @@
                 android:paddingEnd="5dp"
 
                 android:layout_below="@+id/textInput"
-                android:layout_toEndOf="@+id/button_location"
-                android:layout_toRightOf="@+id/button_location" />
+                android:layout_toEndOf="@+id/button_location" />
 
             <ImageButton
                 android:id="@+id/button_favourite"
@@ -136,8 +134,7 @@
                 android:paddingEnd="5dp"
 
                 android:layout_below="@+id/textInput"
-                android:layout_toEndOf="@+id/button_label"
-                android:layout_toRightOf="@+id/button_label" />
+                android:layout_toEndOf="@+id/button_label" />
 
             <TextView
                 android:id="@+id/text_task_list"
@@ -147,7 +144,6 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingEnd="10dp"
-                android:paddingRight="10dp"
 
                 android:textColor="@color/spinner_text_color"
 
@@ -156,9 +152,7 @@
 
                 android:layout_alignTop="@+id/button_favourite"
                 android:layout_alignBottom="@+id/button_favourite"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_toRightOf="@+id/button_favourite"
                 android:layout_toEndOf="@+id/button_favourite" />
 
         </RelativeLayout>

@@ -5,17 +5,6 @@ apply plugin: 'realm-android'                   // Required by Realm
 
 android {
 
-    // Using Java 8 and Jack... Error:Could not find property 'options' on task ':app:compileDebugJavaWithJack'.
-//    defaultConfig {
-//        jackOptions {
-//            enabled true
-//        }
-//    }
-//    compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_8
-//        targetCompatibility JavaVersion.VERSION_1_8
-//    }
-
     compileSdkVersion 24
     buildToolsVersion "23.0.3"
 
@@ -60,12 +49,10 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.4.0@aar') {
         transitive = true
         exclude module: "fastadapter"
-//        exclude module: "iconics-core"
     }
     // https://github.com/mikepenz/FastAdapter
     compile('com.mikepenz:fastadapter:1.6.0@aar') {
         transitive = true
-//        exclude module: "iconics-core"
     }
     // https://github.com/afollestad/material-dialogs
     compile 'com.afollestad.material-dialogs:commons:0.8.6.2'

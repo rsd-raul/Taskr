@@ -70,8 +70,6 @@ public class TaskFAItem extends AbstractItem<TaskFAItem, TaskFAItem.ViewHolder>{
         return firstOrLast == Constants.LAST;
     }
 
-
-    //The unique ID for this type of item // TODO What?
     @Override
     public int getType() {
         return R.id.taskLinearLayout;

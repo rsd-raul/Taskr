@@ -10,9 +10,6 @@ import io.realm.RealmResults;
 
 public class LabelRepository implements BaseRepository<Label> {
 
-    // REVIEW quitar URL cuando este listo completamente
-    // http://mlsdev.com/en/blog/47-realm-practical-use-in-android
-
     // -------------------------- Injected ---------------------------
 
     Realm realm;
@@ -26,19 +23,17 @@ public class LabelRepository implements BaseRepository<Label> {
 
     // ---------------------------- Find -----------------------------
 
-    public Label findOne(long id /*, OnGetLabelByIdCallback callback*/) {
+    public Label findOne(long id) {
         return realm.where(Label.class).equalTo("id", id).findFirst();
     }
 
-    public RealmResults<Label> findAll(/*, OnGetAllLabelCallback callback*/) {
+    public RealmResults<Label> findAll() {
         return realm.where(Label.class).findAll();
-//        if (callback != null)
-//            callback.onSuccess(results);
     }
 
     // ---------------------------- Save -----------------------------
 
-    public void save(final Label label /*, OnAddLabelCallback callback*/) {
+    public void save(final Label label) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -48,28 +43,16 @@ public class LabelRepository implements BaseRepository<Label> {
                 realm.copyToRealmOrUpdate(label);
             }
         });
-//        if (callback != null)
-//            callback.onSuccess();
     }
 
     // --------------------------- Delete ----------------------------
 
-    public void deleteById(final long Id /*, OnDeleteLabelCallback callback*/) {
+    public void deleteById(final long Id) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 Label label = realm.where(Label.class).equalTo("id", Id).findFirst();
                 label.deleteFromRealm();
-            }
-        });
-    }
-
-    public void deleteByPosition(final int position /*, OnDeleteLabelCallback callback*/) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                RealmResults<Label> results = realm.where(Label.class).findAll();
-                results.get(position).deleteFromRealm();
             }
         });
     }
