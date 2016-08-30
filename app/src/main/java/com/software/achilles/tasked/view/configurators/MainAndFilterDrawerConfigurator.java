@@ -129,7 +129,7 @@ public class MainAndFilterDrawerConfigurator {
                         new ProfileDrawerItem()
                                 .withName("Taskr Beta Tester")
                                 .withEmail("tester@gmail.com")
-                                .withIcon(R.drawable.ic_done_all)
+                                .withIcon(R.mipmap.ic_launcher)
                 )
                 .build();
     }

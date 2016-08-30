@@ -48,6 +48,9 @@ public class DashboardFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if(dashboardPresenter == null)
+            android.os.Process.killProcess(android.os.Process.myPid());
+
         dashboardPresenter.attachView(this);
 
         // Setup the fragment composing the ViewPager and the Tabs to control it

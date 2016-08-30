@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ActionBar Title -->
+
+    <string name="app_name">Tasked</string>
+    <string name="statistics">Estadisticas</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="snoozed">Pospuestas</string>
+    <string name="completed">Completadas</string>
+    <string name="glance">Glance</string>
+    <string name="planner">Planner</string>
+    <string name="taskList">Lista de tareas</string>
+    <string name="settings">Ajustes</string>
+    <string name="contact">Ayuda &amp; opiniones</string>
+
+    <!-- Filters -->
+
+    <string name="clear_filter">BORRAR FILTROS</string>
+
+    <string name="main_filters">Filtros principales</string>
+    <string name="starred">Favoritos</string>
+    <string name="dueToday">Para hoy</string>
+    <string name="dueThisWeek">Para esta semana</string>
+
+    <string name="list_filters">Filtros agrupados</string>
+    <string name="by_task_list">Por lista de tareas</string>
+    <string name="by_label">Por etiqueta</string>
+    <string name="by_location">Por localización</string>
+
+    <string name="reorder_items">Orden de listas</string>
+    <string name="alphabetically">Alfabeticamente</string>
+    <string name="due_date">Por fecha</string>
+    <string name="custom_order">Orden customizado</string>
+
+    <!-- Contact developer -->
+
+    <string name="developer_email" translatable="false">achillessoftware@gmail.com</string>
+    <string name="subject_email">Tasked - Fallo/Funcionalidad/Solicitud</string>
+    <string name="send_email">Contacta al desarrollador</string>
+
+    <!-- ActionBar Icons -->
+
+    <string name="search">Buscar</string>
+    <string name="filter">Filtro</string>
+    <string name="search_tasks">Buscar tareas</string>
+    <string name="complete">Completar</string>
+    <string name="delete">Borrar</string>
+
+    <!-- Generic -->
+
+    <string name="select">Seleccionar</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+
+    <!-- FAB menu and childs -->
+
+    <string name="shareList">Compartir lista</string>
+    <!--<string name="addMultiTasks">Añadir múltiples tareas</string>         DEPRECATED -->
+    <string name="addLabel">Añadir etiqueta</string>
+    <string name="addTask">Añadir tarea</string>
+    <string name="addList">Añadir lista</string>
+
+    <!-- Navigation Drawer -->
+
+    <string name="task_list_quick_access">Acceso rápido a lista de tareas</string>
+
+    <!--<string name="navigation_drawer_default_image_description">Color principal con icono de la aplicación</string>--> l
+    <!--<string name="navigation_drawer_user_image_description">imagen de portada de la cuenta de Google</string>-->
+    <!--<string name="navigation_drawer_expand_image_description">Expandir para cambiar de cuenta</string>-->
+    <!--<string name="placeholder_email_address" translatable="false">-->
+    <!--really_long_email_address_string_to_ensure_proper_overflow_formatting@gmail.com-->
+    <!--</string>-->
+
+    <!--TaskList toString-->
+
+    <string name="listName">Nombre de la lista:</string>
+    <string name="tasks">Tareas:</string>
+    <string name="task_done">COMPLETADA</string>
+
+    <!--Task Creation Fragment-->
+
+    <string name="title">Titulo</string>
+    <string name="type_title">Escribe título&#8230;</string>
+    <string name="ask_for_title">Introduzca el título</string>
+
+    <string name="select_task_list">Seleccione una lista de tareas</string>
+    <string name="select_labels">Seleccione etiquetas</string>
+
+    <string name="ask_for_description">Introduzca la desripción</string>
+    <string name="description">Descripción</string>
+
+    <string name="discard_changes">Deshacer cambios?</string>
+    <string name="discard">Deshacer</string>
+
+    <string name="alarm">Alarma</string>
+    <string name="location">Localización</string>
+    <string name="labels">Etiquetas</string>
+    <string name="favourite">Favoritos</string>
+
+    <string name="expand">Expandir</string>
+    <string name="addLocation">Añadir localización</string>
+
+    <!-- Error report -->
+
+
+    <!-- Place Picker -->
+
+    <string name="launching_place_picker">Lanzar selector de localización</string>
+    <string name="PlacePickerFailed">Google Place Picker ha fallado\nAvise al desarrollador para actualizar\nDesde el drawer principal</string>
+    <string name="GooglePlayServicesUnavailable">Google Play Services - No Disponible</string>
+
+    <string name="blank"/>
+
+    <!-- Location Pickers -->
+
+    <string name="set_location">Fijar localización</string>
+    <string name="as_place">Como lugar</string>
+    <string name="as_note">Como nota</string>
+    <string name="ask_for_location">Introduce la localización</string>
+
+    <!-- Dashboard -->
+
+    <string name="warning_item_access">Problemas accediendo al ítem</string>
+    <string name="task_not_saved">Tarea no guardada</string>
+    <string name="nothing_found">Nada encontrado</string>
+    <string name="please_connect_internet">Porfavor conectese a internet</string>
+
+</resources>
