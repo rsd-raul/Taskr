@@ -182,15 +182,15 @@ public class DataManager {
         Log.d("POPULATION: ", "STARTED");
 
         // Fields to switch and use randomly
-        String[] titles = new String[]{"Unbelievable long task", "Short task"};
-        String[] descriptions = new String[]{"Unbelievable long description, like, really long",
-                "Short description", null};
+        String[] titles = new String[]{"Tarea increiblemente larga", "Tarea corta"};
+        String[] descriptions = new String[]{"Descripción increiblemente larga, en plan, muy larga",
+                "Descripción corta", null};
         Date[] dueDates = new Date[]{Calendar.getInstance().getTime(), null};
-        String[] listTitles = new String[]{"Really long list", "Short list"};
+        String[] listTitles = new String[]{"Lista muy larga", "Lista corta"};
 
-        String[] locationTitles = new String[]{"Home", "Work", "Market", "Gym"};
+        String[] locationTitles = new String[]{"Casa", "Trabajo", "Supermercado", "Gimnasio"};
 
-        String[] labelTitles = new String[]{"Groceries", "Inspiration", "Personal", "Work"};
+        String[] labelTitles = new String[]{"Compras", "Inspiración", "Personal", "Trabajo"};
         Integer[] labelColors = new Integer[]{R.color.amberDate, R.color.colorPrimary,
                 R.color.tealLocation, R.color.app_body_text_1};
         Integer[] labelQuantities = new Integer[]{0, 1, 2, 3};
