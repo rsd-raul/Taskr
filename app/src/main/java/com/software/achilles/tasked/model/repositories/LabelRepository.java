@@ -56,4 +56,14 @@ public class LabelRepository implements BaseRepository<Label> {
             }
         });
     }
+
+    public void deleteByPosition(final int position /*, OnDeleteLabelCallback callback*/) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Label> results = realm.where(Label.class).findAll();
+                results.get(position).deleteFromRealm();
+            }
+        });
+    }
 }

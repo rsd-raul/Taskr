@@ -43,8 +43,25 @@ public class TaskDetailFAItem extends AbstractItem<TaskDetailFAItem, TaskDetailF
         return this;
     }
 
+    // --------------------------- SETTERS ---------------------------
+
+//    public void setDescription(String description, View v){
+////        taskCreationPresenter.setDescription(description);
+//
+//        String text = description.length() > 0 ? description :
+//                                              context.getString(R.string.ask_for_description);
+//        getFactory().create(v).textView.setText(text);
+//    }
+//
+//    public void setLabels(Integer[] labelsIndex, String labelsString, View v){
+////        taskCreationPresenter.setLabels(labelsIndex);
+//
+//        getFactory().create(v).textView.setText(labelsString);
+//    }
+
     // ------------------------- VIEW HOLDER -------------------------
 
+    //The unique ID for this type of item //TODO What?
     @Override
     public int getType() {
         return R.id.list_detail;

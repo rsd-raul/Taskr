@@ -14,7 +14,7 @@ public class TaskListRepository implements BaseRepository<TaskList> {
 
     // -------------------------- Injected ---------------------------
 
-    Realm realm;
+    private Realm realm;
 
     // ------------------------ Constructor --------------------------
 
@@ -86,6 +86,18 @@ public class TaskListRepository implements BaseRepository<TaskList> {
             public void execute(Realm realm) {
                 TaskList taskList = realm.where(TaskList.class).equalTo("id", id).findFirst();
                 taskList.deleteFromRealm();
+            }
+        });
+    }
+
+    @Override
+    public void deleteByPosition(final int position) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults results = realm.where(TaskList.class).findAll();
+                results.remove(position);
+
             }
         });
     }

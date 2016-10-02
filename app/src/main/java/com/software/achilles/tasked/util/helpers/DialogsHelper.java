@@ -274,6 +274,7 @@ public abstract class DialogsHelper {
                                     R.color.tealLocation, R.color.amberDate, R.color.md_black_1000,
                                     R.color.md_orange_500};
 
+                            // TODO manually pick the color for the Label instead of randomly
                             Label newLabel = new Label(input.toString(), clr[new Random().nextInt(5)]);
 
                             // Save the label
@@ -297,6 +298,10 @@ public abstract class DialogsHelper {
 
         Toast.makeText(activity, R.string.launching_place_picker, Toast.LENGTH_SHORT).show();
 
+        // TODO If you are offline, launch a basic dialog
+        // Location should have a method called "hasPlace" that checks if you have the coordinates,
+        // not only if the task has a location <- it might contain only a name.
+
         try{
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
@@ -312,19 +317,35 @@ public abstract class DialogsHelper {
         } catch (GooglePlayServicesNotAvailableException e1){
             Log.e("DialogHelper", "launchPlacePicker exception", e1);
             Toast.makeText(activity, R.string.GooglePlayServicesUnavailable, Toast.LENGTH_SHORT).show();
-
+            //TODO What if we make a dialog available to only introduce text?? what if we put an option to disable place picker (3rd world countries?)
         } catch (GooglePlayServicesRepairableException e2){
             Log.e("DialogHelper", "launchPlacePicker exception", e2);
             Toast.makeText(activity, R.string.PlacePickerFailed, Toast.LENGTH_SHORT).show();
-
+            //TODO What if we make a dialog available to only introduce text?? what if we put an option to disable place picker (3rd world countries?)
         }
     }
 
     // ----------------------- SUBLIME PICKER ------------------------
 
+//    private static SublimeOptions getFullPicker(Picker picker){
+//        return getBaseOptionsSublime(picker, true, true, true, true);
+//    }
+//
+//    private static SublimeOptions getTimePicker(){
+//        return getBaseOptionsSublime(Constants.TIME_PICKER, false, true, false, false);
+//    }
+//
+//    private static SublimeOptions getDatePicker(boolean allowRange){
+//        return getBaseOptionsSublime(Constants.DATE_PICKER, true, false, false, allowRange);
+//    }
+
     private static SublimeOptions getDateTimePicker(Picker picker, boolean allowRange){
         return getBaseOptionsSublime(picker, true, true, false, allowRange);
     }
+
+//    private static SublimeOptions getRecurrenceOptions(){
+//        return getBaseOptionsSublime(Constants.REPEAT_PICKER, false, false, true, false);
+//    }
 
     private static SublimeOptions getBaseOptionsSublime(Picker picker,
                                                         boolean date, boolean time,
@@ -355,6 +376,18 @@ public abstract class DialogsHelper {
     }
 
     private static SublimeOptions customizeOptionsSublime(SublimeOptions options, Date date, boolean is24){
+        // Example for setting date range:
+        // Note that you can pass a date range as the initial date params
+        // even if you have date-range selection disabled. In this case,
+        // the user WILL be able to change date-range using the header
+        // TextViews, but not using long-press.
+
+        /*Calendar startCal = Calendar.getInstance();
+        startCal.set(2016, 2, 4);
+        Calendar endCal = Calendar.getInstance();
+        endCal.set(2016, 2, 17);
+        options.setDateParams(startCal, endCal);*/
+
 
         // Initialize the calendar and if the task is valid, set the calendar to that value
         Calendar cal = Calendar.getInstance();
@@ -389,6 +422,11 @@ public abstract class DialogsHelper {
         if(fragment == null || fragment.getFragmentManager() == null)
             fragment = dashboardPresenter.getChildView();
         dateTimePickerFactory(id, date, fragment, null, dashboardPresenter, context);
+    }
+
+    public static void buildDateTimePicker(final long id, Date date,
+                                           final DashboardPresenter dashboardPresenter){
+        dateTimePickerFactory(id, date, dashboardPresenter.getView(), null, dashboardPresenter, null);
     }
 
     public static void buildDateTimePicker(Fragment fragment, Date date,

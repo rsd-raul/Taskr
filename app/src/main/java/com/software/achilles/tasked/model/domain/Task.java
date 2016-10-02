@@ -33,6 +33,7 @@ public class Task extends RealmObject implements BasicType {
         this.labels = new RealmList<>();
     }
 
+    // TODO no id in constructor
     public Task(@NonNull String title, @NonNull TaskList taskList, boolean completed,
                 boolean starred, String notes, Date due, Location location,
                 RealmList<Label> labels) {

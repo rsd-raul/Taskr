@@ -3,7 +3,7 @@
 
     <!-- ActionBar Title -->
 
-    <string name="app_name">Tasked</string>
+    <string name="app_name">Taskr</string>
     <string name="statistics">Estadisticas</string>
     <string name="dashboard">Dashboard</string>
     <string name="snoozed">Pospuestas</string>
@@ -36,7 +36,7 @@
     <!-- Contact developer -->
 
     <string name="developer_email" translatable="false">achillessoftware@gmail.com</string>
-    <string name="subject_email">Tasked - Fallo/Funcionalidad/Solicitud</string>
+    <string name="subject_email">Taskr - Fallo/Funcionalidad/Solicitud</string>
     <string name="send_email">Contacta al desarrollador</string>
 
     <!-- ActionBar Icons -->

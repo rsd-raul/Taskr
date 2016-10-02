@@ -12,4 +12,6 @@ public interface BaseRepository<V extends RealmObject> {
     void save(V domain);
 
     void deleteById(long id);
+
+    void deleteByPosition(int position);
 }

@@ -50,8 +50,11 @@ public class Label extends RealmObject implements BasicType {
     public int getColorRes() {
         return colorRes;
     }
+    public void setColorRes(int colorRes) {
+        this.colorRes = colorRes;
+    }
 
-// -------------------------- To String --------------------------
+    // -------------------------- To String --------------------------
 
     @Override
     public String toString() {

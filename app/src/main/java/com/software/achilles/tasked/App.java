@@ -50,6 +50,7 @@ public class App extends Application {
         return appComponent;
     }
 
+    //REVIEW Hack to access context related functionality from TaskDetailFAItem
     public static App getInstance(){
         return instance;
     }

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
 import com.github.clans.fab.FloatingActionMenu;
 import com.software.achilles.tasked.App;
 import com.software.achilles.tasked.R;
@@ -26,6 +27,7 @@ import com.software.achilles.tasked.presenter.DashboardPresenter;
 import com.software.achilles.tasked.presenter.MainPresenter;
 import com.software.achilles.tasked.presenter.TaskCreationPresenter;
 import com.software.achilles.tasked.util.Constants;
+import com.software.achilles.tasked.util.L;
 import com.software.achilles.tasked.util.extras.ErrorReporter;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper;
 import com.software.achilles.tasked.util.helpers.PreferencesHelper.Keys;
@@ -74,10 +76,12 @@ public class MainActivity extends AppCompatActivity {
         // Dagger FTW - Inject dependencies
         ((App) getApplication()).component().inject(this);
 
+//REVIEW        ****** ONLY FOR DEVELOPMENT ******
         // Simple BUG report, retrieves the last error and prompts to send an email
         ErrorReporter errorReporter = ErrorReporter.getInstance();
         errorReporter.Init(this);
         errorReporter.CheckErrorAndSendMail(this);
+//REVIEW        ****** ONLY FOR DEVELOPMENT ******
 
         // If first time, launch the introduction
         if (PreferencesHelper.getShaPrefBoolean(this, Keys.FIRST_TIME, Value.FIRST_TIME, true)) {
@@ -85,10 +89,13 @@ public class MainActivity extends AppCompatActivity {
             PreferencesHelper.setShaPrefBoolean(this, Keys.FIRST_TIME, false, true);
             // launchIntro();
             // return;
-            Toast.makeText(this, "- populating -", Toast.LENGTH_LONG).show();
+
+            L.i("First Time Population - Starting");
 
             // Data population for testing and/or introduction
             dataManager.firstTimePopulation();
+
+            L.i("First Time Population - Completed");
         }
 
         // Set ActionBar
@@ -172,6 +179,22 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------- Add Task Interface ----------------------
 
+//    public void onClickTaskCustomization(View view){
+//        switch (view.getId()){
+//            // Close interface
+////            case R.id.button_close:       // DEPRECATED no more close button
+////                dialogForTaskRemoval();
+////                break;
+//            // Task customization buttons
+//            default:
+//                mTaskCreationFragment.taskCustomization(view);
+//                break;
+//
+//        }
+//    }
+
+
+    // TODO esto deberia hacer que la ActionBar volviera - NO LO HACE
     /**
      * This method will make sure the behavior that hides the action bar is disabled
      * or enabled at convenience.
@@ -290,6 +313,7 @@ public class MainActivity extends AppCompatActivity {
                 mDrawersConfigurator.mMainDrawer.setSelectionAtPosition(1, false);
 
                 dashboardPresenter.attachView((DashboardFragment) newFragment);
+//                taskCreationPresenter.destroyPresenter();
                 break;
 
             case Constants.ADD_TASK:
@@ -302,6 +326,7 @@ public class MainActivity extends AppCompatActivity {
                 newFragment.setArguments(bundle);
 
                 taskCreationPresenter.attachView((TaskCreationFragment) newFragment);
+//                DashboardPresenter.destroyPresenter();
 
                 animIn = android.R.anim.fade_in;
                 animOut = android.R.anim.fade_out;
@@ -332,6 +357,10 @@ public class MainActivity extends AppCompatActivity {
 
         if(newFragment == null)
             return;
+
+        // Initialize the fragment change
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.main_fragment_container, newFragment).commit();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(animIn, animOut);

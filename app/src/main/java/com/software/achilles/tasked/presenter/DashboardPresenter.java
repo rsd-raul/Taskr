@@ -58,6 +58,17 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
         return mListFragment;
     }
 
+    //    public static void destroyPresenter() {
+//        if(instance == null)
+//            return;
+//
+//        instance.mFragment = null;
+//        instance = null;
+//
+////      Un-subscribe from the thread?
+////        if (subscription != null) subscription.unsubscribe();
+//    }
+
     // ---------------------------- LAYOUT ---------------------------
 
     /**
@@ -65,8 +76,15 @@ public class DashboardPresenter implements Presenter<DashboardFragment> {
      */
     public void setupLayout(){
         setupViewPagerAndTabs(false);
+
+        // TODO
+        // Activate a Progress Bar (Circle)
+        // Retrieve new data from API if Preferences to Sync -> On App Start
+        // Update the ViewPager
+        // Deactivate the Progress Bar
     }
 
+    // FIXME mFragment is null as Presenter has been destroyed before
     public void setupViewPagerAndTabs(boolean goToEnd){
         // Get data for setting the ViewPager
         RealmResults<TaskList> taskList = dataManager.findAllTaskList();

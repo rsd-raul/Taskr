@@ -7,6 +7,8 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
+// Original author: Ian Lake - Google - https://github.com/ianhanniballake
+
 @SuppressWarnings(value = "all")
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
 

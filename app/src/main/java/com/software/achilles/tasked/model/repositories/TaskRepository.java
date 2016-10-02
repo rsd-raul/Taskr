@@ -18,7 +18,7 @@ public class TaskRepository implements BaseRepository<Task> {
 
     // -------------------------- Injected ---------------------------
 
-    Realm realm;
+    private Realm realm;
 
     // ------------------------ Constructor --------------------------
 
@@ -43,6 +43,10 @@ public class TaskRepository implements BaseRepository<Task> {
         return realm.where(TaskList.class).findAll().get(position).getTasks();
     }
 
+    public RealmResults<Task> findAllByTitle(String query){
+        return realm.where(Task.class).contains("title", query, Case.INSENSITIVE).findAll();
+    }
+
     // ----------------------------- Add -----------------------------
 
     @Override
@@ -58,18 +62,7 @@ public class TaskRepository implements BaseRepository<Task> {
         });
     }
 
-    // --------------------------- Delete ----------------------------
-
-    @Override
-    public void deleteById(final long id) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Task task = realm.where(Task.class).equalTo("id", id).findFirst();
-                task.deleteFromRealm();
-            }
-        });
-    }
+    // ---------------------------- SAVE -----------------------------
 
     public void taskModifier(final int uniqueParameterId, final Task task, final Date date){
         realm.executeTransaction(new Realm.Transaction() {
@@ -92,5 +85,28 @@ public class TaskRepository implements BaseRepository<Task> {
             }
         });
     }
-}
 
+    // --------------------------- Delete ----------------------------
+
+    @Override
+    public void deleteById(final long id) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Task task = realm.where(Task.class).equalTo("id", id).findFirst();
+                task.deleteFromRealm();
+            }
+        });
+    }
+
+    @Override
+    public void deleteByPosition(final int position) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Task> results = realm.where(Task.class).findAll();
+                results.get(position).deleteFromRealm();
+            }
+        });
+    }
+}

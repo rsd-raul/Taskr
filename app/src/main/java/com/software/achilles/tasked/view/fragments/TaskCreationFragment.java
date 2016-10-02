@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -106,6 +105,7 @@ public class TaskCreationFragment extends Fragment {
         fastAdapter.add(taskDetailAdapterProvider.get().withConfigure(detailType, text));
     }
 
+    // REVIEW Las probabilidades de que esto sea una warrada son altas xD
     public void editItem(int index, int detailType, String text){
         fastAdapter.remove(index);
         fastAdapter.add(index, taskDetailAdapterProvider.get().withConfigure(detailType, text));
@@ -296,11 +296,27 @@ public class TaskCreationFragment extends Fragment {
         Task result = dataManager.getTemporalTask();
 
         result.setTitle(mTitle.getText().toString());
+//        result.setNotes(mNotes.toString());
 
         return result;
     }
 
+//    @Override
+//    public void onDestroy() {
+//        TaskCreationPresenter.destroyPresenter();
+//        super.onDestroy();
+//    }
+
+
+    // FIXME mTitle pasado a static para poder acceder desde MainPresenter
+    // si el usuario a introducido algun dato => TRUE, de lo contrario => FALSE
+    public static boolean isDataPresent(){
+
+        return !mTitle.getText().toString().equals("");
+    }
+
     public void resetFields(){
+        // FIXME Favourite needs to be set to unchecked
         if(dataManager.getTemporalTask().isStarred())
             taskCreationPresenter.itemOnClick(mFavourite.getId());
 

@@ -51,11 +51,18 @@ public class DashboardFragment extends Fragment {
         if(dashboardPresenter == null)
             android.os.Process.killProcess(android.os.Process.myPid());
 
+        // Initialize presenter     // FIXME Testing lazy to solve the null pointer
         dashboardPresenter.attachView(this);
 
         // Setup the fragment composing the ViewPager and the Tabs to control it
         dashboardPresenter.setupLayout();
     }
+
+//    @Override
+//    public void onDestroy() {
+//        DashboardPresenter.destroyPresenter();
+//        super.onDestroy();
+//    }
 
     private PagerAdapter adapter;
 
@@ -66,6 +73,10 @@ public class DashboardFragment extends Fragment {
         mViewPager = (ViewPager) mMainActivity.findViewById(R.id.viewpager);
 
         adapter = new PagerAdapter(getChildFragmentManager());
+
+        // FIXME 1 de 2 - Quick jump to the desired list if too many lists present (necessary?)
+//        if(taskLists.size() > 5)
+//            adapter.addFragment(new DashboardSearchFragment(), "Search");
 
         // Populate each of the pages of the ViewPager
         for (int index = 0 ; index < taskLists.size(); index++){
@@ -81,6 +92,9 @@ public class DashboardFragment extends Fragment {
             adapter.addFragment(dashboardListFragment, taskLists.get(index).getTitle());
         }
         mViewPager.setAdapter(adapter);
+
+        // FIXME 2 de 2 - Quick jump to the desired list if too many lists present (necessary?)
+//        mViewPager.setCurrentItem(1);     // show the first list by default, not the quick search
     }
 
     // -------------------------- Tab Layout -------------------------

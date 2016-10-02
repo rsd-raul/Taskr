@@ -18,8 +18,6 @@ import io.realm.RealmResults;
 
 public class TasksSearchProvider extends ContentProvider {
 
-
-
     @Override
     public boolean onCreate() {
         return false;

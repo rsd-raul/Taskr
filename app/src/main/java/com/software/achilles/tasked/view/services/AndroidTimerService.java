@@ -4,9 +4,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+
 import com.software.achilles.tasked.R;
 import com.software.achilles.tasked.model.domain.Task;
 import com.software.achilles.tasked.view.MainActivity;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

@@ -2,7 +2,7 @@
 
     <!-- ActionBar Title -->
 
-    <string name="app_name">Tasked</string>
+    <string name="app_name">Taskr</string>
     <string name="statistics">Statistics</string>
     <string name="dashboard">Dashboard</string>
     <string name="snoozed">Snoozed</string>
@@ -35,7 +35,7 @@
     <!-- Contact developer -->
 
     <string name="developer_email" translatable="false">achillessoftware@gmail.com</string>
-    <string name="subject_email">Tasked - Bug/Feature/Request</string>
+    <string name="subject_email">Taskr - Bug/Feature/Request</string>
     <string name="send_email">Contact the developer</string>
 
     <!-- ActionBar Icons -->
@@ -95,7 +95,7 @@
 
     <!-- Error report -->
 
-    <string name="error_report_tasked">Error report - Tasked</string>
+    <string name="error_report_tasked">Error report - Taskr</string>
     <string name="error_report_taken">Error report taken:</string>
     <string name="error_report_send">Send error report?</string>
     <string name="error_trace_collected">New Trace collected :</string>

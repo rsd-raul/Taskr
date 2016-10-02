@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.github.clans.fab.FloatingActionMenu;
 
+// Original author: Grzesiek Gajewski - Base Lab - https://github.com/ggajews
 public class FloatingActionMenuBehavior extends CoordinatorLayout.Behavior<FloatingActionMenu>{
 
     @Override

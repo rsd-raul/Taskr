@@ -35,9 +35,16 @@ import io.realm.RealmResults;
 public class TaskCreationPresenter
         implements Presenter<TaskCreationFragment> {
 
-    // -------------------------- Injected ---------------------------
+    // -------------------------- INJECTED ---------------------------
 
+    @Inject
+    MainPresenter mainPresenter;
     private DataManager dataManager;
+
+    // ------------------------- ATTRIBUTES --------------------------
+
+    private TaskCreationFragment mFragment;
+    private boolean favStatus = false;
 
     // ------------------------- CONSTRUCTOR -------------------------
 
@@ -46,22 +53,25 @@ public class TaskCreationPresenter
         this.dataManager = dataManager;
     }
 
-    // -------------------------- INJECTED ---------------------------
-
-    @Inject
-    MainPresenter mainPresenter;
-
-    // ------------------------- ATTRIBUTES --------------------------
-
-    private TaskCreationFragment mFragment;
-    private boolean favStatus = false;
-
     // ------------------------- LIFE CYCLE --------------------------
 
     @Override
     public void attachView(TaskCreationFragment view) {
         mFragment = view;
+//        return instance;
     }
+
+//    public static void destroyPresenter() {
+//        if(instance == null)
+//            return;
+//
+//        instance.mFragment = null;
+//        instance = null;
+//
+////      Un-subscribe from the thread?
+////        if (subscription != null)
+////            subscription.unsubscribe();
+//    }
 
     // ---------------------------- LAYOUT ---------------------------
 
@@ -219,10 +229,15 @@ public class TaskCreationPresenter
         return -1;
     }
 
+    public boolean isDataPresent(){
+        return mFragment.isDataPresent();
+    }
+
     // -------------------------- Use Cases --------------------------
 
     public void saveTask(boolean reset){
 
+//        mFragment.populateAndGetTemporal();
         Task temporal = mFragment.populateAndGetTemporal();
         int taskListPosition = dataManager.getTemporalTaskListPosition();
         temporal.setTaskList(dataManager.findTaskListByPosition(taskListPosition));
@@ -316,6 +331,7 @@ public class TaskCreationPresenter
         String name = place.getName().toString(), address = place.getAddress().toString();
         double lat = place.getLatLng().latitude, lon = place.getLatLng().longitude;
 
+        //FIXME Si seleccionas coordenadas no tienes viewport, cosa chunga porque no puedes
         // centrar el mapa sin las bounds
         if(viewport != null)
             bounds = new double[]{ viewport.southwest.latitude, viewport.southwest.longitude,
